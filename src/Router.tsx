@@ -3,7 +3,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 const routes = createBrowserRouter([
   {
     path: '/',
-    element: <div>Hello guys</div>,
+    element: <div>Home page</div>,
+  },
+  {
+    path: '/bye',
+    element: <div>Bye guys</div>,
   },
 ]);
 
