@@ -1,7 +1,8 @@
-import { useState, PropsWithChildren, useCallback } from 'react';
+import { PropsWithChildren, useCallback } from 'react';
 
 // Provider components
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { WebStorageStateStore } from 'oidc-client-ts';
 import { AuthProvider } from 'react-oidc-context';
 
@@ -9,7 +10,12 @@ import { AuthProvider } from 'react-oidc-context';
 import { baseTheme } from './theme';
 
 function Providers({ children }: PropsWithChildren) {
-  const [colourScheme, setColourScheme] = useState<ColorScheme>('light');
+  const [colourScheme, setColourScheme] = useLocalStorage<ColorScheme>({
+    key: 'app-color-scheme',
+    defaultValue: 'light',
+    getInitialValueInEffect: true,
+  });
+
   const toggleColourScheme = (value?: ColorScheme) =>
     setColourScheme(value || (colourScheme === 'dark' ? 'light' : 'dark'));
 
