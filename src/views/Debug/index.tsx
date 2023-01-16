@@ -16,7 +16,7 @@ query list($limit: Int){
 `;
 
 function Debug() {
-  const { data, error, update } = useQuery(query, { limit: 10 });
+  const { data, error, update } = useQuery(query, { limit: 10 }, { lazy: true });
   return (
     <>
       {data && <Text>{JSON.stringify(data, null, 2)}</Text>}

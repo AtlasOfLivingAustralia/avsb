@@ -8,6 +8,7 @@ import { AuthProvider } from 'react-oidc-context';
 
 // Theming helpers
 import { baseTheme } from './theme';
+import { APIProvider } from './api';
 
 function Providers({ children }: PropsWithChildren) {
   const [colourScheme, setColourScheme] = useLocalStorage<ColorScheme>({
@@ -42,15 +43,17 @@ function Providers({ children }: PropsWithChildren) {
       userStore={new WebStorageStateStore({ store: localStorage })}
       onSigninCallback={onSignIn}
     >
-      <ColorSchemeProvider colorScheme={colourScheme} toggleColorScheme={toggleColourScheme}>
-        <MantineProvider
-          theme={{ ...baseTheme, colorScheme: colourScheme }}
-          withGlobalStyles
-          withNormalizeCSS
-        >
-          {children}
-        </MantineProvider>
-      </ColorSchemeProvider>
+      <APIProvider>
+        <ColorSchemeProvider colorScheme={colourScheme} toggleColorScheme={toggleColourScheme}>
+          <MantineProvider
+            theme={{ ...baseTheme, colorScheme: colourScheme }}
+            withGlobalStyles
+            withNormalizeCSS
+          >
+            {children}
+          </MantineProvider>
+        </ColorSchemeProvider>
+      </APIProvider>
     </AuthProvider>
   );
 }
