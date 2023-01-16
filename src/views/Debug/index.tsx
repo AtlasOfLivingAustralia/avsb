@@ -1,5 +1,6 @@
 import { Text, Button } from '@mantine/core';
 import { useAPI, useGQLQuery } from '#/api';
+import { TaxonSearchInput } from '#/components';
 
 const query = `
 query list($limit: Int){
@@ -27,11 +28,13 @@ function Debug() {
       <Button onClick={() => update({ limit: 20 })}>Update</Button>
       <Button
         onClick={async () => {
-          console.log(await api.taxon.suggest('Acacia dea'));
+          // eslint-disable-next-line no-console
+          console.log(await api.taxon.suggest('Aca'));
         }}
       >
         Test API
       </Button>
+      <TaxonSearchInput onChange={(key) => console.log('key', key)} />
     </>
   );
 }
