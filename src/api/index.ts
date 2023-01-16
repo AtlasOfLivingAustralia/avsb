@@ -1,2 +1,5 @@
 export { default as APIProvider } from './Provider';
-export { default as useQuery } from './useQuery';
+
+// GraphQL query exports
+export { default as useGQLQuery } from './graphql/useGQLQuery';
+export { performGQLQuery } from './graphql/performGQLQuery';

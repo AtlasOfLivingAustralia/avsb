@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Variables = { [key: string]: any };
+import { performGQLQuery, Variables } from './performGQLQuery';
 
 interface QueryHookOptions {
   lazy?: boolean;
 }
 
-function useQuery<T>(query: string, initialVariables = {}, options: QueryHookOptions = {}) {
+function useGQLQuery<T>(query: string, initialVariables = {}, options: QueryHookOptions = {}) {
   const [variables, setVariables] = useState<Variables>(initialVariables);
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -21,25 +19,9 @@ function useQuery<T>(query: string, initialVariables = {}, options: QueryHookOpt
     async function runQuery() {
       if (data) setData(null);
       try {
-        const response = await fetch(import.meta.env.VITE_API_GRAPHQL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            operationName: 'list',
-            query,
-            variables,
-          }),
-        });
-
-        const responseData = await response.json();
-        if (response.ok) {
-          setData(responseData);
-          setError(null);
-        } else {
-          setError(new Error(responseData?.errors[0]?.message || response.statusText));
-        }
+        const queryData = await performGQLQuery(query, variables);
+        setData(queryData);
+        setError(null);
       } catch (queryError) {
         setError(queryError as Error);
       }
@@ -55,4 +37,4 @@ function useQuery<T>(query: string, initialVariables = {}, options: QueryHookOpt
   return { data, error, update };
 }
 
-export default useQuery;
+export default useGQLQuery;
