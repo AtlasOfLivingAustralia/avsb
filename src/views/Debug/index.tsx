@@ -1,5 +1,5 @@
 import { Text, Button } from '@mantine/core';
-import { useGQLQuery } from '#/api';
+import { useAPI, useGQLQuery } from '#/api';
 
 const query = `
 query list($limit: Int){
@@ -17,6 +17,7 @@ query list($limit: Int){
 
 function Debug() {
   const { data, error, update } = useGQLQuery(query, { limit: 10 }, { lazy: true });
+  const api = useAPI();
 
   return (
     <>
@@ -24,6 +25,13 @@ function Debug() {
       {error && <Text>{error.message}</Text>}
       <Text>Debug menu!</Text>
       <Button onClick={() => update({ limit: 20 })}>Update</Button>
+      <Button
+        onClick={async () => {
+          console.log(await api.taxon.suggest('Acacia dea'));
+        }}
+      >
+        Test API
+      </Button>
     </>
   );
 }

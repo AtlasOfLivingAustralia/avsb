@@ -1,5 +1,5 @@
 .logo-loader {
-  animation: logo-loader-anim 2s infinite;
+  animation: logo-loader-anim 1.8s infinite;
 }
 
 @keyframes logo-loader-anim {
