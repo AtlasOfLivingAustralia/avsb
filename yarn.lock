@@ -479,6 +479,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/nprogress@npm:^5.10.0":
+  version: 5.10.0
+  resolution: "@mantine/nprogress@npm:5.10.0"
+  dependencies:
+    "@mantine/utils": 5.10.0
+  peerDependencies:
+    "@mantine/core": 5.10.0
+    "@mantine/hooks": 5.10.0
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 89ad99474b6f8e929ec5b6ff810a5e528153a21571303a941b634fb069301b61f7ec9badca4a6cd7859a915d73b15f266a8490312049a7db617ab4b399acd684
+  languageName: node
+  linkType: hard
+
 "@mantine/styles@npm:5.10.0":
   version: 5.10.0
   resolution: "@mantine/styles@npm:5.10.0"
@@ -1231,6 +1245,7 @@ __metadata:
     "@emotion/react": ^11.10.5
     "@mantine/core": ^5.10.0
     "@mantine/hooks": ^5.10.0
+    "@mantine/nprogress": ^5.10.0
     "@tabler/icons": ^1.119.0
     "@types/react": latest
     "@types/react-dom": latest
@@ -1255,6 +1270,7 @@ __metadata:
     rollup-plugin-visualizer: ^5.9.0
     typescript: ^4.9.3
     vite: ^4.0.0
+    vite-plugin-rewrite-all: ^1.0.1
     vite-tsconfig-paths: ^4.0.3
   languageName: unknown
   linkType: soft
@@ -1483,6 +1499,13 @@ __metadata:
   version: 1.0.11
   resolution: "confusing-browser-globals@npm:1.0.11"
   checksum: 3afc635abd37e566477f610e7978b15753f0e84025c25d49236f1f14d480117185516bdd40d2a2167e6bed8048641a9854964b9c067e3dcdfa6b5d0ad3c3a5ef
+  languageName: node
+  linkType: hard
+
+"connect-history-api-fallback@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "connect-history-api-fallback@npm:1.6.0"
+  checksum: 804ca2be28c999032ecd37a9f71405e5d7b7a4b3defcebbe41077bb8c5a0a150d7b59f51dcc33b2de30bc7e217a31d10f8cfad27e8e74c2fc7655eeba82d6e7e
   languageName: node
   linkType: hard
 
@@ -4494,6 +4517,17 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 474acf1146cb2701fe3b074892217553dfcf9a031280919ba1b8d651a068c9b15d863b7303cb15bd00a862b498e6cf4ad7b4a08fb134edd5a6f7641681cb54a2
+  languageName: node
+  linkType: hard
+
+"vite-plugin-rewrite-all@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "vite-plugin-rewrite-all@npm:1.0.1"
+  dependencies:
+    connect-history-api-fallback: ^1.6.0
+  peerDependencies:
+    vite: ^2.0.0 || ^3.0.0 || ^4.0.0
+  checksum: 9a22e51e80fc14d58d32556208c26740baf3f02eae2d0a5f356ddc1ea478bd2f56803cc17e77261ffad33d27301017ba03736143446685c03bb0f076eef2fdd0
   languageName: node
   linkType: hard
 

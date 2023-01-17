@@ -133,7 +133,7 @@ interface TaxonConcept {
 }
 
 interface Taxon {
-  imageIdentifier: string;
+  imageIdentifier: string | null;
   variants: [Variant];
   identifiers: [Identifier];
   images: [string];
@@ -156,3 +156,5 @@ export default () => ({
   suggest,
   taxonInfo,
 });
+
+export type { Taxon };

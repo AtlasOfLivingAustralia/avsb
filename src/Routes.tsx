@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { DashboardView, DebugView } from './views';
+import { DashboardView, TaxonView, DebugView } from './views';
 
 const routes = createBrowserRouter([
   {
@@ -9,6 +9,16 @@ const routes = createBrowserRouter([
       {
         path: '/',
         element: <div>Home</div>,
+      },
+      {
+        path: 'taxon/:guid',
+        element: <TaxonView />,
+        loader: async ({ params }) =>
+          (
+            await fetch(
+              `${import.meta.env.VITE_API_BIE}/species/${decodeURIComponent(params.guid || '')}`,
+            )
+          ).json(),
       },
       {
         path: 'debug',

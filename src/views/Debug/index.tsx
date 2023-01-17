@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Text, Accordion, Button } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 import { TaxonSearchInput } from '#/components';
-import { useAPI } from '#/api';
+// import { useAPI } from '#/api';
 
 // Debug views
 import DebugGQL from './components/DebugGQL';
 
 function Debug() {
   const [taxonSearch, setTaxonSearch] = useState<string | null>(null);
-  const api = useAPI();
+  const navigate = useNavigate();
+  // const api = useAPI();
   return (
     <Accordion defaultValue='gql'>
       <Accordion.Item value='gql'>
@@ -33,13 +35,15 @@ function Debug() {
         <Accordion.Control>API</Accordion.Control>
         <Accordion.Panel>
           <Button
-            onClick={async () =>
-              console.log(
-                await api.taxon.taxonInfo('https://id.biodiversity.org.au/taxon/apni/51286863'),
+            onClick={() =>
+              navigate(
+                `/taxon/${encodeURIComponent(
+                  'https://id.biodiversity.org.au/taxon/apni/51286863',
+                )}`,
               )
             }
           >
-            Taxon via ID
+            Goto taxon via ID
           </Button>
         </Accordion.Panel>
       </Accordion.Item>

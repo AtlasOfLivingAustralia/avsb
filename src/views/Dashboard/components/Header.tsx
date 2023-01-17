@@ -14,7 +14,7 @@ import {
 } from '@mantine/core';
 
 // Project components & gelpers
-import { Logo } from '#/components';
+import { Logo, TaxonSearchInput } from '#/components';
 import getNameInitials from '#/helpers/getNameInitials';
 
 function Header() {
@@ -35,10 +35,19 @@ function Header() {
   return (
     <MantineHeader height={60}>
       <Group sx={{ height: '100%' }} px={20} position='apart'>
-        <Link to='/' style={{ display: 'flex' }}>
-          <Logo width={50} height={50} />
-        </Link>
-        <Group>
+        <Group style={{ flexGrow: 1, maxWidth: 140 }}>
+          <Link to='/' style={{ display: 'flex' }}>
+            <Logo width={50} height={50} />
+          </Link>
+        </Group>
+        <TaxonSearchInput
+          variant='filled'
+          style={{ width: 350 }}
+          onChange={(guid) => {
+            if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
+          }}
+        />
+        <Group style={{ flexGrow: 1, maxWidth: 140 }} position='right'>
           <ActionIcon variant='light' radius='xl' size={38} onClick={() => toggleColorScheme()}>
             {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
           </ActionIcon>
