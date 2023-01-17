@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useEffect, useState, forwardRef, ComponentPropsWithoutRef } from 'react';
-import { Select, SelectProps, Stack, Text } from '@mantine/core';
+import { Select, SelectItem, SelectProps, Stack, Text } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons';
 import { useAPI } from '#/api';
@@ -39,7 +39,7 @@ interface ItemProps extends ComponentPropsWithoutRef<'div'> {
   type?: string;
 }
 
-const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
+const SelectMenuItem = forwardRef<HTMLDivElement, ItemProps>(
   ({ value, label, type, ...others }: ItemProps, ref) => (
     <div ref={ref} key={value} {...others}>
       <Stack spacing={0}>
@@ -61,7 +61,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 );
 
 function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps) {
-  const [data, setData] = useState<SuggestedTaxon[]>([]);
+  const [data, setData] = useState<SelectItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [search, setSearch] = useState<string>('');
@@ -72,7 +72,13 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
     async function suggestTaxa() {
       try {
         const taxa = await api.taxon.suggest(query);
-        setData(uniqueTaxa(taxa));
+        setData(
+          uniqueTaxa(taxa).map(({ scientificName, key }) => ({
+            value: key,
+            label: scientificName,
+            group: scientificName.split(' ')[0],
+          })),
+        );
         setError(null);
       } catch (suggestError) {
         setError(suggestError as Error);
@@ -81,8 +87,7 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
       setLoading(false);
     }
 
-    if (query?.length > 0 && !data.map((item) => item.scientificName).includes(query))
-      suggestTaxa();
+    if (query?.length > 0) suggestTaxa();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, api.taxon]);
 
@@ -99,7 +104,7 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
       }
       searchValue={search}
       error={error && error.message}
-      itemComponent={SelectItem}
+      itemComponent={SelectMenuItem}
       nothingFound={
         (query.length && !loading) > 0 ? `No taxa found for '${query}'` : 'Enter search query above'
       }
@@ -108,11 +113,7 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
         setSearch(newValue);
       }}
       data={[
-        ...data.map(({ scientificName, key }) => ({
-          value: key,
-          label: scientificName,
-          group: scientificName.split(' ')[0],
-        })),
+        ...data,
         ...(search.length > 0
           ? customTypes.map((type) => ({
               type,
