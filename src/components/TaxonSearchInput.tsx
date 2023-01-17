@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Select, SelectProps } from '@mantine/core';
+/* eslint-disable react/jsx-props-no-spreading */
+import { useEffect, useState, forwardRef, ComponentPropsWithoutRef } from 'react';
+import { Select, SelectProps, Stack, Text } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons';
 import { useAPI } from '#/api';
@@ -9,10 +10,13 @@ interface SuggestedTaxon {
   key: string;
 }
 
-type TaxonSearchInputProps = Omit<
-  SelectProps,
-  'searchable' | 'searchValue' | 'data' | 'value' | 'onSearchChange' | 'nothingFound'
->;
+interface TaxonSearchInputProps
+  extends Omit<
+    SelectProps,
+    'searchable' | 'searchValue' | 'data' | 'value' | 'onSearchChange' | 'nothingFound'
+  > {
+  customTypes?: string[];
+}
 
 function uniqueTaxa(taxa: SuggestedTaxon[]): SuggestedTaxon[] {
   const seen: string[] = [];
@@ -29,12 +33,39 @@ function uniqueTaxa(taxa: SuggestedTaxon[]): SuggestedTaxon[] {
   return out;
 }
 
-function TaxonSearchInput(props: TaxonSearchInputProps) {
+interface ItemProps extends ComponentPropsWithoutRef<'div'> {
+  label: string;
+  value: string;
+  type?: string;
+}
+
+const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
+  ({ value, label, type, ...others }: ItemProps, ref) => (
+    <div ref={ref} key={value} {...others}>
+      <Stack spacing={0}>
+        {type ? (
+          <Text size='sm'>
+            Search <b>{label}</b> as {type}
+          </Text>
+        ) : (
+          <>
+            <Text size='sm'>{label}</Text>
+            <Text size='xs' opacity={0.65}>
+              {value}
+            </Text>
+          </>
+        )}
+      </Stack>
+    </div>
+  ),
+);
+
+function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps) {
   const [data, setData] = useState<SuggestedTaxon[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [search, setSearch] = useState<string>('');
-  const [query] = useDebouncedValue(search, 350);
+  const [query] = useDebouncedValue(search, 300);
   const api = useAPI();
 
   useEffect(() => {
@@ -46,38 +77,50 @@ function TaxonSearchInput(props: TaxonSearchInputProps) {
       } catch (suggestError) {
         setError(suggestError as Error);
       }
+
+      setLoading(false);
     }
 
     if (query?.length > 0 && !data.map((item) => item.scientificName).includes(query))
       suggestTaxa();
-
-    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, api.taxon]);
 
   return (
     <Select
-      // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
       searchable
       clearable
       icon={<IconSearch size={18} />}
-      placeholder='Enter species name'
+      placeholder={
+        customTypes.length > 0
+          ? `Search for a Taxon / ${customTypes.join(' / ')}`
+          : 'Search for a Taxon'
+      }
       searchValue={search}
       error={error && error.message}
+      itemComponent={SelectItem}
       nothingFound={
         (query.length && !loading) > 0 ? `No taxa found for '${query}'` : 'Enter search query above'
       }
       onSearchChange={(newValue) => {
-        if (newValue.length === 0) setData([]);
         setLoading(true);
         setSearch(newValue);
       }}
-      data={data.map(({ scientificName, key }) => ({
-        value: key,
-        label: scientificName,
-        group: scientificName.split(' ')[0],
-      }))}
+      data={[
+        ...data.map(({ scientificName, key }) => ({
+          value: key,
+          label: scientificName,
+          group: scientificName.split(' ')[0],
+        })),
+        ...(search.length > 0
+          ? customTypes.map((type) => ({
+              type,
+              value: `${type}:${search}`,
+              label: search,
+            }))
+          : []),
+      ]}
     />
   );
 }

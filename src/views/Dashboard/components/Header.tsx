@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
 import { IconLogout, IconBug, IconSun, IconMoon } from '@tabler/icons';
 import {
@@ -35,7 +35,9 @@ function Header() {
   return (
     <MantineHeader height={60}>
       <Group sx={{ height: '100%' }} px={20} position='apart'>
-        <Logo width={50} height={50} />
+        <Link to='/' style={{ display: 'flex' }}>
+          <Logo width={50} height={50} />
+        </Link>
         <Group>
           <ActionIcon variant='light' radius='xl' size={38} onClick={() => toggleColorScheme()}>
             {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
