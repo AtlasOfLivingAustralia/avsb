@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
 import { DashboardView, TaxonView, DebugView } from './views';
 
 const routes = createBrowserRouter([
@@ -19,6 +19,20 @@ const routes = createBrowserRouter([
               `${import.meta.env.VITE_API_BIE}/species/${decodeURIComponent(params.guid || '')}`,
             )
           ).json(),
+        children: [
+          {
+            path: 'trials',
+            element: <div>Trials</div>,
+          },
+          {
+            path: '*',
+            loader: () => redirect('trials'),
+          },
+          {
+            path: '/taxon/:guid/',
+            loader: () => redirect('trials'),
+          },
+        ],
       },
       {
         path: 'debug',

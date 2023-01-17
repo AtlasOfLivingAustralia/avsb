@@ -12,7 +12,7 @@ import {
   ActionIcon,
 } from '@mantine/core';
 import { IconDotsVertical, IconExternalLink } from '@tabler/icons';
-import { useLoaderData } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router-dom';
 import { Taxon as TaxonType } from '#/api/sources/taxon';
 
 function Taxon() {
@@ -70,12 +70,13 @@ function Taxon() {
           </Group>
         </Tabs.List>
         <Container size='lg' py='xl'>
-          <Tabs.Panel value='trials'>
+          {/* <Tabs.Panel value='trials'>
             <Text>Trials tab</Text>
           </Tabs.Panel>
           <Tabs.Panel value='more'>
             <Text>More tab</Text>
-          </Tabs.Panel>
+          </Tabs.Panel> */}
+          <Outlet />
         </Container>
       </Tabs>
     </>
