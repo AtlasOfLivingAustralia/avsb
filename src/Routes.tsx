@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
-import { DashboardView, TaxonView, DebugView } from './views';
+import { performGQLQuery, gqlQueries } from './api';
+import { DashboardView, TaxonView, TrialsView, DebugView } from './views';
 
 const routes = createBrowserRouter([
   {
@@ -22,7 +23,39 @@ const routes = createBrowserRouter([
         children: [
           {
             path: 'trials',
-            element: <div>Trials</div>,
+            element: <TrialsView />,
+            loader: async ({ params }) => {
+              const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_TRIALS, {
+                predicate: {
+                  type: 'and',
+                  predicates: [
+                    {
+                      type: 'in',
+                      key: 'datasetKey',
+                      values: ['dr18527'],
+                    },
+                    {
+                      type: 'in',
+                      key: 'eventTypeHierarchy',
+                      values: ['Trial'],
+                    },
+                    {
+                      type: 'in',
+                      key: 'taxonKey',
+                      values: [params.guid],
+                    },
+                  ],
+                },
+                limit: 50,
+                offset: 0,
+              });
+
+              return data.eventSearch.documents.results;
+            },
+          },
+          {
+            path: 'more',
+            element: <div>More</div>,
           },
           {
             path: '*',

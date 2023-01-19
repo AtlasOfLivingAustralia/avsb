@@ -47,7 +47,14 @@ function Dashboard() {
   return (
     <>
       <NavigationProgress stepInterval={0} />
-      <AppShell header={<Header />}>
+      <AppShell
+        header={<Header />}
+        styles={{
+          main: {
+            paddingBottom: 0,
+          },
+        }}
+      >
         <Outlet />
       </AppShell>
     </>

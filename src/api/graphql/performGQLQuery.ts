@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Variables = { [key: string]: any };
 
-async function performGQLQuery(query: string, variables: Variables) {
+async function performGQLQuery(query: string, variables?: Variables) {
   const response = await fetch(import.meta.env.VITE_API_GRAPHQL, {
     method: 'POST',
     headers: {
@@ -10,7 +10,7 @@ async function performGQLQuery(query: string, variables: Variables) {
     body: JSON.stringify({
       operationName: 'list',
       query,
-      variables,
+      variables: variables || {},
     }),
   });
 

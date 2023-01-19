@@ -1,4 +1,5 @@
-export const QUERY_EVENT_TRIALS = `
+const QUERY_EVENT = '';
+const QUERY_EVENT_TRIALS = `
 query list($predicate: Predicate, $limit: Int){
   eventSearch(
     size: $limit
@@ -23,6 +24,7 @@ query list($predicate: Predicate, $limit: Int){
           measurementMethod
           measurementRemarks
           measurementAccuracy
+          measurementDeterminedDate
         }
       }
     }
@@ -30,4 +32,11 @@ query list($predicate: Predicate, $limit: Int){
 }
 `;
 
-export const QUERY_EVENT = '';
+const DATA_RESOURCES = import.meta.env.VITE_APP_DATA_RESOURCES;
+const PRED_DATA_RESOURCE = {
+  type: 'in',
+  key: 'datasetKey',
+  values: DATA_RESOURCES ? DATA_RESOURCES.split(',') : [],
+};
+
+export default { QUERY_EVENT, QUERY_EVENT_TRIALS, PRED_DATA_RESOURCE };

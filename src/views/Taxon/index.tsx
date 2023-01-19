@@ -10,18 +10,23 @@ import {
   Skeleton,
   Menu,
   ActionIcon,
+  Badge,
+  ScrollArea,
 } from '@mantine/core';
 import { IconDotsVertical, IconExternalLink } from '@tabler/icons';
-import { Outlet, useLoaderData } from 'react-router-dom';
+import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { Taxon as TaxonType } from '#/api/sources/taxon';
 
 function Taxon() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const data = useLoaderData() as TaxonType;
   const theme = useMantineTheme();
+  const currentRoute = pathname.substring(pathname.lastIndexOf('/') + 1);
 
   return (
     <>
-      <Container size='lg' py='xl'>
+      <Container size='xl' py='xl'>
         <Group position='apart' align='start'>
           <Group align='start'>
             <Box mr='md'>
@@ -39,7 +44,10 @@ function Taxon() {
             </Box>
             <Box>
               <Title>{data.taxonConcept.nameString}</Title>
-              <Text color='dimmed'>{data.commonNames[0]?.nameString || 'No common name'}</Text>
+              <Group spacing='sm'>
+                <Text color='dimmed'>{data.commonNames[0]?.nameString || 'No common name'}</Text>
+                <Badge radius='sm'>{data.taxonConcept.rankString}</Badge>
+              </Group>
             </Box>
           </Group>
           <Menu shadow='md' position='bottom-end'>
@@ -49,35 +57,45 @@ function Taxon() {
               </ActionIcon>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item icon={<IconExternalLink size={14} />}>View on ALA</Menu.Item>
+              <Menu.Item
+                icon={<IconExternalLink size={14} />}
+                component='a'
+                target='_blank'
+                href={`https://bie.ala.org.au/species/${data.taxonConcept.guid}`}
+              >
+                View on ALA
+              </Menu.Item>
             </Menu.Dropdown>
           </Menu>
         </Group>
       </Container>
-      <Tabs variant='outline' mt='md' mx={theme.spacing.md * -1} radius='sm' defaultValue='trials'>
+      <Tabs variant='outline' mt='md' mx={theme.spacing.md * -1} radius='sm' value={currentRoute}>
         <Tabs.List>
           <Group
             px='md'
             style={{
               width: '100%',
-              maxWidth: 1140,
+              maxWidth: 1320,
               marginLeft: 'auto',
               marginRight: 'auto',
             }}
           >
-            <Tabs.Tab value='trials'>Trials</Tabs.Tab>
-            <Tabs.Tab value='more'>More</Tabs.Tab>
+            {['Trials', 'More'].map((tabKey) => (
+              <Tabs.Tab
+                key={tabKey}
+                value={tabKey.toLowerCase()}
+                onClick={() => navigate(tabKey.toLowerCase())}
+              >
+                {tabKey}
+              </Tabs.Tab>
+            ))}
           </Group>
         </Tabs.List>
-        <Container size='lg' py='xl'>
-          {/* <Tabs.Panel value='trials'>
-            <Text>Trials tab</Text>
-          </Tabs.Panel>
-          <Tabs.Panel value='more'>
-            <Text>More tab</Text>
-          </Tabs.Panel> */}
-          <Outlet />
-        </Container>
+        <ScrollArea h='calc(100vh - 266px)'>
+          <Container size='xl' py='xl'>
+            <Outlet />
+          </Container>
+        </ScrollArea>
       </Tabs>
     </>
   );
