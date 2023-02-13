@@ -1,6 +1,6 @@
-# Australian Seed Bank Online
+# Australian Virtual Seed Bank
 
-> A react-based online portal for the Australian Seedbank Partnership
+> A [React](https://reactjs.org/)-based SPA for the Australian Seedbank Partnership, built with [Vite](https://vitejs.dev/)
 
 ## Installation
 
