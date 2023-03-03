@@ -17,9 +17,11 @@ function Providers({ children }: PropsWithChildren) {
     getInitialValueInEffect: true,
   });
 
+  // Helper function to switch the application theme
   const toggleColourScheme = (value?: ColorScheme) =>
     setColourScheme(value || (colourScheme === 'dark' ? 'light' : 'dark'));
 
+  // Sign in callback handler
   const onSignIn = useCallback(() => {
     const { search, origin, pathname } = location;
     const params = new URLSearchParams(search);

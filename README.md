@@ -1,6 +1,6 @@
 # Australian Virtual Seed Bank
 
-> A [React](https://reactjs.org/)-based SPA for the Australian Seedbank Partnership, built with [Vite](https://vitejs.dev/)
+> A [React](https://reactjs.org/)-based single-page application for the Australian Seedbank Partnership, built with [Vite](https://vitejs.dev/)
 
 ## Installation
 

@@ -1,15 +1,17 @@
 import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
+import { ErrorBoundary } from '#/components';
 import { performGQLQuery, gqlQueries } from './api';
-import { DashboardView, TaxonView, TrialsView, DebugView } from './views';
+import { DashboardView, HomeView, TaxonView, TrialsView, DebugView } from './views';
 
 const routes = createBrowserRouter([
   {
     path: '/',
     element: <DashboardView />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: '/',
-        element: <div>Home</div>,
+        element: <HomeView />,
       },
       {
         path: 'taxon/:guid',

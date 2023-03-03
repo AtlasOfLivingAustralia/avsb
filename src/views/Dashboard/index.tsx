@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useAuth } from 'react-oidc-context';
+import { useAuth, hasAuthParams } from 'react-oidc-context';
 import { Outlet, useNavigation } from 'react-router-dom';
 import { AppShell, Center, Stack, Text } from '@mantine/core';
 import {
@@ -29,7 +29,8 @@ function Dashboard() {
 
   // If the 'code' & 'state' parameter are in the URL, it means that
   // we've just been redirected from Cognito, and we're retrieving tokens
-  if (auth.isLoading && location.href.includes('code=') && location.href.includes('state=')) {
+  console.log(auth, auth.isLoading);
+  if (auth.isLoading && hasAuthParams()) {
     return (
       <Center style={{ width: '100vw', height: '100vh' }}>
         <Stack align='center' spacing='lg'>
@@ -48,6 +49,7 @@ function Dashboard() {
     <>
       <NavigationProgress stepInterval={0} />
       <AppShell
+        padding={0}
         header={<Header />}
         styles={{
           main: {
