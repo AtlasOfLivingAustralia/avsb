@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Text, Accordion, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { TaxonSearchInput } from '#/components';
+import { Contact, TaxonSearchInput } from '#/components';
 // import { useAPI } from '#/api';
 
 // Debug views
@@ -45,6 +45,13 @@ function Debug() {
           >
             Goto taxon via ID
           </Button>
+        </Accordion.Panel>
+      </Accordion.Item>
+      <Accordion.Item value='api'>
+        <Accordion.Control>Components</Accordion.Control>
+        <Accordion.Panel>
+          <Contact dataResource='dr18699' />
+          <Contact dataResource='dr18697' />
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>

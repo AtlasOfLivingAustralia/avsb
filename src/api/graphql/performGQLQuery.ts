@@ -8,7 +8,6 @@ async function performGQLQuery(query: string, variables?: Variables) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      operationName: 'list',
       query,
       variables: variables || {},
     }),

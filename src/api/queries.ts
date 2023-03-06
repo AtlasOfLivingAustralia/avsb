@@ -32,11 +32,25 @@ query list($predicate: Predicate, $limit: Int){
 }
 `;
 
-const DATA_RESOURCES = import.meta.env.VITE_APP_DATA_RESOURCES;
+const QUERY_DATASET = `
+query dataset($key: JSON!){
+  eventSearch: eventSearch(predicate: {type: equals, key: "datasetKey", value: $key}) {
+    documents(size: 1) {
+      total
+      results {
+        dataset
+      }
+    }
+  }
+}
+`;
+
 const PRED_DATA_RESOURCE = {
   type: 'in',
   key: 'datasetKey',
-  values: DATA_RESOURCES ? DATA_RESOURCES.split(',') : [],
+  values: import.meta.env.VITE_APP_DATA_RESOURCES
+    ? import.meta.env.VITE_APP_DATA_RESOURCES.split(',')
+    : [],
 };
 
-export default { QUERY_EVENT, QUERY_EVENT_TRIALS, PRED_DATA_RESOURCE };
+export default { QUERY_EVENT, QUERY_EVENT_TRIALS, QUERY_DATASET, PRED_DATA_RESOURCE };
