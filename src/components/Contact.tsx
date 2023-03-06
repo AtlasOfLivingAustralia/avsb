@@ -1,5 +1,15 @@
 import { CSSProperties } from 'react';
-import { Anchor, Avatar, Badge, Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
+import {
+  Anchor,
+  Avatar,
+  Badge,
+  Group,
+  Paper,
+  PaperProps,
+  Skeleton,
+  Stack,
+  Text,
+} from '@mantine/core';
 import { IconMail, IconPhone, IconMapPin, IconBuilding } from '@tabler/icons';
 import { useGQLQuery } from '#/api';
 import { Contact as ContactType } from '#/api/graphql/types';
@@ -39,11 +49,11 @@ const contactItemStyle: CSSProperties = {
   minHeight: 24,
 };
 
-interface ContactProps {
+interface ContactProps extends PaperProps {
   dataResource: string;
 }
 
-function Contact({ dataResource }: ContactProps) {
+function Contact({ dataResource, ...rest }: ContactProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: response } = useGQLQuery<DatasetQuery>(queries.QUERY_DATASET, {
     key: dataResource,
@@ -53,7 +63,8 @@ function Contact({ dataResource }: ContactProps) {
   const contact = dataset?.value?.contact?.[0];
 
   return (
-    <Paper withBorder p='md'>
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <Paper {...rest} withBorder p='md'>
       <Group align='flex-start'>
         <Skeleton height={55} circle visible={!contact}>
           <Avatar size={55} radius='xl'>
@@ -110,15 +121,15 @@ function Contact({ dataResource }: ContactProps) {
               </Text>
             )}
             <Skeleton visible={!dataset}>
-              <Text size='sm' style={{ display: 'flex', alignItems: 'center' }}>
-                <IconBuilding size={24} style={contactItemStyle} />
+              <Text style={{ display: 'flex', alignItems: 'center' }} size='sm'>
+                <IconBuilding style={contactItemStyle} />
                 {dataset?.value?.title}
               </Text>
             </Skeleton>
             {!contact &&
               [0, 1].map((id) => (
                 <Skeleton key={id}>
-                  <Text size='sm'>
+                  <Text style={{ display: 'flex', alignItems: 'center' }} size='sm'>
                     <IconMapPin style={contactItemStyle} />
                     Contact information here
                   </Text>
