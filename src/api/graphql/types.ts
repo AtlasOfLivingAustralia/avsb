@@ -103,4 +103,63 @@ interface EventSearchResult {
   _meta: JSON;
 }
 
-export type { DistinctTaxon, EventSearchResult };
+interface SeedBankAccession {
+  eventID: string;
+  accessionNumber: string | null;
+  seedPerGram: number | null;
+  formInStorage: string | null;
+  sampleWeight: number | null;
+  sampleSize: number | null;
+  purityDebris: number | null;
+  purity: number | null;
+  dateCollected: string | null;
+  dateInStorage: string | null;
+  storageTemp: number | null;
+  relativeHumidity: number | null;
+  publicationDOI: string | null;
+  preStorageTreatmentNotesHistory: string | null;
+  primaryStorageSeedBank: string | null;
+  cultivated: string | null;
+  primaryCollector: string | null;
+  plantForm: string | null;
+  duplicatesReplicates: string | null;
+  collectionPermitNumber: string | null;
+  thousandSeedWeight: number | null;
+  numberPlantsSampled: string | null;
+  storageBehaviour: string | null;
+  embryoType: string | null;
+  dormancyClass: string | null;
+}
+
+interface SeedBankTrial {
+  eventID: string;
+  testDateStarted: string | null;
+  testLengthInDays: string | null;
+  collectionFillRate: string | null;
+  numberGerminated: number | null;
+  germinationRate: number | null;
+  adjustedGermination: number | null;
+  viability: number | null;
+  numberFull: number | null;
+  numberEmpty: number | null;
+  numberTested: number | null;
+  preTestProcessingNotes: string | null;
+}
+
+interface SeedBankTreatment {
+  eventID: string;
+  pretreatment: string | null;
+  mediaSubstrate: string | null;
+  nightTemp: number | null;
+  dayTemp: number | null;
+  darkHours: number | null;
+  lightHours: number | null;
+}
+
+export type {
+  DistinctTaxon,
+  EventSearchResult,
+  SeedBankAccession,
+  SeedBankTrial,
+  SeedBankTreatment,
+};

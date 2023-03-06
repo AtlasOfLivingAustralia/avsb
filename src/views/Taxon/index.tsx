@@ -69,7 +69,7 @@ function Taxon() {
           </Menu>
         </Group>
       </Container>
-      <Tabs variant='outline' mt='md' mx={theme.spacing.md * -1} radius='sm' value={currentRoute}>
+      <Tabs variant='outline' mt='md' radius='sm' value={currentRoute}>
         <Tabs.List>
           <Group
             px='md'
