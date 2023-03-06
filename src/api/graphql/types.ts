@@ -156,10 +156,33 @@ interface SeedBankTreatment {
   lightHours: number | null;
 }
 
+interface Contact {
+  individualName?: [
+    {
+      givenName?: [string];
+      surName?: [string];
+    },
+  ];
+  positionName?: [string];
+  electronicMailAddress?: [string];
+  organizationName?: [string];
+  phone?: [string];
+  address?: [
+    {
+      administrativeArea?: [string];
+      city?: [string];
+      country?: [string];
+      deliveryPoint?: [string];
+      postalCode?: [string];
+    },
+  ];
+}
+
 export type {
   DistinctTaxon,
   EventSearchResult,
   SeedBankAccession,
   SeedBankTrial,
   SeedBankTreatment,
+  Contact,
 };

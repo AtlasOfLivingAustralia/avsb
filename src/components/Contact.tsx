@@ -2,8 +2,18 @@ import { PropsWithChildren, ReactElement } from 'react';
 import { Anchor, Avatar, Badge, Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
 import { IconMail, IconPhone, IconMapPin } from '@tabler/icons';
 import { useGQLQuery } from '#/api';
+import { Contact as ContactType } from '#/api/graphql/types';
 import queries from '#/api/queries';
 
+interface ContactResult {
+  dataset: { value: { contact: [ContactType] } };
+}
+
+interface DatasetQuery {
+  data?: { eventSearch: { documents: { results: [ContactResult] } } };
+}
+
+// Helper function to get the initials of an organisation string
 const getOrgInitials = (org: string) =>
   org
     .split(' ')
@@ -31,8 +41,8 @@ interface ContactProps {
 
 function Contact({ dataResource }: ContactProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: dataRaw } = useGQLQuery<any>(queries.QUERY_DATASET, { key: dataResource });
-  const contact = dataRaw?.data?.eventSearch?.documents?.results?.[0]?.dataset?.value?.contact?.[0];
+  const { data: dataRaw } = useGQLQuery<DatasetQuery>(queries.QUERY_DATASET, { key: dataResource });
+  const contact = dataRaw?.data?.eventSearch.documents.results[0]?.dataset?.value?.contact?.[0];
 
   return (
     <Paper withBorder p='md'>
@@ -40,9 +50,9 @@ function Contact({ dataResource }: ContactProps) {
         <Skeleton height={55} circle visible={!contact}>
           <Avatar size={55} radius='xl'>
             {contact?.individualName
-              ? `${contact?.individualName?.[0].givenName[0].charAt(
+              ? `${contact.individualName[0].givenName?.[0].charAt(
                   0,
-                )}${contact?.individualName?.[0].surName[0].charAt(0)}`
+                )}${contact.individualName[0].surName?.[0].charAt(0)}`
               : getOrgInitials(contact?.organizationName?.[0] || '')}
           </Avatar>
         </Skeleton>
@@ -51,8 +61,8 @@ function Contact({ dataResource }: ContactProps) {
             <Group spacing='xs'>
               <Text weight='bold' size='lg'>
                 {(contact?.individualName
-                  ? `${contact?.individualName?.[0].givenName[0]} ${contact?.individualName?.[0].surName[0]}`
-                  : contact?.organizationName[0]) || 'Name Here'}
+                  ? `${contact?.individualName?.[0]?.givenName?.[0]} ${contact.individualName[0].surName?.[0]}`
+                  : contact?.organizationName?.[0]) || 'Name Here'}
               </Text>
               {contact?.positionName && <Badge radius='sm'>{contact.positionName[0]}</Badge>}
             </Group>
@@ -60,7 +70,7 @@ function Contact({ dataResource }: ContactProps) {
           <Stack spacing={6}>
             {contact?.phone && (
               <ContactItem icon={<IconPhone />}>
-                <Anchor size='sm' href={`tel:${contact?.phone[0].replace(' ', '')}`}>
+                <Anchor size='sm' href={`tel:${contact.phone[0].replace(' ', '')}`}>
                   {contact?.phone[0]}
                 </Anchor>
               </ContactItem>
@@ -69,7 +79,7 @@ function Contact({ dataResource }: ContactProps) {
               <ContactItem icon={<IconMail />}>
                 <Anchor
                   size='sm'
-                  href={`mailto:${contact?.electronicMailAddress[0].replace(' ', '')}`}
+                  href={`mailto:${contact.electronicMailAddress[0].replace(' ', '')}`}
                 >
                   {contact?.electronicMailAddress[0]}
                 </Anchor>
@@ -79,10 +89,10 @@ function Contact({ dataResource }: ContactProps) {
               <ContactItem icon={<IconMapPin />}>
                 <Text size='sm'>
                   {[
-                    contact?.address[0].deliveryPoint[0],
-                    contact?.address[0].city[0],
-                    contact?.address[0].administrativeArea[0],
-                    contact?.address[0].postalCode[0],
+                    contact.address[0].deliveryPoint?.[0],
+                    contact.address[0].city?.[0],
+                    contact.address[0].administrativeArea?.[0],
+                    contact.address[0].postalCode?.[0],
                   ]
                     .filter((part) => part !== null)
                     .join(', ')}
@@ -91,8 +101,8 @@ function Contact({ dataResource }: ContactProps) {
             )}
             {!contact &&
               [0, 1].map((id) => (
-                <Skeleton>
-                  <ContactItem key={id} icon={<IconMapPin />}>
+                <Skeleton key={id}>
+                  <ContactItem icon={<IconMapPin />}>
                     <Text size='sm'>Contact information here</Text>
                   </ContactItem>
                 </Skeleton>
