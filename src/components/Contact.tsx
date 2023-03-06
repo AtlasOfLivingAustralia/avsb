@@ -57,41 +57,47 @@ function Contact({ dataResource }: ContactProps) {
               {contact?.positionName && <Badge radius='sm'>{contact.positionName[0]}</Badge>}
             </Group>
           </Skeleton>
-          <Skeleton visible={!contact}>
-            <Stack spacing={6}>
-              {contact?.phone && (
-                <ContactItem icon={<IconPhone />}>
-                  <Anchor size='sm' href={`tel:${contact?.phone[0].replace(' ', '')}`}>
-                    {contact?.phone[0]}
-                  </Anchor>
-                </ContactItem>
-              )}
-              {contact?.electronicMailAddress && (
-                <ContactItem icon={<IconMail />}>
-                  <Anchor
-                    size='sm'
-                    href={`mailto:${contact?.electronicMailAddress[0].replace(' ', '')}`}
-                  >
-                    {contact?.electronicMailAddress[0]}
-                  </Anchor>
-                </ContactItem>
-              )}
-              {contact?.address && (
-                <ContactItem icon={<IconMapPin />}>
-                  <Text size='sm'>
-                    {[
-                      contact?.address[0].deliveryPoint[0],
-                      contact?.address[0].city[0],
-                      contact?.address[0].administrativeArea[0],
-                      contact?.address[0].postalCode[0],
-                    ]
-                      .filter((part) => part !== null)
-                      .join(', ')}
-                  </Text>
-                </ContactItem>
-              )}
-            </Stack>
-          </Skeleton>
+          <Stack spacing={6}>
+            {contact?.phone && (
+              <ContactItem icon={<IconPhone />}>
+                <Anchor size='sm' href={`tel:${contact?.phone[0].replace(' ', '')}`}>
+                  {contact?.phone[0]}
+                </Anchor>
+              </ContactItem>
+            )}
+            {contact?.electronicMailAddress && (
+              <ContactItem icon={<IconMail />}>
+                <Anchor
+                  size='sm'
+                  href={`mailto:${contact?.electronicMailAddress[0].replace(' ', '')}`}
+                >
+                  {contact?.electronicMailAddress[0]}
+                </Anchor>
+              </ContactItem>
+            )}
+            {contact?.address && (
+              <ContactItem icon={<IconMapPin />}>
+                <Text size='sm'>
+                  {[
+                    contact?.address[0].deliveryPoint[0],
+                    contact?.address[0].city[0],
+                    contact?.address[0].administrativeArea[0],
+                    contact?.address[0].postalCode[0],
+                  ]
+                    .filter((part) => part !== null)
+                    .join(', ')}
+                </Text>
+              </ContactItem>
+            )}
+            {!contact &&
+              [0, 1].map((id) => (
+                <Skeleton>
+                  <ContactItem key={id} icon={<IconMapPin />}>
+                    <Text size='sm'>Contact information here</Text>
+                  </ContactItem>
+                </Skeleton>
+              ))}
+          </Stack>
         </Stack>
       </Group>
     </Paper>
