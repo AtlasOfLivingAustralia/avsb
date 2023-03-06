@@ -13,7 +13,7 @@ import { APIProvider } from './api';
 function Providers({ children }: PropsWithChildren) {
   const [colourScheme, setColourScheme] = useLocalStorage<ColorScheme>({
     key: 'app-color-scheme',
-    defaultValue: 'light',
+    defaultValue: 'dark',
     getInitialValueInEffect: true,
   });
 

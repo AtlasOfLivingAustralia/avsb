@@ -3,7 +3,6 @@ import {
   Text,
   Container,
   Tabs,
-  useMantineTheme,
   Box,
   Image,
   Group,
@@ -21,7 +20,6 @@ function Taxon() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const data = useLoaderData() as TaxonType;
-  const theme = useMantineTheme();
   const currentRoute = pathname.substring(pathname.lastIndexOf('/') + 1);
 
   return (

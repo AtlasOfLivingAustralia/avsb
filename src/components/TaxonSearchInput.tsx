@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useEffect, useState, forwardRef, ComponentPropsWithoutRef } from 'react';
-import { Select, SelectItem, SelectProps, Stack, Text } from '@mantine/core';
+import { Loader, Select, SelectItem, SelectProps, Stack, Text } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons';
 import { useAPI } from '#/api';
@@ -96,6 +96,7 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
       {...props}
       searchable
       clearable
+      rightSection={loading ? <Loader size='xs' /> : null}
       icon={<IconSearch size={18} />}
       placeholder={
         customTypes.length > 0
@@ -109,8 +110,10 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
         (query.length && !loading) > 0 ? `No taxa found for '${query}'` : 'Enter search query above'
       }
       onSearchChange={(newValue) => {
-        setLoading(true);
-        setSearch(newValue);
+        if (search !== newValue) {
+          if (newValue !== '') setLoading(true);
+          setSearch(newValue);
+        }
       }}
       data={[
         ...data,

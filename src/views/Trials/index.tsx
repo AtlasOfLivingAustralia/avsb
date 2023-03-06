@@ -76,7 +76,7 @@ function Trials() {
       </Grid.Col>
       <Grid.Col span={4}>
         {selected && (
-          <Accordion variant='separated' defaultValue='summary'>
+          <Accordion defaultValue='summary'>
             <Accordion.Item value='summary'>
               <Accordion.Control>Trial Summary</Accordion.Control>
               <Accordion.Panel>
