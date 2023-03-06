@@ -1,7 +1,8 @@
 import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
 import { ErrorBoundary } from '#/components';
 import { performGQLQuery, gqlQueries } from './api';
-import { DashboardView, HomeView, TaxonView, TrialsView, DebugView } from './views';
+import { DashboardView, HomeView, TaxonView, TrialsView, DebugView, AccessionsView } from './views';
+import queries from './api/queries';
 
 const routes = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const routes = createBrowserRouter([
           ).json(),
         children: [
           {
+            path: 'accessions',
+            element: <AccessionsView />,
+          },
+          {
             path: 'trials',
             element: <TrialsView />,
             loader: async ({ params }) => {
@@ -31,11 +36,7 @@ const routes = createBrowserRouter([
                 predicate: {
                   type: 'and',
                   predicates: [
-                    {
-                      type: 'in',
-                      key: 'datasetKey',
-                      values: ['dr18527'],
-                    },
+                    queries.PRED_DATA_RESOURCE,
                     {
                       type: 'in',
                       key: 'eventTypeHierarchy',
@@ -61,11 +62,11 @@ const routes = createBrowserRouter([
           },
           {
             path: '*',
-            loader: () => redirect('trials'),
+            loader: () => redirect('accessions'),
           },
           {
             path: '/taxon/:guid/',
-            loader: () => redirect('trials'),
+            loader: () => redirect('accessions'),
           },
         ],
       },
