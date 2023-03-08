@@ -78,7 +78,7 @@ function Taxon() {
               marginRight: 'auto',
             }}
           >
-            {['Accessions', 'Trials', 'More'].map((tabKey) => (
+            {['Accessions', 'Trials', 'Media', 'More'].map((tabKey) => (
               <Tabs.Tab
                 key={tabKey}
                 value={tabKey.toLowerCase()}

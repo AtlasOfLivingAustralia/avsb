@@ -178,6 +178,34 @@ interface Contact {
   ];
 }
 
+interface MediaItem {
+  identifier: string;
+  type: string | null;
+  subtypeLiteral: string | null;
+  title: string | null;
+  metadataDate: string | null;
+  metadataLanguage: string | null;
+  metadataLanguageLiteral: string | null;
+  providerManagedID: string | null;
+  rights: string | null;
+  owner: string | null;
+  webStatement: string | null;
+  credit: string | null;
+  creator: string | null;
+  providerLiteral: string | null;
+  description: string | null;
+  tag: string | null;
+  createDate: string | null;
+  IDofContainingCollection: string | null;
+  accessURI: string | null;
+  accessOriginalURI: string | null;
+  format: string | null;
+  hashFunction: string | null;
+  hashValue: string | null;
+  pixelXDimension: number;
+  pixelYDimension: number;
+}
+
 export type {
   DistinctTaxon,
   EventSearchResult,
@@ -185,4 +213,5 @@ export type {
   SeedBankTrial,
   SeedBankTreatment,
   Contact,
+  MediaItem,
 };

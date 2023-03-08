@@ -1,7 +1,15 @@
 import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
 import { ErrorBoundary } from '#/components';
 import { performGQLQuery, gqlQueries } from './api';
-import { DashboardView, HomeView, TaxonView, TrialsView, DebugView, AccessionsView } from './views';
+import {
+  DashboardView,
+  HomeView,
+  TaxonView,
+  TrialsView,
+  MediaView,
+  DebugView,
+  AccessionsView,
+} from './views';
 import queries from './api/queries';
 
 const routes = createBrowserRouter([
@@ -27,6 +35,19 @@ const routes = createBrowserRouter([
           {
             path: 'accessions',
             element: <AccessionsView />,
+          },
+          {
+            path: 'media',
+            element: <MediaView />,
+            loader: async ({ params }) => {
+              const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
+                key: params.guid,
+                size: 20,
+                from: 0,
+              });
+
+              return data.taxonMedia;
+            },
           },
           {
             path: 'trials',

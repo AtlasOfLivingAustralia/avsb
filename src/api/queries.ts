@@ -77,6 +77,26 @@ query dataset($key: JSON!){
 }
 `;
 
+const QUERY_TAXON_MEDIA = `
+query image($key: String, $size: Int, $from: Int) {
+  taxonMedia(key: $key, size: $size, from: $from) {
+    identifier
+    type
+    subtypeLiteral
+    title
+    rights
+    credit
+    providerLiteral
+    description
+    accessURI
+    accessOriginalURI
+    format
+    pixelXDimension
+    pixelYDimension
+  }
+}
+`;
+
 const PRED_DATA_RESOURCE = {
   type: 'in',
   key: 'datasetKey',
@@ -90,6 +110,7 @@ export default {
   QUERY_EVENT_TRIALS,
   QUERY_EVENT_MAP,
   QUERY_EVENT_MAP_POINT,
+  QUERY_TAXON_MEDIA,
   QUERY_DATASET,
   PRED_DATA_RESOURCE,
 };
