@@ -29,7 +29,6 @@ function Dashboard() {
 
   // If the 'code' & 'state' parameter are in the URL, it means that
   // we've just been redirected from Cognito, and we're retrieving tokens
-  console.log(auth, auth.isLoading);
   if (auth.isLoading && hasAuthParams()) {
     return (
       <Center style={{ width: '100vw', height: '100vh' }}>

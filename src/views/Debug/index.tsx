@@ -6,13 +6,14 @@ import { Contact, TaxonSearchInput } from '#/components';
 
 // Debug views
 import DebugGQL from './components/DebugGQL';
+import DebugMap from './components/DebugMap';
 
 function Debug() {
   const [taxonSearch, setTaxonSearch] = useState<string | null>(null);
   const navigate = useNavigate();
   // const api = useAPI();
   return (
-    <Accordion defaultValue='gql'>
+    <Accordion defaultValue='map'>
       <Accordion.Item value='gql'>
         <Accordion.Control>GraphQL Querying</Accordion.Control>
         <Accordion.Panel>
@@ -47,11 +48,17 @@ function Debug() {
           </Button>
         </Accordion.Panel>
       </Accordion.Item>
-      <Accordion.Item value='api'>
+      <Accordion.Item value='components'>
         <Accordion.Control>Components</Accordion.Control>
         <Accordion.Panel>
           <Contact dataResource='dr18699' />
           <Contact dataResource='dr18697' />
+        </Accordion.Panel>
+      </Accordion.Item>
+      <Accordion.Item value='map'>
+        <Accordion.Control>Map</Accordion.Control>
+        <Accordion.Panel>
+          <DebugMap />
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>

@@ -58,7 +58,6 @@ function Contact({ dataResource, ...rest }: ContactProps) {
   const { data: response } = useGQLQuery<DatasetQuery>(queries.QUERY_DATASET, {
     key: dataResource,
   });
-  console.log(response);
   const dataset = response?.data?.eventSearch.documents.results[0]?.dataset;
   const contact = dataset?.value?.contact?.[0];
 

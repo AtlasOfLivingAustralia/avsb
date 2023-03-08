@@ -32,6 +32,38 @@ query list($predicate: Predicate, $limit: Int){
 }
 `;
 
+const QUERY_EVENT_MAP = `
+query map($predicate: Predicate){
+  eventSearch(predicate: $predicate) {
+    _meta
+    documents {
+      total
+    }
+    _tileServerToken    
+  }
+}
+`;
+
+const QUERY_EVENT_MAP_POINT = `
+query point($predicate: Predicate){
+  eventSearch(predicate: $predicate) {
+    documents {
+      total
+      results {
+        datasetTitle
+        datasetKey
+        eventID
+        eventType {
+          concept
+        }
+        measurementOrFactTypes
+        year
+      }
+    }
+  }
+}
+`;
+
 const QUERY_DATASET = `
 query dataset($key: JSON!){
   eventSearch: eventSearch(predicate: {type: equals, key: "datasetKey", value: $key}) {
@@ -53,4 +85,11 @@ const PRED_DATA_RESOURCE = {
     : [],
 };
 
-export default { QUERY_EVENT, QUERY_EVENT_TRIALS, QUERY_DATASET, PRED_DATA_RESOURCE };
+export default {
+  QUERY_EVENT,
+  QUERY_EVENT_TRIALS,
+  QUERY_EVENT_MAP,
+  QUERY_EVENT_MAP_POINT,
+  QUERY_DATASET,
+  PRED_DATA_RESOURCE,
+};
