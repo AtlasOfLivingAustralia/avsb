@@ -65,7 +65,8 @@ function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
                       <Text>Testing</Text>
                     </Skeleton>
                   ))}
-                {results && results.map((result) => <Text>{result.eventID}</Text>)}
+                {results &&
+                  results.map((result) => <Text key={result.eventID}>{result.eventID}</Text>)}
               </Stack>
             </ScrollArea>
           </Paper>

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useRef, useState } from 'react';
-import { useMantineTheme } from '@mantine/core';
+import { ColorScheme, useMantineTheme } from '@mantine/core';
 import mapboxgl from 'mapbox-gl';
 
 // Project-imports
@@ -28,6 +28,7 @@ function Map({ width, height, token }: MapProps) {
   const map = useRef<mapboxgl.Map | null>(null);
 
   // Map state & data
+  const [styleLoaded, setStyleLoaded] = useState<boolean>(false);
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
   const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery(
     queries.QUERY_EVENT_MAP_POINT,
@@ -37,6 +38,7 @@ function Map({ width, height, token }: MapProps) {
 
   // Theme variables
   const theme = useMantineTheme();
+  const [currentScheme, setCurrentScheme] = useState<ColorScheme>(theme.colorScheme);
   const borderRadius = theme.radius.lg;
 
   // Helper function to add the events layer to the map
@@ -87,19 +89,30 @@ function Map({ width, height, token }: MapProps) {
 
   // Effect hook to respond to query changes
   useEffect(() => {
-    if (token) updateLayer();
-  }, [token]);
+    if (token && styleLoaded) updateLayer();
+  }, [token, styleLoaded]);
+
+  useEffect(() => {
+    if (currentScheme !== theme.colorScheme && styleLoaded) {
+      setCurrentScheme(theme.colorScheme);
+      setStyleLoaded(false);
+      map.current?.setStyle(
+        `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
+      );
+    }
+  }, [theme.colorScheme, styleLoaded]);
 
   // Add the map to the DOM when the component loads
   useEffect(() => {
     if (map.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: `mapbox://styles/mapbox/dark-v11`,
+      style: `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
       center: [137.591797, -26.000092],
       zoom: 3,
     });
     map.current.on('render', () => map.current?.resize());
+    map.current.on('style.load', () => setStyleLoaded(true));
   }, []);
 
   return (
