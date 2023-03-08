@@ -103,7 +103,7 @@ function Map({ width, height, token }: MapProps) {
   }, []);
 
   return (
-    <div style={{ width, height, borderRadius, boxShadow: theme.shadows.md }}>
+    <div style={{ position: 'relative', width, height, borderRadius, boxShadow: theme.shadows.md }}>
       <ItemList
         onClose={() => setSelectedPoint(null)}
         events={selectedEvents}
