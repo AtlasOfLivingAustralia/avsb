@@ -35,6 +35,23 @@ const routes = createBrowserRouter([
           {
             path: 'accessions',
             element: <AccessionsView />,
+            loader: async ({ params }) => {
+              const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_MAP_WITH_DATA, {
+                predicate: {
+                  type: 'and',
+                  predicates: [
+                    queries.PRED_DATA_RESOURCE,
+                    {
+                      type: 'in',
+                      key: 'taxonKey',
+                      values: [params.guid],
+                    },
+                  ],
+                },
+              });
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              return (data as any)?.eventSearch?._tileServerToken;
+            },
           },
           {
             path: 'media',

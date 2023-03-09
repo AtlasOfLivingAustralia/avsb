@@ -32,6 +32,39 @@ query list($predicate: Predicate, $limit: Int){
 }
 `;
 
+const QUERY_EVENT_MAP_WITH_DATA = `
+query map($predicate: Predicate){
+  eventSearch(predicate: $predicate) {
+    _meta
+    documents {
+      total
+      results {
+        eventID
+        parentEventID
+        locality
+        year
+        month
+        day
+        datasetTitle
+        country
+        stateProvince
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementUnit
+          measurementValue
+          measurementMethod
+          measurementRemarks
+          measurementAccuracy
+          measurementDeterminedDate
+        }
+      }
+    }
+    _tileServerToken    
+  }
+}
+`;
+
 const QUERY_EVENT_MAP = `
 query map($predicate: Predicate){
   eventSearch(predicate: $predicate) {
@@ -114,6 +147,7 @@ export default {
   QUERY_EVENT,
   QUERY_EVENT_TRIALS,
   QUERY_EVENT_MAP,
+  QUERY_EVENT_MAP_WITH_DATA,
   QUERY_EVENT_MAP_POINT,
   QUERY_TAXON_MEDIA,
   QUERY_DATASET,

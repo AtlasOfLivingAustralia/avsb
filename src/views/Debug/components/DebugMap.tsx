@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-underscore-dangle */
 import { useGQLQuery } from '#/api';
 import { EventMap } from '#/components';
 import queries from '#/api/queries';

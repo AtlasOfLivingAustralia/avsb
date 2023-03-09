@@ -90,8 +90,10 @@ function Media() {
             <Grid.Col key={item.identifier} xs={4} sm={4} md={4} lg={3} xl={3}>
               <MediaImage
                 onClick={() => {
-                  setSelectedLoaded(false);
-                  setSelectedMedia(item);
+                  if (item.identifier !== selectedMedia?.identifier) {
+                    setSelectedLoaded(false);
+                    setSelectedMedia(item);
+                  }
                 }}
                 selected={selectedMedia?.identifier === item.identifier}
                 width='100%'

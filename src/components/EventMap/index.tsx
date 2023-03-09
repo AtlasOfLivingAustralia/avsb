@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-underscore-dangle */
 import { useEffect, useRef, useState } from 'react';
 import { ColorScheme, useMantineTheme } from '@mantine/core';
 import mapboxgl from 'mapbox-gl';
@@ -20,9 +19,10 @@ interface MapProps {
   width?: string | number;
   height?: string | number;
   token?: string;
+  itemListHeight?: string | number;
 }
 
-function Map({ width, height, token }: MapProps) {
+function Map({ width, height, token, itemListHeight }: MapProps) {
   // Map refs
   const mapContainer = useRef<any | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -81,6 +81,7 @@ function Map({ width, height, token }: MapProps) {
               key: 'scoordinates',
               value: getWktFromGeohash(selectedPoint.geohash),
             },
+            queries.PRED_DATA_RESOURCE,
           ],
         },
       });
@@ -109,7 +110,7 @@ function Map({ width, height, token }: MapProps) {
       container: mapContainer.current,
       style: `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
       center: [137.591797, -26.000092],
-      zoom: 3,
+      zoom: 2.5,
     });
     map.current.on('render', () => map.current?.resize());
     map.current.on('style.load', () => setStyleLoaded(true));
@@ -121,6 +122,7 @@ function Map({ width, height, token }: MapProps) {
         onClose={() => setSelectedPoint(null)}
         events={selectedEvents}
         open={Boolean(selectedPoint)}
+        contentHeight={itemListHeight}
       />
       <div ref={mapContainer} style={{ width, height, borderRadius }} />
     </div>
