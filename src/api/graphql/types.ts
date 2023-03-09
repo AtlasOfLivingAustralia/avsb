@@ -208,6 +208,7 @@ interface MediaItem {
 
 export type {
   DistinctTaxon,
+  Event,
   EventSearchResult,
   SeedBankAccession,
   SeedBankTrial,

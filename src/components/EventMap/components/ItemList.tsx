@@ -12,6 +12,7 @@ import {
 } from '@mantine/core';
 
 import { IconX } from '@tabler/icons';
+import { Event } from '#/api/graphql/types';
 
 const slideX = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -66,7 +67,9 @@ function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
                     </Skeleton>
                   ))}
                 {results &&
-                  results.map((result) => <Text key={result.eventID}>{result.eventID}</Text>)}
+                  results.map((result: Event) => (
+                    <Text key={result.eventID}>{result.eventID}</Text>
+                  ))}
               </Stack>
             </ScrollArea>
           </Paper>

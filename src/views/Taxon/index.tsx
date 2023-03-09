@@ -89,7 +89,7 @@ function Taxon() {
             ))}
           </Group>
         </Tabs.List>
-        <ScrollArea h='calc(100vh - 266px)'>
+        <ScrollArea h='calc(100vh - 250px)'>
           <Container size='xl' py='xl'>
             <Outlet />
           </Container>

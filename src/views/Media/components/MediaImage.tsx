@@ -4,8 +4,8 @@ import { IconCheck } from '@tabler/icons';
 interface MediaImageProps {
   onClick?: () => void;
   selected?: boolean;
-  width: number;
-  height: number;
+  width: string | number;
+  height: string | number;
   src: string | null;
 }
 
@@ -17,10 +17,11 @@ function MediaImage({ onClick, selected, width, height, src }: MediaImageProps) 
       }}
       pos='relative'
       sx={(theme) => ({
-        transform: selected ? 'scale(1)' : 'scale(0.85)',
-        borderRadius: theme.radius.lg,
-        opacity: selected ? 1 : 0.5,
+        transform: selected ? 'scale(1)' : 'scale(0.9)',
+        borderRadius: 22,
+        opacity: selected ? 1 : 0.7,
         transition: 'all cubic-bezier(0, 0, 0, 1) 0.2s',
+        border: `6px solid ${selected ? theme.colors[theme.primaryColor][6] : 'transparent'}`,
         '&:hover': {
           opacity: 1,
           cursor: 'pointer',

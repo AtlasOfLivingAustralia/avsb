@@ -85,9 +85,14 @@ query image($key: String, $size: Int, $from: Int) {
     subtypeLiteral
     title
     rights
+    owner
+    webStatement
     credit
+    creator
     providerLiteral
     description
+    tag
+    createDate
     accessURI
     accessOriginalURI
     format
