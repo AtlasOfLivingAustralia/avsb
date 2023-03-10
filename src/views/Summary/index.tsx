@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useRouteLoaderData } from 'react-router-dom';
 import { Grid } from '@mantine/core';
 
 // Project imports
@@ -10,10 +10,11 @@ interface EventSearchResponse {
   eventSearch: EventSearchResult;
 }
 
-function Accessions() {
+function Summary() {
   const { eventSearch } = useLoaderData() as EventSearchResponse;
+  const taxon = useRouteLoaderData('taxon');
   const [records] = useState<Event[]>(eventSearch.documents.results);
-  console.log(records);
+  console.log(taxon, records);
   return (
     <Grid>
       <Grid.Col sm={8}>Test</Grid.Col>
@@ -29,4 +30,4 @@ function Accessions() {
   );
 }
 
-export default Accessions;
+export default Summary;

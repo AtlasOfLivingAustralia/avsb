@@ -33,8 +33,8 @@ query list($predicate: Predicate, $limit: Int){
 `;
 
 const QUERY_EVENT_MAP_WITH_DATA = `
-query map($predicate: Predicate){
-  eventSearch(predicate: $predicate) {
+query map($predicate: Predicate, $size: Int){
+  eventSearch(predicate: $predicate, size: $size) {
     _meta
     documents {
       total
@@ -48,16 +48,6 @@ query map($predicate: Predicate){
         datasetTitle
         country
         stateProvince
-        measurementOrFacts {
-          measurementID
-          measurementType
-          measurementUnit
-          measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
-        }
       }
     }
     _tileServerToken    

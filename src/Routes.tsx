@@ -9,6 +9,7 @@ import {
   MediaView,
   DebugView,
   AccessionsView,
+  SummaryView,
 } from './views';
 import queries from './api/queries';
 
@@ -23,6 +24,7 @@ const routes = createBrowserRouter([
         element: <HomeView />,
       },
       {
+        id: 'taxon',
         path: 'taxon/:guid',
         element: <TaxonView />,
         loader: async ({ params }) =>
@@ -32,6 +34,27 @@ const routes = createBrowserRouter([
             )
           ).json(),
         children: [
+          {
+            path: 'summary',
+            element: <SummaryView />,
+            loader: async ({ params }) => {
+              const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_MAP_WITH_DATA, {
+                predicate: {
+                  type: 'and',
+                  predicates: [
+                    queries.PRED_DATA_RESOURCE,
+                    {
+                      type: 'in',
+                      key: 'taxonKey',
+                      values: [params.guid],
+                    },
+                  ],
+                },
+                size: 50,
+              });
+              return data;
+            },
+          },
           {
             path: 'accessions',
             element: <AccessionsView />,
@@ -48,9 +71,9 @@ const routes = createBrowserRouter([
                     },
                   ],
                 },
+                size: 50,
               });
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              return (data as any)?.eventSearch?._tileServerToken;
+              return data;
             },
           },
           {
@@ -100,11 +123,11 @@ const routes = createBrowserRouter([
           },
           {
             path: '*',
-            loader: () => redirect('accessions'),
+            loader: () => redirect('summary'),
           },
           {
             path: '/taxon/:guid/',
-            loader: () => redirect('accessions'),
+            loader: () => redirect('summary'),
           },
         ],
       },

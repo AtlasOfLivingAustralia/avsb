@@ -99,8 +99,8 @@ interface EventSearchResult {
   // temporal: EventTemporal
   // stats: EventStats
   // _predicate: JSON
-  // _tileServerToken: String
-  _meta: JSON;
+  _tileServerToken?: string;
+  _meta?: JSON;
 }
 
 interface SeedBankAccession {
