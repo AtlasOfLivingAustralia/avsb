@@ -39,7 +39,7 @@ function Map({ width, height, token, itemListHeight }: MapProps) {
   // Theme variables
   const theme = useMantineTheme();
   const [currentScheme, setCurrentScheme] = useState<ColorScheme>(theme.colorScheme);
-  const borderRadius = theme.radius.lg;
+  const borderRadius = theme.radius.md;
 
   // Helper function to add the events layer to the map
   const addLayer = () => {

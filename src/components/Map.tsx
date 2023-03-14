@@ -1,37 +1,55 @@
-import { useEffect, useRef } from 'react';
-import { useMantineTheme } from '@mantine/core';
-import MapboxMap, { Marker, MapRef } from 'react-map-gl';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useRef, useState } from 'react';
+import { ColorScheme, useMantineTheme } from '@mantine/core';
+import mapboxgl from 'mapbox-gl';
 
 interface MapProps {
   width?: string | number;
   height?: string | number;
+  center: mapboxgl.LngLatLike;
 }
 
-function Map({ width, height }: MapProps) {
-  const mapRef = useRef<MapRef | null>(null);
+function Map({ width, height, center }: MapProps) {
+  // Map refs
+  const mapContainer = useRef<any | null>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
+
+  // Map state & data
+  const [styleLoaded, setStyleLoaded] = useState<boolean>(false);
+
+  // Theme variables
   const theme = useMantineTheme();
-  const borderRadius = theme.radius.lg;
+  const [currentScheme, setCurrentScheme] = useState<ColorScheme>(theme.colorScheme);
+  const borderRadius = theme.radius.md;
 
   useEffect(() => {
-    mapRef.current?.resize();
-  });
+    if (currentScheme !== theme.colorScheme && styleLoaded) {
+      setCurrentScheme(theme.colorScheme);
+      setStyleLoaded(false);
+      map.current?.setStyle(
+        `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
+      );
+    }
+  }, [theme.colorScheme, styleLoaded]);
+
+  // Add the map to the DOM when the component loads
+  useEffect(() => {
+    if (map.current) return;
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
+      center,
+      zoom: 6,
+    });
+    new mapboxgl.Marker().setLngLat(center).addTo(map.current);
+    map.current.on('render', () => map.current?.resize());
+    map.current.on('style.load', () => setStyleLoaded(true));
+  }, []);
 
   return (
     <div style={{ width, height, borderRadius, boxShadow: theme.shadows.md }}>
-      <MapboxMap
-        ref={mapRef}
-        onRender={(event) => event.target.resize()}
-        initialViewState={{
-          latitude: 37.8,
-          longitude: -122.4,
-          zoom: 14,
-        }}
-        style={{ width, height, borderRadius }}
-        mapStyle={`mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light-v9' : 'dark-v9'}`}
-        mapboxAccessToken={import.meta.env.VITE_APP_MAPBOX_TOKEN}
-      >
-        <Marker longitude={-122.4} latitude={37.8} color='red' />
-      </MapboxMap>
+      <div ref={mapContainer} style={{ width, height, borderRadius }} />
     </div>
   );
 }

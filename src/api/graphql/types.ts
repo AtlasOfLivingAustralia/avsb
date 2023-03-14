@@ -36,51 +36,109 @@ interface Measurement {
   measurementRemarks: string | null;
 }
 
+interface SeedBankAccession {
+  eventID?: string;
+  accessionNumber?: string | null;
+  seedPerGram?: number | null;
+  formInStorage?: string | null;
+  sampleWeight?: number | null;
+  sampleSize?: number | null;
+  purityDebris?: number | null;
+  purity?: number | null;
+  dateCollected?: string | null;
+  dateInStorage?: string | null;
+  storageTemp?: number | null;
+  relativeHumidity?: number | null;
+  publicationDOI?: string | null;
+  preStorageTreatmentNotesHistory?: string | null;
+  primaryStorageSeedBank?: string | null;
+  degreeOfEstablishment?: string | null;
+  primaryCollector?: string | null;
+  plantForm?: string | null;
+  duplicatesReplicates?: string | null;
+  collectionPermitNumber?: string | null;
+  thousandSeedWeight?: number | null;
+  numberPlantsSampled?: string | null;
+  storageBehaviour?: string | null;
+  embryoType?: string | null;
+  dormancyClass?: string | null;
+}
+
+interface SeedBankTrial {
+  eventID?: string;
+  testDateStarted?: string | null;
+  testLengthInDays?: string | null;
+  collectionFillRate?: string | null;
+  numberGerminated?: number | null;
+  germinateRate?: number | null;
+  adjustedGermination?: number | null;
+  viability?: number | null;
+  numberFull?: number | null;
+  numberEmpty?: number | null;
+  numberTested?: number | null;
+  preTestProcessingNotes?: string | null;
+}
+
+interface SeedBankTreatment {
+  eventID?: string;
+  pretreatment?: string | null;
+  mediaSubstrate?: string | null;
+  nightTemp?: number | null;
+  dayTemp?: number | null;
+  darkHours?: number | null;
+  lightHours?: number | null;
+}
+
+type SeedBankExtension = SeedBankAccession | SeedBankTrial | SeedBankTrial;
+
 interface EventType {
   concept: string | null;
   lineage: [string];
 }
 
 interface Event {
-  eventID: string | null;
-  type: string | null;
-  eventType: EventType;
-  eventName: string | null;
-  parentEventID: string | null;
-  datasetKey: string | null;
-  locality: string | null;
-  datasetTitle: string | null;
-  samplingProtocol: [string];
-  sampleSizeUnit: string | null;
-  sampleSizeValue: number;
-  stateProvince: string | null;
-  country: string | null;
-  countryCode: string | null;
-  year: number | null;
-  month: number | null;
-  day: number | null;
-  eventDate: string | null;
-  decimalLatitude: number | null;
-  decimalLongitude: number | null;
-  occurrenceCount: number | null;
-  childEventCount: number | null;
-  coordinates: JSON;
-  formattedCoordinates: string | null;
-  measurementOrFactTypes: [string];
-  measurementOrFactCount: number | null;
-  parentEvent: Event;
-  measurementOrFacts: [Measurement];
-  eventHierarchy: [string];
-  eventHierarchyJoined: string | null;
-  eventTypeHierarchy: [string];
-  eventTypeHierarchyJoined: string | null;
-  eventHierarchyLevels: number | null;
-  locationID: string | null;
-  dataset: JSON;
-  speciesCount: number;
-  wktConvexHull: string | null;
-  temporalCoverage: TemporalCoverage;
-  distinctTaxa: [DistinctTaxon];
+  eventID?: string | null;
+  type?: string | null;
+  eventType?: EventType;
+  eventName?: string | null;
+  parentEventID?: string | null;
+  datasetKey?: string | null;
+  locality?: string | null;
+  datasetTitle?: string | null;
+  samplingProtocol?: [string];
+  sampleSizeUnit?: string | null;
+  sampleSizeValue?: number;
+  stateProvince?: string | null;
+  country?: string | null;
+  countryCode?: string | null;
+  year?: number | null;
+  month?: number | null;
+  day?: number | null;
+  eventDate?: string | null;
+  decimalLatitude?: number | null;
+  decimalLongitude?: number | null;
+  occurrenceCount?: number | null;
+  childEventCount?: number | null;
+  coordinates?: JSON;
+  formattedCoordinates?: string | null;
+  measurementOrFactTypes?: [string];
+  measurementOrFactCount?: number | null;
+  parentEvent?: Event;
+  measurementOrFacts?: [Measurement];
+  eventHierarchy?: [string];
+  eventHierarchyJoined?: string | null;
+  eventTypeHierarchy?: [string];
+  eventTypeHierarchyJoined?: string | null;
+  eventHierarchyLevels?: number | null;
+  locationID?: string | null;
+  dataset?: JSON;
+  speciesCount?: number;
+  wktConvexHull?: string | null;
+  temporalCoverage?: TemporalCoverage;
+  distinctTaxa?: [DistinctTaxon];
+  extensions?: {
+    seedbank?: SeedBankExtension;
+  };
 }
 
 interface EventDocuments {
@@ -101,59 +159,6 @@ interface EventSearchResult {
   // _predicate: JSON
   _tileServerToken?: string;
   _meta?: JSON;
-}
-
-interface SeedBankAccession {
-  eventID: string;
-  accessionNumber: string | null;
-  seedPerGram: number | null;
-  formInStorage: string | null;
-  sampleWeight: number | null;
-  sampleSize: number | null;
-  purityDebris: number | null;
-  purity: number | null;
-  dateCollected: string | null;
-  dateInStorage: string | null;
-  storageTemp: number | null;
-  relativeHumidity: number | null;
-  publicationDOI: string | null;
-  preStorageTreatmentNotesHistory: string | null;
-  primaryStorageSeedBank: string | null;
-  cultivated: string | null;
-  primaryCollector: string | null;
-  plantForm: string | null;
-  duplicatesReplicates: string | null;
-  collectionPermitNumber: string | null;
-  thousandSeedWeight: number | null;
-  numberPlantsSampled: string | null;
-  storageBehaviour: string | null;
-  embryoType: string | null;
-  dormancyClass: string | null;
-}
-
-interface SeedBankTrial {
-  eventID: string;
-  testDateStarted: string | null;
-  testLengthInDays: string | null;
-  collectionFillRate: string | null;
-  numberGerminated: number | null;
-  germinationRate: number | null;
-  adjustedGermination: number | null;
-  viability: number | null;
-  numberFull: number | null;
-  numberEmpty: number | null;
-  numberTested: number | null;
-  preTestProcessingNotes: string | null;
-}
-
-interface SeedBankTreatment {
-  eventID: string;
-  pretreatment: string | null;
-  mediaSubstrate: string | null;
-  nightTemp: number | null;
-  dayTemp: number | null;
-  darkHours: number | null;
-  lightHours: number | null;
 }
 
 interface Contact {
@@ -213,6 +218,7 @@ export type {
   SeedBankAccession,
   SeedBankTrial,
   SeedBankTreatment,
+  SeedBankExtension,
   Contact,
   MediaItem,
 };

@@ -58,7 +58,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
   const { data: response } = useGQLQuery<DatasetQuery>(queries.QUERY_DATASET, {
     key: dataResource,
   });
-  const dataset = response?.data?.eventSearch.documents.results[0]?.dataset;
+  const dataset = response?.data?.eventSearch?.documents?.results[0]?.dataset;
   const contact = dataset?.value?.contact?.[0];
 
   return (
@@ -82,7 +82,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
                   ? `${contact?.individualName?.[0]?.givenName?.[0]} ${contact.individualName[0].surName?.[0]}`
                   : contact?.organizationName?.[0]) || 'Name Here'}
               </Text>
-              {contact?.positionName && <Badge radius='sm'>{contact.positionName[0]}</Badge>}
+              {/* {contact?.positionName && <Badge radius='sm'>{contact.positionName[0]}</Badge>} */}
             </Group>
           </Skeleton>
           <Stack spacing={8}>
@@ -119,21 +119,20 @@ function Contact({ dataResource, ...rest }: ContactProps) {
                   .join(', ')}
               </Text>
             )}
-            <Skeleton visible={!dataset}>
+            {/* <Skeleton visible={!dataset}>
               <Text style={{ display: 'flex', alignItems: 'center' }} size='sm'>
                 <IconBuilding style={contactItemStyle} />
                 {dataset?.value?.title}
               </Text>
-            </Skeleton>
-            {!contact &&
-              [0, 1].map((id) => (
-                <Skeleton key={id}>
-                  <Text style={{ display: 'flex', alignItems: 'center' }} size='sm'>
-                    <IconMapPin style={contactItemStyle} />
-                    Contact information here
-                  </Text>
-                </Skeleton>
-              ))}
+            </Skeleton> */}
+            {!contact && (
+              <Skeleton>
+                <Text style={{ display: 'flex', alignItems: 'center' }} size='sm'>
+                  <IconMapPin style={contactItemStyle} />
+                  Contact information here
+                </Text>
+              </Skeleton>
+            )}
           </Stack>
         </Stack>
       </Group>
