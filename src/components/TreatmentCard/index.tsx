@@ -14,6 +14,20 @@ function TreatmentCard({ event }: TreatmentCardProps) {
 
   return (
     <Card>
+      {treatment.pretreatment && (
+        <>
+          <IconText labelWidth={130} icon={IconTestPipe} title='Pre-Treatment'>
+            {treatment.pretreatment}
+          </IconText>{' '}
+          <Divider
+            my='sm'
+            sx={(theme) => ({
+              marginLeft: `calc(${theme.spacing.md} * -1)`,
+              marginRight: `calc(${theme.spacing.md} * -1)`,
+            })}
+          />
+        </>
+      )}
       <Grid gutter='xs'>
         {fields
           .filter(({ key }) => Boolean(treatment[key]))
@@ -36,18 +50,6 @@ function TreatmentCard({ event }: TreatmentCardProps) {
             </Grid.Col>
           ))}
       </Grid>
-      <Divider
-        my='sm'
-        sx={(theme) => ({
-          marginLeft: `calc(${theme.spacing.md} * -1)`,
-          marginRight: `calc(${theme.spacing.md} * -1)`,
-        })}
-      />
-      {treatment.pretreatment && (
-        <IconText labelWidth={145} icon={IconTestPipe} title='Pre-Treatment'>
-          {treatment.pretreatment}
-        </IconText>
-      )}
     </Card>
   );
 }

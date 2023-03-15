@@ -65,7 +65,7 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [search, setSearch] = useState<string>('');
-  const [query] = useDebouncedValue(search, 300);
+  const [query] = useDebouncedValue(search, 150);
   const api = useAPI();
 
   useEffect(() => {

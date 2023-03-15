@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useLoaderData, useRouteLoaderData } from 'react-router-dom';
-import { Grid } from '@mantine/core';
+import { Text, Card, Grid } from '@mantine/core';
 
 // Project imports
 import { Event, EventSearchResult } from '#/api/graphql/types';
-import { EventMap } from '#/components';
+import { EventMap, IconText } from '#/components';
 
 interface EventSearchResponse {
   eventSearch: EventSearchResult;
@@ -17,7 +17,14 @@ function Summary() {
   console.log(taxon, records);
   return (
     <Grid>
-      <Grid.Col sm={8}>Test</Grid.Col>
+      <Grid.Col sm={8}>
+        <Card withBorder h='100%'>
+          <Text size='xl' weight='bold'>
+            Taxonomy
+          </Text>
+          <IconText title='Kingdom'>Kingdom</IconText>
+        </Card>
+      </Grid.Col>
       <Grid.Col sm={4}>
         <EventMap
           width='100%'

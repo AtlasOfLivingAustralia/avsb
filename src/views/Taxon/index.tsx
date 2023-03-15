@@ -61,7 +61,7 @@ function Taxon() {
                 target='_blank'
                 href={`https://bie.ala.org.au/species/${data.taxonConcept.guid}`}
               >
-                View on ALA
+                View on ALA BIE
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>

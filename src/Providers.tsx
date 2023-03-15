@@ -48,7 +48,13 @@ function Providers({ children }: PropsWithChildren) {
       <APIProvider>
         <ColorSchemeProvider colorScheme={colourScheme} toggleColorScheme={toggleColourScheme}>
           <MantineProvider
-            theme={{ ...baseTheme, colorScheme: colourScheme }}
+            theme={{
+              ...baseTheme,
+              colorScheme: colourScheme,
+              headings: {
+                fontFamily: 'Poppins, sans-serif',
+              },
+            }}
             withGlobalStyles
             withNormalizeCSS
           >
