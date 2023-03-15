@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Text, Accordion, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { AccessionPanel, HerbariumLink, TaxonSearchInput } from '#/components';
+import { AccessionPanel, HerbariumLink, TaxonSearchInput, TreatmentCard } from '#/components';
 // import { useAPI } from '#/api';
 
 // Debug views
@@ -55,12 +55,28 @@ function Debug() {
             accession='CANB 801450.6'
             taxon='https://id.biodiversity.org.au/node/apni/2920720'
           />
+          <TreatmentCard
+            event={{
+              extensions: {
+                seedbank: {
+                  eventID: 'ev12345',
+                  pretreatment: 'notes about the pretreatment, long text here',
+                  mediaSubstrate: 'AGAR 1%',
+                  nightTemp: 10,
+                  dayTemp: 10,
+                  lightHours: 10,
+                  darkHours: 14,
+                },
+              },
+            }}
+          />
         </Accordion.Panel>
       </Accordion.Item>
       <Accordion.Item value='accession'>
         <Accordion.Control>Accession</Accordion.Control>
         <Accordion.Panel>
           <AccessionPanel
+            taxon='https://id.biodiversity.org.au/node/apni/2920720'
             event={{
               eventID: 'ev123',
               datasetKey: 'dr18699',
@@ -68,14 +84,17 @@ function Debug() {
               countryCode: 'AU',
               decimalLatitude: 137.591797,
               decimalLongitude: -26.000092,
+              stateProvince: 'Queensland',
               eventType: {
                 concept: 'Accession',
                 lineage: ['Accession'],
               },
+              locality:
+                'This is a testing string showing the locality of the event, and it is going to be really long so I can see how it overflows',
               extensions: {
                 seedbank: {
                   eventID: 'ev123',
-                  accessionNumber: 'NSB 12345678.9',
+                  accessionNumber: 'CANB 801450.6',
                   seedPerGram: 100,
                   formInStorage: 'seed',
                   sampleWeight: 1.123,

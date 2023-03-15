@@ -1,19 +1,10 @@
 import { CSSProperties } from 'react';
-import {
-  Anchor,
-  Avatar,
-  Badge,
-  Group,
-  Paper,
-  PaperProps,
-  Skeleton,
-  Stack,
-  Text,
-} from '@mantine/core';
-import { IconMail, IconPhone, IconMapPin, IconBuilding } from '@tabler/icons';
+import { Anchor, Avatar, Group, Paper, PaperProps, Skeleton, Stack, Text } from '@mantine/core';
+import { IconMail, IconPhone, IconMapPin } from '@tabler/icons';
 import { useGQLQuery } from '#/api';
 import { Contact as ContactType } from '#/api/graphql/types';
 import queries from '#/api/queries';
+import IconText from './IconText';
 
 interface DatasetQuery {
   data?: {
@@ -82,7 +73,6 @@ function Contact({ dataResource, ...rest }: ContactProps) {
                   ? `${contact?.individualName?.[0]?.givenName?.[0]} ${contact.individualName[0].surName?.[0]}`
                   : contact?.organizationName?.[0]) || 'Name Here'}
               </Text>
-              {/* {contact?.positionName && <Badge radius='sm'>{contact.positionName[0]}</Badge>} */}
             </Group>
           </Skeleton>
           <Stack spacing={8}>
@@ -107,8 +97,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
               </Anchor>
             )}
             {contact?.address && (
-              <Text style={{ display: 'flex', alignItems: 'center' }} size='sm'>
-                <IconMapPin style={contactItemStyle} />
+              <IconText icon={IconMapPin}>
                 {[
                   contact.address[0].deliveryPoint?.[0],
                   contact.address[0].city?.[0],
@@ -117,14 +106,8 @@ function Contact({ dataResource, ...rest }: ContactProps) {
                 ]
                   .filter((part) => part !== null)
                   .join(', ')}
-              </Text>
+              </IconText>
             )}
-            {/* <Skeleton visible={!dataset}>
-              <Text style={{ display: 'flex', alignItems: 'center' }} size='sm'>
-                <IconBuilding style={contactItemStyle} />
-                {dataset?.value?.title}
-              </Text>
-            </Skeleton> */}
             {!contact && (
               <Skeleton>
                 <Text style={{ display: 'flex', alignItems: 'center' }} size='sm'>

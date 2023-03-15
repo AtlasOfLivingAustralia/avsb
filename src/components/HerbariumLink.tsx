@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
-import { Text } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { Button } from '@mantine/core';
+import { IconExternalLink } from '@tabler/icons';
 
 interface ContactProps {
   accession: string;
@@ -7,6 +8,10 @@ interface ContactProps {
 }
 
 function HerbariumLink({ accession, taxon }: ContactProps) {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
+  const [uuid, setUuid] = useState<string | null>(null);
+
   useEffect(() => {
     async function getAccession() {
       // Split the accession number into parts
@@ -24,18 +29,41 @@ function HerbariumLink({ accession, taxon }: ContactProps) {
         disableAllQualityFilters: 'true',
       });
 
-      // Make the request
       const data = await fetch(
         `${import.meta.env.VITE_API_BIOCACHE}/occurrences/search?${params.toString()}`,
       );
-      const { totalRecords, occurrences } = await data.json();
-      console.log(totalRecords, occurrences);
+
+      if (data.ok) {
+        const { totalRecords, occurrences } = await data.json();
+        if (totalRecords > 0) setUuid(occurrences[0].uuid);
+      } else {
+        setError(true);
+      }
+
+      setLoading(false);
     }
 
     getAccession();
   }, [accession, taxon]);
 
-  return <Text>Herbarium</Text>;
+  return (
+    <Button
+      component='a'
+      target='_blank'
+      fullWidth
+      href={`https://avh.ala.org.au/occurrences/${uuid}`}
+      leftIcon={<IconExternalLink size='1.1rem' />}
+      loading={loading}
+      disabled={error || !uuid}
+      variant='outline'
+    >
+      {(() => {
+        if (error) return 'An error occurred';
+        if (!loading && !uuid) return 'AVH specimen not found';
+        return 'View AVH Specimen';
+      })()}
+    </Button>
+  );
 }
 
 export default HerbariumLink;

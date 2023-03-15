@@ -89,7 +89,7 @@ interface SeedBankTreatment {
   lightHours?: number | null;
 }
 
-type SeedBankExtension = SeedBankAccession | SeedBankTrial | SeedBankTrial;
+type SeedBankExtension = SeedBankAccession | SeedBankTrial | SeedBankTreatment;
 
 interface EventType {
   concept: string | null;

@@ -2,7 +2,7 @@ import { Box, Paper, Grid, Group, Text, ThemeIcon, Timeline, Divider, Stack } fr
 import { IconHandStop, IconLocation, IconMap2, IconMapPin, IconPackage } from '@tabler/icons';
 
 // Project imports
-import { Event, SeedBankAccession } from '#/api/graphql/types';
+import { Event, SeedBankTrial } from '#/api/graphql/types';
 import Contact from '../Contact';
 import Map from '../Map';
 import HerbariumLink from '../HerbariumLink';
@@ -10,20 +10,20 @@ import IconText from '../IconText';
 
 import { fields, longFields } from './details';
 
-interface AccessionPanelProps {
+interface TrialPanelProps {
   event: Event;
   taxon: string;
 }
 
-function AccessionPanel({ event, taxon }: AccessionPanelProps) {
-  const accession = event.extensions?.seedbank as SeedBankAccession;
+function TrialPanel({ event, taxon }: TrialPanelProps) {
+  const trial = event.extensions?.seedbank as SeedBankTrial;
 
   return (
     <Grid gutter='xl'>
       <Grid.Col span={12}>
         <Grid gutter='xs'>
           {fields
-            .filter(({ key }) => Boolean(accession[key]))
+            .filter(({ key }) => Boolean(trial[key]))
             .map(({ key, name, unit, icon: Icon }) => (
               <Grid.Col key={key} xs={6} sm={4} md={3} lg={3} xl={2}>
                 <Group>
@@ -35,7 +35,7 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
                       {name}
                     </Text>
                     <Text size='xl' weight='bold'>
-                      {accession[key]}
+                      {trial[key]}
                       {unit && unit}
                     </Text>
                   </Box>
@@ -46,7 +46,7 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
         <Divider my='lg' />
         <Grid gutter='xs'>
           {longFields
-            .filter(({ key }) => Boolean(accession[key]))
+            .filter(({ key }) => Boolean(trial[key]))
             .map(({ key, name, icon: Icon }) => (
               <Grid.Col key={key} xs={12} sm={6} md={4} lg={4} xl={3}>
                 <Group>
@@ -58,7 +58,7 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
                       {name}
                     </Text>
                     <Text size='sm' weight='bold'>
-                      {accession[key]}
+                      {trial[key]}
                     </Text>
                   </Box>
                 </Group>
@@ -106,18 +106,18 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
               <Timeline.Item bullet={<IconHandStop size={18} />}>
                 <Text>Seed Collected</Text>
                 <Text color='dimmed' size='xs'>
-                  {accession.dateCollected || 'Unknown'}
+                  {trial.dateCollected || 'Unknown'}
                 </Text>
               </Timeline.Item>
               <Timeline.Item bullet={<IconPackage size={18} />}>
                 <Text>Seed In Storage</Text>
                 <Text color='dimmed' size='xs'>
-                  {accession.dateInStorage || 'Unknown'}
+                  {trial.dateInStorage || 'Unknown'}
                 </Text>
               </Timeline.Item>
             </Timeline>
-            {accession?.accessionNumber && (
-              <HerbariumLink accession={accession.accessionNumber} taxon={taxon} />
+            {trial?.accessionNumber && (
+              <HerbariumLink accession={trial.accessionNumber} taxon={taxon} />
             )}
           </Stack>
         </Paper>
@@ -131,4 +131,4 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
   );
 }
 
-export default AccessionPanel;
+export default TrialPanel;
