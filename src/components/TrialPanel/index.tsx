@@ -1,21 +1,19 @@
-import { Box, Paper, Grid, Group, Text, ThemeIcon, Timeline, Divider, Stack } from '@mantine/core';
-import { IconHandStop, IconLocation, IconMap2, IconMapPin, IconPackage } from '@tabler/icons';
+import { Box, Paper, Grid, Group, Text, ThemeIcon, Divider, Stack } from '@mantine/core';
+import { IconLocation, IconMap2, IconMapPin } from '@tabler/icons';
 
 // Project imports
 import { Event, SeedBankTrial } from '#/api/graphql/types';
 import Contact from '../Contact';
 import Map from '../Map';
-import HerbariumLink from '../HerbariumLink';
 import IconText from '../IconText';
 
 import { fields, longFields } from './details';
 
 interface TrialPanelProps {
   event: Event;
-  taxon: string;
 }
 
-function TrialPanel({ event, taxon }: TrialPanelProps) {
+function TrialPanel({ event }: TrialPanelProps) {
   const trial = event.extensions?.seedbank as SeedBankTrial;
 
   return (
@@ -101,25 +99,7 @@ function TrialPanel({ event, taxon }: TrialPanelProps) {
       </Grid.Col>
       <Grid.Col sm={4} md={4} lg={4}>
         <Paper p='md' h='100%' withBorder>
-          <Stack justify='space-between' h='100%'>
-            <Timeline bulletSize={28}>
-              <Timeline.Item bullet={<IconHandStop size={18} />}>
-                <Text>Seed Collected</Text>
-                <Text color='dimmed' size='xs'>
-                  {trial.dateCollected || 'Unknown'}
-                </Text>
-              </Timeline.Item>
-              <Timeline.Item bullet={<IconPackage size={18} />}>
-                <Text>Seed In Storage</Text>
-                <Text color='dimmed' size='xs'>
-                  {trial.dateInStorage || 'Unknown'}
-                </Text>
-              </Timeline.Item>
-            </Timeline>
-            {trial?.accessionNumber && (
-              <HerbariumLink accession={trial.accessionNumber} taxon={taxon} />
-            )}
-          </Stack>
+          Stuff here
         </Paper>
       </Grid.Col>
       {event.datasetKey && (

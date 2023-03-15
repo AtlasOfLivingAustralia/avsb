@@ -1,7 +1,6 @@
 import { TaxonSearchInput } from '#/components';
 import { Group, Container, Text, Stack, Title } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import Header from './components/Header';
 
 function Home() {
   const navigate = useNavigate();
@@ -13,7 +12,7 @@ function Home() {
   return (
     <Container size='lg' pt='xl'>
       <Group>
-        <Stack p='xl' maw={650}>
+        <Stack p='xl' maw={550}>
           <Title weight='bold' size={36}>
             Open access to
             <br />

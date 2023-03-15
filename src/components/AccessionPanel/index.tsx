@@ -4,10 +4,9 @@ import { IconHandStop, IconLocation, IconMap2, IconMapPin, IconPackage } from '@
 // Project imports
 import { Event, SeedBankAccession } from '#/api/graphql/types';
 import Contact from '../Contact';
+import HerbariumLink from './components/HerbariumLink';
 import Map from '../Map';
-import HerbariumLink from '../HerbariumLink';
 import IconText from '../IconText';
-
 import { fields, longFields } from './details';
 
 interface AccessionPanelProps {
