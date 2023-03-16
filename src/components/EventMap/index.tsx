@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
-import { ColorScheme, useMantineTheme } from '@mantine/core';
+import { ActionIcon, ColorScheme, Tooltip, useMantineTheme } from '@mantine/core';
+import { IconMaximize } from '@tabler/icons';
 import mapboxgl from 'mapbox-gl';
 
 // Project-imports
@@ -20,9 +21,10 @@ interface MapProps {
   height?: string | number;
   token?: string;
   itemListHeight?: string | number;
+  onFullscreen?: () => void;
 }
 
-function Map({ width, height, token, itemListHeight }: MapProps) {
+function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   // Map refs
   const mapContainer = useRef<any | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -124,6 +126,21 @@ function Map({ width, height, token, itemListHeight }: MapProps) {
         open={Boolean(selectedPoint)}
         contentHeight={itemListHeight}
       />
+      {onFullscreen && (
+        <Tooltip label='Toggle Fullscreen' color='blue' position='left' withArrow>
+          <ActionIcon
+            onClick={onFullscreen}
+            variant='filled'
+            size='lg'
+            pos='absolute'
+            top={theme.spacing.md}
+            right={theme.spacing.md}
+            style={{ zIndex: 20 }}
+          >
+            <IconMaximize />
+          </ActionIcon>
+        </Tooltip>
+      )}
       <div ref={mapContainer} style={{ width, height, borderRadius }} />
     </div>
   );

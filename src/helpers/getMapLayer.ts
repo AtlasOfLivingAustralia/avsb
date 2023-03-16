@@ -16,12 +16,19 @@ export default function getLayerConfig(tile: string): mapboxgl.AnyLayer {
       'circle-radius': {
         property: '_count',
         type: 'interval',
+        // stops: [
+        //   [0, 2],
+        //   [5, 3],
+        //   [10, 5],
+        //   [100, 8],
+        //   [1000, 12],
+        // ],
         stops: [
-          [0, 2],
-          [5, 3],
-          [10, 5],
-          [100, 8],
-          [1000, 12],
+          [0, 4],
+          [5, 5],
+          [10, 7],
+          [100, 10],
+          [1000, 14],
         ],
       },
       // color circles by ethnicity, using data-driven styles

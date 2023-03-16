@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
 import { IconLogout, IconBug, IconSun, IconMoon } from '@tabler/icons';
 import {
@@ -11,6 +11,7 @@ import {
   Menu,
   UnstyledButton,
   useMantineColorScheme,
+  MediaQuery,
 } from '@mantine/core';
 
 // Project components & gelpers
@@ -19,6 +20,7 @@ import getNameInitials from '#/helpers/getNameInitials';
 
 function Header() {
   const auth = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
@@ -40,13 +42,17 @@ function Header() {
             <Logo width={50} height={50} />
           </Link>
         </Group>
-        <TaxonSearchInput
-          variant='filled'
-          style={{ width: 350 }}
-          onChange={(guid) => {
-            if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
-          }}
-        />
+        {location.pathname !== '/' && (
+          <MediaQuery styles={{ display: 'none' }} smallerThan='sm'>
+            <TaxonSearchInput
+              variant='filled'
+              style={{ width: 350 }}
+              onChange={(guid) => {
+                if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
+              }}
+            />
+          </MediaQuery>
+        )}
         <Group style={{ flexGrow: 1, maxWidth: 140 }} position='right'>
           <ActionIcon variant='light' radius='xl' size={38} onClick={() => toggleColorScheme()}>
             {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}

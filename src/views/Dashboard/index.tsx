@@ -46,7 +46,7 @@ function Dashboard() {
 
   return (
     <>
-      <NavigationProgress stepInterval={0} />
+      <NavigationProgress stepInterval={20} />
       <AppShell
         padding={0}
         header={<Header />}

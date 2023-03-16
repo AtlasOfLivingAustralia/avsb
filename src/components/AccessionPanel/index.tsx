@@ -1,4 +1,4 @@
-import { Box, Paper, Grid, Group, Text, ThemeIcon, Timeline, Divider, Stack } from '@mantine/core';
+import { Box, Paper, Grid, Group, Text, ThemeIcon, Timeline, Stack } from '@mantine/core';
 import { IconHandStop, IconLocation, IconMap2, IconMapPin, IconPackage } from '@tabler/icons';
 
 // Project imports
@@ -42,16 +42,15 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
               </Grid.Col>
             ))}
         </Grid>
-        <Divider my='lg' />
-        <Grid gutter='xs'>
+        <Grid gutter='xs' p='sm' mt='md'>
           {longFields
             .filter(({ key }) => Boolean(accession[key]))
             .map(({ key, name, icon: Icon }) => (
               <Grid.Col key={key} xs={12} sm={6} md={4} lg={4} xl={3}>
                 <Group>
-                  <ThemeIcon variant='light' size={28} radius='xl'>
+                  {/* <ThemeIcon variant='light' size={28} radius='xl'>
                     <Icon size='1rem' />
-                  </ThemeIcon>
+                  </ThemeIcon> */}
                   <Box>
                     <Text color='dimmed' size='xs'>
                       {name}

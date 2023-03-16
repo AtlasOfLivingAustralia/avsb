@@ -10,23 +10,22 @@ function Home() {
   //   </div>
   // );
   return (
-    <Container size='lg' pt='xl'>
+    <Container size='xl' pt='xl'>
       <Group>
         <Stack p='xl' maw={550}>
-          <Title weight='bold' size={36}>
+          <Title weight='bold' size={42}>
             Open access to
             <br />
             Australia&apos;s seed data
           </Title>
-          <Text color='dimmed' mt='md'>
+          <Text mt='md'>
             The Australian Virtual Seed Bank is an online portal that provides access to aggregated
             seed data sourced from seed banks across Australia
           </Text>
-          <Text color='dimmed' mb='md'>
+          <Text mb='md' weight={600}>
             Get started by searching for a taxon below
           </Text>
           <TaxonSearchInput
-            variant='filled'
             onChange={(guid) => {
               if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
             }}

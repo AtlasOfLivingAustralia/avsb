@@ -52,7 +52,7 @@ function Providers({ children }: PropsWithChildren) {
               ...baseTheme,
               colorScheme: colourScheme,
               headings: {
-                fontFamily: 'Poppins, sans-serif',
+                fontFamily: 'Lexend Deca, sans-serif',
               },
             }}
             withGlobalStyles

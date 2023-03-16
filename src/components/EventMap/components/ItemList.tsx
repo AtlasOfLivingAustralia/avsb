@@ -43,8 +43,8 @@ function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
             position: 'absolute',
             color: 'white',
             zIndex: 10,
-            top: theme.spacing.lg,
-            left: theme.spacing.lg,
+            top: theme.spacing.md,
+            left: theme.spacing.md,
           }}
         >
           <Paper w={260} shadow='md' withBorder>
