@@ -5,9 +5,9 @@ import { Fragment, useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 const getMof = (trial: any, type: string) =>
-  trial.measurementOrFacts.find((mof: any) => mof.measurementType === type);
+  trial.measurementOrFacts?.find((mof: any) => mof.measurementType === type);
 const getSummaryMof = (trial: any, method: string) =>
-  trial.measurementOrFacts.find(
+  trial.measurementOrFacts?.find(
     (mof: any) => mof.measurementType === 'Summary result' && mof.measurementMethod === method,
   );
 

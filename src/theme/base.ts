@@ -1,11 +1,11 @@
 import { MantineThemeOverride } from '@mantine/core';
 
-const baseTheme: MantineThemeOverride = {
+const base: MantineThemeOverride = {
   defaultRadius: 'md',
   fontFamily: 'Inter, sans,serif',
   headings: {
-    fontFamily: 'Inter, sans-serif',
+    fontFamily: 'Lexend Deca, sans-serif',
   },
 };
 
-export default baseTheme;
+export default base;

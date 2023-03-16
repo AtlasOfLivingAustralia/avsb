@@ -7,7 +7,7 @@ import { WebStorageStateStore } from 'oidc-client-ts';
 import { AuthProvider } from 'react-oidc-context';
 
 // Theming helpers
-import { baseTheme } from './theme';
+import { base, dark, light } from './theme';
 import { APIProvider } from './api';
 
 function Providers({ children }: PropsWithChildren) {
@@ -49,11 +49,9 @@ function Providers({ children }: PropsWithChildren) {
         <ColorSchemeProvider colorScheme={colourScheme} toggleColorScheme={toggleColourScheme}>
           <MantineProvider
             theme={{
-              ...baseTheme,
+              ...base,
+              ...(colourScheme === 'dark' ? dark : light),
               colorScheme: colourScheme,
-              headings: {
-                fontFamily: 'Lexend Deca, sans-serif',
-              },
             }}
             withGlobalStyles
             withNormalizeCSS
