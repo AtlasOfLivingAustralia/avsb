@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
 export { default as Logo } from './Logo';
+export { default as Blob } from './Blob';
 export { default as Contact } from './Contact';
 export { default as Map } from './Map';
 export { default as EventMap } from './EventMap';

@@ -34,13 +34,13 @@ const fields: TreatmentDetail[] = [
     unit: ' hours',
   },
   {
-    key: 'dayTemp',
+    key: 'dayTempInCelcius',
     name: 'Day Temp',
     icon: IconSun,
     unit: '° C',
   },
   {
-    key: 'nightTemp',
+    key: 'nightTempInCelcius',
     name: 'Night Temp',
     icon: IconMoon,
     unit: '° C',

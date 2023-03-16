@@ -41,14 +41,14 @@ interface SeedBankAccession {
   accessionNumber?: string | null;
   seedPerGram?: number | null;
   formInStorage?: string | null;
-  sampleWeight?: number | null;
+  sampleWeightInGrams?: number | null;
   sampleSize?: number | null;
-  purityDebris?: number | null;
-  purity?: number | null;
+  purityDebrisPercent?: number | null;
+  purityPercent?: number | null;
   dateCollected?: string | null;
   dateInStorage?: string | null;
-  storageTemp?: number | null;
-  relativeHumidity?: number | null;
+  storageTempInCelsius?: number | null;
+  relativeHumidityPercent?: number | null;
   publicationDOI?: string | null;
   preStorageTreatmentNotesHistory?: string | null;
   primaryStorageSeedBank?: string | null;
@@ -57,7 +57,7 @@ interface SeedBankAccession {
   plantForm?: string | null;
   duplicatesReplicates?: string | null;
   collectionPermitNumber?: string | null;
-  thousandSeedWeight?: number | null;
+  thousandSeedWeightInGrams?: number | null;
   numberPlantsSampled?: string | null;
   storageBehaviour?: string | null;
   embryoType?: string | null;
@@ -70,9 +70,9 @@ interface SeedBankTrial {
   testLengthInDays?: string | null;
   collectionFillRate?: string | null;
   numberGerminated?: number | null;
-  germinateRate?: number | null;
-  adjustedGermination?: number | null;
-  viability?: number | null;
+  germinateRateInDays?: number | null;
+  adjustedGerminationPercent?: number | null;
+  viabilityPercent?: number | null;
   numberFull?: number | null;
   numberEmpty?: number | null;
   numberTested?: number | null;
@@ -83,8 +83,8 @@ interface SeedBankTreatment {
   eventID?: string;
   pretreatment?: string | null;
   mediaSubstrate?: string | null;
-  nightTemp?: number | null;
-  dayTemp?: number | null;
+  nightTempInCelcius?: number | null;
+  dayTempInCelcius?: number | null;
   darkHours?: number | null;
   lightHours?: number | null;
 }
