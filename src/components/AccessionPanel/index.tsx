@@ -69,7 +69,7 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
           {event.decimalLatitude && event.decimalLongitude && (
             <Map
               width='100%'
-              height={250}
+              height={350}
               center={[event.decimalLatitude, event.decimalLongitude]}
             />
           )}

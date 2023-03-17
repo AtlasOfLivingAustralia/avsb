@@ -37,7 +37,7 @@ function Header() {
   return (
     <MantineHeader height={60}>
       <Group sx={{ height: '100%' }} px={20} position='apart'>
-        <Group style={{ flexGrow: 1, maxWidth: 140 }}>
+        <Group>
           <Link to='/' style={{ display: 'flex' }}>
             <Logo width={50} height={50} />
           </Link>
@@ -54,14 +54,16 @@ function Header() {
           </MediaQuery>
         )}
         <Group style={{ flexGrow: 1, maxWidth: 140 }} position='right'>
-          <ActionIcon variant='light' radius='xl' size={38} onClick={() => toggleColorScheme()}>
+          <ActionIcon variant='filled' radius='xl' size={38} onClick={() => toggleColorScheme()}>
             {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
           </ActionIcon>
           {auth.isAuthenticated ? (
             <Menu shadow='md' position='bottom-end'>
               <Menu.Target>
                 <UnstyledButton>
-                  <Avatar radius='xl'>{getNameInitials(auth.user?.profile)}</Avatar>
+                  <Avatar variant='filled' radius='xl'>
+                    {getNameInitials(auth.user?.profile)}
+                  </Avatar>
                 </UnstyledButton>
               </Menu.Target>
               <Menu.Dropdown>

@@ -35,7 +35,9 @@ export default function Wave({ waveType, waveColour, ...rest }: WaveProps) {
     // eslint-disable-next-line react/jsx-props-no-spreading
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' {...rest}>
       <path
-        fill={waveColour || (theme.colorScheme === 'dark' ? theme.colors.dark[7] : '#ffffff')}
+        fill={
+          waveColour || (theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2])
+        }
         fillOpacity='1'
         d={waves[waveType || 'new']}
       />

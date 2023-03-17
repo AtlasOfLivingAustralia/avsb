@@ -92,7 +92,10 @@ function Summary() {
                       target='_blank'
                       sx={{
                         '&:hover': {
-                          backgroundColor: theme.colors.dark[4],
+                          backgroundColor:
+                            theme.colorScheme === 'dark'
+                              ? theme.colors.dark[4]
+                              : theme.colors.gray[2],
                         },
                       }}
                     >

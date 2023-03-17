@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { useState } from 'react';
-import { Accordion, Button, Card, Center, Grid, Group, Table, Text } from '@mantine/core';
+import { SeedBankTrial } from '#/api/graphql/types';
+import { Accordion, Card, Center, Grid, Group, Table, Text } from '@mantine/core';
 import { Fragment, useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
@@ -22,10 +23,10 @@ function Trials() {
   // const api = useAPI();
   const trialData = useLoaderData() as any[];
   const [selected, setSelected] = useState<any | null>(trialData[0] || null);
-  const [trials, setTrials] = useState<any[]>(trialData);
+  const [events, setEvents] = useState<any[]>(trialData);
 
   useEffect(() => {
-    setTrials(trialData as any[]);
+    setEvents(trialData as any[]);
     setSelected(trialData[0] || null);
     // return () => setSelected(null);
   }, [trialData]);
@@ -48,28 +49,35 @@ function Trials() {
                 <th>Catalogue</th>
                 <th>Date</th>
                 <th>Institution</th>
-                <th>Location</th>
-                <th>Germination</th>
-                <th>Best Test</th>
+                <th>Length</th>
+                <th>Germinated</th>
+                <th>Full</th>
+                <th>Empty</th>
               </tr>
             </thead>
             <tbody>
-              {trials.map((trial) => (
-                <tr
-                  key={trial.eventID}
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setSelected(trial)}
-                >
-                  <td>N/A</td>
-                  <td align='right'>
-                    {trial.day}/{trial.month}/{trial.year}
-                  </td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{trial.datasetTitle}</td>
-                  <td>{trial.stateProvince || trial.country}</td>
-                  <td align='right'>{getSummaryMof(trial, '% Germination')?.measurementValue}%</td>
-                  <td>{getMof(trial, 'bestTest')?.measurementValue}</td>
-                </tr>
-              ))}
+              {events.map((event) => {
+                const trial = event.extensions?.seedbank as SeedBankTrial;
+                return (
+                  <tr
+                    key={event.eventID}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setSelected(trial)}
+                  >
+                    <td>N/A</td>
+                    <td align='right'>
+                      {event.day}/{event.month}/{event.year}
+                    </td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
+                    <td align='right'>
+                      {trial?.testLengthInDays && `${trial?.testLengthInDays} days`}
+                    </td>
+                    <td align='right'>{trial?.numberGerminated}</td>
+                    <td align='right'>{trial?.numberFull}</td>
+                    <td align='right'>{trial?.numberEmpty}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </Table>
         </Card>
