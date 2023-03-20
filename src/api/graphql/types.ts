@@ -43,6 +43,7 @@ interface SeedBankAccession {
   formInStorage?: string | null;
   sampleWeightInGrams?: number | null;
   sampleSize?: number | null;
+  collectionFillRate?: string | null;
   purityDebrisPercent?: number | null;
   purityPercent?: number | null;
   dateCollected?: string | null;
@@ -69,7 +70,6 @@ interface SeedBankTrial {
   accessionNumber?: string | null;
   testDateStarted?: string | null;
   testLengthInDays?: string | null;
-  collectionFillRate?: string | null;
   numberGerminated?: number | null;
   germinateRateInDays?: number | null;
   adjustedGerminationPercent?: number | null;

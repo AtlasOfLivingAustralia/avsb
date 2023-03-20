@@ -1,20 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { useState } from 'react';
 import { Event, SeedBankTrial } from '#/api/graphql/types';
-import { Accordion, Card, Center, Grid, Group, Table, Text } from '@mantine/core';
-import { Fragment, useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
-
-const formatUnit = (unit: string | null) => {
-  if (unit) {
-    return unit !== '%' ? ` ${unit}` : unit;
-  }
-  return '';
-};
+import {
+  Box,
+  Button,
+  Card,
+  Center,
+  Collapse,
+  Paper,
+  Table,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
+import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
+import { TrialDetails } from '#/components';
+import { Fragment, useState } from 'react';
+// import { useLoaderData } from 'react-router-dom';
 
 function Trials() {
   // const api = useAPI();
   // const trialData = useLoaderData() as any[];
+  const theme = useMantineTheme();
   const trialData: Event[] = [0, 1, 2, 3, 4, 5, 6, 7, 8].map((iter) => ({
     eventID: `15312-7141-${iter}`,
     parentEventID: '15312',
@@ -30,7 +36,6 @@ function Trials() {
         accessionNumber: 'CBG 1234567.8',
         testDateStarted: '2001-02-01',
         testLengthInDays: 10,
-        collectionFillRate: 'Fill rate',
         numberGerminated: 10,
         germinateRateInDays: 2,
         adjustedGerminationPercent: 100,
@@ -42,7 +47,7 @@ function Trials() {
       },
     },
   }));
-  const [selected, setSelected] = useState<any | null>(trialData[0] || null);
+  const [selected, setSelected] = useState<string[]>([]);
   const [events, setEvents] = useState<any[]>(trialData);
 
   // useEffect(() => {
@@ -60,97 +65,108 @@ function Trials() {
   }
 
   return (
-    <Grid gutter='lg'>
-      <Grid.Col span={9}>
-        <Card shadow='md' withBorder style={{ overflow: 'auto' }}>
-          <Table highlightOnHover>
-            <thead>
-              <tr>
-                <th>Catalogue</th>
-                <th>Date</th>
-                <th>Institution</th>
-                <th>Test Length</th>
-                <th>Germinated</th>
-                <th>Full</th>
-                <th>Empty</th>
-                <th>Tested</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((event) => {
-                const trial = event.extensions?.seedbank as SeedBankTrial;
-                return (
-                  <tr
-                    key={event.eventID}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setSelected(trial)}
+    <Card withBorder>
+      <Table highlightOnHover>
+        <thead>
+          <tr>
+            <th>Catalogue</th>
+            <th>Date Tested</th>
+            <th>Institution</th>
+            <th>Test Length</th>
+            <th>Germinate Rate</th>
+            <th>Germinated</th>
+            <th>Adj. Germination</th>
+            {/* <th>
+              <Group spacing='xs'>
+                Tested
+                <Tooltip label='Test' withArrow position='top'>
+                  <ThemeIcon variant='light' size='xs' radius='xl'>
+                    <IconQuestionMark />
+                  </ThemeIcon>
+                </Tooltip>
+              </Group>
+            </th> */}
+            <th>
+              <Button.Group style={{ justifyContent: 'flex-end' }}>
+                <Button
+                  variant='light'
+                  p={8}
+                  size='sm'
+                  onClick={() => setSelected(events.map(({ eventID }) => eventID))}
+                >
+                  <IconArrowsMaximize size={14} />
+                </Button>
+                <Button variant='light' p={8} size='sm' onClick={() => setSelected([])}>
+                  <IconArrowsMinimize size={14} />
+                </Button>
+              </Button.Group>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {events.map((event) => {
+            const trial = event.extensions?.seedbank as SeedBankTrial;
+            const isSelected = selected.includes(event.eventID);
+            return (
+              <Fragment key={event.eventID}>
+                <tr
+                  style={{ cursor: 'pointer' }}
+                  onClick={() =>
+                    setSelected(
+                      isSelected
+                        ? selected.filter((eventID) => eventID !== event.eventID)
+                        : [...selected, event.eventID],
+                    )
+                  }
+                >
+                  <td>{trial?.accessionNumber}</td>
+                  <td>
+                    {event.day}/{event.month}/{event.year}
+                  </td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
+                  <td>{trial?.testLengthInDays && `${trial?.testLengthInDays} days`}</td>
+                  <td>{trial?.germinateRateInDays && `${trial.germinateRateInDays} days`}</td>
+                  <td>{trial?.numberGerminated && `${trial?.numberGerminated} seeds`}</td>
+                  <td>
+                    {trial?.adjustedGerminationPercent && `${trial?.adjustedGerminationPercent}%`}
+                  </td>
+                  <td align='right'>
+                    <IconChevronDown
+                      style={{
+                        transition: 'transform ease-out 200ms',
+                        transform: selected.includes(event.eventID)
+                          ? 'rotate(180deg)'
+                          : 'rotate(0deg)',
+                      }}
+                      size={16}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan={100}
+                    style={{
+                      padding: 0,
+                      border: 'none',
+                      backgroundColor:
+                        theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
+                    }}
                   >
-                    <td>{trial?.accessionNumber}</td>
-                    <td align='right'>
-                      {event.day}/{event.month}/{event.year}
-                    </td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
-                    <td align='right'>
-                      {trial?.testLengthInDays && `${trial?.testLengthInDays} days`}
-                    </td>
-                    <td align='right'>{trial?.numberGerminated}</td>
-                    <td align='right'>{trial?.numberFull}</td>
-                    <td align='right'>{trial?.numberEmpty}</td>
-                    <td align='right'>{trial?.numberTested}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-        </Card>
-      </Grid.Col>
-      <Grid.Col span={3}>
-        {selected && (
-          <Accordion defaultValue='summary'>
-            <Accordion.Item value='summary'>
-              <Accordion.Control>Trial Summary</Accordion.Control>
-              <Accordion.Panel>
-                {selected?.measurementOrFacts
-                  ?.filter((mof: any) => mof.measurementType === 'Summary result')
-                  .sort((a: any, b: any) => a.measurementMethod.localeCompare(b.measurementMethod))
-                  .map((mof: any) => (
-                    <Group key={mof.measurementID} position='apart'>
-                      <Text weight='bold' color='dimmed'>
-                        {mof.measurementMethod}
-                      </Text>
-                      <Text>
-                        {mof.measurementValue}
-                        {formatUnit(mof.measurementUnit)}
-                      </Text>
-                    </Group>
-                  ))}
-              </Accordion.Panel>
-            </Accordion.Item>
-
-            <Accordion.Item value='all'>
-              <Accordion.Control>All Data</Accordion.Control>
-              <Accordion.Panel>
-                {selected.measurementOrFacts
-                  ?.filter((mof: any) => mof.measurementType !== 'Summary result')
-                  .sort((a: any, b: any) => a.measurementMethod?.localeCompare(b.measurementMethod))
-                  .map((mof: any) => (
-                    <Fragment key={mof.measurementID}>
-                      <Text weight='bold' color='dimmed'>
-                        {mof.measurementType}
-                        {mof.measurementMethod && ` (${mof.measurementMethod})`}
-                      </Text>
-                      <Text mb='sm'>
-                        {mof.measurementValue}
-                        {formatUnit(mof.measurementUnit)}
-                      </Text>
-                    </Fragment>
-                  ))}
-              </Accordion.Panel>
-            </Accordion.Item>
-          </Accordion>
-        )}
-      </Grid.Col>
-    </Grid>
+                    <Collapse in={selected.includes(event.eventID)}>
+                      <Box py='xs'>
+                        <Paper p='sm' withBorder>
+                          <TrialDetails event={event} />
+                        </Paper>
+                      </Box>
+                    </Collapse>
+                  </td>
+                </tr>
+              </Fragment>
+            );
+          })}
+        </tbody>
+      </Table>
+    </Card>
   );
 }
 

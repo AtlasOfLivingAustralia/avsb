@@ -41,7 +41,7 @@ function TreatmentCard({ event }: TreatmentCardProps) {
                   <Text color='dimmed' size='xs'>
                     {name}
                   </Text>
-                  {treatment[key] ? (
+                  {treatment[key] !== undefined ? (
                     <Text size='sm' weight='bold'>
                       {treatment[key]}
                       {unit && unit}

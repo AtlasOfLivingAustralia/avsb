@@ -35,7 +35,7 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
                     <Text color='dimmed' size='xs'>
                       {name}
                     </Text>
-                    {accession[key] ? (
+                    {accession[key] !== undefined ? (
                       <Text size='xl' weight='bold'>
                         {accession[key]}
                         {unit && unit}
@@ -63,7 +63,7 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
                     <Text color='dimmed' size='xs'>
                       {name}
                     </Text>
-                    {accession[key] ? (
+                    {accession[key] !== undefined ? (
                       <Text size='sm' weight='bold'>
                         {accession[key]}
                       </Text>
