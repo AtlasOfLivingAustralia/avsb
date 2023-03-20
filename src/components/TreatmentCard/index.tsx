@@ -17,7 +17,7 @@ function TreatmentCard({ event }: TreatmentCardProps) {
       {treatment.pretreatment && (
         <>
           <IconText labelWidth={130} icon={IconTestPipe} title='Pre-Treatment'>
-            {treatment.pretreatment}
+            {treatment.pretreatment || 'Not Supplied'}
           </IconText>{' '}
           <Divider
             my='sm'
@@ -30,7 +30,7 @@ function TreatmentCard({ event }: TreatmentCardProps) {
       )}
       <Grid gutter='xs'>
         {fields
-          .filter(({ key }) => Boolean(treatment[key]))
+          // .filter(({ key }) => Boolean(treatment[key]))
           .map(({ key, name, icon: Icon, unit }) => (
             <Grid.Col key={key} xs={4} sm={3} md={2} lg={2} xl={2}>
               <Group>
@@ -41,10 +41,16 @@ function TreatmentCard({ event }: TreatmentCardProps) {
                   <Text color='dimmed' size='xs'>
                     {name}
                   </Text>
-                  <Text size='sm' weight='bold'>
-                    {treatment[key]}
-                    {unit && unit}
-                  </Text>
+                  {treatment[key] ? (
+                    <Text size='sm' weight='bold'>
+                      {treatment[key]}
+                      {unit && unit}
+                    </Text>
+                  ) : (
+                    <Text size='sm' weight='bold' color='dimmed'>
+                      Not Supplied
+                    </Text>
+                  )}
                 </Box>
               </Group>
             </Grid.Col>

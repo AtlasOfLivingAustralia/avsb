@@ -66,6 +66,7 @@ interface SeedBankAccession {
 
 interface SeedBankTrial {
   eventID?: string;
+  accessionNumber?: string | null;
   testDateStarted?: string | null;
   testLengthInDays?: string | null;
   collectionFillRate?: string | null;

@@ -1,16 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { useState } from 'react';
-import { SeedBankTrial } from '#/api/graphql/types';
+import { Event, SeedBankTrial } from '#/api/graphql/types';
 import { Accordion, Card, Center, Grid, Group, Table, Text } from '@mantine/core';
 import { Fragment, useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
-
-const getMof = (trial: any, type: string) =>
-  trial.measurementOrFacts?.find((mof: any) => mof.measurementType === type);
-const getSummaryMof = (trial: any, method: string) =>
-  trial.measurementOrFacts?.find(
-    (mof: any) => mof.measurementType === 'Summary result' && mof.measurementMethod === method,
-  );
 
 const formatUnit = (unit: string | null) => {
   if (unit) {
@@ -21,15 +14,42 @@ const formatUnit = (unit: string | null) => {
 
 function Trials() {
   // const api = useAPI();
-  const trialData = useLoaderData() as any[];
+  // const trialData = useLoaderData() as any[];
+  const trialData: Event[] = [0, 1, 2, 3, 4, 5, 6, 7, 8].map((iter) => ({
+    eventID: `15312-7141-${iter}`,
+    parentEventID: '15312',
+    year: 2014,
+    month: 8,
+    day: 25,
+    datasetTitle: 'Tasmanian Seed Conservation Centre',
+    country: 'Australia',
+    stateProvince: null,
+    extensions: {
+      seedbank: {
+        eventID: `15312-7141-${iter}`,
+        accessionNumber: 'CBG 1234567.8',
+        testDateStarted: '2001-02-01',
+        testLengthInDays: 10,
+        collectionFillRate: 'Fill rate',
+        numberGerminated: 10,
+        germinateRateInDays: 2,
+        adjustedGerminationPercent: 100,
+        viabilityPercent: 98,
+        numberFull: 10,
+        numberEmpty: 0,
+        numberTested: 10,
+        preTestProcessingNotes: 'Pre test processing notes',
+      },
+    },
+  }));
   const [selected, setSelected] = useState<any | null>(trialData[0] || null);
   const [events, setEvents] = useState<any[]>(trialData);
 
-  useEffect(() => {
-    setEvents(trialData as any[]);
-    setSelected(trialData[0] || null);
-    // return () => setSelected(null);
-  }, [trialData]);
+  // useEffect(() => {
+  //   setEvents(trialData as any[]);
+  //   setSelected(trialData[0] || null);
+  //   // return () => setSelected(null);
+  // }, [trialData]);
 
   if (trialData.length === 0) {
     return (
@@ -41,7 +61,7 @@ function Trials() {
 
   return (
     <Grid gutter='lg'>
-      <Grid.Col span={8}>
+      <Grid.Col span={9}>
         <Card shadow='md' withBorder style={{ overflow: 'auto' }}>
           <Table highlightOnHover>
             <thead>
@@ -49,10 +69,11 @@ function Trials() {
                 <th>Catalogue</th>
                 <th>Date</th>
                 <th>Institution</th>
-                <th>Length</th>
+                <th>Test Length</th>
                 <th>Germinated</th>
                 <th>Full</th>
                 <th>Empty</th>
+                <th>Tested</th>
               </tr>
             </thead>
             <tbody>
@@ -64,7 +85,7 @@ function Trials() {
                     style={{ cursor: 'pointer' }}
                     onClick={() => setSelected(trial)}
                   >
-                    <td>N/A</td>
+                    <td>{trial?.accessionNumber}</td>
                     <td align='right'>
                       {event.day}/{event.month}/{event.year}
                     </td>
@@ -75,6 +96,7 @@ function Trials() {
                     <td align='right'>{trial?.numberGerminated}</td>
                     <td align='right'>{trial?.numberFull}</td>
                     <td align='right'>{trial?.numberEmpty}</td>
+                    <td align='right'>{trial?.numberTested}</td>
                   </tr>
                 );
               })}
@@ -82,14 +104,14 @@ function Trials() {
           </Table>
         </Card>
       </Grid.Col>
-      <Grid.Col span={4}>
+      <Grid.Col span={3}>
         {selected && (
           <Accordion defaultValue='summary'>
             <Accordion.Item value='summary'>
               <Accordion.Control>Trial Summary</Accordion.Control>
               <Accordion.Panel>
-                {selected.measurementOrFacts
-                  .filter((mof: any) => mof.measurementType === 'Summary result')
+                {selected?.measurementOrFacts
+                  ?.filter((mof: any) => mof.measurementType === 'Summary result')
                   .sort((a: any, b: any) => a.measurementMethod.localeCompare(b.measurementMethod))
                   .map((mof: any) => (
                     <Group key={mof.measurementID} position='apart'>
@@ -109,7 +131,7 @@ function Trials() {
               <Accordion.Control>All Data</Accordion.Control>
               <Accordion.Panel>
                 {selected.measurementOrFacts
-                  .filter((mof: any) => mof.measurementType !== 'Summary result')
+                  ?.filter((mof: any) => mof.measurementType !== 'Summary result')
                   .sort((a: any, b: any) => a.measurementMethod?.localeCompare(b.measurementMethod))
                   .map((mof: any) => (
                     <Fragment key={mof.measurementID}>

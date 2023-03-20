@@ -14,6 +14,8 @@ interface AccessionPanelProps {
   taxon: string;
 }
 
+const missingData = 'Not Supplied';
+
 function AccessionPanel({ event, taxon }: AccessionPanelProps) {
   const accession = event.extensions?.seedbank as SeedBankAccession;
 
@@ -22,7 +24,7 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
       <Grid.Col span={12}>
         <Grid gutter='xs'>
           {fields
-            .filter(({ key }) => Boolean(accession[key]))
+            // .filter(({ key }) => Boolean(accession[key]))
             .map(({ key, name, unit, icon: Icon }) => (
               <Grid.Col key={key} xs={6} sm={4} md={3} lg={3} xl={2}>
                 <Group>
@@ -33,10 +35,16 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
                     <Text color='dimmed' size='xs'>
                       {name}
                     </Text>
-                    <Text size='xl' weight='bold'>
-                      {accession[key]}
-                      {unit && unit}
-                    </Text>
+                    {accession[key] ? (
+                      <Text size='xl' weight='bold'>
+                        {accession[key]}
+                        {unit && unit}
+                      </Text>
+                    ) : (
+                      <Text size='xl' weight='bold' color='dimmed'>
+                        {missingData}
+                      </Text>
+                    )}
                   </Box>
                 </Group>
               </Grid.Col>
@@ -44,8 +52,8 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
         </Grid>
         <Grid gutter='xs' p='sm' mt='md'>
           {longFields
-            .filter(({ key }) => Boolean(accession[key]))
-            .map(({ key, name, icon: Icon }) => (
+            // .filter(({ key }) => Boolean(accession[key]))
+            .map(({ key, name }) => (
               <Grid.Col key={key} xs={12} sm={6} md={4} lg={4} xl={3}>
                 <Group>
                   {/* <ThemeIcon variant='light' size={28} radius='xl'>
@@ -55,9 +63,15 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
                     <Text color='dimmed' size='xs'>
                       {name}
                     </Text>
-                    <Text size='sm' weight='bold'>
-                      {accession[key]}
-                    </Text>
+                    {accession[key] ? (
+                      <Text size='sm' weight='bold'>
+                        {accession[key]}
+                      </Text>
+                    ) : (
+                      <Text size='sm' weight='bold' color='dimmed'>
+                        {missingData}
+                      </Text>
+                    )}
                   </Box>
                 </Group>
               </Grid.Col>
@@ -74,26 +88,18 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
             />
           )}
           <Stack spacing='xs' p='md'>
-            {event.locality && (
-              <IconText labelWidth={120} title='Locality' icon={IconLocation}>
-                {event.locality}
-              </IconText>
-            )}
-            {event.decimalLatitude && (
-              <IconText labelWidth={120} title='Decimal Lat' icon={IconMapPin}>
-                {event.decimalLatitude}
-              </IconText>
-            )}
-            {event.decimalLongitude && (
-              <IconText labelWidth={120} title='Decimal Lng' icon={IconMapPin}>
-                {event.decimalLongitude}
-              </IconText>
-            )}
-            {event.stateProvince && (
-              <IconText labelWidth={120} title='State Province' icon={IconMap2}>
-                {event.stateProvince}
-              </IconText>
-            )}
+            <IconText labelWidth={120} title='Locality' icon={IconLocation}>
+              {event.locality || missingData}
+            </IconText>
+            <IconText labelWidth={120} title='Decimal Lat' icon={IconMapPin}>
+              {event.decimalLatitude || missingData}
+            </IconText>
+            <IconText labelWidth={120} title='Decimal Lng' icon={IconMapPin}>
+              {event.decimalLongitude || missingData}
+            </IconText>
+            <IconText labelWidth={120} title='State Province' icon={IconMap2}>
+              {event.stateProvince || missingData}
+            </IconText>
           </Stack>
         </Paper>
       </Grid.Col>
@@ -104,13 +110,13 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
               <Timeline.Item bullet={<IconHandStop size={18} />}>
                 <Text>Seed Collected</Text>
                 <Text color='dimmed' size='xs'>
-                  {accession.dateCollected || 'Unknown'}
+                  {accession.dateCollected || missingData}
                 </Text>
               </Timeline.Item>
               <Timeline.Item bullet={<IconPackage size={18} />}>
                 <Text>Seed In Storage</Text>
                 <Text color='dimmed' size='xs'>
-                  {accession.dateInStorage || 'Unknown'}
+                  {accession.dateInStorage || missingData}
                 </Text>
               </Timeline.Item>
             </Timeline>
