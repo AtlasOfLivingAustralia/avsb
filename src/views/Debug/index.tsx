@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Text, Accordion, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { AccessionPanel, HerbariumLink, TaxonSearchInput, TreatmentCard } from '#/components';
+import { AccessionPanel, TaxonSearchInput, TreatmentCard } from '#/components';
 // import { useAPI } from '#/api';
 
 // Debug views

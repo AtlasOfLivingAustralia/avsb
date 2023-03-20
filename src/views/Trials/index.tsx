@@ -48,7 +48,7 @@ function Trials() {
     },
   }));
   const [selected, setSelected] = useState<string[]>([]);
-  const [events, setEvents] = useState<any[]>(trialData);
+  const [events] = useState<any[]>(trialData);
 
   // useEffect(() => {
   //   setEvents(trialData as any[]);
