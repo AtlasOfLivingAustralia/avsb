@@ -11,6 +11,7 @@ import {
   IconPercentage,
   IconPlant2,
   IconScale,
+  IconScan,
   IconSchool,
   IconSeeding,
   IconSquareDot,
@@ -116,6 +117,11 @@ const longFields: AccessionDetail[] = [
     key: 'collectionPermitNumber',
     name: 'Permit Number',
     icon: IconLicense,
+  },
+  {
+    key: 'collectionFillRate',
+    name: 'Collection Fill Rate / X-Ray',
+    icon: IconScan,
   },
   {
     key: 'publicationDOI',
