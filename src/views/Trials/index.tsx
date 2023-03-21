@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { useState } from 'react';
-import { Event, SeedBankTrial } from '#/api/graphql/types';
+import { SeedBankTrial } from '#/api/graphql/types';
 import {
   Box,
   Button,
@@ -15,38 +15,13 @@ import {
 import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
 import { TrialDetails } from '#/components';
 import { Fragment, useState } from 'react';
-// import { useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
+import { getIsPresent } from '#/helpers';
 
 function Trials() {
   // const api = useAPI();
-  // const trialData = useLoaderData() as any[];
+  const trialData = useLoaderData() as any[];
   const theme = useMantineTheme();
-  const trialData: Event[] = [0, 1, 2, 3, 4, 5, 6, 7, 8].map((iter) => ({
-    eventID: `15312-7141-${iter}`,
-    parentEventID: '15312',
-    year: 2014,
-    month: 8,
-    day: 25,
-    datasetTitle: 'Tasmanian Seed Conservation Centre',
-    country: 'Australia',
-    stateProvince: null,
-    extensions: {
-      seedbank: {
-        eventID: `15312-7141-${iter}`,
-        accessionNumber: 'CBG 1234567.8',
-        testDateStarted: '2001-02-01',
-        testLengthInDays: 10,
-        numberGerminated: 10,
-        germinateRateInDays: 2,
-        adjustedGerminationPercent: 100,
-        viabilityPercent: 98,
-        numberFull: 10,
-        numberEmpty: 0,
-        numberTested: 10,
-        preTestProcessingNotes: 'Pre test processing notes',
-      },
-    },
-  }));
   const [selected, setSelected] = useState<string[]>([]);
   const [events] = useState<any[]>(trialData);
 
@@ -124,11 +99,19 @@ function Trials() {
                     {event.day}/{event.month}/{event.year}
                   </td>
                   <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
-                  <td>{trial?.testLengthInDays && `${trial?.testLengthInDays} days`}</td>
-                  <td>{trial?.germinateRateInDays && `${trial.germinateRateInDays} days`}</td>
-                  <td>{trial?.numberGerminated && `${trial?.numberGerminated} seeds`}</td>
                   <td>
-                    {trial?.adjustedGerminationPercent && `${trial?.adjustedGerminationPercent}%`}
+                    {getIsPresent(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
+                  </td>
+                  <td>
+                    {getIsPresent(trial?.germinateRateInDays) &&
+                      `${trial.germinateRateInDays} days`}
+                  </td>
+                  <td>
+                    {getIsPresent(trial?.numberGerminated) && `${trial?.numberGerminated} seeds`}
+                  </td>
+                  <td>
+                    {getIsPresent(trial?.adjustedGerminationPercent) &&
+                      `${trial?.adjustedGerminationPercent}%`}
                   </td>
                   <td align='right'>
                     <IconChevronDown

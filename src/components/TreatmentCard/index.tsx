@@ -1,6 +1,7 @@
 import { Box, Card, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
-import { Event, SeedBankTreatment } from '#/api/graphql/types';
 import { IconTestPipe } from '@tabler/icons';
+import { Event, SeedBankTreatment } from '#/api/graphql/types';
+import { getIsPresent } from '#/helpers';
 
 import IconText from '../IconText';
 import fields from './fields';
@@ -41,7 +42,7 @@ function TreatmentCard({ event }: TreatmentCardProps) {
                   <Text color='dimmed' size='xs'>
                     {name}
                   </Text>
-                  {treatment[key] !== undefined ? (
+                  {getIsPresent(treatment[key]) ? (
                     <Text size='sm' weight='bold'>
                       {treatment[key]}
                       {unit && unit}

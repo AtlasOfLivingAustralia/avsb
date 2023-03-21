@@ -3,6 +3,7 @@ import { IconHandStop, IconLocation, IconMap2, IconMapPin, IconPackage } from '@
 
 // Project imports
 import { Event, SeedBankAccession } from '#/api/graphql/types';
+import { getIsPresent } from '#/helpers';
 import Contact from '../Contact';
 import HerbariumLink from './components/HerbariumLink';
 import Map from '../Map';
@@ -35,7 +36,7 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
                     <Text color='dimmed' size='xs'>
                       {name}
                     </Text>
-                    {accession[key] !== undefined ? (
+                    {getIsPresent(accession[key]) ? (
                       <Text size='xl' weight='bold'>
                         {accession[key]}
                         {unit && unit}
@@ -63,7 +64,7 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
                     <Text color='dimmed' size='xs'>
                       {name}
                     </Text>
-                    {accession[key] !== undefined ? (
+                    {getIsPresent(accession[key]) ? (
                       <Text size='sm' weight='bold'>
                         {accession[key]}
                       </Text>

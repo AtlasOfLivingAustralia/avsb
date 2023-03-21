@@ -1,5 +1,5 @@
 const QUERY_EVENT = '';
-const QUERY_EVENT_TRIALS = `
+const QUERY_EVENT_TRIALS_OLD = `
 query list($predicate: Predicate, $limit: Int){
   eventSearch(
     size: $limit
@@ -25,6 +25,53 @@ query list($predicate: Predicate, $limit: Int){
           measurementRemarks
           measurementAccuracy
           measurementDeterminedDate
+        }
+      }
+    }
+  }
+}
+`;
+
+const QUERY_EVENT_TRIALS_SB = `
+query list($predicate: Predicate, $limit: Int){
+  eventSearch(
+    size: $limit
+    predicate: $predicate
+    ) {
+    documents {
+      results {
+        eventID
+        parentEventID
+        locality
+        year
+        month
+        day
+        datasetTitle
+        country
+        stateProvince
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementUnit
+          measurementValue
+          measurementMethod
+          measurementRemarks
+          measurementAccuracy
+          measurementDeterminedDate
+        }
+        extensions {
+          seedbank {
+            accessionNumber
+            testDateStarted
+            testLengthInDays
+            numberGerminated
+            adjustedGerminationPercent
+            viabilityPercent
+            numberFull
+            numberEmpty
+            numberTested
+            preTestProcessingNotes
+          }
         }
       }
     }
@@ -135,7 +182,7 @@ const PRED_DATA_RESOURCE = {
 
 export default {
   QUERY_EVENT,
-  QUERY_EVENT_TRIALS,
+  QUERY_EVENT_TRIALS: QUERY_EVENT_TRIALS_SB,
   QUERY_EVENT_MAP,
   QUERY_EVENT_MAP_WITH_DATA,
   QUERY_EVENT_MAP_POINT,

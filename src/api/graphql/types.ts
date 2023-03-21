@@ -37,7 +37,7 @@ interface Measurement {
 }
 
 interface SeedBankAccession {
-  eventID?: string;
+  id?: string;
   accessionNumber?: string | null;
   seedPerGram?: number | null;
   formInStorage?: string | null;
@@ -66,7 +66,7 @@ interface SeedBankAccession {
 }
 
 interface SeedBankTrial {
-  eventID?: string;
+  id?: string;
   accessionNumber?: string | null;
   testDateStarted?: string | null;
   testLengthInDays?: string | null;
@@ -81,7 +81,7 @@ interface SeedBankTrial {
 }
 
 interface SeedBankTreatment {
-  eventID?: string;
+  id?: string;
   pretreatment?: string | null;
   mediaSubstrate?: string | null;
   nightTempInCelcius?: number | null;

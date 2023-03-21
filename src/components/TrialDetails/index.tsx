@@ -1,6 +1,8 @@
 import { Box, Grid, Group, Text, ThemeIcon } from '@mantine/core';
-import { Event, SeedBankTrial } from '#/api/graphql/types';
 import { IconNotes } from '@tabler/icons';
+
+import { Event, SeedBankTrial } from '#/api/graphql/types';
+import { getIsPresent } from '#/helpers';
 
 import IconText from '../IconText';
 import fields from './fields';
@@ -26,7 +28,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
                 <Text color='dimmed' size='xs'>
                   {name}
                 </Text>
-                {trial[key] !== undefined ? (
+                {getIsPresent(trial?.[key]) ? (
                   <Text size='sm' weight='bold'>
                     {trial[key]}
                     {unit && unit}
@@ -40,10 +42,10 @@ function TrialDetails({ event }: TrialDetailsProps) {
             </Group>
           </Grid.Col>
         ))}
-      <Grid.Col span={12} pt='md'>
-        {trial.preTestProcessingNotes && (
+      <Grid.Col span={12} pt={trial?.preTestProcessingNotes ? 'mt' : 0}>
+        {trial?.preTestProcessingNotes && (
           <IconText labelWidth={225} icon={IconNotes} title='Pre-Test Processing / Notes'>
-            {trial.preTestProcessingNotes || 'Not Supplied'}
+            {trial?.preTestProcessingNotes || 'Not Supplied'}
           </IconText>
         )}
       </Grid.Col>
