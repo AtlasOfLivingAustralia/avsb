@@ -136,10 +136,10 @@ function Trials() {
                     }}
                   >
                     <Collapse in={selected.includes(event.eventID)}>
-                      <Box py='xs'>
-                        <Paper p='sm' withBorder>
-                          <TrialDetails event={event} />
-                        </Paper>
+                      <Box p='md'>
+                        {/* <Paper p='sm' withBorder> */}
+                        <TrialDetails event={event} />
+                        {/* </Paper> */}
                       </Box>
                     </Collapse>
                   </td>

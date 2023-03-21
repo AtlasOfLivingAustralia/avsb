@@ -1,11 +1,25 @@
-import { Box, Grid, Group, Text, ThemeIcon } from '@mantine/core';
+import { Fragment, useEffect, useState } from 'react';
+import { Box, Grid, Group, Paper, Text, ThemeIcon, Title } from '@mantine/core';
 import { IconNotes } from '@tabler/icons';
 
 import { Event, SeedBankTrial } from '#/api/graphql/types';
+import { useGQLQuery } from '#/api';
 import { getIsPresent } from '#/helpers';
+import queries from '#/api/queries';
 
 import IconText from '../IconText';
 import fields from './fields';
+import TreatmentCard from '../TreatmentCard';
+
+interface TreatmentQuery {
+  data?: {
+    eventSearch: {
+      documents: {
+        results: Event[];
+      };
+    };
+  };
+}
 
 interface TrialDetailsProps {
   event: Event;
@@ -13,6 +27,28 @@ interface TrialDetailsProps {
 
 function TrialDetails({ event }: TrialDetailsProps) {
   const trial = event.extensions?.seedbank as SeedBankTrial;
+  const { data, error, update } = useGQLQuery<TreatmentQuery>(
+    queries.QUERY_EVENT_TREATMENTS,
+    {
+      predicate: {
+        type: 'and',
+        predicates: [
+          {
+            type: 'in',
+            key: 'eventTypeHierarchy',
+            values: ['Treatment'],
+          },
+          {
+            type: 'equals',
+            key: 'eventHierarchy',
+            value: event.eventID,
+          },
+        ],
+      },
+    },
+    { lazy: false },
+  );
+  const treatments = data?.data?.eventSearch.documents.results;
 
   return (
     <Grid gutter='xs'>
@@ -49,6 +85,24 @@ function TrialDetails({ event }: TrialDetailsProps) {
           </IconText>
         )}
       </Grid.Col>
+      {treatments && (
+        <Grid.Col span={12}>
+          <Paper withBorder p='md' mt='sm'>
+            {treatments.map((treatment, num) => (
+              <Fragment key={treatment.eventID}>
+                <Text
+                  style={{ fontFamily: 'Lexend Deca, sans-serif' }}
+                  mb='xs'
+                  mt={num !== 0 ? 'md' : 0}
+                >
+                  Treatment {num + 1}
+                </Text>
+                <TreatmentCard event={treatment} />
+              </Fragment>
+            ))}
+          </Paper>
+        </Grid.Col>
+      )}
     </Grid>
   );
 }

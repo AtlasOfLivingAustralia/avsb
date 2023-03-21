@@ -14,8 +14,8 @@ function TreatmentCard({ event }: TreatmentCardProps) {
   const treatment = event.extensions?.seedbank as SeedBankTreatment;
 
   return (
-    <Card>
-      {treatment.pretreatment && (
+    <>
+      {treatment?.pretreatment && (
         <>
           <IconText labelWidth={130} icon={IconTestPipe} title='Pre-Treatment'>
             {treatment.pretreatment || 'Not Supplied'}
@@ -42,9 +42,9 @@ function TreatmentCard({ event }: TreatmentCardProps) {
                   <Text color='dimmed' size='xs'>
                     {name}
                   </Text>
-                  {getIsPresent(treatment[key]) ? (
+                  {getIsPresent(treatment?.[key]) ? (
                     <Text size='sm' weight='bold'>
-                      {treatment[key]}
+                      {treatment?.[key]}
                       {unit && unit}
                     </Text>
                   ) : (
@@ -57,7 +57,7 @@ function TreatmentCard({ event }: TreatmentCardProps) {
             </Grid.Col>
           ))}
       </Grid>
-    </Card>
+    </>
   );
 }
 

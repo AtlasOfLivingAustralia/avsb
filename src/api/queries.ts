@@ -1,38 +1,6 @@
 const QUERY_EVENT = '';
-const QUERY_EVENT_TRIALS_OLD = `
-query list($predicate: Predicate, $limit: Int){
-  eventSearch(
-    size: $limit
-    predicate: $predicate
-    ) {
-    documents {
-      results {
-        eventID
-        parentEventID
-        locality
-        year
-        month
-        day
-        datasetTitle
-        country
-        stateProvince
-        measurementOrFacts {
-          measurementID
-          measurementType
-          measurementUnit
-          measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
-        }
-      }
-    }
-  }
-}
-`;
 
-const QUERY_EVENT_TRIALS_SB = `
+const QUERY_EVENT_TRIALS = `
 query list($predicate: Predicate, $limit: Int){
   eventSearch(
     size: $limit
@@ -71,6 +39,48 @@ query list($predicate: Predicate, $limit: Int){
             numberEmpty
             numberTested
             preTestProcessingNotes
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
+const QUERY_EVENT_TREATMENTS = `
+query list($predicate: Predicate){
+  eventSearch(
+    predicate: $predicate
+    ) {
+    documents {
+      results {
+        eventID
+        parentEventID
+        locality
+        year
+        month
+        day
+        datasetTitle
+        country
+        stateProvince
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementUnit
+          measurementValue
+          measurementMethod
+          measurementRemarks
+          measurementAccuracy
+          measurementDeterminedDate
+        }
+        extensions {
+          seedbank {
+            pretreatment
+            mediaSubstrate
+            nightTempInCelcius
+            dayTempInCelcius
+            darkHours
+            lightHours
           }
         }
       }
@@ -182,7 +192,8 @@ const PRED_DATA_RESOURCE = {
 
 export default {
   QUERY_EVENT,
-  QUERY_EVENT_TRIALS: QUERY_EVENT_TRIALS_SB,
+  QUERY_EVENT_TRIALS,
+  QUERY_EVENT_TREATMENTS,
   QUERY_EVENT_MAP,
   QUERY_EVENT_MAP_WITH_DATA,
   QUERY_EVENT_MAP_POINT,
