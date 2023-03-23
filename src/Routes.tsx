@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
-import { ErrorBoundary } from '#/components';
+import { AccessionPanel, ErrorBoundary } from '#/components';
 import { performGQLQuery, gqlQueries } from './api';
 import {
   DashboardView,
@@ -48,6 +48,11 @@ const routes = createBrowserRouter([
                       key: 'taxonKey',
                       values: [params.guid],
                     },
+                    {
+                      type: 'equals',
+                      key: 'eventType',
+                      value: 'Accession',
+                    },
                   ],
                 },
                 size: 50,
@@ -56,10 +61,11 @@ const routes = createBrowserRouter([
             },
           },
           {
+            id: 'accessions',
             path: 'accessions',
             element: <AccessionsView />,
             loader: async ({ params }) => {
-              const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_MAP_WITH_DATA, {
+              const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_ACCESSIONS, {
                 predicate: {
                   type: 'and',
                   predicates: [
@@ -69,12 +75,23 @@ const routes = createBrowserRouter([
                       key: 'taxonKey',
                       values: [params.guid],
                     },
+                    {
+                      type: 'equals',
+                      key: 'eventType',
+                      value: 'Accession',
+                    },
                   ],
                 },
                 size: 50,
               });
-              return data;
+              return data.eventSearch.documents.results;
             },
+            children: [
+              {
+                path: ':accession',
+                element: <AccessionPanel />,
+              },
+            ],
           },
           {
             path: 'media',
@@ -117,10 +134,10 @@ const routes = createBrowserRouter([
               return data.eventSearch.documents.results;
             },
           },
-          {
-            path: 'more',
-            element: <div>More</div>,
-          },
+          // {
+          //   path: 'more',
+          //   element: <div>More</div>,
+          // },
           {
             path: '*',
             loader: () => redirect('summary'),

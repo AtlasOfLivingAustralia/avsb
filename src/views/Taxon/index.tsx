@@ -18,9 +18,8 @@ import { Taxon as TaxonType } from '#/api/sources/taxon';
 
 function Taxon() {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const data = useLoaderData() as TaxonType;
-  const currentRoute = pathname.substring(pathname.lastIndexOf('/') + 1);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -67,7 +66,7 @@ function Taxon() {
           </Menu>
         </Group>
       </Container>
-      <Tabs variant='outline' mt='md' radius='sm' value={currentRoute}>
+      <Tabs variant='outline' mt='md' radius='sm' value={pathname.split('/')[3]}>
         <Tabs.List>
           <Group
             px='md'
@@ -78,7 +77,7 @@ function Taxon() {
               marginRight: 'auto',
             }}
           >
-            {['Summary', 'Trials', 'Media', 'More'].map((tabKey) => (
+            {['Summary', 'Accessions', 'Trials', 'Media'].map((tabKey) => (
               <Tabs.Tab
                 key={tabKey}
                 value={tabKey.toLowerCase()}

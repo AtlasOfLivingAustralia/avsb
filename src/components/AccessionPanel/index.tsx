@@ -1,5 +1,25 @@
-import { Box, Paper, Grid, Group, Text, ThemeIcon, Timeline, Stack } from '@mantine/core';
-import { IconHandStop, IconLocation, IconMap2, IconMapPin, IconPackage } from '@tabler/icons';
+import {
+  Box,
+  Paper,
+  Grid,
+  Group,
+  Text,
+  ThemeIcon,
+  Timeline,
+  Stack,
+  Breadcrumbs,
+  Anchor,
+  Button,
+} from '@mantine/core';
+import {
+  IconArrowBackUp,
+  IconHandStop,
+  IconLocation,
+  IconMap2,
+  IconMapPin,
+  IconPackage,
+} from '@tabler/icons';
+import { Link, useOutletContext } from 'react-router-dom';
 
 // Project imports
 import { Event, SeedBankAccession } from '#/api/graphql/types';
@@ -8,22 +28,56 @@ import Contact from '../Contact';
 import HerbariumLink from './components/HerbariumLink';
 import Map from '../Map';
 import IconText from '../IconText';
-import { fields, longFields } from './details';
+import { fields, longFields } from './fields';
 
 interface AccessionPanelProps {
+  event?: Event;
+  taxon?: string;
+}
+
+interface OutletProps {
   event: Event;
-  taxon: string;
 }
 
 const missingData = 'Not Supplied';
 
-function AccessionPanel({ event, taxon }: AccessionPanelProps) {
-  const accession = event.extensions?.seedbank as SeedBankAccession;
+function AccessionPanel({ event: eventProp, taxon }: AccessionPanelProps) {
+  const outlet = useOutletContext<OutletProps>();
+  const event = (eventProp || outlet.event) as Event;
+  const accession = event?.extensions?.seedbank as SeedBankAccession;
+
+  // if (!accession && !event)
+  //   throw new Error('Tried to render an AccessionPanel without accession data');
 
   return (
-    <Grid gutter='xl'>
+    <Grid gutter='xl' pb='xl'>
+      {outlet.event && (
+        <Grid.Col span={12}>
+          <Paper p='sm' mb='lg' withBorder>
+            <Group position='apart'>
+              <Breadcrumbs>
+                <Anchor weight='bold' size='sm' component={Link} to='..'>
+                  Accessions
+                </Anchor>
+                <Text weight='bold' size='sm'>
+                  {accession?.accessionNumber || 'N/A'}
+                </Text>
+              </Breadcrumbs>
+              <Button
+                variant='subtle'
+                size='xs'
+                component={Link}
+                to='..'
+                leftIcon={<IconArrowBackUp size={16} />}
+              >
+                Go Back
+              </Button>
+            </Group>
+          </Paper>
+        </Grid.Col>
+      )}
       <Grid.Col span={12}>
-        <Grid gutter='xs'>
+        <Grid gutter='xl'>
           {fields
             // .filter(({ key }) => Boolean(accession[key]))
             .map(({ key, name, unit, icon: Icon }) => (
@@ -36,9 +90,9 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
                     <Text color='dimmed' size='xs'>
                       {name}
                     </Text>
-                    {getIsPresent(accession[key]) ? (
+                    {getIsPresent(accession?.[key]) ? (
                       <Text size='xl' weight='bold'>
-                        {accession[key]}
+                        {accession?.[key]}
                         {unit && unit}
                       </Text>
                     ) : (
@@ -64,9 +118,9 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
                     <Text color='dimmed' size='xs'>
                       {name}
                     </Text>
-                    {getIsPresent(accession[key]) ? (
+                    {getIsPresent(accession?.[key]) ? (
                       <Text size='sm' weight='bold'>
-                        {accession[key]}
+                        {accession?.[key]}
                       </Text>
                     ) : (
                       <Text size='sm' weight='bold' color='dimmed'>
@@ -85,7 +139,7 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
             <Map
               width='100%'
               height={350}
-              center={[event.decimalLatitude, event.decimalLongitude]}
+              center={[event.decimalLongitude, event.decimalLatitude]}
             />
           )}
           <Stack spacing='xs' p='md'>
@@ -111,13 +165,13 @@ function AccessionPanel({ event, taxon }: AccessionPanelProps) {
               <Timeline.Item bullet={<IconHandStop size={18} />}>
                 <Text>Seed Collected</Text>
                 <Text color='dimmed' size='xs'>
-                  {accession.dateCollected || missingData}
+                  {accession?.dateCollected || missingData}
                 </Text>
               </Timeline.Item>
               <Timeline.Item bullet={<IconPackage size={18} />}>
                 <Text>Seed In Storage</Text>
                 <Text color='dimmed' size='xs'>
-                  {accession.dateInStorage || missingData}
+                  {accession?.dateInStorage || missingData}
                 </Text>
               </Timeline.Item>
             </Timeline>

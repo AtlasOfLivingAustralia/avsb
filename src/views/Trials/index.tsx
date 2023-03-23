@@ -1,17 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { useState } from 'react';
 import { SeedBankTrial } from '#/api/graphql/types';
-import {
-  Box,
-  Button,
-  Card,
-  Center,
-  Collapse,
-  Paper,
-  Table,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
+import { Box, Button, Card, Center, Collapse, Table, Text, useMantineTheme } from '@mantine/core';
 import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
 import { TrialDetails } from '#/components';
 import { Fragment, useState } from 'react';
@@ -40,13 +30,13 @@ function Trials() {
   }
 
   return (
-    <Card withBorder>
+    <Card withBorder p={0}>
       <Table highlightOnHover>
         <thead>
           <tr>
-            <th>Catalogue</th>
-            <th>Date Tested</th>
+            <th style={{ paddingLeft: 25 }}>Catalogue</th>
             <th>Institution</th>
+            <th>Date Tested</th>
             <th>Test Length</th>
             <th>Germinate Rate</th>
             <th>Germinated</th>
@@ -94,11 +84,11 @@ function Trials() {
                     )
                   }
                 >
-                  <td>{trial?.accessionNumber}</td>
+                  <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
                   <td>
                     {event.day}/{event.month}/{event.year}
                   </td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
                   <td>
                     {getIsPresent(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
                   </td>
@@ -113,16 +103,20 @@ function Trials() {
                     {getIsPresent(trial?.adjustedGerminationPercent) &&
                       `${trial?.adjustedGerminationPercent}%`}
                   </td>
-                  <td align='right'>
-                    <IconChevronDown
-                      style={{
-                        transition: 'transform ease-out 200ms',
-                        transform: selected.includes(event.eventID)
-                          ? 'rotate(180deg)'
-                          : 'rotate(0deg)',
-                      }}
-                      size={16}
-                    />
+                  <td align='right' width={85}>
+                    <div
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}
+                    >
+                      <IconChevronDown
+                        style={{
+                          transition: 'transform ease-out 200ms',
+                          transform: selected.includes(event.eventID)
+                            ? 'rotate(180deg)'
+                            : 'rotate(0deg)',
+                        }}
+                        size={16}
+                      />
+                    </div>
                   </td>
                 </tr>
                 <tr>
@@ -137,9 +131,7 @@ function Trials() {
                   >
                     <Collapse in={selected.includes(event.eventID)}>
                       <Box p='md'>
-                        {/* <Paper p='sm' withBorder> */}
                         <TrialDetails event={event} />
-                        {/* </Paper> */}
                       </Box>
                     </Collapse>
                   </td>

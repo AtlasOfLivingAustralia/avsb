@@ -1,5 +1,5 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Box, Grid, Group, Paper, Text, ThemeIcon, Title } from '@mantine/core';
+import { Fragment } from 'react';
+import { Box, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
 import { IconNotes } from '@tabler/icons';
 
 import { Event, SeedBankTrial } from '#/api/graphql/types';
@@ -27,7 +27,7 @@ interface TrialDetailsProps {
 
 function TrialDetails({ event }: TrialDetailsProps) {
   const trial = event.extensions?.seedbank as SeedBankTrial;
-  const { data, error, update } = useGQLQuery<TreatmentQuery>(
+  const { data } = useGQLQuery<TreatmentQuery>(
     queries.QUERY_EVENT_TREATMENTS,
     {
       predicate: {
@@ -85,7 +85,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
           </IconText>
         )}
       </Grid.Col>
-      {treatments && (
+      {treatments && treatments.length > 0 && (
         <Grid.Col span={12}>
           <Paper withBorder p='md' mt='sm'>
             {treatments.map((treatment, num) => (

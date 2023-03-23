@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@mantine/core';
 import { IconExternalLink } from '@tabler/icons';
+import { useParams } from 'react-router-dom';
 
 interface ContactProps {
   accession: string;
-  taxon: string;
+  taxon?: string;
 }
 
 function HerbariumLink({ accession, taxon }: ContactProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const [uuid, setUuid] = useState<string | null>(null);
+  const { guid } = useParams();
 
   useEffect(() => {
-    async function getAccession() {
+    async function getAccession(taxonID: string) {
       // Split the accession number into parts
       const catalogCode = accession.substring(0, accession.indexOf(' ')).toUpperCase();
       const catalogNumber = accession.substring(
@@ -25,7 +27,7 @@ function HerbariumLink({ accession, taxon }: ContactProps) {
       const params = new URLSearchParams({
         q: `catalogue_number:${catalogCode} "${catalogNumber}"`,
         qc: 'data_hub_uid:dh9',
-        fq: `lsid:${taxon}`,
+        fq: `lsid:${taxonID}`,
         disableAllQualityFilters: 'true',
       });
 
@@ -43,8 +45,12 @@ function HerbariumLink({ accession, taxon }: ContactProps) {
       setLoading(false);
     }
 
-    getAccession();
-  }, [accession, taxon]);
+    const taxonID = taxon || guid;
+    if (taxonID) getAccession(taxonID);
+  }, [accession, taxon, guid]);
+
+  // Don't render anything if no taxon ID is supplied
+  if (!(taxon || guid)) return null;
 
   return (
     <Button

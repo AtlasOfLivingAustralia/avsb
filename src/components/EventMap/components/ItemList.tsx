@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
   Transition,
+  UnstyledButton,
   useMantineTheme,
 } from '@mantine/core';
 
@@ -33,6 +34,7 @@ interface ItemListProps {
 function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
   const theme = useMantineTheme();
   const { results, total } = events?.data?.eventSearch?.documents || {};
+  // const { results, total } = { results: null, total: 0 };
 
   return (
     <Transition mounted={open} transition={slideX}>
@@ -60,21 +62,33 @@ function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
             </Group>
             <Divider />
             <ScrollArea type='auto' h={contentHeight || 300} offsetScrollbars>
-              <Stack p='xs' spacing='xs'>
+              <Stack spacing={0}>
                 {!results &&
                   [0, 1, 2, 3, 4].map((key) => (
-                    <Skeleton key={key}>
-                      <Text size='sm'>Testing</Text>
-                    </Skeleton>
+                    <Box px='xs' pt='xs' mb='xs'>
+                      <Skeleton key={key}>
+                        <Text size='sm'>Testing</Text>
+                        <Text size='sm'>More testing text that spans two lines</Text>
+                      </Skeleton>
+                    </Box>
                   ))}
                 {results &&
                   results.map((result: Event) => (
-                    <Box key={result.eventID}>
+                    <UnstyledButton
+                      p='xs'
+                      key={result.eventID}
+                      sx={{
+                        '&:hover': {
+                          backgroundColor:
+                            theme.colorScheme === 'dark' ? theme.colors.dark[4] : 'white',
+                        },
+                      }}
+                    >
                       <Text size='sm'>{result.eventID}</Text>
                       <Text size='xs' color='dimmed'>
                         {result.datasetTitle}
                       </Text>
-                    </Box>
+                    </UnstyledButton>
                   ))}
               </Stack>
             </ScrollArea>

@@ -1,5 +1,70 @@
 const QUERY_EVENT = '';
 
+const QUERY_EVENT_ACCESSIONS = `
+query list($predicate: Predicate, $limit: Int){
+  eventSearch(
+    size: $limit
+    predicate: $predicate
+    ) {
+    documents {
+      results {
+        eventID
+        parentEventID
+        locality
+        year
+        month
+        day
+        datasetTitle
+        datasetKey
+        country
+        decimalLatitude
+        decimalLongitude
+        stateProvince
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementUnit
+          measurementValue
+          measurementMethod
+          measurementRemarks
+          measurementAccuracy
+          measurementDeterminedDate
+        }
+        extensions {
+          seedbank {
+            accessionNumber
+            seedPerGram
+            formInStorage
+            sampleWeightInGrams
+            sampleSize
+            collectionFillRate
+            purityDebrisPercent
+            purityPercent
+            dateCollected
+            dateInStorage
+            storageTempInCelsius
+            relativeHumidityPercent
+            publicationDOI
+            preStorageTreatmentNotesHistory
+            primaryStorageSeedBank
+            degreeOfEstablishment
+            primaryCollector
+            plantForm
+            duplicatesReplicates
+            collectionPermitNumber
+            thousandSeedWeightInGrams
+            numberPlantsSampled
+            storageBehaviour
+            embryoType
+            dormancyClass
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
 const QUERY_EVENT_TRIALS = `
 query list($predicate: Predicate, $limit: Int){
   eventSearch(
@@ -15,8 +80,6 @@ query list($predicate: Predicate, $limit: Int){
         month
         day
         datasetTitle
-        country
-        stateProvince
         measurementOrFacts {
           measurementID
           measurementType
@@ -56,13 +119,10 @@ query list($predicate: Predicate){
       results {
         eventID
         parentEventID
-        locality
         year
         month
         day
         datasetTitle
-        country
-        stateProvince
         measurementOrFacts {
           measurementID
           measurementType
@@ -138,6 +198,35 @@ query point($predicate: Predicate){
         }
         measurementOrFactTypes
         year
+        extensions {
+          seedbank {
+            accessionNumber
+            seedPerGram
+            formInStorage
+            sampleWeightInGrams
+            sampleSize
+            collectionFillRate
+            purityDebrisPercent
+            purityPercent
+            dateCollected
+            dateInStorage
+            storageTempInCelsius
+            relativeHumidityPercent
+            publicationDOI
+            preStorageTreatmentNotesHistory
+            primaryStorageSeedBank
+            degreeOfEstablishment
+            primaryCollector
+            plantForm
+            duplicatesReplicates
+            collectionPermitNumber
+            thousandSeedWeightInGrams
+            numberPlantsSampled
+            storageBehaviour
+            embryoType
+            dormancyClass
+          }
+        }
       }
     }
   }
@@ -192,6 +281,7 @@ const PRED_DATA_RESOURCE = {
 
 export default {
   QUERY_EVENT,
+  QUERY_EVENT_ACCESSIONS,
   QUERY_EVENT_TRIALS,
   QUERY_EVENT_TREATMENTS,
   QUERY_EVENT_MAP,

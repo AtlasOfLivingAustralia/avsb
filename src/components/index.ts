@@ -8,6 +8,7 @@ export { default as IconText } from './IconText';
 export { default as HerbariumLink } from './AccessionPanel/components/HerbariumLink';
 export { default as TaxonSearchInput } from './TaxonSearchInput';
 export { default as AccessionPanel } from './AccessionPanel';
+export { default as AccessionDetails } from './AccessionDetails';
 export { default as TrialPanel } from './TrialPanel';
 export { default as TrialDetails } from './TrialDetails';
 export { default as TreatmentCard } from './TreatmentCard';
