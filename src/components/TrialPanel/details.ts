@@ -45,7 +45,7 @@ const fields: TrialDetail[] = [
   //   icon: IconScale,
   // },
   // {
-  //   key: 'thousandSeedWeightInGrams',
+  //   key: 'thousandSeedWeight',
   //   name: 'Thousand Seed Weight',
   //   icon: IconBox,
   //   unit: ' gms',
@@ -57,7 +57,7 @@ const fields: TrialDetail[] = [
   //   unit: '%',
   // },
   // {
-  //   key: 'purityPercent',
+  //   key: 'purityPercentage',
   //   name: 'Purity',
   //   icon: IconPercentage,
   //   unit: '%',
@@ -69,7 +69,7 @@ const fields: TrialDetail[] = [
   //   unit: '%',
   // },
   // {
-  //   key: 'storageTempInCelsius',
+  //   key: 'storageTemperatureInCelsius',
   //   name: 'Storage Temperature',
   //   icon: IconTemperature,
   //   unit: '° C',

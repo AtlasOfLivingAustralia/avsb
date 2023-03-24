@@ -38,12 +38,12 @@ query list($predicate: Predicate, $limit: Int){
             sampleWeightInGrams
             sampleSize
             collectionFillRate
-            purityDebrisPercent
-            purityPercent
+            purityDebrisPercentage
+            purityPercentage
             dateCollected
             dateInStorage
-            storageTempInCelsius
-            relativeHumidityPercent
+            storageTemperatureInCelsius
+            relativeHumidityPercentage
             publicationDOI
             preStorageTreatmentNotesHistory
             primaryStorageSeedBank
@@ -52,7 +52,7 @@ query list($predicate: Predicate, $limit: Int){
             plantForm
             duplicatesReplicates
             collectionPermitNumber
-            thousandSeedWeightInGrams
+            thousandSeedWeight
             numberPlantsSampled
             storageBehaviour
             embryoType
@@ -96,8 +96,8 @@ query list($predicate: Predicate, $limit: Int){
             testDateStarted
             testLengthInDays
             numberGerminated
-            adjustedGerminationPercent
-            viabilityPercent
+            adjustedGerminationPercentage
+            viabilityPercentage
             numberFull
             numberEmpty
             numberTested
@@ -137,8 +137,8 @@ query list($predicate: Predicate){
           seedbank {
             pretreatment
             mediaSubstrate
-            nightTempInCelcius
-            dayTempInCelcius
+            nightTemperatureInCelsius
+            dayTemperatureInCelsius
             darkHours
             lightHours
           }
@@ -206,12 +206,12 @@ query point($predicate: Predicate){
             sampleWeightInGrams
             sampleSize
             collectionFillRate
-            purityDebrisPercent
-            purityPercent
+            purityDebrisPercentage
+            purityPercentage
             dateCollected
             dateInStorage
-            storageTempInCelsius
-            relativeHumidityPercent
+            storageTemperatureInCelsius
+            relativeHumidityPercentage
             publicationDOI
             preStorageTreatmentNotesHistory
             primaryStorageSeedBank
@@ -220,7 +220,7 @@ query point($predicate: Predicate){
             plantForm
             duplicatesReplicates
             collectionPermitNumber
-            thousandSeedWeightInGrams
+            thousandSeedWeight
             numberPlantsSampled
             storageBehaviour
             embryoType

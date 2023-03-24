@@ -16,7 +16,7 @@ interface TrialDetail {
 
 const fields: TrialDetail[] = [
   {
-    key: 'viabilityPercent',
+    key: 'viabilityPercentage',
     name: 'Viability',
     icon: IconPercentage,
     unit: '%',

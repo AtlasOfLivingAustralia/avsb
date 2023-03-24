@@ -10,9 +10,14 @@ import {
   Breadcrumbs,
   Anchor,
   Button,
+  Title,
+  Spoiler,
+  Divider,
 } from '@mantine/core';
 import {
   IconArrowBackUp,
+  IconChevronDown,
+  IconChevronUp,
   IconHandStop,
   IconLocation,
   IconMap2,
@@ -29,6 +34,7 @@ import HerbariumLink from './components/HerbariumLink';
 import Map from '../Map';
 import IconText from '../IconText';
 import { fields, longFields } from './fields';
+import MeasurementCard from '../MeasurementCard';
 
 interface AccessionPanelProps {
   event?: Event;
@@ -60,7 +66,7 @@ function AccessionPanel({ event: eventProp, taxon }: AccessionPanelProps) {
                   Accessions
                 </Anchor>
                 <Text weight='bold' size='sm'>
-                  {accession?.accessionNumber || 'N/A'}
+                  {accession?.accessionNumber || 'Unknown'}
                 </Text>
               </Breadcrumbs>
               <Button
@@ -133,6 +139,47 @@ function AccessionPanel({ event: eventProp, taxon }: AccessionPanelProps) {
             ))}
         </Grid>
       </Grid.Col>
+      {(event.measurementOrFacts?.length || 0) > 0 && (
+        <Grid.Col span={12}>
+          <Title order={4}>Additional Data</Title>
+          <Spoiler
+            maxHeight={90}
+            hideLabel={
+              <Divider
+                label={
+                  <>
+                    <IconChevronUp size={14} />
+                    <Box ml={5}>Show Less</Box>
+                  </>
+                }
+                labelPosition='center'
+              />
+            }
+            showLabel={
+              <Divider
+                label={
+                  <>
+                    <IconChevronDown size={14} />
+                    <Box ml={5}>Show More</Box>
+                  </>
+                }
+                labelPosition='center'
+              />
+            }
+            styles={{
+              control: {
+                width: '100%',
+              },
+            }}
+          >
+            <Group mt='md' pb='sm'>
+              {event?.measurementOrFacts?.map((mof) => (
+                <MeasurementCard key={mof.measurementID} measurement={mof} />
+              ))}
+            </Group>
+          </Spoiler>
+        </Grid.Col>
+      )}
       <Grid.Col sm={8} md={8} lg={8}>
         <Paper withBorder>
           {event.decimalLatitude && event.decimalLongitude && (

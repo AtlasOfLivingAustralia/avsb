@@ -91,13 +91,15 @@ function Accessions() {
                   <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
                   <td>{getIsPresent(accession?.dateCollected) && accession?.dateCollected}</td>
                   <td>
-                    {getIsPresent(accession?.thousandSeedWeightInGrams) &&
-                      `${accession?.thousandSeedWeightInGrams} gms`}
+                    {getIsPresent(accession?.thousandSeedWeight) &&
+                      `${accession?.thousandSeedWeight} gms`}
                   </td>
-                  <td>{getIsPresent(accession?.purityPercent) && `${accession.purityPercent}%`}</td>
                   <td>
-                    {getIsPresent(accession?.storageTempInCelsius) &&
-                      `${accession?.storageTempInCelsius}°C`}
+                    {getIsPresent(accession?.purityPercentage) && `${accession.purityPercentage}%`}
+                  </td>
+                  <td>
+                    {getIsPresent(accession?.storageTemperatureInCelsius) &&
+                      `${accession?.storageTemperatureInCelsius}°C`}
                   </td>
                   <td>
                     {getIsPresent(accession?.primaryCollector) && accession?.primaryCollector}

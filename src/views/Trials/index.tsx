@@ -93,15 +93,15 @@ function Trials() {
                     {getIsPresent(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
                   </td>
                   <td>
-                    {getIsPresent(trial?.germinateRateInDays) &&
-                      `${trial.germinateRateInDays} days`}
+                    {getIsPresent(trial?.germinationRateInDays) &&
+                      `${trial.germinationRateInDays} days`}
                   </td>
                   <td>
                     {getIsPresent(trial?.numberGerminated) && `${trial?.numberGerminated} seeds`}
                   </td>
                   <td>
-                    {getIsPresent(trial?.adjustedGerminationPercent) &&
-                      `${trial?.adjustedGerminationPercent}%`}
+                    {getIsPresent(trial?.adjustedGerminationPercentage) &&
+                      `${trial?.adjustedGerminationPercentage}%`}
                   </td>
                   <td align='right' width={85}>
                     <div

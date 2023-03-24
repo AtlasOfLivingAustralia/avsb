@@ -44,12 +44,12 @@ interface SeedBankAccession {
   sampleWeightInGrams?: number | null;
   sampleSize?: number | null;
   collectionFillRate?: string | null;
-  purityDebrisPercent?: number | null;
-  purityPercent?: number | null;
+  purityDebrisPercentage?: number | null;
+  purityPercentage?: number | null;
   dateCollected?: string | null;
   dateInStorage?: string | null;
-  storageTempInCelsius?: number | null;
-  relativeHumidityPercent?: number | null;
+  storageTemperatureInCelsius?: number | null;
+  relativeHumidityPercentage?: number | null;
   publicationDOI?: string | null;
   preStorageTreatmentNotesHistory?: string | null;
   primaryStorageSeedBank?: string | null;
@@ -58,7 +58,7 @@ interface SeedBankAccession {
   plantForm?: string | null;
   duplicatesReplicates?: string | null;
   collectionPermitNumber?: string | null;
-  thousandSeedWeightInGrams?: number | null;
+  thousandSeedWeight?: number | null;
   numberPlantsSampled?: string | null;
   storageBehaviour?: string | null;
   embryoType?: string | null;
@@ -71,9 +71,9 @@ interface SeedBankTrial {
   testDateStarted?: string | null;
   testLengthInDays?: string | null;
   numberGerminated?: number | null;
-  germinateRateInDays?: number | null;
-  adjustedGerminationPercent?: number | null;
-  viabilityPercent?: number | null;
+  germinationRateInDays?: number | null;
+  adjustedGerminationPercentage?: number | null;
+  viabilityPercentage?: number | null;
   numberFull?: number | null;
   numberEmpty?: number | null;
   numberTested?: number | null;
@@ -84,8 +84,8 @@ interface SeedBankTreatment {
   id?: string;
   pretreatment?: string | null;
   mediaSubstrate?: string | null;
-  nightTempInCelcius?: number | null;
-  dayTempInCelcius?: number | null;
+  nightTemperatureInCelsius?: number | null;
+  dayTemperatureInCelsius?: number | null;
   darkHours?: number | null;
   lightHours?: number | null;
 }
@@ -216,6 +216,7 @@ export type {
   DistinctTaxon,
   Event,
   EventSearchResult,
+  Measurement,
   SeedBankAccession,
   SeedBankTrial,
   SeedBankTreatment,

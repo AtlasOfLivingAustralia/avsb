@@ -9,6 +9,7 @@ export { default as HerbariumLink } from './AccessionPanel/components/HerbariumL
 export { default as TaxonSearchInput } from './TaxonSearchInput';
 export { default as AccessionPanel } from './AccessionPanel';
 export { default as AccessionDetails } from './AccessionDetails';
+export { default as MeasurementCard } from './MeasurementCard';
 export { default as TrialPanel } from './TrialPanel';
 export { default as TrialDetails } from './TrialDetails';
 export { default as TreatmentCard } from './TreatmentCard';
