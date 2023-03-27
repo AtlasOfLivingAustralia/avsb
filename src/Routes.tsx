@@ -38,7 +38,7 @@ const routes = createBrowserRouter([
             path: 'summary',
             element: <SummaryView />,
             loader: async ({ params }) => {
-              const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_MAP_WITH_DATA, {
+              const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_MAP, {
                 predicate: {
                   type: 'and',
                   predicates: [
@@ -82,7 +82,7 @@ const routes = createBrowserRouter([
                     },
                   ],
                 },
-                size: 50,
+                size: 100,
               });
               return data.eventSearch.documents.results;
             },

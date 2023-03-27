@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActionIcon, ColorScheme, Tooltip, useMantineTheme } from '@mantine/core';
 import { IconMaximize } from '@tabler/icons';
+import { useParams } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 
 // Project-imports
@@ -28,13 +29,36 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   // Map refs
   const mapContainer = useRef<any | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const params = useParams();
 
   // Map state & data
   const [styleLoaded, setStyleLoaded] = useState<boolean>(false);
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
   const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery(
     queries.QUERY_EVENT_MAP_POINT,
-    {},
+    {
+      predicate: {
+        type: 'and',
+        predicates: [
+          queries.PRED_DATA_RESOURCE,
+          {
+            type: 'equals',
+            key: 'eventType',
+            value: 'Accession',
+          },
+          ...(params.guid
+            ? [
+                {
+                  type: 'in',
+                  key: 'taxonKey',
+                  values: [params.guid],
+                },
+              ]
+            : []),
+        ],
+      },
+      size: 50,
+    },
     { lazy: true },
   );
 

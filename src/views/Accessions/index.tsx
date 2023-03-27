@@ -87,7 +87,7 @@ function Accessions() {
                     }
                   }}
                 >
-                  <td style={{ paddingLeft: 25 }}>{accession?.accessionNumber}</td>
+                  <td style={{ paddingLeft: 25 }}>{accession?.accessionNumber || event.eventID}</td>
                   <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
                   <td>{getIsPresent(accession?.dateCollected) && accession?.dateCollected}</td>
                   <td>

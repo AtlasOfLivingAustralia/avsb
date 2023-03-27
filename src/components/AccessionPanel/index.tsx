@@ -24,7 +24,7 @@ import {
   IconMapPin,
   IconPackage,
 } from '@tabler/icons';
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 
 // Project imports
 import { Event, SeedBankAccession } from '#/api/graphql/types';
@@ -51,6 +51,7 @@ function AccessionPanel({ event: eventProp, taxon }: AccessionPanelProps) {
   const outlet = useOutletContext<OutletProps>();
   const event = (eventProp || outlet.event) as Event;
   const accession = event?.extensions?.seedbank as SeedBankAccession;
+  const navigate = useNavigate();
 
   // if (!accession && !event)
   //   throw new Error('Tried to render an AccessionPanel without accession data');
@@ -72,8 +73,7 @@ function AccessionPanel({ event: eventProp, taxon }: AccessionPanelProps) {
               <Button
                 variant='subtle'
                 size='xs'
-                component={Link}
-                to='..'
+                onClick={() => navigate(-1)}
                 leftIcon={<IconArrowBackUp size={16} />}
               >
                 Go Back

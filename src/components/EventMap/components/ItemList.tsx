@@ -14,7 +14,8 @@ import {
 } from '@mantine/core';
 
 import { IconX } from '@tabler/icons';
-import { Event } from '#/api/graphql/types';
+import { Event, SeedBankAccession } from '#/api/graphql/types';
+import { Link } from 'react-router-dom';
 
 const slideX = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -65,31 +66,39 @@ function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
               <Stack spacing={0}>
                 {!results &&
                   [0, 1, 2, 3, 4].map((key) => (
-                    <Box px='xs' pt='xs' mb='xs'>
-                      <Skeleton key={key}>
+                    <Box key={key} px='xs' pt='xs' mb='xs'>
+                      <Skeleton>
                         <Text size='sm'>Testing</Text>
                         <Text size='sm'>More testing text that spans two lines</Text>
                       </Skeleton>
                     </Box>
                   ))}
                 {results &&
-                  results.map((result: Event) => (
-                    <UnstyledButton
-                      p='xs'
-                      key={result.eventID}
-                      sx={{
-                        '&:hover': {
-                          backgroundColor:
-                            theme.colorScheme === 'dark' ? theme.colors.dark[4] : 'white',
-                        },
-                      }}
-                    >
-                      <Text size='sm'>{result.eventID}</Text>
-                      <Text size='xs' color='dimmed'>
-                        {result.datasetTitle}
-                      </Text>
-                    </UnstyledButton>
-                  ))}
+                  results.map((result: Event) => {
+                    const accession = result.extensions?.seedbank as SeedBankAccession;
+                    console.log(result.eventID);
+                    return (
+                      <UnstyledButton
+                        component={Link}
+                        to={`../accessions/${result.eventID}`}
+                        p='xs'
+                        key={result.eventID}
+                        sx={{
+                          '&:hover': {
+                            backgroundColor:
+                              theme.colorScheme === 'dark' ? theme.colors.dark[4] : 'white',
+                          },
+                        }}
+                      >
+                        <Text size='sm'>
+                          {accession?.accessionNumber || `Event ${result.eventID}`}
+                        </Text>
+                        <Text size='xs' color='dimmed'>
+                          {result.datasetTitle}
+                        </Text>
+                      </UnstyledButton>
+                    );
+                  })}
               </Stack>
             </ScrollArea>
           </Paper>
