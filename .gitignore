@@ -33,3 +33,6 @@ dist-ssr
 
 # Bundle stats
 stats.html
+
+# Local configuration
+config/.env.development.local
