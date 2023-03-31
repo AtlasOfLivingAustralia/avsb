@@ -170,6 +170,7 @@ Resources:
                 ProjectName: !Ref BuildAvsb
                 EnvironmentVariables: '[
                   { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
+                  { "name":"ENVIRONMENT", "value":"#{ExportConfigNS.ENVIRONMENT}" },
                   { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" }
                   ]'
               Namespace: BuildAvsbNS
