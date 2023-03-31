@@ -134,10 +134,6 @@ const routes = createBrowserRouter([
               return data.eventSearch.documents.results;
             },
           },
-          // {
-          //   path: 'more',
-          //   element: <div>More</div>,
-          // },
           {
             path: '*',
             loader: () => redirect('summary'),

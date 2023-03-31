@@ -57,7 +57,7 @@ function Header() {
           <ActionIcon variant='filled' radius='xl' size={38} onClick={() => toggleColorScheme()}>
             {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
           </ActionIcon>
-          {auth.isAuthenticated ? (
+          {/* {auth.isAuthenticated ? (
             <Menu shadow='md' position='bottom-end'>
               <Menu.Target>
                 <UnstyledButton>
@@ -86,7 +86,7 @@ function Header() {
             <Button variant='light' onClick={() => auth.signinRedirect()}>
               Sign In
             </Button>
-          )}
+          )} */}
         </Group>
       </Group>
     </MantineHeader>
