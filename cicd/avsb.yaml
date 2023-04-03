@@ -77,6 +77,11 @@ Resources:
         Aliases:
           - !Sub '${pSubDomain}.${pHostedZone}'
         Comment: !Sub CF Distribution for the AVSB site ${pEnvironment}
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ErrorCachingMinTTL: 10
+            ResponseCode: 200
+            ResponsePagePath: /index.html
         DefaultCacheBehavior:
           AllowedMethods:
             - GET

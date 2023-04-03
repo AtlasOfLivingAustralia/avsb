@@ -29,15 +29,12 @@ function Accessions() {
   if (accessionData.length === 0) {
     return (
       <Center>
-        <Text>No trial data found</Text>
+        <Text>No accession data found</Text>
       </Center>
     );
   }
 
-  const outletAccession = accessionData.find(({ eventID }) => params.accession === eventID);
-  if (outletAccession) {
-    return <Outlet context={{ event: outletAccession }} />;
-  }
+  if (params.accession) return <Outlet />;
 
   return (
     <Card withBorder p={0}>

@@ -76,7 +76,6 @@ function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
                 {results &&
                   results.map((result: Event) => {
                     const accession = result.extensions?.seedbank as SeedBankAccession;
-                    console.log(result.eventID);
                     return (
                       <UnstyledButton
                         component={Link}

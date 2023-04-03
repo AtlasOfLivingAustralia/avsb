@@ -24,7 +24,7 @@ import {
   IconMapPin,
   IconPackage,
 } from '@tabler/icons';
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 
 // Project imports
 import { Event, SeedBankAccession } from '#/api/graphql/types';
@@ -37,19 +37,13 @@ import { fields, longFields } from './fields';
 import MeasurementCard from '../MeasurementCard';
 
 interface AccessionPanelProps {
-  event?: Event;
   taxon?: string;
-}
-
-interface OutletProps {
-  event: Event;
 }
 
 const missingData = 'Not Supplied';
 
-function AccessionPanel({ event: eventProp, taxon }: AccessionPanelProps) {
-  const outlet = useOutletContext<OutletProps>();
-  const event = (eventProp || outlet.event) as Event;
+function AccessionPanel({ taxon }: AccessionPanelProps) {
+  const event = useLoaderData() as Event;
   const accession = event?.extensions?.seedbank as SeedBankAccession;
   const navigate = useNavigate();
 
@@ -58,7 +52,7 @@ function AccessionPanel({ event: eventProp, taxon }: AccessionPanelProps) {
 
   return (
     <Grid gutter='xl' pb='xl'>
-      {outlet.event && (
+      {event && (
         <Grid.Col span={12}>
           <Paper p='sm' mb='lg' withBorder>
             <Group position='apart'>

@@ -90,6 +90,17 @@ const routes = createBrowserRouter([
               {
                 path: ':accession',
                 element: <AccessionPanel />,
+                loader: async ({ params }) => {
+                  const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_ACCESSIONS, {
+                    predicate: {
+                      type: 'equals',
+                      key: 'eventID',
+                      value: params.accession,
+                    },
+                    size: 1,
+                  });
+                  return data.eventSearch.documents.results[0];
+                },
               },
             ],
           },
