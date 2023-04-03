@@ -46,8 +46,8 @@ interface SeedBankAccession {
   collectionFillRate?: string | null;
   purityDebrisPercentage?: number | null;
   purityPercentage?: number | null;
-  dateCollected?: string | null;
-  dateInStorage?: string | null;
+  dateCollected?: number | null;
+  dateInStorage?: number | null;
   storageTemperatureInCelsius?: number | null;
   relativeHumidityPercentage?: number | null;
   publicationDOI?: string | null;

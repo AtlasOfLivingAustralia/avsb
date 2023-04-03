@@ -175,7 +175,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
         </Grid.Col>
       )}
       <Grid.Col sm={8} md={8} lg={8}>
-        <Paper withBorder>
+        <Paper h='100%' withBorder>
           {event.decimalLatitude && event.decimalLongitude && (
             <Map
               width='100%'
@@ -206,13 +206,17 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
               <Timeline.Item bullet={<IconHandStop size={18} />}>
                 <Text>Seed Collected</Text>
                 <Text color='dimmed' size='xs'>
-                  {accession?.dateCollected || missingData}
+                  {accession?.dateCollected
+                    ? new Date(accession.dateCollected).toLocaleDateString()
+                    : missingData}
                 </Text>
               </Timeline.Item>
               <Timeline.Item bullet={<IconPackage size={18} />}>
                 <Text>Seed In Storage</Text>
                 <Text color='dimmed' size='xs'>
-                  {accession?.dateInStorage || missingData}
+                  {accession?.dateInStorage
+                    ? new Date(accession.dateInStorage).toLocaleDateString()
+                    : missingData}
                 </Text>
               </Timeline.Item>
             </Timeline>
