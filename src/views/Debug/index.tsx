@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Text, Accordion, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { AccessionPanel, TaxonSearchInput, TreatmentCard } from '#/components';
+import { TaxonSearchInput, TreatmentCard } from '#/components';
 // import { useAPI } from '#/api';
 
 // Debug views
@@ -66,58 +66,6 @@ function Debug() {
                   dayTemperatureInCelsius: 10,
                   lightHours: 10,
                   darkHours: 14,
-                },
-              },
-            }}
-          />
-        </Accordion.Panel>
-      </Accordion.Item>
-      <Accordion.Item value='accession'>
-        <Accordion.Control>Accession</Accordion.Control>
-        <Accordion.Panel>
-          <AccessionPanel
-            taxon='https://id.biodiversity.org.au/node/apni/2920720'
-            event={{
-              eventID: 'ev123',
-              datasetKey: 'dr18699',
-              country: 'Australia',
-              countryCode: 'AU',
-              decimalLatitude: 137.591797,
-              decimalLongitude: -26.000092,
-              stateProvince: 'Queensland',
-              eventType: {
-                concept: 'Accession',
-                lineage: ['Accession'],
-              },
-              locality:
-                'This is a testing string showing the locality of the event, and it is going to be really long so I can see how it overflows',
-              extensions: {
-                seedbank: {
-                  id: 'ev123',
-                  accessionNumber: 'CANB 801450.6',
-                  seedPerGram: 100,
-                  formInStorage: 'seed',
-                  sampleWeightInGrams: 1.123,
-                  sampleSize: 30,
-                  purityPercentage: 90,
-                  purityDebrisPercentage: 91,
-                  dateCollected: '2018-02-01',
-                  dateInStorage: '2018-02-05',
-                  storageTemperatureInCelsius: 18,
-                  relativeHumidityPercentage: 13,
-                  publicationDOI: 'https://doi.org/1234567890',
-                  preStorageTreatmentNotesHistory: 'Moved from dry room to cryo',
-                  primaryStorageSeedBank: 'Australian National Botanical Gardens',
-                  degreeOfEstablishment: 'native',
-                  primaryCollector: 'John Appleseed',
-                  plantForm: 'tree',
-                  duplicatesReplicates: '1.5gm sent to MSB on 1/1/2019',
-                  collectionPermitNumber: 'PERM123',
-                  thousandSeedWeight: 1.23,
-                  numberPlantsSampled: '10-20',
-                  storageBehaviour: 'orthodox',
-                  embryoType: 'Unknown',
-                  dormancyClass: 'Not dormant',
                 },
               },
             }}
