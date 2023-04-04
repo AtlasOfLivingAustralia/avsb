@@ -7,7 +7,7 @@ import {
   IconDropletFilled,
   // IconLeaf,
   // IconLicense,
-  IconNotes,
+  // IconNotes,
   IconPercentage,
   // IconPlant2,
   IconScale,
@@ -15,7 +15,7 @@ import {
   // IconSchool,
   IconSeeding,
   // IconSquareDot,
-  // IconTemperature,
+  IconTemperature,
   IconUser,
   TablerIcon,
 } from '@tabler/icons';
@@ -69,12 +69,12 @@ const fields: AccessionDetail[] = [
     icon: IconChartPie,
     unit: '%',
   },
-  // {
-  //   key: 'storageTemperatureInCelsius',
-  //   name: 'Storage Temperature',
-  //   icon: IconTemperature,
-  //   unit: '° C',
-  // },
+  {
+    key: 'storageTemperatureInCelsius',
+    name: 'Storage Temperature',
+    icon: IconTemperature,
+    unit: '° C',
+  },
   {
     key: 'primaryStorageSeedBank',
     name: 'Storage Seed Bank',
@@ -85,11 +85,11 @@ const fields: AccessionDetail[] = [
     name: 'Collector',
     icon: IconUser,
   },
-  {
-    key: 'preStorageTreatmentNotesHistory',
-    name: 'Pre-Storage Treatment/History',
-    icon: IconNotes,
-  },
+  // {
+  //   key: 'preStorageTreatmentNotesHistory',
+  //   name: 'Pre-Storage Treatment/History',
+  //   icon: IconNotes,
+  // },
   // {
   //   key: 'plantForm',
   //   name: 'Plant Form',

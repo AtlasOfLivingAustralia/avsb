@@ -15,20 +15,16 @@ function TreatmentCard({ event }: TreatmentCardProps) {
 
   return (
     <>
-      {treatment?.pretreatment && (
-        <>
-          <IconText labelWidth={130} icon={IconTestPipe} title='Pre-Treatment'>
-            {treatment.pretreatment || 'Not Supplied'}
-          </IconText>{' '}
-          <Divider
-            my='sm'
-            sx={(theme) => ({
-              marginLeft: `calc(${theme.spacing.md} * -1)`,
-              marginRight: `calc(${theme.spacing.md} * -1)`,
-            })}
-          />
-        </>
-      )}
+      <IconText labelWidth={130} icon={IconTestPipe} title='Pre-Treatment'>
+        {treatment.pretreatment || 'Not Supplied'}
+      </IconText>{' '}
+      <Divider
+        my='sm'
+        sx={(theme) => ({
+          marginLeft: `calc(${theme.spacing.md} * -1)`,
+          marginRight: `calc(${theme.spacing.md} * -1)`,
+        })}
+      />
       <Grid gutter='xs'>
         {fields
           // .filter(({ key }) => Boolean(treatment[key]))
