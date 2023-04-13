@@ -21,7 +21,7 @@ function AccessionDetails({ event: eventProp }: AccessionDetailsProps) {
     <Grid gutter='xs'>
       {fields
         // .filter(({ key }) => Boolean(accession[key]))
-        .map(({ key, name, icon: Icon }) => (
+        .map(({ key, name, unit, icon: Icon }) => (
           <Grid.Col key={key} xs={12} sm={6} md={4} lg={4} xl={3}>
             <Group>
               <ThemeIcon variant='light' size={28} radius='xl'>
@@ -34,6 +34,7 @@ function AccessionDetails({ event: eventProp }: AccessionDetailsProps) {
                 {getIsPresent(accession?.[key]) ? (
                   <Text size='sm' weight='bold'>
                     {accession?.[key]}
+                    {unit && unit}
                   </Text>
                 ) : (
                   <Text size='sm' weight='bold' color='dimmed'>

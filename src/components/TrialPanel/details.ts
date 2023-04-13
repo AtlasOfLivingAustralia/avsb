@@ -35,7 +35,7 @@ const fields: TrialDetail[] = [
   // },
   // {
   //   key: 'sampleSize',
-  //   name: 'Sample Size',
+  //   name: 'Collection Size',
   //   icon: IconBrandAsana,
   // },
   // {

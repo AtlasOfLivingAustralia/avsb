@@ -36,7 +36,7 @@ const fields: AccessionDetail[] = [
   },
   {
     key: 'sampleSize',
-    name: 'Sample Size',
+    name: 'Collection Size',
     icon: IconBrandAsana,
   },
   {
@@ -73,7 +73,7 @@ const fields: AccessionDetail[] = [
     key: 'storageTemperatureInCelsius',
     name: 'Storage Temperature',
     icon: IconTemperature,
-    unit: '° C',
+    unit: '°C',
   },
   {
     key: 'primaryStorageSeedBank',
