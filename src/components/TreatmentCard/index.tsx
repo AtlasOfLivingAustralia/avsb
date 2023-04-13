@@ -1,18 +1,16 @@
-import { Box, Card, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
+import { Box, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
 import { IconTestPipe } from '@tabler/icons';
-import { Event, SeedBankTreatment } from '#/api/graphql/types';
+import { SeedBankTreatment } from '#/api/graphql/types';
 import { getIsPresent } from '#/helpers';
 
 import IconText from '../IconText';
 import fields from './fields';
 
 interface TreatmentCardProps {
-  event: Event;
+  treatment: SeedBankTreatment;
 }
 
-function TreatmentCard({ event }: TreatmentCardProps) {
-  const treatment = event.extensions?.seedbank as SeedBankTreatment;
-
+function TreatmentCard({ treatment }: TreatmentCardProps) {
   return (
     <>
       <IconText labelWidth={130} icon={IconTestPipe} title='Pre-Treatment'>

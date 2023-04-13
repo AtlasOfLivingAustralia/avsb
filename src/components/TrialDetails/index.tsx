@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Box, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
 import { IconNotes } from '@tabler/icons';
 
-import { Event, SeedBankTrial } from '#/api/graphql/types';
+import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import { useGQLQuery } from '#/api';
 import { getIsPresent } from '#/helpers';
 import queries from '#/api/queries';
@@ -24,6 +24,23 @@ interface TreatmentQuery {
 interface TrialDetailsProps {
   event: Event;
 }
+
+const isValidTreatment = ({
+  pretreatment,
+  mediaSubstrate,
+  darkHours,
+  lightHours,
+  dayTemperatureInCelsius,
+  nightTemperatureInCelsius,
+}: SeedBankTreatment) =>
+  Boolean(
+    pretreatment ||
+      mediaSubstrate ||
+      darkHours ||
+      lightHours ||
+      dayTemperatureInCelsius ||
+      nightTemperatureInCelsius,
+  );
 
 function TrialDetails({ event }: TrialDetailsProps) {
   const trial = event.extensions?.seedbank as SeedBankTrial;
@@ -48,7 +65,10 @@ function TrialDetails({ event }: TrialDetailsProps) {
     },
     { lazy: false },
   );
-  const treatments = data?.data?.eventSearch.documents.results;
+  const events = data?.data?.eventSearch.documents.results;
+  const treatments = (
+    (events?.map(({ extensions }) => extensions?.seedbank) as SeedBankTreatment[]) || []
+  ).filter((treatment) => isValidTreatment(treatment));
 
   return (
     <Grid gutter='xs'>
@@ -89,7 +109,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
         <Grid.Col span={12}>
           <Paper withBorder p='md' mt='sm'>
             {treatments.map((treatment, num) => (
-              <Fragment key={treatment.eventID}>
+              <Fragment key={treatment.id}>
                 <Text
                   style={{ fontFamily: 'Lexend Deca, sans-serif' }}
                   mb='xs'
@@ -97,7 +117,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
                 >
                   Treatment {num + 1}
                 </Text>
-                <TreatmentCard event={treatment} />
+                <TreatmentCard treatment={treatment} />
               </Fragment>
             ))}
           </Paper>
