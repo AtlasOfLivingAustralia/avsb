@@ -14,3 +14,4 @@ export { default as TrialPanel } from './TrialPanel';
 export { default as TrialDetails } from './TrialDetails';
 export { default as TreatmentCard } from './TreatmentCard';
 export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as FilterPanel } from './FilterPanel';

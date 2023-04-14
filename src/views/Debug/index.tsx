@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Text, Accordion, Button, Card } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { TaxonSearchInput, TreatmentCard } from '#/components';
+import { FilterPanel, TaxonSearchInput, TreatmentCard } from '#/components';
 // import { useAPI } from '#/api';
 
 // Debug views
@@ -13,11 +13,34 @@ function Debug() {
   const navigate = useNavigate();
   // const api = useAPI();
   return (
-    <Accordion defaultValue='components'>
+    <Accordion defaultValue='filtering'>
       <Accordion.Item value='gql'>
         <Accordion.Control>GraphQL Querying</Accordion.Control>
         <Accordion.Panel>
           <DebugGQL />
+        </Accordion.Panel>
+      </Accordion.Item>
+      <Accordion.Item value='filtering'>
+        <Accordion.Control>Filtering</Accordion.Control>
+        <Accordion.Panel>
+          <FilterPanel
+            filters={[
+              { key: 'textTest', label: 'Text test', type: 'text', placeholder: 'E6' },
+              { key: 'numberTest', label: 'Number test', type: 'numeric' },
+              {
+                key: 'numberGteTest',
+                label: 'Number greater test',
+                type: 'numericGreaterLess',
+                placeholder: 'Enter thing here',
+              },
+              {
+                key: 'percentTest',
+                label: 'Percent test',
+                type: 'percent',
+                placeholder: 'Enter thing here',
+              },
+            ]}
+          />
         </Accordion.Panel>
       </Accordion.Item>
 
