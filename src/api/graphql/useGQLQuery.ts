@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import useMounted from '#/helpers/useMounted';
+
 import { performGQLQuery, Variables } from './performGQLQuery';
 
 interface QueryHookOptions {
@@ -9,11 +11,7 @@ function useGQLQuery<T>(query: string, initialVariables = {}, options: QueryHook
   const [variables, setVariables] = useState<Variables>(initialVariables);
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
-
-  // We have to make mount a number & compensate for the extra re-renders
-  // in development mode of React 18
-  // See https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
-  const mount = useRef<number>(import.meta.env.DEV ? -1 : 0);
+  const mounted = useMounted();
 
   useEffect(() => {
     async function runQuery() {
@@ -27,8 +25,7 @@ function useGQLQuery<T>(query: string, initialVariables = {}, options: QueryHook
       }
     }
 
-    if (!(options.lazy && mount.current < 1)) runQuery();
-    if (mount.current < 1) mount.current += 1;
+    if (!(options.lazy && !mounted)) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [variables, options.lazy]);
 

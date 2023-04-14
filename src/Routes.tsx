@@ -82,9 +82,9 @@ const routes = createBrowserRouter([
                     },
                   ],
                 },
-                size: 100,
+                size: 10,
               });
-              return data.eventSearch.documents.results;
+              return data.eventSearch.documents;
             },
             children: [
               {
@@ -138,7 +138,7 @@ const routes = createBrowserRouter([
                     },
                   ],
                 },
-                limit: 50,
+                limit: 10,
                 offset: 0,
               });
 

@@ -1,12 +1,16 @@
 const QUERY_EVENT = '';
 
 const QUERY_EVENT_ACCESSIONS = `
-query list($predicate: Predicate, $limit: Int){
+query list($predicate: Predicate, $size: Int, $from: Int){
   eventSearch(
-    size: $limit
+    size: $size
+    from: $from
     predicate: $predicate
     ) {
     documents {
+      size
+      from
+      total
       results {
         eventID
         parentEventID
@@ -66,12 +70,16 @@ query list($predicate: Predicate, $limit: Int){
 `;
 
 const QUERY_EVENT_TRIALS = `
-query list($predicate: Predicate, $limit: Int){
+query list($predicate: Predicate, $size: Int, $from: Int){
   eventSearch(
-    size: $limit
+    size: $size
+    from: $from
     predicate: $predicate
     ) {
     documents {
+      size
+      from
+      total
       results {
         eventID
         parentEventID
