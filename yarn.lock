@@ -917,7 +917,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mapbox-gl@npm:^2.6.0, @types/mapbox-gl@npm:^2.7.10":
+"@types/mapbox-gl@npm:^2.7.10":
   version: 2.7.10
   resolution: "@types/mapbox-gl@npm:2.7.10"
   dependencies:
@@ -1341,12 +1341,11 @@ __metadata:
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-react: ^7.32.2
     eslint-plugin-react-hooks: ^4.6.0
-    mapbox-gl: ^2.13.0
+    mapbox-gl: ^2.14.1
     oidc-client-ts: ^2.2.1
     prettier: ^2.8.4
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-map-gl: ^7.0.21
     react-oidc-context: ^2.2.2
     react-router-dom: ^6.8.2
     rollup-plugin-visualizer: ^5.9.0
@@ -3380,9 +3379,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mapbox-gl@npm:^2.13.0":
-  version: 2.13.0
-  resolution: "mapbox-gl@npm:2.13.0"
+"mapbox-gl@npm:^2.14.1":
+  version: 2.14.1
+  resolution: "mapbox-gl@npm:2.14.1"
   dependencies:
     "@mapbox/geojson-rewind": ^0.5.2
     "@mapbox/jsonlint-lines-primitives": ^2.0.2
@@ -3405,7 +3404,7 @@ __metadata:
     supercluster: ^7.1.5
     tinyqueue: ^2.0.3
     vt-pbf: ^3.1.3
-  checksum: de0de328f31ee207295e150d6f715a4f6da4afbda02905f64928aaca5736995f61def941623c8390aa29d5425ddd72e540487fdb2e00c3421e425090d59d4204
+  checksum: 7042c02696d1a5cd3fd36a468847fa4690d498352af5d54bdfe2f9c25049d5f8bfe3ae601838e76d3bdc1b18a2ada5c87d2e3fd88dbbe9b0291415629a72ee75
   languageName: node
   linkType: hard
 
@@ -3985,18 +3984,6 @@ __metadata:
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
-  languageName: node
-  linkType: hard
-
-"react-map-gl@npm:^7.0.21":
-  version: 7.0.21
-  resolution: "react-map-gl@npm:7.0.21"
-  dependencies:
-    "@types/mapbox-gl": ^2.6.0
-  peerDependencies:
-    mapbox-gl: "*"
-    react: ">=16.3.0"
-  checksum: 9c182fc0ab612d965baf53da5a977f06a466634f65932527f1ee447b7eac880c4abfc6c87572a8193664aa3c2d854243e4e37a421d7b22bb4a5f1419b547b250
   languageName: node
   linkType: hard
 
