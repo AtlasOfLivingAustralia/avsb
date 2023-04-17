@@ -13,6 +13,9 @@ import { FilterBar, FilterPanel } from '#/components';
 import { Predicate } from '#/components/FilterPanel';
 import AccessionTable from './components/AccessionTable';
 
+// Config
+import filters from './filters';
+
 function Accessions() {
   // State hooks
   const [page, setPage] = useState<number>(1);
@@ -42,6 +45,7 @@ function Accessions() {
               key: 'eventType',
               value: 'Accession',
             },
+            ...predicates,
           ],
         },
         size: 10,
@@ -52,20 +56,12 @@ function Accessions() {
 
     if (mounted) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, predicates]);
 
   const onRemovePredicate = (predicate: Predicate) => {
     setResetKey(`${predicate.key}-${Date.now()}`);
     setPredicates(predicates.filter(({ key }) => predicate.key !== key));
   };
-
-  if (events?.length === 0) {
-    return (
-      <Center>
-        <Text>No accession data found</Text>
-      </Center>
-    );
-  }
 
   if (params.accession) return <Outlet />;
 
@@ -88,26 +84,17 @@ function Accessions() {
       >
         <FilterPanel
           value={predicates}
-          filters={[
-            {
-              key: 'test',
-              label: 'test',
-              type: 'percent',
-            },
-            {
-              key: 'testText',
-              label: 'test',
-              type: 'text',
-            },
-          ]}
+          filters={filters}
           resetKey={resetKey}
-          onChange={(newPredicates) => {
+          onPredicates={(newPredicates) => {
             console.log(newPredicates);
             setPredicates(newPredicates);
           }}
+          mb='xl'
         />
       </Drawer>
       <FilterBar
+        filters={filters}
         predicates={predicates}
         onFiltersOpen={open}
         onRemove={onRemovePredicate}

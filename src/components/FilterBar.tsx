@@ -4,26 +4,46 @@ import { MouseEventHandler } from 'react';
 import { ActionIcon, Badge, Button, Divider, Group, GroupProps, Text, rem } from '@mantine/core';
 import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons';
 
-import { Predicate } from './FilterPanel';
+import { Filter, Predicate } from './FilterPanel';
 
-function getFilterValue(predicate: Predicate) {
-  const { value } = predicate;
+function getPredicateValue(predicate: Predicate) {
+  const { key, value } = predicate;
+
+  // Date handling
+  if (value && key.includes('date')) {
+    if (typeof value === 'object') {
+      if (value?.gte !== undefined && value?.lte !== undefined)
+        return `${new Date(value.gte).toLocaleDateString()}-${new Date(
+          value.lte,
+        ).toLocaleDateString()}`;
+      if (value?.gte !== undefined) return `>${new Date(value.gte).toLocaleDateString()}`;
+      if (value?.lte !== undefined) return `<${new Date(value.lte).toLocaleDateString()}`;
+    } else {
+      return new Date(value).toLocaleDateString();
+    }
+  }
+
   if (typeof value === 'object') {
     if (value?.gte !== undefined && value?.lte !== undefined) return `${value?.gte}-${value?.lte}`;
     if (value?.gte !== undefined) return `>${value?.gte}`;
-    if (value?.lte !== undefined) return `<${value?.gte}`;
+    if (value?.lte !== undefined) return `<${value?.lte}`;
   }
 
+  if (key.includes('date')) return new Date(value as number).toLocaleDateString();
   return `${value}`;
 }
 
 interface FilterBarProps extends GroupProps {
+  filters: Filter[];
   predicates: Predicate[];
   onFiltersOpen?: MouseEventHandler<HTMLButtonElement> | undefined;
   onRemove?: (predicate: Predicate) => void;
 }
 
-function FilterBar({ predicates, onFiltersOpen, onRemove, ...rest }: FilterBarProps) {
+function FilterBar({ filters, predicates, onFiltersOpen, onRemove, ...rest }: FilterBarProps) {
+  const getPredicateLabel = (key: string) =>
+    filters.find(({ key: filterKey }) => key === filterKey)?.label;
+
   return (
     <Group {...rest}>
       <Button
@@ -54,8 +74,8 @@ function FilterBar({ predicates, onFiltersOpen, onRemove, ...rest }: FilterBarPr
               </ActionIcon>
             }
           >
-            {predicate.key}:&nbsp;
-            {getFilterValue(predicate)}
+            {getPredicateLabel(predicate.key) || predicate.key}:&nbsp;
+            {getPredicateValue(predicate)}
           </Badge>
         ))
       ) : (

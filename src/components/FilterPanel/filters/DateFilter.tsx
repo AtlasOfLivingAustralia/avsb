@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Stack, Text, Group, Paper, SegmentedControl, NumberInput } from '@mantine/core';
-import { useDebouncedValue } from '@mantine/hooks';
+import { Stack, Text, Group, Paper, SegmentedControl } from '@mantine/core';
+import { DatePickerInput } from '@mantine/dates';
 import useMounted from '#/helpers/useMounted';
 
 import { FilterItemProps } from '..';
 
-function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProps) {
-  const [value, setValue] = useState<number | undefined | ''>();
-  const [debounced] = useDebouncedValue(value, 300);
+function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
+  const [value, setValue] = useState<Date | null>();
   const [operation, setOperation] = useState<string>('equals');
   const { key, label, placeholder } = filter;
   const mounted = useMounted();
@@ -15,7 +14,7 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
   // useEffect handler for select / number input updates
   useEffect(() => {
     if (!mounted) return;
-    if (value === '' || value === undefined) {
+    if (value === null) {
       onChange({
         type: 'equals',
         key,
@@ -27,7 +26,7 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
       onChange({
         type: 'equals',
         key,
-        value: debounced,
+        value: value?.getTime(),
       });
     }
     if (operation === 'gte') {
@@ -35,7 +34,7 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
         type: 'range',
         key,
         value: {
-          gte: debounced,
+          gte: value?.getTime(),
         },
       });
     }
@@ -44,17 +43,17 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
         type: 'range',
         key,
         value: {
-          lte: debounced,
+          lte: value?.getTime(),
         },
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounced, operation]);
+  }, [value, operation]);
 
   useEffect(() => {
     if (resetKey.split('-')[0] === key) {
       setOperation('equals');
-      setValue('');
+      setValue(null);
     }
   }, [key, resetKey, setValue]);
 
@@ -73,15 +72,16 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
             ]}
           />
         </Paper>
-        <NumberInput
+        <DatePickerInput
+          style={{ flexGrow: 1 }}
           value={value}
           onChange={setValue}
-          style={{ flexGrow: 1 }}
           placeholder={placeholder}
+          clearable
         />
       </Group>
     </Stack>
   );
 }
 
-export default NumericGreaterLessFilter;
+export default DateFilter;

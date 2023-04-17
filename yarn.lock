@@ -455,6 +455,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/dates@npm:^6.0.7":
+  version: 6.0.7
+  resolution: "@mantine/dates@npm:6.0.7"
+  dependencies:
+    "@mantine/utils": 6.0.7
+  peerDependencies:
+    "@mantine/core": 6.0.7
+    "@mantine/hooks": 6.0.7
+    dayjs: ">=1.0.0"
+    react: ">=16.8.0"
+  checksum: b28b9b8cb0b61cb97203535d78200a074c39fcd2206bf367ff6c1c8b2ec4058c41130dbfafe2e16cf479f84233dd23e7cf19c0a8fdaac37c1b421bcfdcb0d151
+  languageName: node
+  linkType: hard
+
 "@mantine/hooks@npm:^6.0.0":
   version: 6.0.0
   resolution: "@mantine/hooks@npm:6.0.0"
@@ -498,6 +512,15 @@ __metadata:
   peerDependencies:
     react: ">=16.8.0"
   checksum: a0f876ebb910ccebc6bbeedb093c14fe22c319d08d8504be6e6085f2e935f3aad8fc9cb1e0ede182c762a03a35e02618cf304ba3ba556a4ba3951945cf8cfc56
+  languageName: node
+  linkType: hard
+
+"@mantine/utils@npm:6.0.7":
+  version: 6.0.7
+  resolution: "@mantine/utils@npm:6.0.7"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: dbc4749e2ef908b5a2b1be5898e460541abdfa1de949237e45abaf2091ed3c6ca512b83f03360216d87af85d8b8d1deade5db426a197866b2be376b3d1509245
   languageName: node
   linkType: hard
 
@@ -1330,6 +1353,7 @@ __metadata:
   dependencies:
     "@emotion/react": ^11.10.6
     "@mantine/core": ^6.0.0
+    "@mantine/dates": ^6.0.7
     "@mantine/hooks": ^6.0.0
     "@mantine/nprogress": ^6.0.0
     "@tabler/icons": ^1.119.0
@@ -1340,6 +1364,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.54.0
     "@typescript-eslint/parser": ^5.54.0
     "@vitejs/plugin-react-swc": ^3.2.0
+    dayjs: ^1.11.7
     eslint: ^8.35.0
     eslint-config-airbnb: ^19.0.4
     eslint-config-prettier: ^8.6.0
@@ -1655,6 +1680,13 @@ __metadata:
   version: 1.0.8
   resolution: "damerau-levenshtein@npm:1.0.8"
   checksum: d240b7757544460ae0586a341a53110ab0a61126570ef2d8c731e3eab3f0cb6e488e2609e6a69b46727635de49be20b071688698744417ff1b6c1d7ccd03e0de
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.7":
+  version: 1.11.7
+  resolution: "dayjs@npm:1.11.7"
+  checksum: 5003a7c1dd9ed51385beb658231c3548700b82d3548c0cfbe549d85f2d08e90e972510282b7506941452c58d32136d6362f009c77ca55381a09c704e9f177ebb
   languageName: node
   linkType: hard
 

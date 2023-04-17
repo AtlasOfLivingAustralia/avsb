@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
-import { Stack } from '@mantine/core';
+import { SelectItem, Stack, StackProps } from '@mantine/core';
 import isEqual from 'lodash/isEqual';
 
 import PercentFilter from './filters/PercentFilter';
 import NumericGreaterLessFilter from './filters/NumericGreaterLessFilter';
 import NumericFilter from './filters/NumericFilter';
 import TextFilter from './filters/TextFilter';
+import SelectFilter from './filters/SelectFilter';
+import DateFilter from './filters/DateFilter';
 
 type PredicateType =
   | 'and'
@@ -33,13 +35,21 @@ export interface Predicate {
   predicates?: Predicate[];
 }
 
-type FilterType = 'text' | 'numeric' | 'numericGreaterLess' | 'percent' | 'boolean';
+type FilterType =
+  | 'text'
+  | 'select'
+  | 'numeric'
+  | 'numericGreaterLess'
+  | 'percent'
+  | 'date'
+  | 'boolean';
 
-interface Filter {
+export interface Filter {
   key: string;
   label: string;
   placeholder?: string;
   type: FilterType;
+  items?: (string | SelectItem)[];
 }
 
 export interface FilterItemProps {
@@ -53,6 +63,8 @@ const filterComponents: { [key: string]: any } = {
   numeric: NumericFilter,
   numericGreaterLess: NumericGreaterLessFilter,
   percent: PercentFilter,
+  select: SelectFilter,
+  date: DateFilter,
 };
 
 function FilterItem({ filter, resetKey, onChange }: FilterItemProps) {
@@ -60,18 +72,24 @@ function FilterItem({ filter, resetKey, onChange }: FilterItemProps) {
   return <Component {...{ filter, resetKey, onChange }} />;
 }
 
-interface FilterPanelProps {
+interface FilterPanelProps extends StackProps {
   filters: Filter[];
   value: Predicate[];
   resetKey: string;
-  onChange?: (value: Predicate[]) => void;
+  onPredicates?: (value: Predicate[]) => void;
 }
 
-function FilterPanel({ filters, value: predicates, resetKey, onChange }: FilterPanelProps) {
+function FilterPanel({
+  filters,
+  value: predicates,
+  resetKey,
+  onPredicates,
+  ...rest
+}: FilterPanelProps) {
   const [lastPredicates, setLastPredicates] = useState<Predicate[]>([]);
 
   const handleChange = (newPred: Predicate) => {
-    if (!onChange) return;
+    if (!onPredicates) return;
     let newPredicates;
     if (newPred.value === null) {
       newPredicates = predicates.filter(({ key }) => newPred.key !== key);
@@ -84,12 +102,12 @@ function FilterPanel({ filters, value: predicates, resetKey, onChange }: FilterP
 
     if (!isEqual(newPredicates, lastPredicates)) {
       setLastPredicates(newPredicates);
-      onChange(newPredicates);
+      onPredicates(newPredicates);
     }
   };
 
   return (
-    <Stack spacing='lg'>
+    <Stack {...rest} spacing='lg'>
       {filters.map((filter) => (
         <FilterItem key={filter.key} resetKey={resetKey} filter={filter} onChange={handleChange} />
       ))}

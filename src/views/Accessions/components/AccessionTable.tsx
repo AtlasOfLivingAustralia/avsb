@@ -57,14 +57,6 @@ function AccessionTable({ events }: AccessionTableProps) {
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
 
-  if (!events || events?.length === 0) {
-    return (
-      <Center>
-        <Text>No accession data found</Text>
-      </Center>
-    );
-  }
-
   return (
     <Card withBorder p={0}>
       <ScrollArea h='calc(100vh - 420px)' onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
@@ -96,7 +88,16 @@ function AccessionTable({ events }: AccessionTableProps) {
             </tr>
           </thead>
           <tbody>
-            {events.map((event) => {
+            {(!events || events?.length === 0) && (
+              <tr>
+                <td colSpan={8}>
+                  <Center>
+                    <Text>No accession data found</Text>
+                  </Center>
+                </td>
+              </tr>
+            )}
+            {(events || []).map((event) => {
               const accession = event.extensions?.seedbank as SeedBankAccession;
               const isSelected = selected.includes(event.eventID || '');
               return (
