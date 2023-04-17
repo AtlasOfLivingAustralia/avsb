@@ -917,6 +917,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.14.194":
+  version: 4.14.194
+  resolution: "@types/lodash@npm:4.14.194"
+  checksum: 113f34831c461469d91feca2dde737f88487732898b4d25e9eb23b087bb193985f864d1e1e0f3b777edc5022e460443588b6000a3b2348c966f72d17eedc35ea
+  languageName: node
+  linkType: hard
+
 "@types/mapbox-gl@npm:^2.7.10":
   version: 2.7.10
   resolution: "@types/mapbox-gl@npm:2.7.10"
@@ -1326,6 +1333,7 @@ __metadata:
     "@mantine/hooks": ^6.0.0
     "@mantine/nprogress": ^6.0.0
     "@tabler/icons": ^1.119.0
+    "@types/lodash": ^4.14.194
     "@types/mapbox-gl": ^2.7.10
     "@types/react": ^18.0.28
     "@types/react-dom": ^18.0.11
@@ -1341,6 +1349,7 @@ __metadata:
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-react: ^7.32.2
     eslint-plugin-react-hooks: ^4.6.0
+    lodash: ^4.17.21
     mapbox-gl: ^2.14.1
     oidc-client-ts: ^2.2.1
     prettier: ^2.8.4
@@ -3325,6 +3334,13 @@ __metadata:
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: ad580b4bdbb7ca1f7abf7e1bce63a9a0b98e370cf40194b03380a46b4ed799c9573029599caebc1b14e3f24b111aef72b96674a56cfa105e0f5ac70546cdc005
+  languageName: node
+  linkType: hard
+
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
   languageName: node
   linkType: hard
 

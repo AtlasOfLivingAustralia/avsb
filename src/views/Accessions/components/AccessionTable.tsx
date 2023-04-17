@@ -67,7 +67,7 @@ function AccessionTable({ events }: AccessionTableProps) {
 
   return (
     <Card withBorder p={0}>
-      <ScrollArea h='calc(100vh - 350px)' onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+      <ScrollArea h='calc(100vh - 420px)' onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
         <Table highlightOnHover>
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>

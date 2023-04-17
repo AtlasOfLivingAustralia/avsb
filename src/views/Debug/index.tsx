@@ -24,6 +24,8 @@ function Debug() {
         <Accordion.Control>Filtering</Accordion.Control>
         <Accordion.Panel>
           <FilterPanel
+            resetKey=''
+            value={[]}
             filters={[
               { key: 'textTest', label: 'Text test', type: 'text', placeholder: 'E6' },
               { key: 'numberTest', label: 'Number test', type: 'numeric' },

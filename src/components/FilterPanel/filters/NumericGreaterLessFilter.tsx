@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Box, Text, Group, Paper, SegmentedControl, NumberInput } from '@mantine/core';
+import { Stack, Text, Group, Paper, SegmentedControl, NumberInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import useMounted from '#/helpers/useMounted';
 
 import { FilterItemProps } from '..';
 
-function NumericGreaterLessFilter({ filter, onChange }: FilterItemProps) {
+function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<number | undefined | ''>();
   const [debounced] = useDebouncedValue(value, 300);
   const [operation, setOperation] = useState<string>('equals');
@@ -15,9 +15,9 @@ function NumericGreaterLessFilter({ filter, onChange }: FilterItemProps) {
   // useEffect handler for select / number input updates
   useEffect(() => {
     if (!mounted) return;
-    console.log('effect');
     if (value === '') {
       onChange({
+        type: 'equals',
         key,
         value: null,
       });
@@ -51,8 +51,12 @@ function NumericGreaterLessFilter({ filter, onChange }: FilterItemProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced, operation]);
 
+  useEffect(() => {
+    if (resetKey.split('-')[0] === key) setValue('');
+  }, [key, resetKey, setValue]);
+
   return (
-    <Box>
+    <Stack spacing='sm'>
       <Text size='sm'>{label}</Text>
       <Group>
         <Paper withBorder>
@@ -73,7 +77,7 @@ function NumericGreaterLessFilter({ filter, onChange }: FilterItemProps) {
           placeholder={placeholder}
         />
       </Group>
-    </Box>
+    </Stack>
   );
 }
 

@@ -1,36 +1,50 @@
-import { Box, Text, RangeSlider } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { Box, Text, RangeSlider, Stack } from '@mantine/core';
 import { FilterItemProps } from '..';
 
-function PercentFilter({ filter, onChange }: FilterItemProps) {
+function PercentFilter({ filter, resetKey, onChange }: FilterItemProps) {
+  const [value, setValue] = useState<[number, number]>([0, 100]);
   const { key, label, placeholder } = filter;
 
   // Callback handler for range slider update
-  const onUpdate = ([lower, upper]: [number, number]) =>
-    onChange(
-      lower === upper
-        ? {
-            type: 'equals',
-            key,
-            value: lower,
-          }
-        : {
-            type: 'range',
-            key,
-            value: {
-              gte: lower,
-              lte: upper,
-            },
-          },
-    );
+  const onUpdate = ([lower, upper]: [number, number]) => {
+    /* if (lower === 0 && upper === 100) {
+      onChange({
+        type: 'equals',
+        key,
+        value: null,
+      });
+    } else */ if (lower === upper) {
+      onChange({
+        type: 'equals',
+        key,
+        value: lower,
+      });
+    } else {
+      onChange({
+        type: 'range',
+        key,
+        value: {
+          gte: lower,
+          lte: upper,
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (resetKey.split('-')[0] === key) setValue([0, 100]);
+  }, [key, resetKey, setValue]);
 
   return (
-    <Box>
+    <Stack spacing={0}>
       <Text size='sm'>{label}</Text>
       <Box px='sm' py='md'>
         <RangeSlider
           placeholder={placeholder}
           minRange={0}
-          defaultValue={[0, 100]}
+          value={value}
+          onChange={setValue}
           onChangeEnd={onUpdate}
           marks={[
             { value: 0, label: '0%' },
@@ -39,7 +53,7 @@ function PercentFilter({ filter, onChange }: FilterItemProps) {
           ]}
         />
       </Box>
-    </Box>
+    </Stack>
   );
 }
 

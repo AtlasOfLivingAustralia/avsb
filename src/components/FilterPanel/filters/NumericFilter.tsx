@@ -1,34 +1,43 @@
-import { useEffect } from 'react';
-import { NumberInput } from '@mantine/core';
-import { useDebouncedState } from '@mantine/hooks';
+import { useState, useEffect } from 'react';
+import { NumberInput, Text, Stack } from '@mantine/core';
+import { useDebouncedValue } from '@mantine/hooks';
 
 import { FilterItemProps } from '..';
 
-function NumericFilter({ filter, onChange }: FilterItemProps) {
-  const [value, setValue] = useDebouncedState<number | ''>('', 300);
+function NumericFilter({ filter, resetKey, onChange }: FilterItemProps) {
+  const [value, setValue] = useState<number | ''>('');
+  const [debounded] = useDebouncedValue(value, 300);
 
   const { key, label, placeholder } = filter;
 
   useEffect(() => {
     if (value === '') {
-      onChange({ key, value: null });
+      onChange({ type: 'equals', key, value: null });
       return;
     }
 
     onChange({
+      type: 'equals',
       key,
-      value,
+      value: debounded,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [debounded]);
+
+  useEffect(() => {
+    if (resetKey.split('-')[0] === key) setValue('');
+  }, [key, resetKey, setValue]);
 
   return (
-    <NumberInput
-      label={label}
-      onChange={setValue}
-      style={{ flexGrow: 1 }}
-      placeholder={placeholder}
-    />
+    <Stack spacing='sm'>
+      <Text size='sm'>{label}</Text>
+      <NumberInput
+        value={value}
+        onChange={setValue}
+        style={{ flexGrow: 1 }}
+        placeholder={placeholder}
+      />
+    </Stack>
   );
 }
 

@@ -1,34 +1,43 @@
-import { useEffect } from 'react';
-import { TextInput } from '@mantine/core';
-import { useDebouncedState } from '@mantine/hooks';
+import { useState, useEffect } from 'react';
+import { Stack, Text, TextInput } from '@mantine/core';
+import { useDebouncedValue } from '@mantine/hooks';
 
 import { FilterItemProps } from '..';
 
-function TextFilter({ filter, onChange }: FilterItemProps) {
-  const [value, setValue] = useDebouncedState<string>('', 300);
+function TextFilter({ filter, resetKey, onChange }: FilterItemProps) {
+  const [value, setValue] = useState<string>('');
+  const [debounced] = useDebouncedValue(value, 300);
 
   const { key, label, placeholder } = filter;
 
   useEffect(() => {
     if (value === '') {
-      onChange({ key, value: null });
+      onChange({ type: 'equals', key, value: null });
       return;
     }
 
     onChange({
+      type: 'equals',
       key,
-      value,
+      value: debounced,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [debounced]);
+
+  useEffect(() => {
+    if (resetKey.split('-')[0] === key) setValue('');
+  }, [key, resetKey, setValue]);
 
   return (
-    <TextInput
-      label={label}
-      onChange={(event) => setValue(event.currentTarget.value)}
-      style={{ flexGrow: 1 }}
-      placeholder={placeholder}
-    />
+    <Stack spacing='sm'>
+      <Text size='sm'>{label}</Text>
+      <TextInput
+        value={value}
+        onChange={(event) => setValue(event?.currentTarget.value)}
+        style={{ flexGrow: 1 }}
+        placeholder={placeholder}
+      />
+    </Stack>
   );
 }
 
