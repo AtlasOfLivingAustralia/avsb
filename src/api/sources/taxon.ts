@@ -1,10 +1,25 @@
 interface SuggestedTaxon {
-  scientificName: string;
-  key: string;
+  commonName: string;
+  georeferencedCount: number;
+  guid: string;
+  matchedNames: string[];
+  name: string;
+  rankString: string;
 }
 
 async function suggest(query: string): Promise<SuggestedTaxon[]> {
-  return (await fetch(`${import.meta.env.VITE_API_ES}/event/suggest/taxonKey?q=${query}`)).json();
+  const params = new URLSearchParams();
+
+  params.append('q', query);
+  params.append('kingdom', 'plantae');
+  params.append('idxType', 'TAXON');
+
+  const { autoCompleteList } = await (
+    await fetch(`${import.meta.env.VITE_API_ALA}/species/search/auto?${params}`)
+  ).json();
+  return (autoCompleteList as SuggestedTaxon[]).filter(
+    ({ rankString }) => rankString !== 'unranked',
+  );
 }
 
 interface Variant {

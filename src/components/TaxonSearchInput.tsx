@@ -1,14 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useEffect, useState, forwardRef, ComponentPropsWithoutRef } from 'react';
-import { Loader, Select, SelectItem, SelectProps, Stack, Text } from '@mantine/core';
+import { Badge, Group, Loader, Select, SelectItem, SelectProps, Stack, Text } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons';
 import { useAPI } from '#/api';
-
-interface SuggestedTaxon {
-  scientificName: string;
-  key: string;
-}
+import uniqBy from 'lodash/uniqBy';
 
 interface TaxonSearchInputProps
   extends Omit<
@@ -18,29 +14,16 @@ interface TaxonSearchInputProps
   customTypes?: string[];
 }
 
-function uniqueTaxa(taxa: SuggestedTaxon[]): SuggestedTaxon[] {
-  const seen: string[] = [];
-  const out: SuggestedTaxon[] = [];
-
-  // Only push unique taxon suggestions
-  for (let i = 0; i < taxa.length; i += 1) {
-    if (!seen.includes(taxa[i].key)) {
-      seen.push(taxa[i].key);
-      out.push(taxa[i]);
-    }
-  }
-
-  return out;
-}
-
 interface ItemProps extends ComponentPropsWithoutRef<'div'> {
   label: string;
   value: string;
+  rankString: string;
+  commonName: string;
   type?: string;
 }
 
 const SelectMenuItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ value, label, type, ...others }: ItemProps, ref) => (
+  ({ value, label, type, rankString, commonName, ...others }: ItemProps, ref) => (
     <div ref={ref} key={value} {...others}>
       <Stack spacing={0}>
         {type ? (
@@ -49,9 +32,12 @@ const SelectMenuItem = forwardRef<HTMLDivElement, ItemProps>(
           </Text>
         ) : (
           <>
-            <Text size='sm'>{label}</Text>
+            <Group position='apart'>
+              <Text size='sm'>{label.substring(0, 40)}</Text>
+              <Badge>{rankString}</Badge>
+            </Group>
             <Text size='xs' opacity={0.65}>
-              {value}
+              {commonName || 'N/A'}
             </Text>
           </>
         )}
@@ -73,10 +59,12 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
       try {
         const taxa = await api.taxon.suggest(query);
         setData(
-          uniqueTaxa(taxa).map(({ scientificName, key }) => ({
-            value: key,
-            label: scientificName,
-            group: scientificName.split(' ')[0],
+          taxa.map(({ name, guid, rankString, commonName }) => ({
+            value: guid,
+            label: name,
+            rankString,
+            commonName,
+            group: name.split(' ')[0],
           })),
         );
         setError(null);
@@ -107,7 +95,7 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
       error={error && error.message}
       itemComponent={SelectMenuItem}
       nothingFound={
-        (query.length && !loading) > 0 ? `No taxa found for '${query}'` : 'Enter search query above'
+        query.length > 0 && !loading ? `No taxa found for '${query}'` : 'Enter search query above'
       }
       onSearchChange={(newValue) => {
         if (search !== newValue) {
@@ -116,7 +104,7 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
         }
       }}
       data={[
-        ...data,
+        ...uniqBy(data, 'value'),
         ...(search.length > 0
           ? customTypes.map((type) => ({
               type,

@@ -46,7 +46,7 @@ function Header() {
           <MediaQuery styles={{ display: 'none' }} smallerThan='sm'>
             <TaxonSearchInput
               variant='filled'
-              style={{ width: 350 }}
+              style={{ width: 400 }}
               onChange={(guid) => {
                 if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
               }}
