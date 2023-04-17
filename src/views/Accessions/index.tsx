@@ -87,7 +87,7 @@ function Accessions() {
           filters={filters}
           resetKey={resetKey}
           onPredicates={(newPredicates) => {
-            console.log(newPredicates);
+            setPage(1);
             setPredicates(newPredicates);
           }}
           mb='xl'
