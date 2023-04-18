@@ -15,6 +15,7 @@ export interface Filter {
   label: string;
   type: FilterType;
   placeholder?: string;
+  group?: string;
   items?: (string | SelectItem)[];
   icon?: TablerIcon;
 }

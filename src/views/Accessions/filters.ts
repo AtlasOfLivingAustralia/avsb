@@ -10,7 +10,8 @@ import {
   IconSeeding,
   IconTemperature,
 } from '@tabler/icons';
-import { Filter } from '#/components/FilterPanel';
+
+import { Filter } from '#/components';
 
 const filters: Filter[] = [
   {
@@ -19,6 +20,7 @@ const filters: Filter[] = [
     type: 'text',
     placeholder: 'ABC 123456.78',
     icon: IconId,
+    group: 'Collection',
   },
   {
     key: 'seedbank_seedPerGram',
@@ -26,6 +28,7 @@ const filters: Filter[] = [
     type: 'numericGreaterLess',
     placeholder: '1.23',
     icon: IconSeeding,
+    group: 'Collection',
   },
   // {
   //   key: 'seedbank_formInStorage',
@@ -40,6 +43,7 @@ const filters: Filter[] = [
     type: 'numericGreaterLess',
     placeholder: '10.1',
     icon: IconBox,
+    group: 'Collection',
   },
   {
     key: 'seedbank_sampleWeightInGrams',
@@ -47,18 +51,21 @@ const filters: Filter[] = [
     type: 'numericGreaterLess',
     placeholder: '1.23',
     icon: IconScale,
+    group: 'Collection',
   },
   {
     key: 'seedbank_purityPercentage',
     label: 'Purity %',
     type: 'percent',
     icon: IconPercentage,
+    group: 'Collection',
   },
   {
     key: 'seedbank_purityDebrisPercentage',
     label: 'Purity / Debris %',
     type: 'percent',
     icon: IconChartPie,
+    group: 'Collection',
   },
   {
     key: 'seedbank_dateCollected',
@@ -66,6 +73,7 @@ const filters: Filter[] = [
     type: 'date',
     placeholder: '5 Apr 2001',
     icon: IconHandStop,
+    group: 'Collection',
   },
   {
     key: 'seedbank_dateInStorage',
@@ -73,6 +81,7 @@ const filters: Filter[] = [
     type: 'date',
     placeholder: '5 Apr 2001',
     icon: IconPackage,
+    group: 'Storage',
   },
   {
     key: 'seedbank_storageTemperatureInCelsius',
@@ -80,6 +89,7 @@ const filters: Filter[] = [
     type: 'numericGreaterLess',
     placeholder: '-20',
     icon: IconTemperature,
+    group: 'Storage',
   },
   {
     key: 'seedbank_relativeHumidityPercentage',
@@ -87,6 +97,7 @@ const filters: Filter[] = [
     type: 'percent',
     placeholder: '15.5',
     icon: IconDropletFilled,
+    group: 'Storage',
   },
   // {
   //   key: 'seedbank_plantForm',

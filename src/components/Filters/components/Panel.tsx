@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Fragment, useState } from 'react';
-import { Divider, Stack, StackProps } from '@mantine/core';
+import { Fragment, useEffect, useState } from 'react';
+import { Accordion, Divider, Stack, StackProps, createStyles } from '@mantine/core';
 import { TablerIcon } from '@tabler/icons';
 
 import isEqual from 'lodash/isEqual';
@@ -38,12 +38,18 @@ function FilterItem({ filter, resetKey, onChange, icon }: FilterItemProps) {
   return <Component {...{ filter, resetKey, onChange, icon }} />;
 }
 
+const useStyles = createStyles((theme) => ({
+  item: {
+    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
+  },
+}));
+
 interface FilterPanelProps extends StackProps {
   filters: Filter[];
   predicates: Predicate[];
   sort: 'alphabetical' | 'groups';
   resetKey: string;
-  onPredicates?: (value: Predicate[]) => void;
+  onPredicates: (value: Predicate[]) => void;
 }
 
 function FilterPanel({
@@ -55,10 +61,12 @@ function FilterPanel({
   ...rest
 }: FilterPanelProps) {
   const [lastPredicates, setLastPredicates] = useState<Predicate[]>([]);
+  const { classes } = useStyles();
 
   const handleChange = (newPred: Predicate) => {
     if (!onPredicates) return;
     let newPredicates;
+
     if (newPred.value === null) {
       newPredicates = predicates.filter(({ key }) => newPred.key !== key);
     } else {
@@ -74,16 +82,54 @@ function FilterPanel({
     }
   };
 
-  if (sort === 'groups') console.log(groupBy(filters, 'type'));
+  // Reset the selected predicates for UI consistency
+  useEffect(() => {
+    if (predicates.length !== 0) onPredicates([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sort]);
 
-  const sortedFilters = orderBy(filters, [(filter) => filter.label.toLowerCase()], ['asc']);
+  if (sort === 'groups') {
+    const sorted = groupBy(
+      filters.map((filter) => ({ ...filter, group: filter.group || 'Other' })),
+      'group',
+    );
+
+    return (
+      <Accordion
+        defaultValue={[Object.keys(sorted)[0]]}
+        multiple
+        variant='separated'
+        classNames={classes}
+      >
+        {Object.entries(sorted).map(([group, items]) => (
+          <Accordion.Item key={group} value={group}>
+            <Accordion.Control>{group}</Accordion.Control>
+            <Accordion.Panel>
+              <Stack spacing='xl' mt='xs'>
+                {items.map((filter) => (
+                  <FilterItem
+                    key={filter.key}
+                    resetKey={resetKey}
+                    filter={filter}
+                    onChange={handleChange}
+                  />
+                ))}
+              </Stack>
+            </Accordion.Panel>
+          </Accordion.Item>
+        ))}
+      </Accordion>
+    );
+  }
+
+  const sorted = orderBy(filters, [(filter) => filter.label.toLowerCase()], ['asc']);
 
   return (
     <Stack {...rest} spacing='lg'>
-      {sortedFilters.map((filter, i, arr) => (
+      {sorted.map((filter, filterIndex) => (
         <Fragment key={filter.key}>
           <FilterItem resetKey={resetKey} filter={filter} onChange={handleChange} />
-          {i !== arr.length - 1 && <Divider />}
+          {filterIndex !== sorted.length - 1 && <Divider opacity={0.4} />}
         </Fragment>
       ))}
     </Stack>
