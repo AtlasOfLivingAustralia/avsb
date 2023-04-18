@@ -12,6 +12,7 @@ import {
   Paper,
   useMantineTheme,
   Anchor,
+  Button,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +20,7 @@ import { Blob, TaxonSearchInput } from '#/components';
 
 import wateringCan from '#/assets/watering-can-and-plant.png';
 import { Wave } from '#/components/Wave';
+import { IconExternalLink, IconQuestionCircle } from '@tabler/icons';
 
 function Home() {
   const navigate = useNavigate();
@@ -131,6 +133,29 @@ function Home() {
         preserveAspectRatio='none'
         waveType='bodyBottom'
       />
+      <Box mt={mdOrLarger ? -100 : 0}>
+        <Center pb='xl' mb='xl'>
+          <Paper p='xl' pl='md' withBorder>
+            <Group spacing='xl'>
+              <IconQuestionCircle size='2rem' />
+              <Stack>
+                <Title order={4} weight={600}>
+                  Have a query?
+                </Title>
+                <Button
+                  variant='outline'
+                  leftIcon={<IconExternalLink size='1rem' />}
+                  component='a'
+                  href='https://www.seedpartnership.org.au/about-us/contact-us/'
+                  target='_blank'
+                >
+                  Contact Us
+                </Button>
+              </Stack>
+            </Group>
+          </Paper>
+        </Center>
+      </Box>
     </>
   );
 }
