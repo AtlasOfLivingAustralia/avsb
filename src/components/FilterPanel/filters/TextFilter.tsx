@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Stack, Text, TextInput } from '@mantine/core';
+import { Stack, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 
+import IconText from '#/components/IconText';
 import { FilterItemProps } from '..';
 
 function TextFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<string>('');
   const [debounced] = useDebouncedValue(value, 300);
 
-  const { key, label, placeholder } = filter;
+  const { key, label, placeholder, icon } = filter;
 
   useEffect(() => {
     if (value === '') {
@@ -30,7 +31,7 @@ function TextFilter({ filter, resetKey, onChange }: FilterItemProps) {
 
   return (
     <Stack spacing='sm'>
-      <Text size='sm'>{label}</Text>
+      <IconText icon={icon} title={label} />
       <TextInput
         value={value}
         onChange={(event) => setValue(event?.currentTarget.value)}

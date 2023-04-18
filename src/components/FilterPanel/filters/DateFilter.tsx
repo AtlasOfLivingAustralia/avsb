@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Stack, Text, Group, Paper, SegmentedControl } from '@mantine/core';
+import { Stack, Group, Paper, SegmentedControl } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import useMounted from '#/helpers/useMounted';
 
+import IconText from '#/components/IconText';
 import { FilterItemProps } from '..';
 
 function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<Date | null>();
   const [operation, setOperation] = useState<string>('equals');
-  const { key, label, placeholder } = filter;
   const mounted = useMounted();
+
+  const { key, label, placeholder, icon } = filter;
 
   // useEffect handler for select / number input updates
   useEffect(() => {
     if (!mounted) return;
-    if (value === null) {
+    if (value === null || value === undefined) {
       onChange({
         type: 'equals',
         key,
@@ -26,7 +28,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
       onChange({
         type: 'equals',
         key,
-        value: value?.getTime(),
+        value: value.getTime(),
       });
     }
     if (operation === 'gte') {
@@ -34,7 +36,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
         type: 'range',
         key,
         value: {
-          gte: value?.getTime(),
+          gte: value.getTime(),
         },
       });
     }
@@ -43,7 +45,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
         type: 'range',
         key,
         value: {
-          lte: value?.getTime(),
+          lte: value.getTime(),
         },
       });
     }
@@ -59,7 +61,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
 
   return (
     <Stack spacing='sm'>
-      <Text size='sm'>{label}</Text>
+      <IconText icon={icon} title={label} />
       <Group>
         <Paper withBorder>
           <SegmentedControl

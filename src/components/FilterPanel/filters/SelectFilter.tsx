@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Select, Stack, Text } from '@mantine/core';
+import { Select, Stack } from '@mantine/core';
 
+import IconText from '#/components/IconText';
 import { FilterItemProps } from '..';
 
 function SelectFilter({ filter, resetKey, onChange }: FilterItemProps) {
-  const { key, label, placeholder, items } = filter;
+  const { key, label, placeholder, items, icon } = filter;
   const [value, setValue] = useState<string | null | undefined>(null);
 
   const onSelect = (newValue: string | null) => {
@@ -22,7 +23,7 @@ function SelectFilter({ filter, resetKey, onChange }: FilterItemProps) {
 
   return (
     <Stack spacing='sm'>
-      <Text size='sm'>{label}</Text>
+      <IconText icon={icon} title={label} />
       <Select
         value={value}
         placeholder={placeholder}

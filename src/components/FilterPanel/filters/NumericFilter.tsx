@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
-import { NumberInput, Text, Stack } from '@mantine/core';
+import { NumberInput, Stack } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 
+import IconText from '#/components/IconText';
 import { FilterItemProps } from '..';
 
 function NumericFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<number | ''>('');
   const [debounded] = useDebouncedValue(value, 300);
 
-  const { key, label, placeholder } = filter;
+  const { key, label, placeholder, icon } = filter;
 
   useEffect(() => {
-    if (value === '') {
+    if (value === '' || value === undefined) {
       onChange({ type: 'equals', key, value: null });
       return;
     }
@@ -30,13 +31,8 @@ function NumericFilter({ filter, resetKey, onChange }: FilterItemProps) {
 
   return (
     <Stack spacing='sm'>
-      <Text size='sm'>{label}</Text>
-      <NumberInput
-        value={value}
-        onChange={setValue}
-        style={{ flexGrow: 1 }}
-        placeholder={placeholder}
-      />
+      <IconText icon={icon} title={label} />
+      <NumberInput onChange={setValue} style={{ flexGrow: 1 }} placeholder={placeholder} />
     </Stack>
   );
 }

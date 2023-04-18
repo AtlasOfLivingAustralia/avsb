@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Text, Center, Drawer, Pagination, Group, ThemeIcon } from '@mantine/core';
+import {
+  Text,
+  Center,
+  Drawer,
+  Pagination,
+  Group,
+  ThemeIcon,
+  SegmentedControl,
+  Paper,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconFilter } from '@tabler/icons';
 import { Outlet, useLoaderData, useParams } from 'react-router-dom';
@@ -67,32 +76,45 @@ function Accessions() {
 
   return (
     <>
-      <Drawer
-        opened={opened}
-        onClose={close}
-        title={
-          <Group>
-            <ThemeIcon variant='light' radius='xl' size='xl'>
-              <IconFilter />
-            </ThemeIcon>
-            <Text size='xl' weight='bold' style={{ fontFamily: 'Lexend Deca, sans-serif' }}>
-              Query Filters
-            </Text>
-          </Group>
-        }
-        keepMounted
-      >
-        <FilterPanel
-          value={predicates}
-          filters={filters}
-          resetKey={resetKey}
-          onPredicates={(newPredicates) => {
-            setPage(1);
-            setPredicates(newPredicates);
-          }}
-          mb='xl'
-        />
-      </Drawer>
+      <Drawer.Root opened={opened} onClose={close} keepMounted>
+        <Drawer.Overlay />
+        <Drawer.Content>
+          <Drawer.Header style={{ zIndex: 300 }}>
+            <Group position='apart' w='100%'>
+              <Group>
+                <ThemeIcon variant='light' radius='xl' size='xl'>
+                  <IconFilter />
+                </ThemeIcon>
+                <Text size='xl' weight='bold' style={{ fontFamily: 'Lexend Deca, sans-serif' }}>
+                  Query Filters
+                </Text>
+              </Group>
+              <Group>
+                <SegmentedControl
+                  size='xs'
+                  data={[
+                    { label: 'Groups', value: 'groups' },
+                    { label: 'ABC', value: 'alphabetical' },
+                  ]}
+                />
+                <Drawer.CloseButton />
+              </Group>
+            </Group>
+          </Drawer.Header>
+          <Drawer.Body>
+            <FilterPanel
+              value={predicates}
+              filters={filters}
+              resetKey={resetKey}
+              onPredicates={(newPredicates) => {
+                setPage(1);
+                setPredicates(newPredicates);
+              }}
+              mb='xl'
+            />
+          </Drawer.Body>
+        </Drawer.Content>
+      </Drawer.Root>
       <FilterBar
         filters={filters}
         predicates={predicates}

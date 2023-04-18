@@ -1,20 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Box, Text, RangeSlider, Stack } from '@mantine/core';
+import { Box, RangeSlider, Stack } from '@mantine/core';
+
+import IconText from '#/components/IconText';
 import { FilterItemProps } from '..';
 
 function PercentFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<[number, number]>([0, 100]);
-  const { key, label, placeholder } = filter;
+  const { key, label, placeholder, icon } = filter;
 
   // Callback handler for range slider update
   const onUpdate = ([lower, upper]: [number, number]) => {
-    /* if (lower === 0 && upper === 100) {
-      onChange({
-        type: 'equals',
-        key,
-        value: null,
-      });
-    } else */ if (lower === upper) {
+    if (lower === upper) {
       onChange({
         type: 'equals',
         key,
@@ -38,7 +34,7 @@ function PercentFilter({ filter, resetKey, onChange }: FilterItemProps) {
 
   return (
     <Stack spacing={0}>
-      <Text size='sm'>{label}</Text>
+      <IconText icon={icon} title={label} />
       <Box px='sm' py='md'>
         <RangeSlider
           placeholder={placeholder}

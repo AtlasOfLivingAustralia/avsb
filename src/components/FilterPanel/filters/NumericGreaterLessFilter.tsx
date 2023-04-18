@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Stack, Text, Group, Paper, SegmentedControl, NumberInput } from '@mantine/core';
+import { Stack, Group, Paper, SegmentedControl, NumberInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import useMounted from '#/helpers/useMounted';
 
+import IconText from '#/components/IconText';
 import { FilterItemProps } from '..';
 
 function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProps) {
-  const [value, setValue] = useState<number | undefined | ''>();
+  const [value, setValue] = useState<number | ''>();
   const [debounced] = useDebouncedValue(value, 300);
   const [operation, setOperation] = useState<string>('equals');
-  const { key, label, placeholder } = filter;
   const mounted = useMounted();
+
+  const { key, label, placeholder, icon } = filter;
 
   // useEffect handler for select / number input updates
   useEffect(() => {
     if (!mounted) return;
+    console.log(value);
     if (value === '' || value === undefined) {
       onChange({
         type: 'equals',
@@ -60,7 +63,7 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
 
   return (
     <Stack spacing='sm'>
-      <Text size='sm'>{label}</Text>
+      <IconText icon={icon} title={label} />
       <Group>
         <Paper withBorder>
           <SegmentedControl
@@ -73,12 +76,7 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
             ]}
           />
         </Paper>
-        <NumberInput
-          value={value}
-          onChange={setValue}
-          style={{ flexGrow: 1 }}
-          placeholder={placeholder}
-        />
+        <NumberInput onChange={setValue} style={{ flexGrow: 1 }} placeholder={placeholder} />
       </Group>
     </Stack>
   );
