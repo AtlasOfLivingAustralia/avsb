@@ -11,6 +11,7 @@ import {
   Grid,
   Paper,
   useMantineTheme,
+  Anchor,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -44,7 +45,10 @@ function Home() {
             </Title>
             <Text mt='sm'>
               The Australian Virtual Seed Bank is an online portal that provides access to
-              aggregated seed data sourced from various seed banks across Australia
+              aggregated seed data sourced from various seed banks across Australia as part of the{' '}
+              <Anchor href='https://www.seedpartnership.org.au/' target='_blank'>
+                Australian Seed Bank Partnership
+              </Anchor>
             </Text>
             <Text mb='md'>Get started by searching for a taxon below</Text>
             <TaxonSearchInput

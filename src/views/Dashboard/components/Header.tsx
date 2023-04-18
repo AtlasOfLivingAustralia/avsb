@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
-import { IconLogout, IconBug, IconSun, IconMoon } from '@tabler/icons';
+import { IconLogout, IconBug, IconSun, IconMoon, IconHome } from '@tabler/icons';
 import {
   Header as MantineHeader,
   ActionIcon,
@@ -12,6 +12,7 @@ import {
   UnstyledButton,
   useMantineColorScheme,
   MediaQuery,
+  Transition,
 } from '@mantine/core';
 
 // Project components & gelpers
@@ -37,10 +38,24 @@ function Header() {
   return (
     <MantineHeader height={60}>
       <Group sx={{ height: '100%' }} px={20} position='apart'>
-        <Group>
+        <Group spacing='lg'>
           <Link to='/' style={{ display: 'flex' }}>
             <Logo width={50} height={50} />
           </Link>
+          <Transition transition='pop' mounted={location.pathname !== '/'}>
+            {(styles) => (
+              <Button
+                style={styles}
+                component={Link}
+                to='/'
+                leftIcon={<IconHome size='0.8rem' />}
+                size='xs'
+                variant='light'
+              >
+                Home
+              </Button>
+            )}
+          </Transition>
         </Group>
         {location.pathname !== '/' && (
           <MediaQuery styles={{ display: 'none' }} smallerThan='sm'>
