@@ -143,6 +143,7 @@ query list($predicate: Predicate){
         }
         extensions {
           seedbank {
+            id
             pretreatment
             mediaSubstrate
             nightTemperatureInCelsius

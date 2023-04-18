@@ -10,7 +10,7 @@ function getPredicateValue(predicate: Predicate) {
   const { key, value } = predicate;
 
   // Date handling
-  if (value && key.includes('date')) {
+  if (value && key.toLowerCase().includes('date')) {
     if (typeof value === 'object') {
       if (value?.gte !== undefined && value?.lte !== undefined)
         return `${new Date(value.gte).toLocaleDateString()}-${new Date(
@@ -29,7 +29,7 @@ function getPredicateValue(predicate: Predicate) {
     if (value?.lte !== undefined) return `<${value?.lte}`;
   }
 
-  if (key.includes('date')) return new Date(value as number).toLocaleDateString();
+  if (key.toLowerCase().includes('date')) return new Date(value as number).toLocaleDateString();
   return `${value}`;
 }
 

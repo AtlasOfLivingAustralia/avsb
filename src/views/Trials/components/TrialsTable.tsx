@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { useState } from 'react';
-import { Event, SeedBankTrial } from '#/api/graphql/types';
+import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import {
   Box,
   Button,
@@ -65,11 +65,11 @@ function TrialsTable({ events }: TrialsTableProps) {
             <tr>
               <th style={{ paddingLeft: 25 }}>Catalogue</th>
               <th>Institution</th>
+              <th>Adj. Germination</th>
+              <th>Treatment</th>
               <th>Date Tested</th>
               <th>Test Length</th>
-              <th>Germinate Rate</th>
               <th>Germinated</th>
-              <th>Adj. Germination</th>
               {/* <th>
               <Group spacing='xs'>
                 Tested
@@ -109,7 +109,12 @@ function TrialsTable({ events }: TrialsTableProps) {
             )}
             {(events || []).map((event) => {
               const trial = event.extensions?.seedbank as SeedBankTrial;
+              const [treatment] = event.treatments?.map(
+                (treatmentEvent) => treatmentEvent.extensions?.seedbank,
+              ) as SeedBankTreatment[];
+
               const isSelected = selected.includes(event.eventID || '');
+
               return (
                 <Fragment key={event.eventID}>
                   <tr
@@ -125,21 +130,20 @@ function TrialsTable({ events }: TrialsTableProps) {
                     <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber}</td>
                     <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
                     <td>
-                      {event.day}/{event.month}/{event.year}
+                      {getIsPresent(trial?.adjustedGerminationPercentage) &&
+                        `${trial?.adjustedGerminationPercentage}%`}
+                    </td>
+                    <td>{getIsPresent(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}</td>
+                    <td>
+                      {[event.day, event.month, event.year]
+                        .filter((part) => part !== null)
+                        .join('/')}
                     </td>
                     <td>
                       {getIsPresent(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
                     </td>
                     <td>
-                      {getIsPresent(trial?.germinationRateInDays) &&
-                        `${trial.germinationRateInDays} days`}
-                    </td>
-                    <td>
                       {getIsPresent(trial?.numberGerminated) && `${trial?.numberGerminated} seeds`}
-                    </td>
-                    <td>
-                      {getIsPresent(trial?.adjustedGerminationPercentage) &&
-                        `${trial?.adjustedGerminationPercentage}%`}
                     </td>
                     <td align='right' width={85}>
                       <div

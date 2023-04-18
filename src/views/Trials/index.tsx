@@ -6,6 +6,7 @@ import { useLoaderData, useParams } from 'react-router-dom';
 // Project components / helpers
 import { Filters, Predicate } from '#/components';
 import { gqlQueries, performGQLQuery } from '#/api';
+import { Event } from '#/api/graphql/types';
 import queries from '#/api/queries';
 import useMounted from '#/helpers/useMounted';
 import TrialsTable from './components/TrialsTable';
@@ -23,6 +24,7 @@ function Trials() {
 
   useEffect(() => {
     async function runQuery() {
+      // Perform the first query to retireve the trial data
       const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_TRIALS, {
         predicate: {
           type: 'and',
@@ -44,12 +46,48 @@ function Trials() {
         size: 10,
         from: (page - 1) * 10,
       });
-      setQuery(data.eventSearch.documents);
+
+      // Extract the event IDs from all of the return trials, then retrieve their associated
+      // treatment events
+      const eventIDs = (data.eventSearch.documents.results as Event[]).map(
+        ({ eventID }) => eventID,
+      );
+      const { data: treatmentData } = await performGQLQuery(gqlQueries.QUERY_EVENT_TREATMENTS, {
+        predicate: {
+          type: 'and',
+          predicates: [
+            queries.PRED_DATA_RESOURCE,
+            {
+              type: 'equals',
+              key: 'eventType',
+              value: 'Treatment',
+            },
+            {
+              type: 'in',
+              key: 'eventHierarchy',
+              values: eventIDs,
+            },
+          ],
+        },
+        size: 10,
+      });
+
+      setQuery({
+        ...data.eventSearch.documents,
+        results: data.eventSearch.documents.results.map((event: Event) => {
+          const related = (treatmentData.eventSearch.documents.results as Event[]).filter(
+            ({ parentEventID }) => parentEventID === event.eventID,
+          );
+          return { ...event, treatments: related || [] };
+        }),
+      });
     }
 
     if (mounted) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, predicates]);
+
+  console.log(query);
 
   return (
     <>

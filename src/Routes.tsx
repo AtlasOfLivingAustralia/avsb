@@ -12,6 +12,7 @@ import {
   SummaryView,
 } from './views';
 import queries from './api/queries';
+import { Event } from './api/graphql/types';
 
 const routes = createBrowserRouter([
   {
@@ -121,6 +122,7 @@ const routes = createBrowserRouter([
             path: 'trials',
             element: <TrialsView />,
             loader: async ({ params }) => {
+              // Perform the first query to retireve the trial data
               const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_TRIALS, {
                 predicate: {
                   type: 'and',
@@ -141,7 +143,44 @@ const routes = createBrowserRouter([
                 size: 10,
               });
 
-              return data.eventSearch.documents;
+              // Extract the event IDs from all of the return trials, then retrieve their associated
+              // treatment events
+              const eventIDs = (data.eventSearch.documents.results as Event[]).map(
+                ({ eventID }) => eventID,
+              );
+              const { data: treatments } = await performGQLQuery(
+                gqlQueries.QUERY_EVENT_TREATMENTS,
+                {
+                  predicate: {
+                    type: 'and',
+                    predicates: [
+                      queries.PRED_DATA_RESOURCE,
+                      {
+                        type: 'equals',
+                        key: 'eventType',
+                        value: 'Treatment',
+                      },
+                      {
+                        type: 'in',
+                        key: 'eventHierarchy',
+                        values: eventIDs,
+                      },
+                    ],
+                  },
+                  size: 10,
+                },
+              );
+
+              // Return both trial & treatment data
+              return {
+                ...data.eventSearch.documents,
+                results: data.eventSearch.documents.results.map((event: Event) => {
+                  const related = (treatments.eventSearch.documents.results as Event[]).filter(
+                    ({ parentEventID }) => parentEventID === event.eventID,
+                  );
+                  return { ...event, treatments: related || [] };
+                }),
+              };
             },
           },
           {

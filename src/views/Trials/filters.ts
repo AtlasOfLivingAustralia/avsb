@@ -22,6 +22,14 @@ const filters: Filter[] = [
     icon: IconId,
     group: 'Test',
   },
+  // {
+  //   key: 'eventDateSingle',
+  //   label: 'Event Date',
+  //   type: 'date',
+  //   placeholder: '5 Apr 2001',
+  //   icon: IconCalendar,
+  //   group: 'Test',
+  // },
   {
     key: 'seedbank_testDateStarted',
     label: 'Test Date Started',

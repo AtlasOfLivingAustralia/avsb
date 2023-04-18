@@ -140,6 +140,7 @@ interface Event {
   extensions?: {
     seedbank?: SeedBankExtension;
   };
+  treatments?: Event[];
 }
 
 interface EventDocuments {
