@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
-import { NumberInput, Stack } from '@mantine/core';
+import { Stack, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 
 import IconText from '#/components/IconText';
-import { FilterItemProps } from '..';
+import { FilterItemProps } from '../Panel';
 
-function NumericFilter({ filter, resetKey, onChange }: FilterItemProps) {
-  const [value, setValue] = useState<number | ''>('');
-  const [debounded] = useDebouncedValue(value, 300);
+function TextFilter({ filter, resetKey, onChange }: FilterItemProps) {
+  const [value, setValue] = useState<string>('');
+  const [debounced] = useDebouncedValue(value, 300);
 
   const { key, label, placeholder, icon } = filter;
 
   useEffect(() => {
-    if (value === '' || value === undefined) {
+    if (value === '') {
       onChange({ type: 'equals', key, value: null });
       return;
     }
@@ -20,10 +20,10 @@ function NumericFilter({ filter, resetKey, onChange }: FilterItemProps) {
     onChange({
       type: 'equals',
       key,
-      value: debounded,
+      value: debounced,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounded]);
+  }, [debounced]);
 
   useEffect(() => {
     if (resetKey.split('-')[0] === key) setValue('');
@@ -32,9 +32,14 @@ function NumericFilter({ filter, resetKey, onChange }: FilterItemProps) {
   return (
     <Stack spacing='sm'>
       <IconText icon={icon} title={label} />
-      <NumberInput onChange={setValue} style={{ flexGrow: 1 }} placeholder={placeholder} />
+      <TextInput
+        value={value}
+        onChange={(event) => setValue(event?.currentTarget.value)}
+        style={{ flexGrow: 1 }}
+        placeholder={placeholder}
+      />
     </Stack>
   );
 }
 
-export default NumericFilter;
+export default TextFilter;

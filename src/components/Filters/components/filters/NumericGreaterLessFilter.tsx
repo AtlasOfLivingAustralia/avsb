@@ -4,7 +4,7 @@ import { useDebouncedValue } from '@mantine/hooks';
 import useMounted from '#/helpers/useMounted';
 
 import IconText from '#/components/IconText';
-import { FilterItemProps } from '..';
+import { FilterItemProps } from '../Panel';
 
 function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<number | ''>();

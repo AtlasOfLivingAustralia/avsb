@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-props-no-spreading */
 import { Fragment, useState } from 'react';
-import { Divider, SelectItem, Stack, StackProps } from '@mantine/core';
+import { Divider, Stack, StackProps } from '@mantine/core';
 import { TablerIcon } from '@tabler/icons';
 
 import isEqual from 'lodash/isEqual';
@@ -15,47 +15,7 @@ import TextFilter from './filters/TextFilter';
 import SelectFilter from './filters/SelectFilter';
 import DateFilter from './filters/DateFilter';
 
-type PredicateType =
-  | 'and'
-  | 'or'
-  | 'not'
-  | 'equals'
-  | 'in'
-  | 'within'
-  | 'isNotNull'
-  | 'like'
-  | 'fuzzy'
-  | 'nested'
-  | 'range';
-
-type PredicateValue = string | number | null | { gte?: number | ''; lte?: number | '' };
-
-export interface Predicate {
-  type: PredicateType;
-  key: string;
-  value?: PredicateValue;
-  values?: PredicateValue[];
-  predicate?: Predicate;
-  predicates?: Predicate[];
-}
-
-type FilterType =
-  | 'text'
-  | 'select'
-  | 'numeric'
-  | 'numericGreaterLess'
-  | 'percent'
-  | 'date'
-  | 'boolean';
-
-export interface Filter {
-  key: string;
-  label: string;
-  type: FilterType;
-  placeholder?: string;
-  items?: (string | SelectItem)[];
-  icon?: TablerIcon;
-}
+import { Filter, Predicate } from '../types';
 
 export interface FilterItemProps {
   filter: Filter;
@@ -80,19 +40,20 @@ function FilterItem({ filter, resetKey, onChange, icon }: FilterItemProps) {
 
 interface FilterPanelProps extends StackProps {
   filters: Filter[];
-  value: Predicate[];
+  predicates: Predicate[];
+  sort: 'alphabetical' | 'groups';
   resetKey: string;
   onPredicates?: (value: Predicate[]) => void;
 }
 
 function FilterPanel({
   filters,
-  value: predicates,
+  predicates,
+  sort,
   resetKey,
   onPredicates,
   ...rest
 }: FilterPanelProps) {
-  const [sort, setSort] = useState<'alphabetical' | 'groups'>('groups');
   const [lastPredicates, setLastPredicates] = useState<Predicate[]>([]);
 
   const handleChange = (newPred: Predicate) => {

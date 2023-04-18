@@ -4,7 +4,7 @@ import { MouseEventHandler } from 'react';
 import { ActionIcon, Badge, Button, Divider, Group, GroupProps, Text, rem } from '@mantine/core';
 import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons';
 
-import { Filter, Predicate } from './FilterPanel';
+import { Filter, Predicate } from '../types';
 
 function getPredicateValue(predicate: Predicate) {
   const { key, value } = predicate;

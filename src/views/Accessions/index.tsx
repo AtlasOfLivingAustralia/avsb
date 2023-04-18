@@ -1,25 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import {
-  Text,
-  Center,
-  Drawer,
-  Pagination,
-  Group,
-  ThemeIcon,
-  SegmentedControl,
-  Paper,
-} from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { IconFilter } from '@tabler/icons';
+import { Center, Pagination } from '@mantine/core';
 import { Outlet, useLoaderData, useParams } from 'react-router-dom';
 
 // Project components / helpers
 import { gqlQueries, performGQLQuery } from '#/api';
 import useMounted from '#/helpers/useMounted';
 import queries from '#/api/queries';
-import { FilterBar, FilterPanel } from '#/components';
-import { Predicate } from '#/components/FilterPanel';
+import { Filters, Predicate } from '#/components';
+
+// Accession components
 import AccessionTable from './components/AccessionTable';
 
 // Config
@@ -30,8 +20,6 @@ function Accessions() {
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<any>(useLoaderData());
   const [predicates, setPredicates] = useState<Predicate[]>([]);
-  const [resetKey, setResetKey] = useState<string>('');
-  const [opened, { open, close }] = useDisclosure(false);
 
   const params = useParams();
   const mounted = useMounted();
@@ -67,60 +55,17 @@ function Accessions() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, predicates]);
 
-  const onRemovePredicate = (predicate: Predicate) => {
-    setResetKey(`${predicate.key}-${Date.now()}`);
-    setPredicates(predicates.filter(({ key }) => predicate.key !== key));
-  };
-
   if (params.accession) return <Outlet />;
 
   return (
     <>
-      <Drawer.Root opened={opened} onClose={close} keepMounted>
-        <Drawer.Overlay />
-        <Drawer.Content>
-          <Drawer.Header style={{ zIndex: 300 }}>
-            <Group position='apart' w='100%'>
-              <Group>
-                <ThemeIcon variant='light' radius='xl' size='xl'>
-                  <IconFilter />
-                </ThemeIcon>
-                <Text size='xl' weight='bold' style={{ fontFamily: 'Lexend Deca, sans-serif' }}>
-                  Query Filters
-                </Text>
-              </Group>
-              <Group>
-                <SegmentedControl
-                  size='xs'
-                  data={[
-                    { label: 'Groups', value: 'groups' },
-                    { label: 'ABC', value: 'alphabetical' },
-                  ]}
-                />
-                <Drawer.CloseButton />
-              </Group>
-            </Group>
-          </Drawer.Header>
-          <Drawer.Body>
-            <FilterPanel
-              value={predicates}
-              filters={filters}
-              resetKey={resetKey}
-              onPredicates={(newPredicates) => {
-                setPage(1);
-                setPredicates(newPredicates);
-              }}
-              mb='xl'
-            />
-          </Drawer.Body>
-        </Drawer.Content>
-      </Drawer.Root>
-      <FilterBar
-        filters={filters}
+      <Filters
         predicates={predicates}
-        onFiltersOpen={open}
-        onRemove={onRemovePredicate}
-        mb='lg'
+        filters={filters}
+        onPredicates={(preds) => {
+          setPage(1);
+          setPredicates(preds);
+        }}
       />
       <AccessionTable events={events} />
       <Center pt='md'>
