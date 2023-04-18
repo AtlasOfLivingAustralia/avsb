@@ -127,22 +127,21 @@ const routes = createBrowserRouter([
                   predicates: [
                     queries.PRED_DATA_RESOURCE,
                     {
-                      type: 'in',
-                      key: 'eventTypeHierarchy',
-                      values: ['Trial'],
+                      type: 'equals',
+                      key: 'eventType',
+                      value: 'Trial',
                     },
                     {
-                      type: 'in',
+                      type: 'equals',
                       key: 'taxonKey',
-                      values: [params.guid],
+                      value: params.guid,
                     },
                   ],
                 },
-                limit: 10,
-                offset: 0,
+                size: 10,
               });
 
-              return data.eventSearch.documents.results;
+              return data.eventSearch.documents;
             },
           },
           {

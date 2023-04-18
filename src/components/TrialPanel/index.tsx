@@ -7,7 +7,7 @@ import Contact from '../Contact';
 import Map from '../Map';
 import IconText from '../IconText';
 
-import { fields, longFields } from './details';
+import { fields, longFields } from './fields';
 
 interface TrialPanelProps {
   event: Event;
