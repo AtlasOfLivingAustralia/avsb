@@ -32,7 +32,12 @@ function NumericFilter({ filter, resetKey, onChange }: FilterItemProps) {
   return (
     <Stack spacing='sm'>
       <IconText icon={icon} title={label} />
-      <NumberInput onChange={setValue} style={{ flexGrow: 1 }} placeholder={placeholder} />
+      <NumberInput
+        onChange={setValue}
+        style={{ flexGrow: 1 }}
+        placeholder={placeholder}
+        precision={2}
+      />
     </Stack>
   );
 }

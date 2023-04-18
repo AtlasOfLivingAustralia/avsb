@@ -76,7 +76,12 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
             ]}
           />
         </Paper>
-        <NumberInput onChange={setValue} style={{ flexGrow: 1 }} placeholder={placeholder} />
+        <NumberInput
+          onChange={setValue}
+          style={{ flexGrow: 1 }}
+          placeholder={placeholder}
+          precision={2}
+        />
       </Group>
     </Stack>
   );
