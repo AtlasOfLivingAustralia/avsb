@@ -87,8 +87,6 @@ function Trials() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, predicates]);
 
-  console.log(query);
-
   return (
     <>
       <Filters

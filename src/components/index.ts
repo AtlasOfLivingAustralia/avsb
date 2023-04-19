@@ -14,5 +14,7 @@ export { default as TrialPanel } from './TrialPanel';
 export { default as TrialDetails } from './TrialDetails';
 export { default as TreatmentCard } from './TreatmentCard';
 export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as SelectSearch } from './SelectSearch';
 export { default as Filters } from './Filters';
+
 export type { Filter, Predicate } from './Filters/types';

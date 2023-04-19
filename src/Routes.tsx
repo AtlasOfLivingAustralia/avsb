@@ -92,7 +92,7 @@ const routes = createBrowserRouter([
                 path: ':accession',
                 element: <AccessionPanel />,
                 loader: async ({ params }) => {
-                  const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_ACCESSIONS, {
+                  const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_ACCESSION_FULL, {
                     predicate: {
                       type: 'equals',
                       key: 'eventID',
@@ -173,11 +173,11 @@ const routes = createBrowserRouter([
 
               // Return both trial & treatment data
               return {
-                ...data.eventSearch.documents,
-                results: data.eventSearch.documents.results.map((event: Event) => {
-                  const related = (treatments.eventSearch.documents.results as Event[]).filter(
-                    ({ parentEventID }) => parentEventID === event.eventID,
-                  );
+                ...(data.eventSearch?.documents || {}),
+                results: (data.eventSearch?.documents.results || []).map((event: Event) => {
+                  const related = (
+                    (treatments.eventSearch?.documents.results as Event[]) || []
+                  ).filter(({ parentEventID }) => parentEventID === event.eventID);
                   return { ...event, treatments: related || [] };
                 }),
               };

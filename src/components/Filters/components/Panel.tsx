@@ -2,7 +2,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Fragment, useEffect, useState } from 'react';
 import { Accordion, Divider, Stack, StackProps, createStyles } from '@mantine/core';
-import { TablerIcon } from '@tabler/icons';
 
 import isEqual from 'lodash/isEqual';
 import groupBy from 'lodash/groupBy';
@@ -13,16 +12,10 @@ import NumericGreaterLessFilter from './filters/NumericGreaterLessFilter';
 import NumericFilter from './filters/NumericFilter';
 import TextFilter from './filters/TextFilter';
 import SelectFilter from './filters/SelectFilter';
+import SelectSearchFilter from './filters/SelectSearchFilter';
 import DateFilter from './filters/DateFilter';
 
-import { Filter, Predicate } from '../types';
-
-export interface FilterItemProps {
-  filter: Filter;
-  resetKey: string;
-  onChange: (value: Predicate) => void;
-  icon?: TablerIcon;
-}
+import { Filter, FilterItemProps, Predicate } from '../types';
 
 const filterComponents: { [key: string]: any } = {
   text: TextFilter,
@@ -30,6 +23,7 @@ const filterComponents: { [key: string]: any } = {
   numericGreaterLess: NumericGreaterLessFilter,
   percent: PercentFilter,
   select: SelectFilter,
+  selectSearch: SelectSearchFilter,
   date: DateFilter,
 };
 

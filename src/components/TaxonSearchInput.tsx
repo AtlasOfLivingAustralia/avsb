@@ -1,20 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useEffect, useState, forwardRef, ComponentPropsWithoutRef } from 'react';
-import { Badge, Group, Loader, Select, SelectItem, SelectProps, Stack, Text } from '@mantine/core';
-import { useDebouncedValue } from '@mantine/hooks';
-import { IconSearch } from '@tabler/icons';
+import { forwardRef, ComponentPropsWithoutRef } from 'react';
+import { Badge, Group, SelectItem, Stack, Text } from '@mantine/core';
 import { useAPI } from '#/api';
 
-import uniqBy from 'lodash/uniqBy';
-import orderBy from 'lodash/orderBy';
-
-interface TaxonSearchInputProps
-  extends Omit<
-    SelectProps,
-    'searchable' | 'searchValue' | 'data' | 'value' | 'onSearchChange' | 'nothingFound'
-  > {
-  customTypes?: string[];
-}
+import SelectSearch, { SearchSelectProps } from './SelectSearch';
 
 interface ItemProps extends ComponentPropsWithoutRef<'div'> {
   label: string;
@@ -48,75 +37,27 @@ const SelectMenuItem = forwardRef<HTMLDivElement, ItemProps>(
   ),
 );
 
-function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps) {
-  const [data, setData] = useState<SelectItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
-  const [search, setSearch] = useState<string>('');
-  const [query] = useDebouncedValue(search, 150);
+function TaxonSearchInput(props: Omit<SearchSelectProps, 'fetchItems'>) {
   const api = useAPI();
 
-  useEffect(() => {
-    async function suggestTaxa() {
-      try {
-        const taxa = await api.taxon.suggest(query);
-        setData(
-          taxa.map(({ name, guid, rankString, commonName }) => ({
-            value: guid,
-            label: name,
-            rankString,
-            commonName,
-            group: name.split(' ')[0],
-          })),
-        );
-        setError(null);
-      } catch (suggestError) {
-        setError(suggestError as Error);
-      }
-
-      setLoading(false);
-    }
-
-    if (query?.length > 0) suggestTaxa();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, api.taxon]);
-
-  const sorted = orderBy(data, [(filter) => filter.label?.toLowerCase()], ['asc']);
+  // Define select items fetcher for select search
+  const fetchItems = async (query: string): Promise<SelectItem[]> => {
+    const taxa = await api.taxon.suggest(query);
+    return taxa.map(({ name, guid, rankString, commonName }) => ({
+      value: guid,
+      label: name,
+      rankString,
+      commonName,
+      group: name.split(' ')[0],
+    }));
+  };
 
   return (
-    <Select
+    <SelectSearch
       {...props}
-      searchable
-      clearable
-      rightSection={loading ? <Loader size='xs' /> : null}
-      icon={<IconSearch size={18} />}
-      placeholder={
-        customTypes.length > 0
-          ? `Search for a Taxon / ${customTypes.join(' / ')}`
-          : 'Search for a Taxon'
-      }
-      searchValue={search}
-      error={error && error.message}
+      fetchItems={fetchItems}
+      placeholder='Search for a taxon'
       itemComponent={SelectMenuItem}
-      nothingFound={
-        query.length > 0 && !loading ? `No taxa found for '${query}'` : 'Enter search query above'
-      }
-      onSearchChange={(newValue) => {
-        if (search !== newValue) {
-          if (newValue !== '') setLoading(true);
-          setSearch(newValue);
-        }
-      }}
-      data={[
-        ...uniqBy(sorted, 'value'),
-        ...(search.length > 0
-          ? customTypes.map((type) => ({
-              type,
-              value: `${type}:${search}`,
-              label: search,
-            }))
-          : []),
-      ]}
     />
   );
 }

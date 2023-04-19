@@ -14,6 +14,49 @@ query list($predicate: Predicate, $size: Int, $from: Int){
       results {
         eventID
         parentEventID
+        year
+        month
+        day
+        datasetTitle
+        datasetKey
+        extensions {
+          seedbank {
+            accessionNumber
+            seedPerGram
+            formInStorage
+            sampleWeightInGrams
+            sampleSize
+            collectionFillRate
+            purityDebrisPercentage
+            purityPercentage
+            dateCollected
+            storageTemperatureInCelsius
+            relativeHumidityPercentage
+            primaryStorageSeedBank
+            primaryCollector
+            duplicatesReplicates
+            thousandSeedWeight
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
+const QUERY_EVENT_ACCESSION_FULL = `
+query list($predicate: Predicate){
+  eventSearch(
+    size: 1
+    predicate: $predicate
+    ) {
+    documents {
+      size
+      from
+      total
+      results {
+        eventID
+        parentEventID
         locality
         year
         month
@@ -255,6 +298,20 @@ query dataset($key: JSON!){
 }
 `;
 
+const QUERY_DATASET_SUGGEST = `
+query keywordSearch($predicate: Predicate, $size: Int){
+  eventSearch(predicate: $predicate) {
+    facet {
+      datasetKey(size: $size) {
+        key
+        count
+        datasetTitle
+      }
+    }
+  }
+}
+`;
+
 const QUERY_TAXON_MEDIA = `
 query image($key: String, $size: Int, $from: Int) {
   taxonMedia(key: $key, size: $size, from: $from) {
@@ -291,6 +348,7 @@ const PRED_DATA_RESOURCE = {
 export default {
   QUERY_EVENT,
   QUERY_EVENT_ACCESSIONS,
+  QUERY_EVENT_ACCESSION_FULL,
   QUERY_EVENT_TRIALS,
   QUERY_EVENT_TREATMENTS,
   QUERY_EVENT_MAP,
@@ -298,5 +356,6 @@ export default {
   QUERY_EVENT_MAP_POINT,
   QUERY_TAXON_MEDIA,
   QUERY_DATASET,
+  QUERY_DATASET_SUGGEST,
   PRED_DATA_RESOURCE,
 };

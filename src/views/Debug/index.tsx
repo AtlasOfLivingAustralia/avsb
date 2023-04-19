@@ -1,8 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
 import { Text, Accordion, Button, Card } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { TaxonSearchInput, TreatmentCard } from '#/components';
-// import { useAPI } from '#/api';
 
 // Debug views
 import DebugGQL from './components/DebugGQL';
@@ -11,7 +11,7 @@ import DebugMap from './components/DebugMap';
 function Debug() {
   const [taxonSearch, setTaxonSearch] = useState<string | null>(null);
   const navigate = useNavigate();
-  // const api = useAPI();
+
   return (
     <Accordion defaultValue='filtering'>
       <Accordion.Item value='gql'>

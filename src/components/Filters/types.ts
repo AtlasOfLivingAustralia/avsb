@@ -1,25 +1,6 @@
 import { SelectItem } from '@mantine/core';
 import { TablerIcon } from '@tabler/icons';
 
-type FilterType =
-  | 'text'
-  | 'select'
-  | 'numeric'
-  | 'numericGreaterLess'
-  | 'percent'
-  | 'date'
-  | 'boolean';
-
-export interface Filter {
-  key: string;
-  label: string;
-  type: FilterType;
-  placeholder?: string;
-  group?: string;
-  items?: (string | SelectItem)[];
-  icon?: TablerIcon;
-}
-
 type PredicateType =
   | 'and'
   | 'or'
@@ -42,4 +23,32 @@ export interface Predicate {
   values?: PredicateValue[];
   predicate?: Predicate;
   predicates?: Predicate[];
+}
+
+type FilterType =
+  | 'text'
+  | 'select'
+  | 'selectSearch'
+  | 'numeric'
+  | 'numericGreaterLess'
+  | 'percent'
+  | 'date'
+  | 'boolean';
+
+export interface Filter {
+  key: string;
+  label: string;
+  type: FilterType;
+  placeholder?: string;
+  group?: string;
+  items?: (string | SelectItem)[];
+  fetchItems?: (query: string) => Promise<SelectItem[]>;
+  icon?: TablerIcon;
+}
+
+export interface FilterItemProps {
+  filter: Filter;
+  resetKey: string;
+  onChange: (value: Predicate) => void;
+  icon?: TablerIcon;
 }
