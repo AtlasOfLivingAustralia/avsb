@@ -4,7 +4,9 @@ import { Badge, Group, Loader, Select, SelectItem, SelectProps, Stack, Text } fr
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons';
 import { useAPI } from '#/api';
+
 import uniqBy from 'lodash/uniqBy';
+import orderBy from 'lodash/orderBy';
 
 interface TaxonSearchInputProps
   extends Omit<
@@ -79,6 +81,8 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, api.taxon]);
 
+  const sorted = orderBy(data, [(filter) => filter.label?.toLowerCase()], ['asc']);
+
   return (
     <Select
       {...props}
@@ -104,7 +108,7 @@ function TaxonSearchInput({ customTypes = [], ...props }: TaxonSearchInputProps)
         }
       }}
       data={[
-        ...uniqBy(data, 'value'),
+        ...uniqBy(sorted, 'value'),
         ...(search.length > 0
           ? customTypes.map((type) => ({
               type,
