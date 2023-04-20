@@ -5,4 +5,5 @@ export { default as TaxonView } from './Taxon';
 export { default as AccessionsView } from './Accessions';
 export { default as SummaryView } from './Summary';
 export { default as TrialsView } from './Trials';
+export { default as SequencesView } from './Sequences';
 export { default as DebugView } from './Debug';

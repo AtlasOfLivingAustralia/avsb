@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { useLoaderData, useRouteLoaderData } from 'react-router-dom';
 import {
   Text,
@@ -16,20 +16,14 @@ import {
 } from '@mantine/core';
 
 // Project imports
-import { Event, EventSearchResult } from '#/api/graphql/types';
 import { EventMap } from '#/components';
 import { useDisclosure } from '@mantine/hooks';
 import { Taxon } from '#/api/sources/taxon';
 import { IconExternalLink } from '@tabler/icons';
 
-interface EventSearchResponse {
-  eventSearch: EventSearchResult;
-}
-
 function Summary() {
   const [mapOpen, { open, close }] = useDisclosure(false);
-  const { eventSearch } = useLoaderData() as EventSearchResponse;
-  const [records] = useState<Event[]>(eventSearch.documents.results);
+  const token = useLoaderData() as string;
   const taxon = useRouteLoaderData('taxon') as Taxon;
   const theme = useMantineTheme();
 
@@ -45,12 +39,7 @@ function Summary() {
           color: theme.colorScheme === 'dark' ? theme.colors.gray[7] : theme.colors.dark[8],
         }}
       >
-        <EventMap
-          width='100%'
-          height={650}
-          token={eventSearch._tileServerToken}
-          itemListHeight={180}
-        />
+        <EventMap width='100%' height={650} token={token} itemListHeight={180} />
       </Modal>
       <Grid>
         <Grid.Col sm={7} md={8} lg={9}>
@@ -59,7 +48,7 @@ function Summary() {
               onFullscreen={open}
               width='100%'
               height={450}
-              token={eventSearch._tileServerToken}
+              token={token}
               itemListHeight={180}
             />
           </Paper>

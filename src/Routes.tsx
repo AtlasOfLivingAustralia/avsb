@@ -10,6 +10,7 @@ import {
   DebugView,
   AccessionsView,
   SummaryView,
+  SequencesView,
 } from './views';
 import queries from './api/queries';
 import { Event } from './api/graphql/types';
@@ -32,7 +33,7 @@ const routes = createBrowserRouter([
         loader: async ({ params }) =>
           (
             await fetch(
-              `${import.meta.env.VITE_API_BIE}/species/${decodeURIComponent(params.guid || '')}`,
+              `${import.meta.env.VITE_API_BIE}/ws/species/${decodeURIComponent(params.guid || '')}`,
             )
           ).json(),
         children: [
@@ -59,7 +60,8 @@ const routes = createBrowserRouter([
                 },
                 size: 50,
               });
-              return data;
+
+              return data.eventSearch._tileServerToken;
             },
           },
           {
@@ -113,19 +115,6 @@ const routes = createBrowserRouter([
                 },
               },
             ],
-          },
-          {
-            path: 'media',
-            element: <MediaView />,
-            loader: async ({ params }) => {
-              const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
-                key: params.guid,
-                size: 20,
-                from: 0,
-              });
-
-              return data.taxonMedia;
-            },
           },
           {
             path: 'trials',
@@ -188,15 +177,32 @@ const routes = createBrowserRouter([
                   treatments.eventSearch?.documents.results || [],
                 ),
               };
-              // return {
-              //   ...(data.eventSearch?.documents || {}),
-              //   results: (data.eventSearch?.documents.results || []).map((event: Event) => {
-              //     const related = (
-              //       (treatments.eventSearch?.documents.results as Event[]) || []
-              //     ).filter(({ parentEventID }) => parentEventID === event.eventID);
-              //     return { ...event, treatments: related || [] };
-              //   }),
-              // };
+            },
+          },
+          {
+            path: 'media',
+            element: <MediaView />,
+            loader: async ({ params }) => {
+              const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
+                key: params.guid,
+                size: 20,
+                from: 0,
+              });
+
+              return data.taxonMedia;
+            },
+          },
+          {
+            path: 'sequences',
+            element: <SequencesView />,
+            loader: async () => {
+              const { results } = await (
+                await fetch(
+                  `${import.meta.env.VITE_API_BIE}/externalSite/genbank?s=Acacia+dealbata`,
+                )
+              ).json();
+
+              return results;
             },
           },
           {
