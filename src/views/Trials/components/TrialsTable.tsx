@@ -71,9 +71,9 @@ function TrialsTable({ events, height }: TrialsTableProps) {
               <th>Institution</th>
               <th>Adj. Germination</th>
               <th>Treatment</th>
+              <th>Viability</th>
               <th>Date Tested</th>
               <th>Test Length</th>
-              <th>Germinated</th>
               {/* <th>
               <Group spacing='xs'>
                 Tested
@@ -139,15 +139,15 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     </td>
                     <td>{getIsPresent(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}</td>
                     <td>
+                      {getIsPresent(trial?.viabilityPercentage) && `${trial?.viabilityPercentage}%`}
+                    </td>
+                    <td>
                       {[event.day, event.month, event.year]
                         .filter((part) => part !== null)
                         .join('/')}
                     </td>
                     <td>
                       {getIsPresent(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
-                    </td>
-                    <td>
-                      {getIsPresent(trial?.numberGerminated) && `${trial?.numberGerminated} seeds`}
                     </td>
                     <td align='right' width={85}>
                       <div

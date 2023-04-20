@@ -2,7 +2,7 @@ import {
   IconCircle,
   IconCircleDashed,
   IconCircleDotted,
-  IconPercentage,
+  IconSeeding,
   TablerIcon,
 } from '@tabler/icons';
 import { SeedBankTrial } from '#/api/graphql/types';
@@ -16,10 +16,14 @@ interface TrialDetail {
 
 const fields: TrialDetail[] = [
   {
-    key: 'viabilityPercentage',
-    name: 'Viability',
-    icon: IconPercentage,
-    unit: '%',
+    key: 'numberGerminated',
+    name: 'Number Germinated',
+    icon: IconSeeding,
+  },
+  {
+    key: 'numberTested',
+    name: 'Number Tested',
+    icon: IconCircleDotted,
   },
   {
     key: 'numberFull',
@@ -30,11 +34,6 @@ const fields: TrialDetail[] = [
     key: 'numberEmpty',
     name: 'Number Empty',
     icon: IconCircleDashed,
-  },
-  {
-    key: 'numberTested',
-    name: 'Number Tested',
-    icon: IconCircleDotted,
   },
 ];
 
