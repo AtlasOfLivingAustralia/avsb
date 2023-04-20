@@ -41,7 +41,11 @@ function Filters({ filters, predicates, onPredicates }: FiltersProps) {
                 <ThemeIcon variant='light' radius='xl' size='xl'>
                   <IconFilter />
                 </ThemeIcon>
-                <Text size='xl' weight='bold' style={{ fontFamily: 'Lexend Deca, sans-serif' }}>
+                <Text
+                  size='xl'
+                  weight='bold'
+                  sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}
+                >
                   Query Filters
                 </Text>
               </Group>

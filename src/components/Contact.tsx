@@ -56,8 +56,8 @@ function Contact({ dataResource, ...rest }: ContactProps) {
     // eslint-disable-next-line react/jsx-props-no-spreading
     <Paper {...rest} withBorder p='md'>
       <Group align='flex-start'>
-        <Skeleton height={55} circle visible={!contact}>
-          <Avatar size={55} radius='xl'>
+        <Skeleton height={50} circle visible={!contact}>
+          <Avatar size={50} radius='xl'>
             {contact?.individualName
               ? `${contact.individualName[0].givenName?.[0].charAt(
                   0,
@@ -68,7 +68,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
         <Stack spacing={6}>
           <Skeleton visible={!contact}>
             <Group spacing='xs'>
-              <Text weight='bold' size='lg'>
+              <Text weight='bold' size='md'>
                 {(contact?.individualName
                   ? `${contact?.individualName?.[0]?.givenName?.[0]} ${contact.individualName[0].surName?.[0]}`
                   : contact?.organizationName?.[0]) || 'Name Here'}

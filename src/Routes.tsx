@@ -13,6 +13,7 @@ import {
 } from './views';
 import queries from './api/queries';
 import { Event } from './api/graphql/types';
+import { mapTrialTreatments } from './helpers';
 
 const routes = createBrowserRouter([
   {
@@ -98,9 +99,17 @@ const routes = createBrowserRouter([
                       key: 'eventID',
                       value: params.accession,
                     },
-                    size: 1,
+                    trialPredicate: {
+                      type: 'equals',
+                      key: 'parentEventID',
+                      value: params.accession,
+                    },
                   });
-                  return data.eventSearch.documents.results[0];
+
+                  return {
+                    accessionEvent: data.accession.documents.results[0],
+                    trialEvents: data.trials.documents.results,
+                  };
                 },
               },
             ],
@@ -174,13 +183,20 @@ const routes = createBrowserRouter([
               // Return both trial & treatment data
               return {
                 ...(data.eventSearch?.documents || {}),
-                results: (data.eventSearch?.documents.results || []).map((event: Event) => {
-                  const related = (
-                    (treatments.eventSearch?.documents.results as Event[]) || []
-                  ).filter(({ parentEventID }) => parentEventID === event.eventID);
-                  return { ...event, treatments: related || [] };
-                }),
+                results: mapTrialTreatments(
+                  data.eventSearch?.documents.results || [],
+                  treatments.eventSearch?.documents.results || [],
+                ),
               };
+              // return {
+              //   ...(data.eventSearch?.documents || {}),
+              //   results: (data.eventSearch?.documents.results || []).map((event: Event) => {
+              //     const related = (
+              //       (treatments.eventSearch?.documents.results as Event[]) || []
+              //     ).filter(({ parentEventID }) => parentEventID === event.eventID);
+              //     return { ...event, treatments: related || [] };
+              //   }),
+              // };
             },
           },
           {

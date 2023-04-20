@@ -8,7 +8,7 @@ import { Filters, Predicate } from '#/components';
 import { gqlQueries, performGQLQuery } from '#/api';
 import { Event } from '#/api/graphql/types';
 import queries from '#/api/queries';
-import useMounted from '#/helpers/useMounted';
+import { useMounted, mapTrialTreatments } from '#/helpers';
 import TrialsTable from './components/TrialsTable';
 import filters from './filters';
 
@@ -73,13 +73,11 @@ function Trials() {
       });
 
       setQuery({
-        ...data.eventSearch.documents,
-        results: data.eventSearch.documents.results.map((event: Event) => {
-          const related = (treatmentData.eventSearch.documents.results as Event[]).filter(
-            ({ parentEventID }) => parentEventID === event.eventID,
-          );
-          return { ...event, treatments: related || [] };
-        }),
+        ...(data.eventSearch?.documents || {}),
+        results: mapTrialTreatments(
+          data.eventSearch?.documents.results || [],
+          treatmentData.eventSearch?.documents.results || [],
+        ),
       });
     }
 

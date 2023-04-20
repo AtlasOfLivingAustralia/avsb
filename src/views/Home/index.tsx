@@ -110,7 +110,7 @@ function Home() {
                   >
                     <Text
                       sx={{
-                        fontFamily: 'Lexend Deca, sans-serif',
+                        fontFamily: theme.headings.fontFamily,
                         color:
                           theme.colorScheme === 'dark'
                             ? theme.colors.gray[3]

@@ -13,12 +13,14 @@ import {
   Title,
   Spoiler,
   Divider,
+  Alert,
 } from '@mantine/core';
 import {
   IconArrowBackUp,
   IconChevronDown,
   IconChevronUp,
   IconHandStop,
+  IconInfoCircle,
   IconLocation,
   IconMap2,
   IconMapPin,
@@ -35,6 +37,7 @@ import Map from '../Map';
 import IconText from '../IconText';
 import { fields, longFields } from './fields';
 import MeasurementCard from '../MeasurementCard';
+import TrialSummary from './components/TrialSummary';
 
 interface AccessionPanelProps {
   taxon?: string;
@@ -42,9 +45,14 @@ interface AccessionPanelProps {
 
 const missingData = 'Not Supplied';
 
+interface AccessionPanelLoader {
+  accessionEvent: Event;
+  trialEvents: Event[];
+}
+
 function AccessionPanel({ taxon }: AccessionPanelProps) {
-  const event = useLoaderData() as Event;
-  const accession = event?.extensions?.seedbank as SeedBankAccession;
+  const { accessionEvent, trialEvents } = useLoaderData() as AccessionPanelLoader;
+  const accession = accessionEvent?.extensions?.seedbank as SeedBankAccession;
   const navigate = useNavigate();
 
   // if (!accession && !event)
@@ -52,7 +60,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
 
   return (
     <Grid gutter='xl' pb='xl'>
-      {event && (
+      {accessionEvent && (
         <Grid.Col span={12}>
           <Paper p='sm' mb='lg' withBorder>
             <Group position='apart'>
@@ -133,7 +141,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
             ))}
         </Grid>
       </Grid.Col>
-      {(event.measurementOrFacts?.length || 0) > 0 && (
+      {(accessionEvent.measurementOrFacts?.length || 0) > 0 && (
         <Grid.Col span={12}>
           <Title order={4}>Additional Data</Title>
           <Spoiler
@@ -167,7 +175,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
             }}
           >
             <Group mt='md' pb='sm'>
-              {event?.measurementOrFacts?.map((mof) => (
+              {accessionEvent?.measurementOrFacts?.map((mof) => (
                 <MeasurementCard key={mof.measurementID} measurement={mof} />
               ))}
             </Group>
@@ -176,25 +184,28 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
       )}
       <Grid.Col sm={8} md={8} lg={8}>
         <Paper h='100%' withBorder>
-          {event.decimalLatitude && event.decimalLongitude && (
+          {accessionEvent.decimalLatitude && accessionEvent.decimalLongitude && (
             <Map
               width='100%'
               height={350}
-              center={[event.decimalLongitude, event.decimalLatitude]}
+              center={[accessionEvent.decimalLongitude, accessionEvent.decimalLatitude]}
             />
           )}
           <Stack spacing='xs' p='md'>
+            <Alert icon={<IconInfoCircle />} mb='sm'>
+              This map shows the seed <b>collection</b> location
+            </Alert>
             <IconText labelWidth={120} title='Locality' icon={IconLocation}>
-              {event.locality || missingData}
+              {accessionEvent.locality || missingData}
             </IconText>
             <IconText labelWidth={120} title='Decimal Lat' icon={IconMapPin}>
-              {event.decimalLatitude || missingData}
+              {accessionEvent.decimalLatitude || missingData}
             </IconText>
             <IconText labelWidth={120} title='Decimal Lng' icon={IconMapPin}>
-              {event.decimalLongitude || missingData}
+              {accessionEvent.decimalLongitude || missingData}
             </IconText>
             <IconText labelWidth={120} title='State Province' icon={IconMap2}>
-              {event.stateProvince || missingData}
+              {accessionEvent.stateProvince || missingData}
             </IconText>
           </Stack>
         </Paper>
@@ -226,9 +237,17 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
           </Stack>
         </Paper>
       </Grid.Col>
-      {event.datasetKey && (
+      {accessionEvent.datasetKey && (
         <Grid.Col span={12}>
-          <Contact dataResource={event.datasetKey} />
+          <Contact dataResource={accessionEvent.datasetKey} />
+        </Grid.Col>
+      )}
+      {accessionEvent.eventID && (
+        <Grid.Col span={12}>
+          <Text size='lg' mb='md' sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}>
+            Related Trials
+          </Text>
+          <TrialSummary trials={trialEvents} />
         </Grid.Col>
       )}
     </Grid>

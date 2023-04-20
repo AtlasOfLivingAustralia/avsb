@@ -48,9 +48,10 @@ const useStyles = createStyles((theme) => ({
 
 interface TrialsTableProps {
   events: Event[];
+  height?: string | number;
 }
 
-function TrialsTable({ events }: TrialsTableProps) {
+function TrialsTable({ events, height }: TrialsTableProps) {
   // const api = useAPI();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
@@ -59,7 +60,10 @@ function TrialsTable({ events }: TrialsTableProps) {
 
   return (
     <Card withBorder p={0}>
-      <ScrollArea h='calc(100vh - 420px)' onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+      <ScrollArea
+        h={height || 'calc(100vh - 420px)'}
+        onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+      >
         <Table highlightOnHover>
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>

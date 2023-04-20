@@ -45,8 +45,8 @@ query list($predicate: Predicate, $size: Int, $from: Int){
 `;
 
 const QUERY_EVENT_ACCESSION_FULL = `
-query list($predicate: Predicate){
-  eventSearch(
+query list($predicate: Predicate, $trialPredicate: Predicate){
+  accession: eventSearch(
     size: 1
     predicate: $predicate
     ) {
@@ -104,6 +104,48 @@ query list($predicate: Predicate){
             storageBehaviour
             embryoType
             dormancyClass
+          }
+        }
+      }
+    }
+  }
+  trials: eventSearch(
+    predicate: $trialPredicate
+    ) {
+    documents {
+      size
+      from
+      total
+      results {
+        eventID
+        parentEventID
+        locality
+        year
+        month
+        day
+        datasetTitle
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementUnit
+          measurementValue
+          measurementMethod
+          measurementRemarks
+          measurementAccuracy
+          measurementDeterminedDate
+        }
+        extensions {
+          seedbank {
+            accessionNumber
+            testDateStarted
+            testLengthInDays
+            numberGerminated
+            adjustedGerminationPercentage
+            viabilityPercentage
+            numberFull
+            numberEmpty
+            numberTested
+            preTestProcessingNotes
           }
         }
       }

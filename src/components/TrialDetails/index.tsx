@@ -75,7 +75,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
         <Grid.Col span={12}>
           {treatments.map((treatment, num) => (
             <Paper withBorder p='md' mt='sm' key={treatment.id}>
-              <Text style={{ fontFamily: 'Lexend Deca, sans-serif' }} mb='xs'>
+              <Text sx={(theme) => ({ fontFamily: theme.headings.fontFamily })} mb='xs'>
                 Treatment {num + 1}
               </Text>
               <TreatmentCard treatment={treatment} />
