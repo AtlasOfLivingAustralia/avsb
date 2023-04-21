@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Stack, Group, Paper, SegmentedControl } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
+import { DatePickerInput, DateValue, DatesRangeValue } from '@mantine/dates';
 import useMounted from '#/helpers/useMounted';
 
 import IconText from '#/components/IconText';
 import { FilterItemProps } from '../../types';
 
 function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
-  const [value, setValue] = useState<Date | null>();
+  const [single, setSingle] = useState<DateValue>();
+  const [range, setRange] = useState<DatesRangeValue>();
   const [operation, setOperation] = useState<string>('equals');
   const mounted = useMounted();
 
@@ -16,7 +17,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
   // useEffect handler for select / number input updates
   useEffect(() => {
     if (!mounted) return;
-    if (value === null || value === undefined) {
+    if ((single === null || single === undefined) && (range === null || range === undefined)) {
       onChange({
         type: 'equals',
         key,
@@ -28,7 +29,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
       onChange({
         type: 'equals',
         key,
-        value: value.getTime(),
+        value: single?.getTime(),
       });
     }
     if (operation === 'gte') {
@@ -36,7 +37,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
         type: 'range',
         key,
         value: {
-          gte: value.getTime(),
+          gte: single?.getTime(),
         },
       });
     }
@@ -45,19 +46,30 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
         type: 'range',
         key,
         value: {
-          lte: value.getTime(),
+          lte: single?.getTime(),
+        },
+      });
+    }
+    if (operation === 'range' && range !== null && range !== undefined) {
+      onChange({
+        type: 'range',
+        key,
+        value: {
+          gte: range[0]?.getTime(),
+          lte: range[1]?.getTime(),
         },
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, operation]);
+  }, [single, range, operation]);
 
   useEffect(() => {
     if (resetKey.split('-')[0] === key) {
       setOperation('equals');
-      setValue(null);
+      setSingle(undefined);
+      setRange(undefined);
     }
-  }, [key, resetKey, setValue]);
+  }, [key, resetKey, setSingle, setRange]);
 
   return (
     <Stack spacing='sm'>
@@ -71,16 +83,28 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
               { value: 'equals', label: '=' },
               { value: 'gte', label: '>' },
               { value: 'lte', label: '<' },
+              { value: 'range', label: '-' },
             ]}
           />
         </Paper>
-        <DatePickerInput
-          style={{ flexGrow: 1 }}
-          value={value}
-          onChange={setValue}
-          placeholder={placeholder}
-          clearable
-        />
+        {operation !== 'range' ? (
+          <DatePickerInput
+            style={{ flexGrow: 1 }}
+            value={single}
+            onChange={setSingle}
+            placeholder={placeholder}
+            clearable
+          />
+        ) : (
+          <DatePickerInput
+            style={{ flexGrow: 1 }}
+            value={range}
+            onChange={setRange}
+            placeholder={placeholder}
+            clearable
+            type='range'
+          />
+        )}
       </Group>
     </Stack>
   );
