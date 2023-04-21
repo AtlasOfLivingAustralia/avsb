@@ -12,7 +12,8 @@ import {
   Badge,
   ScrollArea,
 } from '@mantine/core';
-import { IconDotsVertical, IconExternalLink } from '@tabler/icons';
+import { useClipboard } from '@mantine/hooks';
+import { IconCopy, IconDotsVertical, IconExternalLink } from '@tabler/icons';
 import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { Taxon as TaxonType } from '#/api/sources/taxon';
 
@@ -20,6 +21,7 @@ function Taxon() {
   const { pathname } = useLocation();
   const data = useLoaderData() as TaxonType;
   const navigate = useNavigate();
+  const clipboard = useClipboard({ timeout: 500 });
 
   return (
     <>
@@ -61,6 +63,12 @@ function Taxon() {
                 href={`https://bie.ala.org.au/species/${data.taxonConcept.guid}`}
               >
                 View on ALA BIE
+              </Menu.Item>
+              <Menu.Item
+                icon={<IconCopy size={14} />}
+                onClick={() => clipboard.copy(data.taxonConcept.guid)}
+              >
+                Copy Taxon ID
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>

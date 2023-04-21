@@ -7,6 +7,7 @@ import {
   Card,
   Center,
   Collapse,
+  Group,
   ScrollArea,
   Table,
   Text,
@@ -16,6 +17,7 @@ import {
 } from '@mantine/core';
 import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
 import { Fragment, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
@@ -55,6 +57,7 @@ interface TrialsTableProps {
 function TrialsTable({ events, height }: TrialsTableProps) {
   // const api = useAPI();
   const theme = useMantineTheme();
+  const location = useLocation();
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
@@ -126,13 +129,16 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 <Fragment key={event.eventID}>
                   <tr
                     style={{ cursor: 'pointer' }}
-                    onClick={() =>
-                      setSelected(
-                        isSelected
-                          ? (selected as string[]).filter((eventID) => eventID !== event.eventID)
-                          : [...(selected as string[]), event.eventID || ''],
-                      )
-                    }
+                    onClick={(e) => {
+                      const className = (e.target as any)?.className;
+                      if (!(typeof className === 'string' && className.includes('Button'))) {
+                        setSelected(
+                          isSelected
+                            ? (selected as string[]).filter((eventID) => eventID !== event.eventID)
+                            : [...(selected as string[]), event.eventID || ''],
+                        );
+                      }
+                    }}
                   >
                     <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber}</td>
                     <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
@@ -152,14 +158,20 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     <td>
                       {getIsPresent(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
                     </td>
-                    <td align='right' width={85}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'flex-end',
-                        }}
-                      >
+                    <td align='right'>
+                      <Group spacing='xs' position='right' miw={145}>
+                        {location.pathname.endsWith('trials') && (
+                          <Button
+                            disabled={!event.parentEventID}
+                            component={Link}
+                            to={`../accessions/${event.parentEventID}`}
+                            variant='subtle'
+                            size='xs'
+                            px='xs'
+                          >
+                            View Accession
+                          </Button>
+                        )}
                         <IconChevronDown
                           style={{
                             transition: 'transform ease-out 200ms',
@@ -167,7 +179,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                           }}
                           size={16}
                         />
-                      </div>
+                      </Group>
                     </td>
                   </tr>
                   <tr>
