@@ -20,7 +20,7 @@ function HerbariumLink({ accession, taxon }: ContactProps) {
       const catalogCode = accession.substring(0, accession.indexOf(' ')).toUpperCase();
       const catalogNumber = accession.substring(
         accession.indexOf(' ') + 1,
-        accession.lastIndexOf('.'),
+        accession.lastIndexOf('.') > 0 ? accession.lastIndexOf('.') : undefined,
       );
 
       // Construct API request params
@@ -37,6 +37,7 @@ function HerbariumLink({ accession, taxon }: ContactProps) {
 
       if (data.ok) {
         const { totalRecords, occurrences } = await data.json();
+        console.log(occurrences);
         if (totalRecords > 0) setUuid(occurrences[0].uuid);
       } else {
         setError(true);
