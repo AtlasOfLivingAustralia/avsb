@@ -10,7 +10,7 @@ import {
 } from '@mantine/nprogress';
 
 // Project components & helpers
-import { Logo } from '#/components';
+import { Logo, LogoLoader } from '#/components';
 import Header from './components/Header';
 import './index.css';
 
@@ -33,9 +33,7 @@ function Dashboard() {
     return (
       <Center style={{ width: '100vw', height: '100vh' }}>
         <Stack align='center' spacing='lg'>
-          <div className='logo-loader'>
-            <Logo width={100} height={100} />
-          </div>
+          <LogoLoader />
           <Text color='dimmed' weight='bold'>
             Signing you in
           </Text>

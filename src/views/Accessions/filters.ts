@@ -19,20 +19,26 @@ import { Filter } from '#/components';
 // Define a data fetcher for the dataset select search
 const fetchItems = async (query: string): Promise<SelectItem[]> => {
   const { data } = await performGQLQuery(gqlQueries.QUERY_DATASET_SUGGEST, {
-    predicate: { type: 'like', key: 'datasetTitle', value: `*${query}*` },
+    predicate: {
+      type: 'and',
+      predicates: [
+        { type: 'like', key: 'datasetTitle', value: `*${query}*` },
+        gqlQueries.PRED_DATA_RESOURCE,
+      ],
+    },
   });
 
   return (data.eventSearch?.facet?.datasetKey || [])
     .filter((result: any) => result !== null)
-    .map(({ key: datasetKey, datasetTitle }: any) => ({
-      value: datasetKey,
+    .map(({ /* key: datasetKey, */ datasetTitle }: any) => ({
+      value: datasetTitle,
       label: datasetTitle,
     }));
 };
 
 const filters: Filter[] = [
   {
-    key: 'seedbank_accessionNumber',
+    key: 'catalogNumber',
     label: 'Accession Number',
     type: 'text',
     placeholder: 'ABC 123456.78',
@@ -40,7 +46,7 @@ const filters: Filter[] = [
     group: 'Collection',
   },
   {
-    key: 'datasetKey',
+    key: 'datasetTitle',
     label: 'Dataset',
     type: 'selectSearch',
     placeholder: 'Search for a dataset',

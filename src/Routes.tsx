@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, redirect, defer } from 'react-router-dom';
 import { AccessionPanel, ErrorBoundary } from '#/components';
 import { performGQLQuery, gqlQueries } from './api';
 import {
@@ -15,6 +15,7 @@ import {
 import queries from './api/queries';
 import { Event } from './api/graphql/types';
 import { mapTrialTreatments } from './helpers';
+import { Taxon } from './api/sources/taxon';
 
 const routes = createBrowserRouter([
   {
@@ -195,14 +196,28 @@ const routes = createBrowserRouter([
           {
             path: 'sequences',
             element: <SequencesView />,
-            loader: async () => {
-              const { results } = await (
-                await fetch(
-                  `${import.meta.env.VITE_API_BIE}/externalSite/genbank?s=Acacia+dealbata`,
-                )
-              ).json();
+            loader: async ({ params }) => {
+              async function fetchSequences() {
+                const taxon = (await (
+                  await fetch(
+                    `${import.meta.env.VITE_API_BIE}/ws/species/${decodeURIComponent(
+                      params.guid || '',
+                    )}`,
+                  )
+                ).json()) as Taxon;
 
-              return results;
+                return (
+                  await fetch(
+                    `${import.meta.env.VITE_API_BIE}/externalSite/genbank?s=${
+                      taxon.classification.scientificName
+                    }`,
+                  )
+                ).json();
+              }
+
+              return defer({
+                sequences: fetchSequences(),
+              });
             },
           },
           {
