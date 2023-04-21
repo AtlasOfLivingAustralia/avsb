@@ -36,29 +36,7 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
   const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery(
     queries.QUERY_EVENT_MAP_POINT,
-    {
-      predicate: {
-        type: 'and',
-        predicates: [
-          queries.PRED_DATA_RESOURCE,
-          {
-            type: 'equals',
-            key: 'eventType',
-            value: 'Accession',
-          },
-          ...(params.guid
-            ? [
-                {
-                  type: 'in',
-                  key: 'taxonKey',
-                  values: [params.guid],
-                },
-              ]
-            : []),
-        ],
-      },
-      size: 50,
-    },
+    {},
     { lazy: true },
   );
 
@@ -102,12 +80,21 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
         predicate: {
           type: 'and',
           predicates: [
+            queries.PRED_DATA_RESOURCE,
             {
               type: 'within',
               key: 'scoordinates',
               value: getWktFromGeohash(selectedPoint.geohash),
             },
-            queries.PRED_DATA_RESOURCE,
+            ...(params.guid
+              ? [
+                  {
+                    type: 'equals',
+                    key: 'taxonKey',
+                    value: params.guid,
+                  },
+                ]
+              : []),
           ],
         },
       });
