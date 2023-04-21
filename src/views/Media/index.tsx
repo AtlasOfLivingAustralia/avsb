@@ -17,6 +17,7 @@ import {
 } from '@mantine/core';
 import {
   IconAffiliate,
+  IconCalendar,
   IconDimensions,
   IconExternalLink,
   IconFileInfo,
@@ -55,6 +56,11 @@ const imageProperties: ImageProperty[] = [
     icon: IconTypography,
   },
   {
+    key: 'createDate',
+    name: 'Creation Date',
+    icon: IconCalendar,
+  },
+  {
     key: 'webStatement',
     name: 'License',
     icon: IconLicense,
@@ -89,6 +95,7 @@ function Media() {
           {media?.map((item) => (
             <Grid.Col key={item.identifier} xs={4} sm={4} md={4} lg={3} xl={3}>
               <MediaImage
+                item={item}
                 onClick={() => {
                   if (item.identifier !== selectedMedia?.identifier) {
                     setSelectedLoaded(false);
@@ -98,7 +105,6 @@ function Media() {
                 selected={selectedMedia?.identifier === item.identifier}
                 width='100%'
                 height={150}
-                src={item.accessURI}
               />
             </Grid.Col>
           ))}
