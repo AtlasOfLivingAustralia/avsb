@@ -135,25 +135,32 @@ function Home() {
       />
       <Box mt={mdOrLarger ? -100 : 0}>
         <Center pb='xl' mb='xl'>
-          <Paper p='xl' pl='md' withBorder>
-            <Group spacing='xl'>
-              <IconQuestionCircle size='2rem' />
-              <Stack>
-                <Title order={4} weight={600}>
-                  Have a query?
-                </Title>
-                <Button
-                  variant='outline'
-                  leftIcon={<IconExternalLink size='1rem' />}
-                  component='a'
-                  href='https://www.seedpartnership.org.au/about-us/contact-us/'
-                  target='_blank'
-                >
-                  Contact Us
-                </Button>
-              </Stack>
-            </Group>
-          </Paper>
+          <Stack>
+            <Paper p='xl' pl='md' withBorder>
+              <Group spacing='xl'>
+                <IconQuestionCircle size='2rem' />
+                <Stack>
+                  <Title order={4} weight={600}>
+                    Have a query?
+                  </Title>
+                  <Button
+                    variant='outline'
+                    leftIcon={<IconExternalLink size='1rem' />}
+                    component='a'
+                    href='https://www.seedpartnership.org.au/about-us/contact-us/'
+                    target='_blank'
+                  >
+                    Contact Us
+                  </Button>
+                </Stack>
+              </Group>
+            </Paper>
+            <Text color='dimmed' size='sm' mt='xl'>
+              Illustration by{' '}
+              <Anchor href='https://icons8.com/illustrations/author/zD2oqC8lLBBA'>Icons 8</Anchor>{' '}
+              from <Anchor href='https://icons8.com/illustrations'>Ouch!</Anchor>
+            </Text>
+          </Stack>
         </Center>
       </Box>
     </>
