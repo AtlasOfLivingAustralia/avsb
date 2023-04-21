@@ -52,25 +52,31 @@ function SequenceItem({ sequence, ...rest }: SequenceItemProps) {
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...rest}
     >
-      <Skeleton visible={!sequence} h='100%'>
-        <Card p='sm' className={classes.card}>
-          <Group position='apart'>
+      <Card p='sm' className={classes.card}>
+        <Group position='apart'>
+          <Skeleton w={145} visible={!sequence}>
             <Badge variant='dot' radius='sm'>
               {sequence?.description || '243 bp linear DNA'}
             </Badge>
-            <Group spacing='xs'>
+          </Skeleton>
+          <Group spacing='lg'>
+            <Skeleton w={245} visible={!sequence}>
               <Badge color='lime' pl='xs'>
                 {sequence?.furtherDescription || 'Accession: KC955787.1 GI: 627754504'}
               </Badge>
-              <IconExternalLink className={classes.chevron} size='1rem' />
-            </Group>
+            </Skeleton>
+            <Skeleton className={classes.chevron} w={16} visible={!sequence}>
+              <IconExternalLink size='1rem' />
+            </Skeleton>
           </Group>
-          <Text mt='md' weight='bold' size='xs'>
+        </Group>
+        <Skeleton visible={!sequence} mt='md'>
+          <Text weight='bold' size='xs'>
             {sequence?.title ||
               'Acacia dealbata isolate JM2225 tRNA-Leu (trnL) gene and trnL-trnF intergenic spacer, partial sequence; chloroplast'}
           </Text>
-        </Card>
-      </Skeleton>
+        </Skeleton>
+      </Card>
     </UnstyledButton>
   );
 }

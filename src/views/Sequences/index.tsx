@@ -33,16 +33,18 @@ function Sequences() {
       fallback={
         <>
           <Paper p='sm' mb='lg' withBorder>
-            <Skeleton>
-              <Group position='apart'>
+            <Group position='apart'>
+              <Skeleton w={150}>
                 <Text weight='bold' size='sm'>
                   Items: 1 to 20 of 1200
                 </Text>
+              </Skeleton>
+              <Skeleton w={145}>
                 <Button disabled size='xs'>
                   View all records
                 </Button>
-              </Group>
-            </Skeleton>
+              </Skeleton>
+            </Group>
           </Paper>
           <Grid>
             {range(0, 19).map((key) => (
