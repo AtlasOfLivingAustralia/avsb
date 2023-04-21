@@ -19,6 +19,13 @@ import {
 import { Logo, TaxonSearchInput } from '#/components';
 import getNameInitials from '#/helpers/getNameInitials';
 
+const slideTransition = {
+  in: { opacity: 1, transform: 'translateX(0)' },
+  out: { opacity: 0, transform: 'translateX(10%)' },
+  common: { transformOrigin: 'left' },
+  transitionProperty: 'transform, opacity',
+};
+
 function Header() {
   const auth = useAuth();
   const location = useLocation();
@@ -42,7 +49,7 @@ function Header() {
           <Link to='/' style={{ display: 'flex' }}>
             <Logo width={50} height={50} />
           </Link>
-          <Transition transition='pop' mounted={location.pathname !== '/'}>
+          <Transition transition={slideTransition} mounted={location.pathname !== '/'}>
             {(styles) => (
               <Button
                 style={styles}
