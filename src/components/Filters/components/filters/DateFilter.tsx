@@ -4,7 +4,7 @@ import { DatePickerInput } from '@mantine/dates';
 import useMounted from '#/helpers/useMounted';
 
 import IconText from '#/components/IconText';
-import { FilterItemProps } from '../Panel';
+import { FilterItemProps } from '../../types';
 
 function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<Date | null>();

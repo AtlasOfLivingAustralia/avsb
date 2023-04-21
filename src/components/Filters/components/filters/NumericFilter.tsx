@@ -3,7 +3,7 @@ import { NumberInput, Stack } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 
 import IconText from '#/components/IconText';
-import { FilterItemProps } from '../Panel';
+import { FilterItemProps } from '../../types';
 
 function NumericFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<number | ''>('');

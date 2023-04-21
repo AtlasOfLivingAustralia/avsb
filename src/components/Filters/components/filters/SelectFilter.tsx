@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Select, Stack } from '@mantine/core';
 
 import IconText from '#/components/IconText';
-import { FilterItemProps } from '../Panel';
+import { FilterItemProps } from '../../types';
 
 function SelectFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const { key, label, placeholder, items, icon } = filter;

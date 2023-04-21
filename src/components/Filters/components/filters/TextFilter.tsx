@@ -3,7 +3,7 @@ import { Stack, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 
 import IconText from '#/components/IconText';
-import { FilterItemProps } from '../Panel';
+import { FilterItemProps } from '../../types';
 
 function TextFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<string>('');

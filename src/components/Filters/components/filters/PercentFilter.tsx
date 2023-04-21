@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Box, RangeSlider, Stack } from '@mantine/core';
 
 import IconText from '#/components/IconText';
-import { FilterItemProps } from '../Panel';
+import { FilterItemProps } from '../../types';
 
 function PercentFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<[number, number]>([0, 100]);
