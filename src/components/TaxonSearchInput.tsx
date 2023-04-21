@@ -27,9 +27,11 @@ const SelectMenuItem = forwardRef<HTMLDivElement, ItemProps>(
               <Text size='sm'>{label.substring(0, 40)}</Text>
               <Badge>{rankString}</Badge>
             </Group>
-            <Text size='xs' opacity={0.65}>
-              {commonName || 'N/A'}
-            </Text>
+            {commonName && (
+              <Text size='xs' opacity={0.65}>
+                {commonName}
+              </Text>
+            )}
           </>
         )}
       </Stack>
