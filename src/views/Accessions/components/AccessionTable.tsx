@@ -17,6 +17,7 @@ import {
 } from '@mantine/core';
 import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
 import { Link } from 'react-router-dom';
+import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
 import { AccessionDetails } from '#/components';
@@ -56,6 +57,8 @@ function AccessionTable({ events }: AccessionTableProps) {
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
+
+  const sortedEvents = orderBy(events || [], ['extensions.seedbank.accessionNumber'], ['asc']);
 
   return (
     <Card withBorder p={0}>
@@ -97,7 +100,7 @@ function AccessionTable({ events }: AccessionTableProps) {
                 </td>
               </tr>
             )}
-            {(events || []).map((event) => {
+            {sortedEvents.map((event) => {
               const accession = event.extensions?.seedbank as SeedBankAccession;
               const isSelected = selected.includes(event.eventID || '');
               return (

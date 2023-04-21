@@ -37,7 +37,6 @@ function HerbariumLink({ accession, taxon }: ContactProps) {
 
       if (data.ok) {
         const { totalRecords, occurrences } = await data.json();
-        console.log(occurrences);
         if (totalRecords > 0) setUuid(occurrences[0].uuid);
       } else {
         setError(true);

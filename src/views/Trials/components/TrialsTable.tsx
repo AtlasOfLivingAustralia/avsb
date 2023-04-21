@@ -16,6 +16,7 @@ import {
 } from '@mantine/core';
 import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
 import { Fragment, useState } from 'react';
+import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
 import { TrialDetails } from '#/components';
@@ -57,6 +58,8 @@ function TrialsTable({ events, height }: TrialsTableProps) {
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
+
+  const sortedEvents = orderBy(events || [], ['extensions.seedbank.accessionNumber'], ['asc']);
 
   return (
     <Card withBorder p={0}>
@@ -111,7 +114,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 </td>
               </tr>
             )}
-            {(events || []).map((event) => {
+            {sortedEvents.map((event) => {
               const trial = event.extensions?.seedbank as SeedBankTrial;
               const [treatment] = event.treatments?.map(
                 (treatmentEvent) => treatmentEvent.extensions?.seedbank,
