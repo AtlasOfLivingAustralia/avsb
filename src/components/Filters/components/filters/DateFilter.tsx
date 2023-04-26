@@ -19,7 +19,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
     if (!mounted) return;
     const hasRange = (range || []).filter((item) => item !== null).length > 0;
 
-    if (single === null && !hasRange) {
+    if ((single === null && operation !== 'range') || (!hasRange && operation === 'range')) {
       onChange({
         type: 'equals',
         key,
@@ -89,24 +89,21 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
             ]}
           />
         </Paper>
-        {operation !== 'range' ? (
-          <DatePickerInput
-            style={{ flexGrow: 1 }}
-            value={single}
-            onChange={setSingle}
-            placeholder={placeholder}
-            clearable
-          />
-        ) : (
-          <DatePickerInput
-            style={{ flexGrow: 1 }}
-            value={range}
-            onChange={setRange}
-            placeholder={placeholder}
-            clearable
-            type='range'
-          />
-        )}
+        <DatePickerInput
+          style={{ flexGrow: 1, display: operation !== 'range' ? 'block' : 'none' }}
+          value={single}
+          onChange={setSingle}
+          placeholder={placeholder}
+          clearable
+        />
+        <DatePickerInput
+          style={{ flexGrow: 1, display: operation === 'range' ? 'block' : 'none' }}
+          value={range}
+          onChange={setRange}
+          placeholder={placeholder}
+          clearable
+          type='range'
+        />
       </Group>
     </Stack>
   );
