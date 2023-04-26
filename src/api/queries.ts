@@ -354,6 +354,92 @@ query keywordSearch($predicate: Predicate, $size: Int){
 }
 `;
 
+const QUERY_DATASET_SUMMARY = `
+query list($datasetKey: JSON){
+  accessions: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: $datasetKey}, {type: equals, key: "eventType", value: "Accession"}]}) {
+    documents(size: 1) {
+      total
+      results {
+        datasetTitle
+        datasetKey
+        occurrenceCount
+      }
+    }
+    cardinality {
+      locationID
+    }
+    facet {
+      measurementOrFactTypes {
+        key
+      }
+    }
+    occurrenceCount
+    occurrenceFacet {
+      genus(size: 10000) {
+        count
+      }
+      species(size: 10000) {
+        count
+      }
+    }
+  }
+  trials: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: $datasetKey}, {type: equals, key: "eventType", value: "Trial"}]}) {
+    documents(size: 1) {
+      total
+    }
+  }
+}
+`;
+
+const QUERY_DATASET_SUMMARY_FULL = `
+query list($datasetKey: JSON){
+  eventSearch(predicate: {type: equals, key: "datasetKey", value: $datasetKey}) {
+    documents(size: 1) {
+      total
+      results {
+        datasetTitle
+        datasetKey
+        occurrenceCount
+      }
+    }
+    cardinality {
+      locationID
+    }
+    facet {
+      measurementOrFactTypes {
+        key
+      }
+      samplingProtocol {
+        key
+      }    
+      eventTypeHierarchy {
+        key
+      }
+    }   
+    occurrenceFacet {
+      class {
+        key
+      }
+      order {
+        key
+      }
+      family {
+        key
+      }
+      genus {
+        key
+      }
+      species {
+        key
+      }
+      samplingProtocol {
+        key
+      }
+    }
+  }
+}
+`;
+
 const QUERY_TAXON_MEDIA = `
 query image($key: String, $size: Int, $from: Int) {
   taxonMedia(key: $key, size: $size, from: $from) {
@@ -379,7 +465,13 @@ query image($key: String, $size: Int, $from: Int) {
 }
 `;
 
-const PRED_DATA_RESOURCE = {
+interface PredDataResource {
+  type: string;
+  key: string;
+  values: string[];
+}
+
+const PRED_DATA_RESOURCE: PredDataResource = {
   type: 'in',
   key: 'datasetKey',
   values: import.meta.env.VITE_APP_DATA_RESOURCES
@@ -399,5 +491,6 @@ export default {
   QUERY_TAXON_MEDIA,
   QUERY_DATASET,
   QUERY_DATASET_SUGGEST,
+  QUERY_DATASET_SUMMARY,
   PRED_DATA_RESOURCE,
 };

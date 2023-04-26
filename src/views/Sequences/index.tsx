@@ -32,7 +32,7 @@ function Sequences() {
     <Suspense
       fallback={
         <>
-          <Paper p='sm' mb='lg' withBorder>
+          <Paper p='sm' mb='lg' radius='lg' withBorder>
             <Group position='apart'>
               <Skeleton w={150}>
                 <Text weight='bold' size='sm'>
@@ -59,7 +59,7 @@ function Sequences() {
       <Await resolve={sequences}>
         {({ total, resultsUrl, results }) => (
           <>
-            <Paper p='sm' mb='lg' withBorder>
+            <Paper p='sm' mb='lg' radius='lg' withBorder>
               <Group position='apart'>
                 <Text weight='bold' size='sm'>
                   {total}

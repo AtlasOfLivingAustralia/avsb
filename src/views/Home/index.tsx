@@ -8,7 +8,6 @@ import {
   Image,
   Box,
   Space,
-  Grid,
   Paper,
   useMantineTheme,
   Anchor,
@@ -17,10 +16,10 @@ import {
 import { useMediaQuery } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Blob, TaxonSearchInput } from '#/components';
-
 import wateringCan from '#/assets/watering-can-and-plant.png';
 import { Wave } from '#/components/Wave';
 import { IconExternalLink, IconQuestionCircle } from '@tabler/icons';
+import Summaries from './components/Summaries';
 
 function Home() {
   const navigate = useNavigate();
@@ -87,42 +86,9 @@ function Home() {
         <Container size='lg'>
           <Box p='xl'>
             <Title mb='xl' pb='md' order={2} weight={600}>
-              Our Datasets
+              Our Data Providers
             </Title>
-            <Grid gutter='xl'>
-              {[
-                { name: 'Australian National Botanic Gardens Seed Bank' },
-                { name: 'Tasmanian Seed Conservation Centre' },
-                { name: 'Victorian Conservation Seedbank' },
-                { name: 'George Brown Darwin Botanic Gardens' },
-                { name: 'WA Department of Parks and Wildlife, Threatened Flora Seed Centre' },
-                { name: 'Greening Australia' },
-              ].map(({ name }) => (
-                <Grid.Col key={name} xs={12} sm={6} md={4} lg={4}>
-                  <Paper
-                    p='md'
-                    shadow='md'
-                    h='100%'
-                    style={{
-                      backgroundColor:
-                        theme.colorScheme === 'dark' ? theme.colors.dark[4] : 'white',
-                    }}
-                  >
-                    <Text
-                      sx={{
-                        fontFamily: theme.headings.fontFamily,
-                        color:
-                          theme.colorScheme === 'dark'
-                            ? theme.colors.gray[3]
-                            : theme.colors.dark[3],
-                      }}
-                    >
-                      {name}
-                    </Text>
-                  </Paper>
-                </Grid.Col>
-              ))}
-            </Grid>
+            <Summaries />
           </Box>
         </Container>
         <Space h={25} />
@@ -136,7 +102,7 @@ function Home() {
       <Box mt={mdOrLarger ? -100 : 0}>
         <Center pb='xl' mb='xl'>
           <Stack>
-            <Paper p='xl' pl='md' withBorder>
+            <Paper p='xl' pl='md' radius='lg' withBorder>
               <Group spacing='xl'>
                 <IconQuestionCircle size='2rem' />
                 <Stack>

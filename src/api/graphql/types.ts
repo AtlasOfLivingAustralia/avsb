@@ -1,27 +1,27 @@
 interface DistinctTaxon {
-  count: number | null;
-  key: string | null;
-  rank: string | null;
-  scientificName: string | null;
-  kingdom: string | null;
-  kingdomKey: string | null;
-  phylum: string | null;
-  phylumKey: string | null;
-  class: string | null;
-  classKey: string | null;
-  order: string | null;
-  orderKey: string | null;
-  family: string | null;
-  familyKey: string | null;
-  genus: string | null;
-  genusKey: string | null;
-  species: string | null;
-  speciesKey: string | null;
+  count?: number | null;
+  key?: string | null;
+  rank?: string | null;
+  scientificName?: string | null;
+  kingdom?: string | null;
+  kingdomKey?: string | null;
+  phylum?: string | null;
+  phylumKey?: string | null;
+  class?: string | null;
+  classKey?: string | null;
+  order?: string | null;
+  orderKey?: string | null;
+  family?: string | null;
+  familyKey?: string | null;
+  genus?: string | null;
+  genusKey?: string | null;
+  species?: string | null;
+  speciesKey?: string | null;
 }
 
 interface TemporalCoverage {
-  gte: string | null;
-  lte: string | null;
+  gte?: string | null;
+  lte?: string | null;
 }
 
 interface Measurement {
@@ -144,21 +144,102 @@ interface Event {
 }
 
 interface EventDocuments {
-  size: number;
-  from: number;
-  total: number;
-  results: [Event];
+  size?: number;
+  from?: number;
+  total?: number;
+  results?: [Event];
+}
+
+interface DataArchive {
+  url?: string;
+  fileSizeInMB?: number;
+  modified?: string;
+}
+
+interface EventFacetResult_string {
+  key?: string;
+  count?: number;
+  _predicate?: JSON;
+}
+
+interface EventFacetResult_float {
+  key?: string;
+  count?: number;
+  _predicate?: JSON;
+}
+
+interface EventFacetResult_dataset {
+  key?: string;
+  count?: number;
+  occurrenceCount?: number | null;
+  datasetTitle?: string;
+  archive?: DataArchive;
+  _predicate?: JSON;
+}
+
+interface EventFacet {
+  kingdoms?: [EventFacetResult_string];
+  phyla?: [EventFacetResult_string];
+  classes?: [EventFacetResult_string];
+  orders?: [EventFacetResult_string];
+  families?: [EventFacetResult_string];
+  genera?: [EventFacetResult_string];
+  species?: [EventFacetResult_string];
+  eventHierarchyJoined?: [EventFacetResult_string];
+  eventHierarchy?: [EventFacetResult_string];
+  eventTypeHierarchyJoined?: [EventFacetResult_string];
+  eventTypeHierarchy?: [EventFacetResult_string];
+  locality?: [EventFacetResult_string];
+  samplingProtocol?: [EventFacetResult_string];
+  measurementOrFactTypes?: [EventFacetResult_string];
+  stateProvince?: [EventFacetResult_string];
+  datasetKey?: [EventFacetResult_dataset];
+  measurementOfFactTypes: [EventFacetResult_dataset];
+  locationID?: [EventFacetResult_string];
+  year?: [EventFacetResult_float];
+  month?: [EventFacetResult_float];
+  eventType?: [EventFacetResult_string];
+  scientificNames?: [EventFacetResult_string];
+}
+
+interface EventOccurrenceFacetResult_string {
+  key: string;
+  count: number;
+  _predicate: JSON;
+}
+
+interface EventOccurrenceFacet {
+  datasetKey?: [EventOccurrenceFacetResult_string];
+  kingdom?: [EventOccurrenceFacetResult_string];
+  phylum?: [EventOccurrenceFacetResult_string];
+  class?: [EventOccurrenceFacetResult_string];
+  order?: [EventOccurrenceFacetResult_string];
+  family?: [EventOccurrenceFacetResult_string];
+  genus?: [EventOccurrenceFacetResult_string];
+  species?: [EventOccurrenceFacetResult_string];
+  samplingProtocol?: [EventOccurrenceFacetResult_string];
+  locationID?: [EventOccurrenceFacetResult_string];
+  basisOfRecord?: [EventOccurrenceFacetResult_string];
+  stateProvince?: [EventOccurrenceFacetResult_string];
+  recordedBy?: [EventOccurrenceFacetResult_string];
+  recordedById?: [EventOccurrenceFacetResult_string];
+  identifiedBy?: [EventOccurrenceFacetResult_string];
+  identifiedById?: [EventOccurrenceFacetResult_string];
+  scientificNames?: [EventOccurrenceFacetResult_string];
+  month?: [EventOccurrenceFacetResult_string];
+  year?: [EventOccurrenceFacetResult_string];
+  eventHierarchyJoined?: [EventOccurrenceFacetResult_string];
+  eventHierarchy?: [EventOccurrenceFacetResult_string];
+  eventTypeHierarchyJoined?: [EventOccurrenceFacetResult_string];
+  eventTypeHierarchy?: [EventOccurrenceFacetResult_string];
 }
 
 interface EventSearchResult {
-  documents: EventDocuments;
-  // facet: EventFacet
-  // occurrenceFacet: EventOccurrenceFacet
-  // occurrenceCount: Int
-  // cardinality: EventCardinality
-  // temporal: EventTemporal
-  // stats: EventStats
-  // _predicate: JSON
+  documents?: EventDocuments;
+  facet?: EventFacet;
+  occurrenceFacet?: EventOccurrenceFacet;
+  occurrenceCount?: number;
+  _predicate?: JSON;
   _tileServerToken?: string;
   _meta?: JSON;
 }
@@ -186,31 +267,31 @@ interface Contact {
 }
 
 interface MediaItem {
-  identifier: string;
-  type: string | null;
-  subtypeLiteral: string | null;
-  title: string | null;
-  metadataDate: string | null;
-  metadataLanguage: string | null;
-  metadataLanguageLiteral: string | null;
-  providerManagedID: string | null;
-  rights: string | null;
-  owner: string | null;
-  webStatement: string | null;
-  credit: string | null;
-  creator: string | null;
-  providerLiteral: string | null;
-  description: string | null;
-  tag: string | null;
-  createDate: string | null;
-  IDofContainingCollection: string | null;
-  accessURI: string | null;
-  accessOriginalURI: string | null;
-  format: string | null;
-  hashFunction: string | null;
-  hashValue: string | null;
-  pixelXDimension: number;
-  pixelYDimension: number;
+  identifier?: string;
+  type?: string | null;
+  subtypeLiteral?: string | null;
+  title?: string | null;
+  metadataDate?: string | null;
+  metadataLanguage?: string | null;
+  metadataLanguageLiteral?: string | null;
+  providerManagedID?: string | null;
+  rights?: string | null;
+  owner?: string | null;
+  webStatement?: string | null;
+  credit?: string | null;
+  creator?: string | null;
+  providerLiteral?: string | null;
+  description?: string | null;
+  tag?: string | null;
+  createDate?: string | null;
+  IDofContainingCollection?: string | null;
+  accessURI?: string | null;
+  accessOriginalURI?: string | null;
+  format?: string | null;
+  hashFunction?: string | null;
+  hashValue?: string | null;
+  pixelXDimension?: number | null;
+  pixelYDimension?: number | null;
 }
 
 export type {

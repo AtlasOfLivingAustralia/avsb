@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useMounted from '#/helpers/useMounted';
 
 import { performGQLQuery, Variables } from './performGQLQuery';
