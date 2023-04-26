@@ -7,8 +7,8 @@ import IconText from '#/components/IconText';
 import { FilterItemProps } from '../../types';
 
 function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
-  const [single, setSingle] = useState<DateValue>();
-  const [range, setRange] = useState<DatesRangeValue>();
+  const [single, setSingle] = useState<DateValue>(null);
+  const [range, setRange] = useState<DatesRangeValue>([null, null]);
   const [operation, setOperation] = useState<string>('equals');
   const mounted = useMounted();
 
@@ -17,7 +17,9 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
   // useEffect handler for select / number input updates
   useEffect(() => {
     if (!mounted) return;
-    if ((single === null || single === undefined) && (range === null || range === undefined)) {
+    const hasRange = (range || []).filter((item) => item !== null).length > 0;
+
+    if (single === null && !hasRange) {
       onChange({
         type: 'equals',
         key,
@@ -50,7 +52,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
         },
       });
     }
-    if (operation === 'range' && range !== null && range !== undefined) {
+    if (operation === 'range' && hasRange) {
       onChange({
         type: 'range',
         key,
@@ -66,8 +68,8 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
   useEffect(() => {
     if (resetKey.split('-')[0] === key) {
       setOperation('equals');
-      setSingle(undefined);
-      setRange(undefined);
+      setSingle(null);
+      setRange([null, null]);
     }
   }, [key, resetKey, setSingle, setRange]);
 
