@@ -1,37 +1,34 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useEffect } from 'react';
-import { useAuth, hasAuthParams } from 'react-oidc-context';
-import {
-  Button,
-  Center,
-  Modal,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-  useMantineTheme,
-} from '@mantine/core';
+import { Button, Modal, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 
 import LogRocket from 'logrocket';
 
 // Project components & helpers
-import { Logo, LogoLoader } from '#/components';
+import { Logo } from '#/components';
 
-function Dashboard() {
-  const auth = useAuth();
+function FeedbackModal() {
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
+  const logrocketEnabled = import.meta.env.VITE_APP_LOGROCKET_ENABLED === 'true';
 
   useEffect(() => {
-    const userTestingDetails = localStorage.getItem('user-testing-details');
-    if (userTestingDetails) {
-      const data = JSON.parse(userTestingDetails);
-      LogRocket.identify(data.email, data);
-    } else {
-      open();
+    if (logrocketEnabled) {
+      const { name, email } = JSON.parse(localStorage.getItem('asvb-feedback-details') || '{}');
+      const lastPrompt = parseInt(localStorage.getItem('asvb-feedback-prompt') || '0', 10);
+
+      if (name) {
+        LogRocket.identify(email, { name, email });
+
+        // If lastPrompt is empty/invalid, or it's been more than 30 minutes since the last prompt
+      } else if (!lastPrompt || Number.isNaN(lastPrompt) || Date.now() - lastPrompt >= 1800000) {
+        localStorage.setItem('asvb-feedback-prompt', Date.now().toString());
+        open();
+      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -44,25 +41,10 @@ function Dashboard() {
   });
 
   const onSubmit = (data: { name: string; email: string }) => {
-    localStorage.setItem('user-testing-details', JSON.stringify(data));
+    localStorage.setItem('asvb-feedback-details', JSON.stringify(data));
     LogRocket.identify(data.email, data);
     close();
   };
-
-  // If the 'code' & 'state' parameter are in the URL, it means that
-  // we've just been redirected from Cognito, and we're retrieving tokens
-  if (auth.isLoading && hasAuthParams()) {
-    return (
-      <Center style={{ width: '100vw', height: '100vh' }}>
-        <Stack align='center' spacing='lg'>
-          <LogoLoader />
-          <Text color='dimmed' weight='bold'>
-            Signing you in
-          </Text>
-        </Stack>
-      </Center>
-    );
-  }
 
   return (
     <Modal
@@ -85,13 +67,34 @@ function Dashboard() {
         Thanks for participating in the Australian Virtual Seed Bank test!
       </Text>
       <Text size='sm' mb='sm'>
-        Please enter your details below so we can capture information about your experience using
-        the new portal.
+        Please enter your details below so we can capture information about how you use the new
+        portal.
       </Text>
       <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
-        <TextInput label='Name' placeholder='Name' {...form.getInputProps('name')} />
-        <TextInput mt='sm' label='Email' placeholder='Email' {...form.getInputProps('email')} />
-        <Button fullWidth type='submit' mt='xl'>
+        <TextInput
+          styles={{
+            label: {
+              marginBottom: 8,
+              fontWeight: 'bold',
+            },
+          }}
+          label='Name'
+          placeholder='Name'
+          {...form.getInputProps('name')}
+        />
+        <TextInput
+          styles={{
+            label: {
+              marginBottom: 8,
+              fontWeight: 'bold',
+            },
+          }}
+          mt='sm'
+          label='Email'
+          placeholder='Email'
+          {...form.getInputProps('email')}
+        />
+        <Button fullWidth type='submit' mt='xl' disabled={!form.isValid()}>
           Submit
         </Button>
       </form>
@@ -99,4 +102,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default FeedbackModal;

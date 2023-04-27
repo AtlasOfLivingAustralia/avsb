@@ -12,8 +12,15 @@ import Providers from './Providers';
 import Routes from './Routes';
 import './index.css';
 
-mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_TOKEN;
-LogRocket.init('u41ige/avsb-zoujx');
+const { VITE_APP_MAPBOX_TOKEN, VITE_APP_LOGROCKET_ENABLED, VITE_APP_LOGROCKET_ID } = import.meta
+  .env;
+
+// Initialize MapBox
+mapboxgl.accessToken = VITE_APP_MAPBOX_TOKEN;
+
+// Initialize LogRocket
+if (VITE_APP_LOGROCKET_ENABLED === 'true' && VITE_APP_LOGROCKET_ID)
+  LogRocket.init(VITE_APP_LOGROCKET_ID);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
