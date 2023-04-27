@@ -12,7 +12,6 @@ function SelectDataFilter({ filter, resetKey, onChange }: FilterItemProps) {
 
   const onSelect = (newValue: string | null) => {
     setValue(newValue);
-    console.log('testing', newValue);
     onChange({
       type: 'equals',
       key,

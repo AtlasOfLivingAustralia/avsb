@@ -19,7 +19,6 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
   // useEffect handler for select / number input updates
   useEffect(() => {
     if (!mounted) return;
-    console.log(value);
     if (value === '' || value === undefined) {
       onChange({
         type: 'equals',
