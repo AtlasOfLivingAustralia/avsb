@@ -30,6 +30,9 @@ const useStyles = createStyles((theme) => ({
     [`&:hover .${getStylesRef('arrow')}`]: {
       transform: 'translate(6px, -6px)',
     },
+    [`&:hover .${getStylesRef('arrowIcon')}`]: {
+      opacity: 1,
+    },
   },
   wrapper: {
     display: 'flex',
@@ -40,6 +43,11 @@ const useStyles = createStyles((theme) => ({
   arrow: {
     ref: getStylesRef('arrow'),
     transition: 'transform 200ms cubic-bezier(0, 0, 0, 1)',
+  },
+  arrowIcon: {
+    ref: getStylesRef('arrowIcon'),
+    transition: 'opacity 200ms cubic-bezier(0, 0, 0, 1)',
+    opacity: 0.2,
   },
 }));
 
@@ -78,7 +86,7 @@ function SummaryCard({ dataResource }: SummaryCardProps) {
               {results?.[0]?.datasetTitle || 'Australian National Botanic Gardens Seed Bank'}
             </Text>
             <Box w={24} h={24} ml='auto' className={classes.arrow}>
-              <IconArrowUpRight opacity={0.4} size={24} />
+              <IconArrowUpRight className={classes.arrowIcon} size={24} />
             </Box>
           </Box>
         </Skeleton>

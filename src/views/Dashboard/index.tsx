@@ -10,7 +10,7 @@ import {
 } from '@mantine/nprogress';
 
 // Project components & helpers
-import { Logo, LogoLoader } from '#/components';
+import { LogoLoader } from '#/components';
 import Header from './components/Header';
 import './index.css';
 
