@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Center, Pagination } from '@mantine/core';
+import { Center, Group, Pagination } from '@mantine/core';
 import { Outlet, useLoaderData, useParams } from 'react-router-dom';
 
 // Project components / helpers
 import { gqlQueries, performGQLQuery } from '#/api';
 import useMounted from '#/helpers/useMounted';
 import queries from '#/api/queries';
-import { Filters, Predicate } from '#/components';
+import { Downloads, Filters, Predicate } from '#/components';
 
 // Accession components
 import AccessionTable from './components/AccessionTable';
@@ -59,14 +59,17 @@ function Accessions() {
 
   return (
     <>
-      <Filters
-        predicates={predicates}
-        filters={filters}
-        onPredicates={(preds) => {
-          setPage(1);
-          setPredicates(preds);
-        }}
-      />
+      <Group mb='lg' position='apart'>
+        <Filters
+          predicates={predicates}
+          filters={filters}
+          onPredicates={(preds) => {
+            setPage(1);
+            setPredicates(preds);
+          }}
+        />
+        <Downloads />
+      </Group>
       <AccessionTable events={events} />
       <Center pt='md'>
         <Pagination

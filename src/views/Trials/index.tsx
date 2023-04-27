@@ -94,6 +94,7 @@ function Trials() {
           setPage(1);
           setPredicates(preds);
         }}
+        mb='lg'
       />
       <TrialsTable events={events} />
       <Center pt='md'>

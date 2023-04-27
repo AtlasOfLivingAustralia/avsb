@@ -57,7 +57,7 @@ function Header() {
                 to='/'
                 leftIcon={<IconHome size='0.8rem' />}
                 size='xs'
-                variant='light'
+                variant='subtle'
               >
                 Home
               </Button>

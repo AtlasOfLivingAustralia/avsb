@@ -16,6 +16,8 @@ type PredicateType =
 
 type PredicateValue = string | number | null | { gte?: number | ''; lte?: number | '' };
 
+export type FiltersSort = 'alphabetical' | 'groups';
+
 export interface Predicate {
   type: PredicateType;
   key: string;

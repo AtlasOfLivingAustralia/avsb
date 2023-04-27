@@ -1,6 +1,7 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-import { Text, Drawer, Group, ThemeIcon, SegmentedControl } from '@mantine/core';
+import { Text, Drawer, Group, ThemeIcon, SegmentedControl, GroupProps } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconFilter } from '@tabler/icons';
 
@@ -9,17 +10,15 @@ import FilterBar from './components/Bar';
 import FilterPanel from './components/Panel';
 
 // Config
-import { Filter, Predicate } from './types';
+import { Filter, FiltersSort, Predicate } from './types';
 
-interface FiltersProps {
+interface FiltersProps extends GroupProps {
   filters: Filter[];
   predicates: Predicate[];
   onPredicates: (predicates: Predicate[]) => void;
 }
 
-type FiltersSort = 'alphabetical' | 'groups';
-
-function Filters({ filters, predicates, onPredicates }: FiltersProps) {
+function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
   // State hooks
   const [sort, setSort] = useState<FiltersSort>('groups');
   const [resetKey, setResetKey] = useState<string>('');
@@ -80,7 +79,7 @@ function Filters({ filters, predicates, onPredicates }: FiltersProps) {
         predicates={predicates}
         onFiltersOpen={open}
         onRemove={onRemovePredicate}
-        mb='lg'
+        {...rest}
       />
     </>
   );
