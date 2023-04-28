@@ -60,7 +60,7 @@ function Accessions() {
 
     if (mounted) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, filterPredicates]);
+  }, [page, predicates]);
 
   if (params.accession) return <Outlet />;
 
