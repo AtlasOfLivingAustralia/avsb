@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Fragment, useEffect, useState } from 'react';
 import { Accordion, Divider, Stack, StackProps, createStyles } from '@mantine/core';
+import { Predicate } from '#/api/graphql/types';
 
 import isEqual from 'lodash/isEqual';
 import groupBy from 'lodash/groupBy';
@@ -15,7 +16,7 @@ import SelectFilter from './filters/SelectFilter';
 import SelectSearchFilter from './filters/SelectSearchFilter';
 import DateFilter from './filters/DateFilter';
 
-import { Filter, FilterItemProps, Predicate } from '../types';
+import { Filter, FilterItemProps } from '../types';
 
 const filterComponents: { [key: string]: any } = {
   text: TextFilter,

@@ -4,9 +4,9 @@ import { Center, Pagination } from '@mantine/core';
 import { useLoaderData, useParams } from 'react-router-dom';
 
 // Project components / helpers
-import { Filters, Predicate } from '#/components';
+import { Filters } from '#/components';
 import { gqlQueries, performGQLQuery } from '#/api';
-import { Event } from '#/api/graphql/types';
+import { Event, Predicate } from '#/api/graphql/types';
 import queries from '#/api/queries';
 import { useMounted, mapTrialTreatments } from '#/helpers';
 import TrialsTable from './components/TrialsTable';

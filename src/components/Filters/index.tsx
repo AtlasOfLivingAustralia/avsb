@@ -4,13 +4,14 @@ import { useState } from 'react';
 import { Text, Drawer, Group, ThemeIcon, SegmentedControl, GroupProps } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconFilter } from '@tabler/icons';
+import { Predicate } from '#/api/graphql/types';
 
 // Project components / helpers
 import FilterBar from './components/Bar';
 import FilterPanel from './components/Panel';
 
 // Config
-import { Filter, FiltersSort, Predicate } from './types';
+import { Filter, FiltersSort } from './types';
 
 interface FiltersProps extends GroupProps {
   filters: Filter[];

@@ -213,7 +213,34 @@ interface MediaItem {
   pixelYDimension: number;
 }
 
+type PredicateType =
+  | 'and'
+  | 'or'
+  | 'not'
+  | 'equals'
+  | 'in'
+  | 'within'
+  | 'isNotNull'
+  | 'like'
+  | 'fuzzy'
+  | 'nested'
+  | 'range';
+
+type PredicateValue = string | number | null | { gte?: number | ''; lte?: number | '' };
+
+interface Predicate {
+  type: PredicateType;
+  key?: string;
+  value?: PredicateValue;
+  values?: PredicateValue[];
+  predicate?: Predicate;
+  predicates?: Predicate[];
+}
+
 export type {
+  PredicateType,
+  PredicateValue,
+  Predicate,
   DistinctTaxon,
   Event,
   EventSearchResult,

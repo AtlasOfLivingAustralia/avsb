@@ -3,79 +3,119 @@
 import { useState } from 'react';
 import {
   Text,
-  Drawer,
   Group,
   ThemeIcon,
-  SegmentedControl,
   GroupProps,
-  Button,
   ActionIcon,
   Tooltip,
+  Popover,
+  Button,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { IconDownload, IconFileDownload } from '@tabler/icons';
+import { Event, EventSearchResult, Predicate } from '#/api/graphql/types';
+import { saveAs } from 'file-saver';
+import get from 'lodash/get';
 
 // Project components / helpers
 // import FilterBar from './components/Bar';
 // import FilterPanel from './components/Panel';
 
 // Config
-import { OutputType } from './types';
+import { performGQLQuery } from '#/api';
 
-interface FiltersProps extends GroupProps {
-  foo?: 'bar';
+export type DownloadField = { label: string; key: string; formatter?: (field: any) => any };
+
+interface DownloadsProps extends GroupProps {
+  query: string;
+  total: number;
+  fields: DownloadField[];
+  predicates: Predicate[];
+  fileName: string;
 }
 
-function Downloads({ foo, ...rest }: FiltersProps) {
-  // State hooks
-  const [outputType, setOutputType] = useState<OutputType>('csv');
-  const [opened, { open, close }] = useDisclosure(false);
+// Helper function to convert an event object to CSV string
+// given an array of fields
+const eventToCSV = (event: Event, fields: DownloadField[]) =>
+  fields
+    .map(({ key, formatter }) =>
+      typeof formatter === 'function' ? formatter(get(event, key, '')) : get(event, key, ''),
+    )
+    .join(',');
+
+const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
+  const header = fields.map(({ label }) => label).join(',');
+  return [header, ...events.map((event) => eventToCSV(event, fields))].join('\n');
+};
+
+function Downloads({ query, total, predicates, fields, fileName }: DownloadsProps) {
+  // Download state
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
+
+  const downloadRecords = async () => {
+    if (!isDownloading) {
+      try {
+        setIsDownloading(true);
+        const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+          query,
+          {
+            predicate: {
+              type: 'and',
+              predicates,
+            },
+          },
+        );
+
+        // Save the object array as a CSV file
+        saveAs(
+          new Blob([eventsToCSV(data.eventSearch.documents.results, fields)], {
+            type: 'text/csv;charset=utf-8',
+          }),
+          `${fileName}, ${new Date().toLocaleDateString()}.csv`,
+        );
+      } catch (error) {
+        console.log(error);
+      }
+
+      setIsDownloading(false);
+    }
+  };
 
   return (
-    <>
-      <Drawer.Root position='right' opened={opened} onClose={close} keepMounted>
-        <Drawer.Overlay />
-        <Drawer.Content>
-          <Drawer.Header style={{ zIndex: 300 }}>
-            <Group position='apart' w='100%'>
-              <Group>
-                <ThemeIcon variant='light' radius='xl' size='xl'>
-                  <IconFileDownload />
-                </ThemeIcon>
-                <Text
-                  size='xl'
-                  weight='bold'
-                  sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}
-                >
-                  Download Records
-                </Text>
-              </Group>
-              <Group>
-                <SegmentedControl
-                  size='xs'
-                  value={outputType}
-                  onChange={(value) => setOutputType(value as OutputType)}
-                  data={[
-                    { label: 'CSV', value: 'csv' },
-                    { label: 'JSON', value: 'json' },
-                  ]}
-                />
-                <Drawer.CloseButton />
-              </Group>
-            </Group>
-          </Drawer.Header>
-          <Drawer.Body>content here</Drawer.Body>
-        </Drawer.Content>
-      </Drawer.Root>
-      <Tooltip label='Download Records' position='left'>
-        <ActionIcon onClick={open} size={36} variant='outline' color='blue'>
-          <IconDownload size='1rem' />
-        </ActionIcon>
-      </Tooltip>
-      {/* <Button variant='outline' onClick={open} leftIcon={<IconDownload size='1rem' />}>
-        Download
-      </Button> */}
-    </>
+    <Popover width={200} position='left' withArrow shadow='md'>
+      <Popover.Target>
+        <Tooltip offset={10} withArrow label='Download Records' position='left'>
+          <ActionIcon size={36} variant='outline' color='blue'>
+            <IconDownload size='1rem' />
+          </ActionIcon>
+        </Tooltip>
+      </Popover.Target>
+      <Popover.Dropdown>
+        <Group spacing='sm'>
+          <ThemeIcon variant='light' size='lg' radius='lg'>
+            <IconFileDownload size='1rem' />
+          </ThemeIcon>
+          <Text
+            sx={(theme) => ({
+              fontFamily: theme.headings.fontFamily,
+              fontWeight: 'bold',
+            })}
+          >
+            {total} Records
+          </Text>
+        </Group>
+        <Group mt='md'>
+          <Button
+            onClick={downloadRecords}
+            size='xs'
+            variant='filled'
+            loading={isDownloading}
+            fullWidth
+          >
+            {isDownloading ? 'Downloading' : 'Download'}
+          </Button>
+        </Group>
+      </Popover.Dropdown>
+    </Popover>
   );
 }
 

@@ -1,3 +1,5 @@
+import { Predicate } from './graphql/types';
+
 const QUERY_EVENT = '';
 
 const QUERY_EVENT_ACCESSIONS = `
@@ -379,7 +381,75 @@ query image($key: String, $size: Int, $from: Int) {
 }
 `;
 
-const PRED_DATA_RESOURCE = {
+const DOWNLOAD_EVENT_ACCESSIONS = `
+query list($predicate: Predicate){
+  eventSearch(
+    size: 10000
+    predicate: $predicate
+    ) {
+    documents {
+      size
+      from
+      total
+      results {
+        eventID
+        parentEventID
+        locality
+        year
+        month
+        day
+        datasetTitle
+        datasetKey
+        country
+        decimalLatitude
+        decimalLongitude
+        stateProvince
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementUnit
+          measurementValue
+          measurementMethod
+          measurementRemarks
+          measurementAccuracy
+          measurementDeterminedDate
+        }
+        extensions {
+          seedbank {
+            accessionNumber
+            seedPerGram
+            formInStorage
+            sampleWeightInGrams
+            sampleSize
+            collectionFillRate
+            purityDebrisPercentage
+            purityPercentage
+            dateCollected
+            dateInStorage
+            storageTemperatureInCelsius
+            relativeHumidityPercentage
+            publicationDOI
+            preStorageTreatmentNotesHistory
+            primaryStorageSeedBank
+            degreeOfEstablishment
+            primaryCollector
+            plantForm
+            duplicatesReplicates
+            collectionPermitNumber
+            thousandSeedWeight
+            numberPlantsSampled
+            storageBehaviour
+            embryoType
+            dormancyClass
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
+const PRED_DATA_RESOURCE: Predicate = {
   type: 'in',
   key: 'datasetKey',
   values: import.meta.env.VITE_APP_DATA_RESOURCES
@@ -399,5 +469,6 @@ export default {
   QUERY_TAXON_MEDIA,
   QUERY_DATASET,
   QUERY_DATASET_SUGGEST,
+  DOWNLOAD_EVENT_ACCESSIONS,
   PRED_DATA_RESOURCE,
 };

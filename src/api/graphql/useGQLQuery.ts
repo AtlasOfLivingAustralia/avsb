@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useMounted from '#/helpers/useMounted';
 
 import { performGQLQuery, Variables } from './performGQLQuery';
@@ -17,7 +17,7 @@ function useGQLQuery<T>(query: string, initialVariables = {}, options: QueryHook
     async function runQuery() {
       if (data) setData(null);
       try {
-        const queryData = await performGQLQuery(query, variables);
+        const queryData = await performGQLQuery<T>(query, variables);
         setData(queryData);
         setError(null);
       } catch (queryError) {
