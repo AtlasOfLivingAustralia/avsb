@@ -374,17 +374,9 @@ query list($datasetKey: JSON){
       }
     }
     occurrenceCount
-    occurrenceFacet {
-      genus(size: 10000) {
-        count
-      }
-      species(size: 10000) {
-        count
-      }
-    }
   }
   trials: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: $datasetKey}, {type: equals, key: "eventType", value: "Trial"}]}) {
-    documents(size: 1) {
+    documents(size: 0) {
       total
     }
   }
@@ -492,5 +484,6 @@ export default {
   QUERY_DATASET,
   QUERY_DATASET_SUGGEST,
   QUERY_DATASET_SUMMARY,
+  QUERY_DATASET_SUMMARY_FULL,
   PRED_DATA_RESOURCE,
 };

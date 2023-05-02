@@ -11,6 +11,7 @@ import {
   AccessionsView,
   SummaryView,
   SequencesView,
+  SeedbankView,
 } from './views';
 import queries from './api/queries';
 import { Event } from './api/graphql/types';
@@ -26,6 +27,27 @@ const routes = createBrowserRouter([
       {
         path: '/',
         element: <HomeView />,
+      },
+      {
+        path: 'seedbank/:id',
+        element: <SeedbankView />,
+        loader: async ({ params }) => {
+          const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_MAP, {
+            predicate: {
+              type: 'and',
+              predicates: [
+                {
+                  type: 'equals',
+                  key: 'datasetKey',
+                  value: params.id,
+                },
+              ],
+            },
+            size: 50,
+          });
+
+          return data.eventSearch._tileServerToken;
+        },
       },
       {
         id: 'taxon',

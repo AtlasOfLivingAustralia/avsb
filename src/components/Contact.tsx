@@ -52,6 +52,8 @@ function Contact({ dataResource, ...rest }: ContactProps) {
   const dataset = response?.data?.eventSearch?.documents?.results[0]?.dataset;
   const contact = dataset?.value?.contact?.[0];
 
+  console.log(response);
+
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
     <Paper {...rest} withBorder p='md'>

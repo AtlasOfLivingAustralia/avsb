@@ -10,9 +10,11 @@ import {
   getStylesRef,
   UnstyledButton,
 } from '@mantine/core';
+import { IconArrowUpRight } from '@tabler/icons';
+import { useNavigate } from 'react-router-dom';
+
 import { gqlQueries, useGQLQuery } from '#/api';
 import { EventSearchResult } from '#/api/graphql/types';
-import { IconArrowUpRight } from '@tabler/icons';
 import { getShortInt } from '#/helpers';
 
 const useStyles = createStyles((theme) => ({
@@ -61,17 +63,23 @@ function SummaryCard({ dataResource }: SummaryCardProps) {
   }>(gqlQueries.QUERY_DATASET_SUMMARY, {
     datasetKey: dataResource,
   });
-  const theme = useMantineTheme();
   const { classes } = useStyles();
+  const theme = useMantineTheme();
+  const navigate = useNavigate();
 
   // Hoist the data from the response
   const { total: totalAccessions, results } = data?.data.accessions?.documents || {};
   const { total: totalTrials } = data?.data.trials?.documents || {};
 
+  const event = results?.[0];
   const loading = !results;
 
+  const onCardClick = () => {
+    if (event) navigate(`seedbank/${event.datasetKey}`);
+  };
+
   return (
-    <UnstyledButton className={classes.root}>
+    <UnstyledButton onClick={onCardClick} className={classes.root}>
       <Box h='100%' className={classes.wrapper}>
         <Skeleton visible={loading}>
           <Box style={{ display: 'flex' }}>
@@ -83,7 +91,7 @@ function SummaryCard({ dataResource }: SummaryCardProps) {
                 color: theme.colorScheme === 'dark' ? theme.colors.gray[3] : theme.colors.dark[3],
               }}
             >
-              {results?.[0]?.datasetTitle || 'Australian National Botanic Gardens Seed Bank'}
+              {event?.datasetTitle || 'Seed Bank Name Placeholder Value Here'}
             </Text>
             <Box w={24} h={24} ml='auto' className={classes.arrow}>
               <IconArrowUpRight className={classes.arrowIcon} size={24} />
