@@ -7,9 +7,9 @@ import { Outlet, useLoaderData, useParams, useRouteLoaderData } from 'react-rout
 import { gqlQueries, performGQLQuery } from '#/api';
 import { Taxon } from '#/api/sources/taxon';
 import { Predicate } from '#/api/graphql/types';
+import { Downloads, Filters } from '#/components';
 import queries from '#/api/queries';
 import useMounted from '#/helpers/useMounted';
-import { Downloads, Filters } from '#/components';
 
 // Accession components
 import AccessionTable from './components/AccessionTable';
@@ -60,9 +60,11 @@ function Accessions() {
 
     if (mounted) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, predicates]);
+  }, [page, filterPredicates]);
 
   if (params.accession) return <Outlet />;
+
+  const downloadFetcher = (data: any) => data.eventSearch.documents.results;
 
   return (
     <>
@@ -79,6 +81,7 @@ function Accessions() {
           query={gqlQueries.DOWNLOAD_EVENT_ACCESSIONS}
           predicates={predicates}
           fields={downloadFields}
+          fetcher={downloadFetcher}
           total={query.total}
           fileName={`AVSB Accessions, ${taxon.classification.scientificName}`}
         />

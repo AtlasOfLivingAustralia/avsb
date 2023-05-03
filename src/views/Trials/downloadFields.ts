@@ -22,5 +22,14 @@ const downloadFields: DownloadField[] = [
   { label: 'Adjusted Germination', key: 'extensions.seedbank.adjustedGerminationPercentage' },
   { label: 'Viability', key: 'extensions.seedbank.viabilityPercentage' },
   { label: 'Pre-test Processing Notes', key: 'extensions.seedbank.preTestProcessingNotes' },
+  { label: 'Treatment Media/Substrate', key: 'treatments[0].extensions.seedbank.mediaSubstrate' },
+  { label: 'Treatment Day Temp', key: 'treatments[0].extensions.seedbank.dayTemperatureInCelsius' },
+  {
+    label: 'Treatment Night Temp',
+    key: 'treatments[0].extensions.seedbank.nightTemperatureInCelsius',
+  },
+  { label: 'Treatment Light Hours', key: 'treatments[0].extensions.seedbank.lightHours' },
+  { label: 'Treatment Dark Hours', key: 'treatments[0].extensions.seedbank.darkHours' },
+  { label: 'Treatment Pretreatment', key: 'treatments[0].extensions.seedbank.pretreatment' },
 ];
 export default downloadFields;

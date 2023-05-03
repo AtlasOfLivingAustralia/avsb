@@ -449,6 +449,44 @@ query list($predicate: Predicate){
 }
 `;
 
+const DOWNLOAD_EVENT_TRIALS = `
+query list($predicate: Predicate){
+  eventSearch(
+    size: 10000
+    predicate: $predicate
+    ) {
+    documents {
+      size
+      from
+      total
+      results {
+        eventID
+        parentEventID
+        locality
+        year
+        month
+        day
+        datasetTitle
+        extensions {
+          seedbank {
+            accessionNumber
+            testDateStarted
+            testLengthInDays
+            numberGerminated
+            adjustedGerminationPercentage
+            viabilityPercentage
+            numberFull
+            numberEmpty
+            numberTested
+            preTestProcessingNotes
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
 const PRED_DATA_RESOURCE: Predicate = {
   type: 'in',
   key: 'datasetKey',
@@ -470,5 +508,6 @@ export default {
   QUERY_DATASET,
   QUERY_DATASET_SUGGEST,
   DOWNLOAD_EVENT_ACCESSIONS,
+  DOWNLOAD_EVENT_TRIALS,
   PRED_DATA_RESOURCE,
 };

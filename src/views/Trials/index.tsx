@@ -88,7 +88,34 @@ function Trials() {
 
     if (mounted) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, predicates]);
+  }, [page, filterPredicates]);
+
+  const downloadFetcher = async (data: any) => {
+    const eventIDs = (data.eventSearch.documents.results as Event[]).map(({ eventID }) => eventID);
+    const { data: treatmentData } = await performGQLQuery(gqlQueries.QUERY_EVENT_TREATMENTS, {
+      predicate: {
+        type: 'and',
+        predicates: [
+          queries.PRED_DATA_RESOURCE,
+          {
+            type: 'equals',
+            key: 'eventType',
+            value: 'Treatment',
+          },
+          {
+            type: 'in',
+            key: 'eventHierarchy',
+            values: eventIDs,
+          },
+        ],
+      },
+      size: 10000,
+    });
+    return mapTrialTreatments(
+      data.eventSearch?.documents.results || [],
+      treatmentData.eventSearch?.documents.results || [],
+    );
+  };
 
   return (
     <>
@@ -102,9 +129,10 @@ function Trials() {
           }}
         />
         <Downloads
-          query={gqlQueries.QUERY_EVENT_TRIALS}
+          query={gqlQueries.DOWNLOAD_EVENT_TRIALS}
           predicates={predicates}
           fields={downloadFields}
+          fetcher={downloadFetcher}
           total={query.total}
           fileName={`AVSB Trials, ${taxon.classification.scientificName}`}
         />

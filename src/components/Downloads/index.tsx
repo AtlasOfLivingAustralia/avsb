@@ -16,10 +16,6 @@ import { Event, EventSearchResult, Predicate } from '#/api/graphql/types';
 import { saveAs } from 'file-saver';
 import get from 'lodash/get';
 
-// Project components / helpers
-// import FilterBar from './components/Bar';
-// import FilterPanel from './components/Panel';
-
 // Config
 import { performGQLQuery } from '#/api';
 
@@ -31,6 +27,7 @@ interface DownloadsProps extends GroupProps {
   fields: DownloadField[];
   predicates: Predicate[];
   fileName: string;
+  fetcher: (data: any) => object[] | Promise<object[]>;
 }
 
 // Helper function to convert an event object to CSV string
@@ -38,8 +35,11 @@ interface DownloadsProps extends GroupProps {
 const eventToCSV = (event: Event, fields: DownloadField[]) =>
   fields
     .map(({ key, formatter }) =>
-      typeof formatter === 'function' ? formatter(get(event, key, '')) : get(event, key, ''),
+      typeof formatter === 'function'
+        ? formatter(get(event, key, '')) || ''
+        : get(event, key, '') || '',
     )
+    .map((value) => (value.toString().includes(',') ? `"${value}"` : value))
     .join(',');
 
 const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
@@ -47,7 +47,7 @@ const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
   return [header, ...events.map((event) => eventToCSV(event, fields))].join('\n');
 };
 
-function Downloads({ query, total, predicates, fields, fileName }: DownloadsProps) {
+function Downloads({ query, total, predicates, fields, fileName, fetcher }: DownloadsProps) {
   // Download state
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
@@ -55,19 +55,18 @@ function Downloads({ query, total, predicates, fields, fileName }: DownloadsProp
     if (!isDownloading) {
       try {
         setIsDownloading(true);
-        const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
-          query,
-          {
-            predicate: {
-              type: 'and',
-              predicates,
-            },
+        const { data: response } = await performGQLQuery<{
+          data: { eventSearch: EventSearchResult };
+        }>(query, {
+          predicate: {
+            type: 'and',
+            predicates,
           },
-        );
+        });
 
         // Save the object array as a CSV file
         saveAs(
-          new Blob([eventsToCSV(data.eventSearch.documents.results, fields)], {
+          new Blob([eventsToCSV(await fetcher(response), fields)], {
             type: 'text/csv;charset=utf-8',
           }),
           `${fileName}, ${new Date().toLocaleDateString()}.csv`,
