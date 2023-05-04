@@ -32,7 +32,7 @@ const routes = createBrowserRouter([
         path: 'seedbank/:id',
         element: <SeedbankView />,
         loader: async ({ params }) => {
-          const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_MAP, {
+          const { data } = await performGQLQuery(gqlQueries.QUERY_SEEDBANK_SUMMARY, {
             predicate: {
               type: 'and',
               predicates: [
@@ -46,7 +46,7 @@ const routes = createBrowserRouter([
             size: 50,
           });
 
-          return data.eventSearch._tileServerToken;
+          return data.eventSearch;
         },
       },
       {

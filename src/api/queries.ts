@@ -1,5 +1,3 @@
-const QUERY_EVENT = '';
-
 const QUERY_EVENT_ACCESSIONS = `
 query list($predicate: Predicate, $size: Int, $from: Int){
   eventSearch(
@@ -124,16 +122,6 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         month
         day
         datasetTitle
-        measurementOrFacts {
-          measurementID
-          measurementType
-          measurementUnit
-          measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
-        }
         extensions {
           seedbank {
             accessionNumber
@@ -247,6 +235,7 @@ const QUERY_EVENT_MAP_WITH_DATA = `
 query map($predicate: Predicate, $size: Int){
   eventSearch(predicate: $predicate, size: $size) {
     _meta
+    _tileServerToken
     documents {
       total
       results {
@@ -261,7 +250,6 @@ query map($predicate: Predicate, $size: Int){
         stateProvince
       }
     }
-    _tileServerToken    
   }
 }
 `;
@@ -270,10 +258,10 @@ const QUERY_EVENT_MAP = `
 query map($predicate: Predicate){
   eventSearch(predicate: $predicate) {
     _meta
+    _tileServerToken
     documents {
       total
     }
-    _tileServerToken    
   }
 }
 `;
@@ -292,6 +280,59 @@ query point($predicate: Predicate){
         }
         measurementOrFactTypes
         year
+        extensions {
+          seedbank {
+            accessionNumber
+            seedPerGram
+            formInStorage
+            sampleWeightInGrams
+            sampleSize
+            collectionFillRate
+            purityDebrisPercentage
+            purityPercentage
+            dateCollected
+            dateInStorage
+            storageTemperatureInCelsius
+            relativeHumidityPercentage
+            publicationDOI
+            preStorageTreatmentNotesHistory
+            primaryStorageSeedBank
+            degreeOfEstablishment
+            primaryCollector
+            plantForm
+            duplicatesReplicates
+            collectionPermitNumber
+            thousandSeedWeight
+            numberPlantsSampled
+            storageBehaviour
+            embryoType
+            dormancyClass
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
+const QUERY_EVENT_MAP_POINT_KEY = `
+query point($predicate: Predicate){
+  eventSearch(predicate: $predicate) {
+    documents {
+      total
+      results {
+        datasetTitle
+        datasetKey
+        eventID
+        eventType {
+          concept
+        }
+        measurementOrFactTypes
+        year
+        distinctTaxa {
+          key
+          scientificName
+        }
         extensions {
           seedbank {
             accessionNumber
@@ -432,6 +473,45 @@ query list($datasetKey: JSON){
 }
 `;
 
+const QUERY_SEEDBANK_SUMMARY = `
+query list($predicate: Predicate){
+  eventSearch(predicate: $predicate) {
+    _tileServerToken
+    documents(size: 1) {
+      total
+      results {
+        datasetTitle
+        datasetKey
+        occurrenceCount
+      }
+    }
+    cardinality {
+      locationID
+    }
+    facet {
+      measurementOrFactTypes {
+        key
+      }
+      samplingProtocol {
+        key
+      }    
+      eventTypeHierarchy {
+        key
+      }
+    }   
+    occurrenceFacet {
+      species(size: 10000) {
+        key
+        count
+      }
+      samplingProtocol {
+        key
+      }
+    }
+  }
+}
+`;
+
 const QUERY_TAXON_MEDIA = `
 query image($key: String, $size: Int, $from: Int) {
   taxonMedia(key: $key, size: $size, from: $from) {
@@ -472,7 +552,6 @@ const PRED_DATA_RESOURCE: PredDataResource = {
 };
 
 export default {
-  QUERY_EVENT,
   QUERY_EVENT_ACCESSIONS,
   QUERY_EVENT_ACCESSION_FULL,
   QUERY_EVENT_TRIALS,
@@ -480,10 +559,12 @@ export default {
   QUERY_EVENT_MAP,
   QUERY_EVENT_MAP_WITH_DATA,
   QUERY_EVENT_MAP_POINT,
+  QUERY_EVENT_MAP_POINT_KEY,
   QUERY_TAXON_MEDIA,
   QUERY_DATASET,
   QUERY_DATASET_SUGGEST,
   QUERY_DATASET_SUMMARY,
   QUERY_DATASET_SUMMARY_FULL,
+  QUERY_SEEDBANK_SUMMARY,
   PRED_DATA_RESOURCE,
 };
