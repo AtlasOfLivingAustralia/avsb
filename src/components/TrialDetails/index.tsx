@@ -32,7 +32,7 @@ const isValidTreatment = ({
 function TrialDetails({ event }: TrialDetailsProps) {
   const trial = event.extensions?.seedbank as SeedBankTrial;
   const events = (event.treatments || []).filter((treatment) =>
-    isValidTreatment(treatment.extensions?.seedbank as SeedBankTreatment),
+    isValidTreatment((treatment.extensions?.seedbank as SeedBankTreatment) || {}),
   ) as Event[];
   const treatments = events.map(({ extensions }) => extensions?.seedbank as SeedBankTreatment);
 

@@ -32,21 +32,15 @@ const routes = createBrowserRouter([
         path: 'seedbank/:id',
         element: <SeedbankView />,
         loader: async ({ params }) => {
-          const { data } = await performGQLQuery(gqlQueries.QUERY_SEEDBANK_SUMMARY, {
-            predicate: {
-              type: 'and',
-              predicates: [
-                {
-                  type: 'equals',
-                  key: 'datasetKey',
-                  value: params.id,
-                },
-              ],
-            },
-            size: 50,
-          });
+          const [collectory, gql] = await Promise.all([
+            fetch(`${import.meta.env.VITE_API_COLLECTORY}/dataResource/${params.id}`),
+            performGQLQuery(gqlQueries.QUERY_SEEDBANK_SUMMARY, {
+              datasetKey: params.id,
+              size: 50,
+            }),
+          ]);
 
-          return data.eventSearch;
+          return { gql: gql.data, collectory: await collectory.json() };
         },
       },
       {

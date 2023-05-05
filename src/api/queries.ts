@@ -372,7 +372,6 @@ const QUERY_DATASET = `
 query dataset($key: JSON!){
   eventSearch: eventSearch(predicate: {type: equals, key: "datasetKey", value: $key}) {
     documents(size: 1) {
-      total
       results {
         dataset
       }
@@ -474,8 +473,8 @@ query list($datasetKey: JSON){
 `;
 
 const QUERY_SEEDBANK_SUMMARY = `
-query list($predicate: Predicate){
-  eventSearch(predicate: $predicate) {
+query list($datasetKey: JSON){
+  eventSearch(predicate: {type: equals, key: "datasetKey", value: $datasetKey}) {
     _tileServerToken
     documents(size: 1) {
       total
@@ -507,6 +506,16 @@ query list($predicate: Predicate){
       samplingProtocol {
         key
       }
+    }
+  }
+  accessions: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: $datasetKey}, {type: equals, key: "eventType", value: "Accession"}]}) {
+    documents(size: 0) {
+      total
+    }
+  }
+  trials: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: $datasetKey}, {type: equals, key: "eventType", value: "Trial"}]}) {
+    documents(size: 0) {
+      total
     }
   }
 }

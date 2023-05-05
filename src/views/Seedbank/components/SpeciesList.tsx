@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import { Divider, Group, Paper, Text, TextInput, ThemeIcon } from '@mantine/core';
 import { FixedSizeList } from 'react-window';
 import { IconSearch } from '@tabler/icons';
@@ -12,7 +12,7 @@ interface SpeciesListProps {
 
 interface SpeciesRow {
   index: number;
-  style: any;
+  style: CSSProperties;
   data: SpeciesFacet[];
 }
 
