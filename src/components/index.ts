@@ -17,5 +17,6 @@ export { default as TreatmentCard } from './TreatmentCard';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as SelectSearch } from './SelectSearch';
 export { default as Filters } from './Filters';
+export { default as Downloads } from './Downloads';
 
-export type { Filter, Predicate } from './Filters/types';
+export type { Filter } from './Filters/types';

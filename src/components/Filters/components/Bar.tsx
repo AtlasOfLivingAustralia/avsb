@@ -3,14 +3,15 @@
 import { MouseEventHandler } from 'react';
 import { ActionIcon, Badge, Button, Divider, Group, GroupProps, Text, rem } from '@mantine/core';
 import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons';
+import { Predicate } from '#/api/graphql/types';
 
-import { Filter, Predicate } from '../types';
+import { Filter } from '../types';
 
 function getPredicateValue(predicate: Predicate) {
   const { key, value } = predicate;
 
   // Date handling
-  if (value && key.toLowerCase().includes('date')) {
+  if (value && key?.toLowerCase().includes('date')) {
     if (typeof value === 'object') {
       if (value?.gte !== undefined && value?.lte !== undefined)
         return `${new Date(value.gte).toLocaleDateString()}-${new Date(
@@ -29,7 +30,7 @@ function getPredicateValue(predicate: Predicate) {
     if (value?.lte !== undefined) return `<${value?.lte}`;
   }
 
-  if (key.toLowerCase().includes('date')) return new Date(value as number).toLocaleDateString();
+  if (key?.toLowerCase().includes('date')) return new Date(value as number).toLocaleDateString();
   return `${value}`;
 }
 
@@ -74,7 +75,7 @@ function FilterBar({ filters, predicates, onFiltersOpen, onRemove, ...rest }: Fi
               </ActionIcon>
             }
           >
-            {getPredicateLabel(predicate.key) || predicate.key}:&nbsp;
+            {getPredicateLabel(predicate.key || '') || predicate.key}:&nbsp;
             {getPredicateValue(predicate)}
           </Badge>
         ))

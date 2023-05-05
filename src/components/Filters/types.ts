@@ -1,29 +1,8 @@
 import { SelectItem } from '@mantine/core';
 import { TablerIcon } from '@tabler/icons';
+import { Predicate } from '#/api/graphql/types';
 
-type PredicateType =
-  | 'and'
-  | 'or'
-  | 'not'
-  | 'equals'
-  | 'in'
-  | 'within'
-  | 'isNotNull'
-  | 'like'
-  | 'fuzzy'
-  | 'nested'
-  | 'range';
-
-type PredicateValue = string | number | null | { gte?: number | ''; lte?: number | '' };
-
-export interface Predicate {
-  type: PredicateType;
-  key: string;
-  value?: PredicateValue;
-  values?: PredicateValue[];
-  predicate?: Predicate;
-  predicates?: Predicate[];
-}
+export type FiltersSort = 'alphabetical' | 'groups';
 
 type FilterType =
   | 'text'

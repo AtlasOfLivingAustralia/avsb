@@ -1,7 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type Variables = { [key: string]: any };
 
-async function performGQLQuery(query: string, variables?: Variables) {
+async function performGQLQuery<T = any>(query: string, variables?: Variables) {
   const response = await fetch(import.meta.env.VITE_API_GRAPHQL, {
     method: 'POST',
     headers: {
@@ -14,7 +14,7 @@ async function performGQLQuery(query: string, variables?: Variables) {
   });
 
   const data = await response.json();
-  if (response.ok) return data;
+  if (response.ok) return data as T;
 
   // If errorData is populated, we've recieved an error from the GraphQL server
   const [error] = data?.errors || [];
