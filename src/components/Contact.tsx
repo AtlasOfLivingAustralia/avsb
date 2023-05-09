@@ -142,7 +142,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
             to={`/seedbank/${dataResource}`}
             variant='outline'
           >
-            View Dataset
+            View Seed Bank
           </Button>
         )}
       </Group>

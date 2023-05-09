@@ -4,16 +4,20 @@ import {
   Box,
   Chip,
   Container,
+  Divider,
   Grid,
   Group,
   Image,
+  Paper,
   Skeleton,
   Space,
+  Spoiler,
+  Text,
   Title,
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconExternalLink } from '@tabler/icons';
+import { IconChevronDown, IconChevronUp, IconExternalLink, IconInfoCircle } from '@tabler/icons';
 import { useLoaderData, useParams } from 'react-router-dom';
 
 import { EventSearchResult } from '#/api/graphql/types';
@@ -118,6 +122,46 @@ function Seedbank() {
       {/* <Container size='xl' pt='xl' mt={mdOrLarger ? -125 : -25}> */}
       <Container size='xl' pt='xl' mt={-75}>
         <Grid>
+          {(collectory.pubDescription || collectory.pubShortDescription) && (
+            <Grid.Col span={12} pb='xl'>
+              <Group align='center' mb='sm'>
+                <IconInfoCircle size='2rem' style={{ minWidth: 22, minHeight: 22 }} />
+                <Title order={4}>About</Title>
+              </Group>
+              <Spoiler
+                maxHeight={65}
+                hideLabel={
+                  <Divider
+                    label={
+                      <>
+                        <IconChevronUp size={14} />
+                        <Box ml={5}>Show Less</Box>
+                      </>
+                    }
+                    labelPosition='center'
+                  />
+                }
+                showLabel={
+                  <Divider
+                    label={
+                      <>
+                        <IconChevronDown size={14} />
+                        <Box ml={5}>Show More</Box>
+                      </>
+                    }
+                    labelPosition='center'
+                  />
+                }
+                styles={{
+                  control: {
+                    width: '100%',
+                  },
+                }}
+              >
+                <Text size='sm'>{collectory.pubDescription || collectory.pubShortDescription}</Text>
+              </Spoiler>
+            </Grid.Col>
+          )}
           <Grid.Col xl={8} lg={8} md={12} sm={12} xs={12}>
             <EventMap width='100%' height={450} token={token} />
           </Grid.Col>
