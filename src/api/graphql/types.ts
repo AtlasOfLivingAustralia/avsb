@@ -234,11 +234,25 @@ interface EventOccurrenceFacet {
   eventTypeHierarchy?: [EventOccurrenceFacetResult_string];
 }
 
+interface Stats {
+  count: number;
+  min: number | null;
+  max: number | null;
+  avg: number | null;
+  sum: number | null;
+}
+
+interface EventStats {
+  occurrenceCount: Stats;
+  year: Stats;
+}
+
 interface EventSearchResult {
   documents?: EventDocuments;
   facet?: EventFacet;
   occurrenceFacet?: EventOccurrenceFacet;
   occurrenceCount?: number;
+  stats?: EventStats;
   _predicate?: JSON;
   _tileServerToken?: string;
   _meta?: JSON;

@@ -484,6 +484,12 @@ query list($datasetKey: JSON){
         occurrenceCount
       }
     }
+    stats {
+      year {
+        min
+        max
+      }
+    }
     cardinality {
       locationID
     }

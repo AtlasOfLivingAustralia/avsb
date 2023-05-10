@@ -2,12 +2,14 @@ import { useState } from 'react';
 import {
   Anchor,
   Box,
+  Center,
   Chip,
   Container,
   Divider,
   Grid,
   Group,
   Image,
+  Paper,
   Skeleton,
   Space,
   Spoiler,
@@ -20,8 +22,10 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconClock,
+  IconDatabaseImport,
   IconExternalLink,
   IconInfoCircle,
+  IconLicense,
 } from '@tabler/icons';
 import { useLoaderData, useParams } from 'react-router-dom';
 
@@ -61,7 +65,7 @@ function Seedbank() {
   const [logoLoaded, setLogoLoaded] = useState<boolean>(false);
   const { gql, collectory } = useLoaderData() as SeedbankRouteData;
   const { eventSearch, accessions, trials } = gql;
-  const { _tileServerToken: token, documents, occurrenceFacet } = eventSearch;
+  const { _tileServerToken: token, documents, stats, occurrenceFacet } = eventSearch;
 
   const [event] = documents?.results || [];
   const params = useParams();
@@ -120,11 +124,6 @@ function Seedbank() {
                 <Chip checked={false}>
                   <b>{trials.documents?.total?.toLocaleString()}</b> Trials
                 </Chip>
-                {collectory.lastUpdated && (
-                  <Chip checked={false}>
-                    <b>{new Date(collectory.lastUpdated).toLocaleDateString()}</b> Updated
-                  </Chip>
-                )}
               </Group>
             </Box>
           </Group>
@@ -132,10 +131,10 @@ function Seedbank() {
       </Box>
       <Wave width='100%' height={200} preserveAspectRatio='none' waveType='bodyBottom' />
       {/* <Container size='xl' pt='xl' mt={mdOrLarger ? -125 : -25}> */}
-      <Container size='xl' pt='xl' mt={-75}>
+      <Container size='xl' pt='xl' mt={-80}>
         <Grid>
           {(collectory.pubDescription || collectory.pubShortDescription) && (
-            <Grid.Col span={12} pb='xl'>
+            <Grid.Col span={12} pb='lg'>
               <Group align='center' mb='sm'>
                 <IconInfoCircle size='2rem' style={{ minWidth: 22, minHeight: 22 }} />
                 <Title order={4}>About</Title>
@@ -143,26 +142,20 @@ function Seedbank() {
               <Spoiler
                 maxHeight={65}
                 hideLabel={
-                  <Divider
-                    label={
-                      <>
-                        <IconChevronUp size={14} />
-                        <Box ml={5}>Show Less</Box>
-                      </>
-                    }
-                    labelPosition='center'
-                  />
+                  <Center>
+                    <Group mt='xs' style={{ fontSize: '0.85rem' }}>
+                      <IconChevronUp size={14} />
+                      Show Less
+                    </Group>
+                  </Center>
                 }
                 showLabel={
-                  <Divider
-                    label={
-                      <>
-                        <IconChevronDown size={14} />
-                        <Box ml={5}>Show More</Box>
-                      </>
-                    }
-                    labelPosition='center'
-                  />
+                  <Center>
+                    <Group mt='xs' style={{ fontSize: '0.85rem' }}>
+                      <IconChevronDown size={14} />
+                      Show More
+                    </Group>
+                  </Center>
                 }
                 styles={{
                   control: {
@@ -174,6 +167,54 @@ function Seedbank() {
               </Spoiler>
             </Grid.Col>
           )}
+          <Grid.Col xl={4} lg={4} md={4} sm={6} xs={12}>
+            <Paper p='md' withBorder>
+              <Group>
+                <IconClock />
+                <Box>
+                  <Text color='dimmed' size='xs'>
+                    Records Span
+                  </Text>
+                  <Text weight='bold'>
+                    {stats?.year.min} - {stats?.year.max}
+                  </Text>
+                </Box>
+              </Group>
+            </Paper>
+          </Grid.Col>
+          <Grid.Col xl={4} lg={4} md={4} sm={6} xs={12}>
+            <Paper p='md' withBorder>
+              <Group>
+                <IconDatabaseImport />
+                <Box>
+                  <Text color='dimmed' size='xs'>
+                    Last Updated
+                  </Text>
+                  <Text weight='bold'>
+                    {collectory.lastUpdated
+                      ? new Date(collectory.lastUpdated).toLocaleDateString()
+                      : 'Unknown'}
+                  </Text>
+                </Box>
+              </Group>
+            </Paper>
+          </Grid.Col>
+          <Grid.Col xl={4} lg={4} md={4} sm={12} xs={12}>
+            <Paper p='md' withBorder>
+              <Group>
+                <IconLicense />
+                <Box>
+                  <Text color='dimmed' size='xs'>
+                    License
+                  </Text>
+                  <Text weight='bold'>{collectory.licenseType || 'Unknown'}</Text>
+                </Box>
+              </Group>
+            </Paper>
+          </Grid.Col>
+          <Grid.Col span={12} py='xl'>
+            <Divider variant='dashed' my='xl' />
+          </Grid.Col>
           <Grid.Col xl={8} lg={8} md={12} sm={12} xs={12}>
             <EventMap width='100%' height={450} token={token} />
           </Grid.Col>
