@@ -8,7 +8,6 @@ import {
   Grid,
   Group,
   Image,
-  Paper,
   Skeleton,
   Space,
   Spoiler,
