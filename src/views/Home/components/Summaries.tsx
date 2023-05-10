@@ -60,7 +60,7 @@ interface SummaryCardProps {
 function SummaryCard({ dataResource }: SummaryCardProps) {
   const { data } = useGQLQuery<{
     data: { accessions: EventSearchResult; trials: EventSearchResult };
-  }>(gqlQueries.QUERY_DATASET_SUMMARY, {
+  }>(gqlQueries.QUERY_SEEDBANK_SUMMARY, {
     datasetKey: dataResource,
   });
   const { classes } = useStyles();

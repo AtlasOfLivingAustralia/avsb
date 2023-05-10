@@ -34,7 +34,7 @@ const routes = createBrowserRouter([
         loader: async ({ params }) => {
           const [collectory, gql] = await Promise.all([
             fetch(`${import.meta.env.VITE_API_COLLECTORY}/dataResource/${params.id}`),
-            performGQLQuery(gqlQueries.QUERY_SEEDBANK_SUMMARY, {
+            performGQLQuery(gqlQueries.QUERY_SEEDBANK_SUMMARY_FULL, {
               datasetKey: params.id,
               size: 50,
             }),

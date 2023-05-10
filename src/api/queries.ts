@@ -394,7 +394,7 @@ query keywordSearch($predicate: Predicate, $size: Int){
 }
 `;
 
-const QUERY_DATASET_SUMMARY = `
+const QUERY_SEEDBANK_SUMMARY = `
 query list($datasetKey: JSON){
   accessions: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: $datasetKey}, {type: equals, key: "eventType", value: "Accession"}]}) {
     documents(size: 1) {
@@ -423,56 +423,7 @@ query list($datasetKey: JSON){
 }
 `;
 
-const QUERY_DATASET_SUMMARY_FULL = `
-query list($datasetKey: JSON){
-  eventSearch(predicate: {type: equals, key: "datasetKey", value: $datasetKey}) {
-    documents(size: 1) {
-      total
-      results {
-        datasetTitle
-        datasetKey
-        occurrenceCount
-      }
-    }
-    cardinality {
-      locationID
-    }
-    facet {
-      measurementOrFactTypes {
-        key
-      }
-      samplingProtocol {
-        key
-      }    
-      eventTypeHierarchy {
-        key
-      }
-    }   
-    occurrenceFacet {
-      class {
-        key
-      }
-      order {
-        key
-      }
-      family {
-        key
-      }
-      genus {
-        key
-      }
-      species {
-        key
-      }
-      samplingProtocol {
-        key
-      }
-    }
-  }
-}
-`;
-
-const QUERY_SEEDBANK_SUMMARY = `
+const QUERY_SEEDBANK_SUMMARY_FULL = `
 query list($datasetKey: JSON){
   eventSearch(predicate: {type: equals, key: "datasetKey", value: $datasetKey}) {
     _tileServerToken
@@ -578,8 +529,7 @@ export default {
   QUERY_TAXON_MEDIA,
   QUERY_DATASET,
   QUERY_DATASET_SUGGEST,
-  QUERY_DATASET_SUMMARY,
-  QUERY_DATASET_SUMMARY_FULL,
   QUERY_SEEDBANK_SUMMARY,
+  QUERY_SEEDBANK_SUMMARY_FULL,
   PRED_DATA_RESOURCE,
 };
