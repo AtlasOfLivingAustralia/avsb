@@ -16,7 +16,13 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconChevronDown, IconChevronUp, IconExternalLink, IconInfoCircle } from '@tabler/icons';
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconClock,
+  IconExternalLink,
+  IconInfoCircle,
+} from '@tabler/icons';
 import { useLoaderData, useParams } from 'react-router-dom';
 
 import { EventSearchResult } from '#/api/graphql/types';
@@ -109,9 +115,16 @@ function Seedbank() {
               )}
               <Group mt='xl' pt='md'>
                 <Chip checked={false}>
-                  {accessions.documents?.total?.toLocaleString()} Accessions
+                  <b>{accessions.documents?.total?.toLocaleString()}</b> Accessions
                 </Chip>
-                <Chip checked={false}>{trials.documents?.total?.toLocaleString()} Trials</Chip>
+                <Chip checked={false}>
+                  <b>{trials.documents?.total?.toLocaleString()}</b> Trials
+                </Chip>
+                {collectory.lastUpdated && (
+                  <Chip checked={false}>
+                    <b>{new Date(collectory.lastUpdated).toLocaleDateString()}</b> Updated
+                  </Chip>
+                )}
               </Group>
             </Box>
           </Group>
