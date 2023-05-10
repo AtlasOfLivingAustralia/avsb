@@ -131,7 +131,7 @@ function Seedbank() {
       </Box>
       <Wave width='100%' height={200} preserveAspectRatio='none' waveType='bodyBottom' />
       {/* <Container size='xl' pt='xl' mt={mdOrLarger ? -125 : -25}> */}
-      <Container size='xl' pt='xl' mt={-80}>
+      <Container size='xl' pt='xl' mt={-85}>
         <Grid>
           {(collectory.pubDescription || collectory.pubShortDescription) && (
             <Grid.Col span={12} pb='lg'>
@@ -213,7 +213,7 @@ function Seedbank() {
             </Paper>
           </Grid.Col>
           <Grid.Col span={12} py='xl'>
-            <Divider variant='dashed' my='xl' />
+            <Divider variant='dashed' />
           </Grid.Col>
           <Grid.Col xl={8} lg={8} md={12} sm={12} xs={12}>
             <EventMap width='100%' height={450} token={token} />
