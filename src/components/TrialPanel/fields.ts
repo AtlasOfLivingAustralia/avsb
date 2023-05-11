@@ -41,14 +41,14 @@ const fields: TrialDetail[] = [
   // {
   //   key: 'sampleWeightInGrams',
   //   name: 'Sample Weight',
-  //   unit: ' gms',
+  //   unit: 'g',
   //   icon: IconScale,
   // },
   // {
   //   key: 'thousandSeedWeight',
   //   name: 'Thousand Seed Weight',
   //   icon: IconBox,
-  //   unit: ' gms',
+  //   unit: 'g',
   // },
   // {
   //   key: 'relativeHumidityPercent',

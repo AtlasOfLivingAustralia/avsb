@@ -132,7 +132,7 @@ function AccessionTable({ events }: AccessionTableProps) {
                     </td>
                     <td>
                       {getIsPresent(accession?.thousandSeedWeight) &&
-                        `${accession?.thousandSeedWeight} gms`}
+                        `${accession?.thousandSeedWeight}g`}
                     </td>
                     <td>
                       {getIsPresent(accession?.purityPercentage) &&
