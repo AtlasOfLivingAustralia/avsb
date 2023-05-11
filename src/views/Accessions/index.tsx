@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Center, Group, Pagination } from '@mantine/core';
+import { Center, Divider, Group, Pagination, Text } from '@mantine/core';
 import { Outlet, useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
 
 // Project components / helpers
@@ -77,14 +77,20 @@ function Accessions() {
             setFilterPredicates(preds);
           }}
         />
-        <Downloads
-          query={gqlQueries.DOWNLOAD_EVENT_ACCESSIONS}
-          predicates={predicates}
-          fields={downloadFields}
-          fetcher={downloadFetcher}
-          total={query.total}
-          fileName={`AVSB Accessions, ${taxon.classification.scientificName}`}
-        />
+        <Group>
+          <Text color='dimmed' align='right' size='sm'>
+            {query.total} total records
+          </Text>
+          <Divider orientation='vertical' />
+          <Downloads
+            query={gqlQueries.DOWNLOAD_EVENT_ACCESSIONS}
+            predicates={predicates}
+            fields={downloadFields}
+            fetcher={downloadFetcher}
+            total={query.total}
+            fileName={`AVSB Accessions, ${taxon.classification.scientificName}`}
+          />
+        </Group>
       </Group>
       <AccessionTable events={events} />
       <Center pt='md'>
