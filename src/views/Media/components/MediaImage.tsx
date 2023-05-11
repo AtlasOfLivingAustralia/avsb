@@ -18,15 +18,13 @@ function MediaImage({ onClick, selected, width, height, item }: MediaImageProps)
       }}
       pos='relative'
       sx={(theme) => ({
-        transform: selected ? 'scale(1)' : 'scale(0.9)',
         borderRadius: 22,
-        opacity: selected ? 1 : 0.7,
-        transition: 'all cubic-bezier(0, 0, 0, 1) 0.2s',
+        opacity: selected ? 1 : 0.65,
+        transition: 'opacity ease-in-out 0.2s',
         border: `6px solid ${selected ? theme.colors[theme.primaryColor][6] : 'transparent'}`,
         '&:hover': {
           opacity: 1,
           cursor: 'pointer',
-          transform: 'scale(1)',
         },
       })}
     >

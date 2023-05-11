@@ -91,7 +91,7 @@ function Media() {
   return (
     <Grid gutter='xl'>
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={7} orderXs={2} orderSm={2} orderMd={1}>
-        <Grid gutter={0}>
+        <Grid gutter='xs'>
           {media?.map((item) => (
             <Grid.Col key={item.identifier} xs={4} sm={4} md={4} lg={3} xl={3}>
               <MediaImage
