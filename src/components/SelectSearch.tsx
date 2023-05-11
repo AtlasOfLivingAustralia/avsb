@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useEffect, useState } from 'react';
+import { KeyboardEvent, useEffect, useState } from 'react';
 import { Loader, Select, SelectItem, SelectProps } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons';
@@ -16,7 +16,8 @@ export interface SearchSelectProps
   fetchItems: (query: string) => Promise<SelectItem[]>;
 }
 
-function SelectSearch({ customTypes = [], fetchItems, ...props }: SearchSelectProps) {
+function SelectSearch({ customTypes = [], fetchItems, onChange, ...props }: SearchSelectProps) {
+  const [value, setValue] = useState<string | null>(null);
   const [data, setData] = useState<SelectItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
@@ -43,9 +44,24 @@ function SelectSearch({ customTypes = [], fetchItems, ...props }: SearchSelectPr
   // Sort the menu items alphabetically by label
   const dataSorted = orderBy(data, [(filter) => filter.label?.toLowerCase()], ['asc']);
 
+  const handleChange = (newValue: string | null) => {
+    setValue(newValue);
+    if (onChange) onChange(newValue);
+  };
+
+  // Handler for enter key
+  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && onChange && dataSorted.length > 0) {
+      setValue(dataSorted[0].value);
+      onChange(dataSorted[0].value);
+    }
+  };
+
   return (
     <Select
       {...props}
+      onChange={handleChange}
+      value={value}
       searchable
       clearable
       rightSection={loading ? <Loader size='xs' /> : null}
@@ -63,6 +79,7 @@ function SelectSearch({ customTypes = [], fetchItems, ...props }: SearchSelectPr
           setSearch(newValue);
         }
       }}
+      onKeyDown={handleKeyPress}
       data={[
         ...uniqBy(dataSorted, 'value'),
         ...(search.length > 0
