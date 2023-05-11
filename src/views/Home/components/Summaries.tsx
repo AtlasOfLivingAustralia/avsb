@@ -146,8 +146,8 @@ function Summaries() {
 
   return (
     <Grid gutter='xl'>
-      {gqlQueries.PRED_DATA_RESOURCE.values.map((dataResource) => (
-        <Grid.Col key={dataResource} xs={12} sm={6} md={4} lg={4}>
+      {gqlQueries.PRED_DATA_RESOURCE.values?.map((dataResource) => (
+        <Grid.Col key={dataResource as string} xs={12} sm={6} md={4} lg={4}>
           <SummaryCard
             accessions={data?.data[`${dataResource}Accessions`]}
             trials={data?.data[`${dataResource}Trials`]}
