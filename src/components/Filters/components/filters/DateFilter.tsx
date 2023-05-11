@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Stack, Group, Paper, SegmentedControl } from '@mantine/core';
-import { DatePickerInput, DateValue, DatesRangeValue } from '@mantine/dates';
+import { DateInput, DateValue } from '@mantine/dates';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import useMounted from '#/helpers/useMounted';
 
 import IconText from '#/components/IconText';
 import { FilterItemProps } from '../../types';
 
+dayjs.extend(customParseFormat);
+
 function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [single, setSingle] = useState<DateValue>(null);
-  const [range, setRange] = useState<DatesRangeValue>([null, null]);
+  const [range, setRange] = useState<DateValue>(null);
   const [operation, setOperation] = useState<string>('equals');
   const mounted = useMounted();
 
@@ -17,9 +21,8 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
   // useEffect handler for select / number input updates
   useEffect(() => {
     if (!mounted) return;
-    const hasRange = (range || []).filter((item) => item !== null).length > 0;
 
-    if ((single === null && operation !== 'range') || (!hasRange && operation === 'range')) {
+    if (single === null || (operation === 'range' && range === null)) {
       onChange({
         type: 'equals',
         key,
@@ -52,13 +55,13 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
         },
       });
     }
-    if (operation === 'range' && hasRange) {
+    if (operation === 'range') {
       onChange({
         type: 'range',
         key,
         value: {
-          gte: range[0]?.getTime(),
-          lte: range[1]?.getTime(),
+          gte: single?.getTime(),
+          lte: range?.getTime(),
         },
       });
     }
@@ -69,7 +72,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
     if (resetKey.split('-')[0] === key) {
       setOperation('equals');
       setSingle(null);
-      setRange([null, null]);
+      setRange(null);
     }
   }, [key, resetKey, setSingle, setRange]);
 
@@ -89,20 +92,23 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
             ]}
           />
         </Paper>
-        <DatePickerInput
-          style={{ flexGrow: 1, display: operation !== 'range' ? 'block' : 'none' }}
+        <DateInput
+          style={{ flexGrow: 1 }}
           value={single}
+          valueFormat='DD/MM/YYYY'
           onChange={setSingle}
           placeholder={placeholder}
           clearable
+          dateParser={(input) => dayjs(input, 'DD/MM/YYYY').toDate()}
         />
-        <DatePickerInput
-          style={{ flexGrow: 1, display: operation === 'range' ? 'block' : 'none' }}
+        <DateInput
           value={range}
+          valueFormat='DD/MM/YYYY'
+          style={{ flexGrow: 1, display: operation === 'range' ? 'block' : 'none' }}
           onChange={setRange}
           placeholder={placeholder}
           clearable
-          type='range'
+          dateParser={(input) => dayjs(input, 'DD/MM/YYYY').toDate()}
         />
       </Group>
     </Stack>

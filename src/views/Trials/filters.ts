@@ -59,7 +59,7 @@ const filters: Filter[] = [
     key: 'seedbank_testDateStarted',
     label: 'Test Date Started',
     type: 'date',
-    placeholder: '5 Apr 2001',
+    placeholder: 'Enter DD/MM/YYYY',
     icon: IconCalendar,
     group: 'Test',
   },
