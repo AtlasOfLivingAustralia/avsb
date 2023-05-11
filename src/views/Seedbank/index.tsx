@@ -107,11 +107,9 @@ function Seedbank() {
               />
             </Skeleton>
             <Box>
-              <Title maw={550} mb='xs'>
-                {event?.datasetTitle}
-              </Title>
+              <Title maw={550}>{event?.datasetTitle}</Title>
               {collectory.institution?.name && (
-                <Title order={3} color='dimmed' maw={550} mb='sm'>
+                <Title order={3} color='dimmed' maw={550} mb='md'>
                   {collectory.institution?.name}
                 </Title>
               )}
