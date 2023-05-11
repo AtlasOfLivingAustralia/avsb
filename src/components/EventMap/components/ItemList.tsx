@@ -35,7 +35,6 @@ interface ItemListProps {
 function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
   const theme = useMantineTheme();
   const { results, total } = events?.data?.eventSearch?.documents || {};
-  // const { results, total } = { results: null, total: 0 };
 
   return (
     <Transition mounted={open} transition={slideX}>
@@ -79,7 +78,13 @@ function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
                     return (
                       <UnstyledButton
                         component={Link}
-                        to={`../accessions/${result.eventID}`}
+                        to={
+                          result.distinctTaxa?.[0]?.key
+                            ? `/taxon/${encodeURIComponent(
+                                result.distinctTaxa?.[0]?.key,
+                              )}/accessions/${result.eventID}`
+                            : `../accessions/${result.eventID}`
+                        }
                         p='xs'
                         key={result.eventID}
                         sx={{
@@ -92,6 +97,11 @@ function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
                         <Text size='sm'>
                           {accession?.accessionNumber || `Event ${result.eventID}`}
                         </Text>
+                        {result.distinctTaxa?.[0]?.key && (
+                          <Text weight='bold' size='xs'>
+                            {result.distinctTaxa?.[0]?.scientificName}
+                          </Text>
+                        )}
                         <Text size='xs' color='dimmed'>
                           {result.datasetTitle}
                         </Text>

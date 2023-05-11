@@ -193,7 +193,13 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
           )}
           <Stack spacing='xs' p='md'>
             <Alert icon={<IconInfoCircle />} mb='sm'>
-              This map shows the seed <b>collection</b> location
+              {accessionEvent.decimalLatitude && accessionEvent.decimalLongitude ? (
+                <>
+                  This map shows the seed <b>collection</b> location
+                </>
+              ) : (
+                'No locality data supplied'
+              )}
             </Alert>
             <IconText labelWidth={120} title='Locality' icon={IconLocation}>
               {accessionEvent.locality || missingData}

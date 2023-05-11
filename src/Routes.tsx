@@ -11,6 +11,7 @@ import {
   AccessionsView,
   SummaryView,
   SequencesView,
+  SeedbankView,
 } from './views';
 import queries from './api/queries';
 import { Event } from './api/graphql/types';
@@ -26,6 +27,21 @@ const routes = createBrowserRouter([
       {
         path: '/',
         element: <HomeView />,
+      },
+      {
+        path: 'seedbank/:id',
+        element: <SeedbankView />,
+        loader: async ({ params }) => {
+          const [collectory, gql] = await Promise.all([
+            fetch(`${import.meta.env.VITE_API_COLLECTORY}/dataResource/${params.id}`),
+            performGQLQuery(gqlQueries.QUERY_SEEDBANK_SUMMARY_FULL, {
+              datasetKey: params.id,
+              size: 50,
+            }),
+          ]);
+
+          return { gql: gql.data, collectory: await collectory.json() };
+        },
       },
       {
         id: 'taxon',

@@ -19,7 +19,6 @@ import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler
 import { Fragment, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
-
 // Project components / helpers
 import { TrialDetails } from '#/components';
 import { getIsPresent } from '#/helpers';
@@ -62,7 +61,23 @@ function TrialsTable({ events, height }: TrialsTableProps) {
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
 
-  const sortedEvents = orderBy(events || [], ['extensions.seedbank.accessionNumber'], ['asc']);
+  const sortedEvents = orderBy(
+    events.map((event) => {
+      const date = new Date();
+      if (event.year) date.setFullYear(event.year);
+      if (event.month) date.setMonth(event.month);
+      if (event.day) date.setDate(event.day);
+
+      date.setHours(0, 0, 0, 0);
+
+      return {
+        ...event,
+        eventDateTs: date.getTime(),
+      };
+    }) || [],
+    ['eventDateTs', 'extensions.seedbank.accessionNumber'],
+    ['asc'],
+  );
 
   return (
     <Card withBorder p={0}>

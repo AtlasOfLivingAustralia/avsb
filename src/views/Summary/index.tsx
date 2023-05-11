@@ -6,7 +6,6 @@ import {
   Card,
   Grid,
   Modal,
-  Paper,
   useMantineTheme,
   Stack,
   Group,
@@ -43,15 +42,13 @@ function Summary() {
       </Modal>
       <Grid>
         <Grid.Col sm={7} md={8} lg={9}>
-          <Paper h={450} withBorder>
-            <EventMap
-              onFullscreen={open}
-              width='100%'
-              height={450}
-              token={token}
-              itemListHeight={180}
-            />
-          </Paper>
+          <EventMap
+            onFullscreen={open}
+            width='100%'
+            height={450}
+            token={token}
+            itemListHeight={180}
+          />
         </Grid.Col>
         <Grid.Col sm={5} md={4} lg={3}>
           <Card withBorder h='100%' p={0}>

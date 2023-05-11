@@ -35,7 +35,7 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   const [styleLoaded, setStyleLoaded] = useState<boolean>(false);
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
   const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery(
-    queries.QUERY_EVENT_MAP_POINT,
+    params.guid ? queries.QUERY_EVENT_MAP_POINT : queries.QUERY_EVENT_MAP_POINT_KEY,
     {},
     { lazy: true },
   );
