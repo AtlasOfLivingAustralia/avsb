@@ -1,7 +1,16 @@
 import { CSSProperties, useEffect, useState } from 'react';
-import { Divider, Group, Paper, Text, TextInput, ThemeIcon } from '@mantine/core';
+import {
+  ActionIcon,
+  Divider,
+  Group,
+  Paper,
+  Text,
+  TextInput,
+  ThemeIcon,
+  Tooltip,
+} from '@mantine/core';
 import { FixedSizeList } from 'react-window';
-import { IconSearch } from '@tabler/icons';
+import { IconDownload, IconSearch } from '@tabler/icons';
 import { useDebouncedValue } from '@mantine/hooks';
 
 type SpeciesFacet = { key: string; count: number };
@@ -41,12 +50,21 @@ function SpeciesList({ species }: SpeciesListProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDebounced]);
 
+  const onDownloadClick = () => {
+    console.log('Download records');
+  };
+
   return (
     <Paper p='md' h='100%' withBorder>
       <Group mb='xs' position='apart'>
         <Text size='xl' sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}>
           {species.length} Species
         </Text>
+        <Tooltip label='Download species list' position='left'>
+          <ActionIcon variant='subtle' onClick={onDownloadClick}>
+            <IconDownload size='1rem' />
+          </ActionIcon>
+        </Tooltip>
       </Group>
       <TextInput
         icon={<IconSearch size='1rem' />}

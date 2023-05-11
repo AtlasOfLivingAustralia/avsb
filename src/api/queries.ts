@@ -423,6 +423,24 @@ query list($datasetKey: JSON){
 }
 `;
 
+const QUERY_SEEDBANK_SUMMARY_TEMPLATE = `
+{{datasetKey}}Accessions: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: "{{datasetKey}}"}, {type: equals, key: "eventType", value: "Accession"}]}) {
+  documents(size: 1) {
+    total
+    results {
+      datasetTitle
+      datasetKey
+      occurrenceCount
+    }
+  }
+}
+{{datasetKey}}Trials: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: "{{datasetKey}}"}, {type: equals, key: "eventType", value: "Trial"}]}) {
+  documents(size: 0) {
+    total
+  }
+}
+`;
+
 const QUERY_SEEDBANK_SUMMARY_FULL = `
 query list($datasetKey: JSON){
   eventSearch(predicate: {type: equals, key: "datasetKey", value: $datasetKey}) {
@@ -509,12 +527,14 @@ interface PredDataResource {
   values: string[];
 }
 
+const DATA_RESOURCES = import.meta.env.VITE_APP_DATA_RESOURCES
+  ? import.meta.env.VITE_APP_DATA_RESOURCES.split(',')
+  : [];
+
 const PRED_DATA_RESOURCE: PredDataResource = {
   type: 'in',
   key: 'datasetKey',
-  values: import.meta.env.VITE_APP_DATA_RESOURCES
-    ? import.meta.env.VITE_APP_DATA_RESOURCES.split(',')
-    : [],
+  values: DATA_RESOURCES,
 };
 
 export default {
@@ -531,5 +551,7 @@ export default {
   QUERY_DATASET_SUGGEST,
   QUERY_SEEDBANK_SUMMARY,
   QUERY_SEEDBANK_SUMMARY_FULL,
+  QUERY_SEEDBANK_SUMMARY_TEMPLATE,
   PRED_DATA_RESOURCE,
+  DATA_RESOURCES,
 };

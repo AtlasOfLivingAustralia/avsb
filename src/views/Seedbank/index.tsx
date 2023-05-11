@@ -45,6 +45,11 @@ interface CollectoryDataResource {
   logoRef: {
     uri: string | null;
   };
+  institution: {
+    name: string | null;
+    uri: string | null;
+    uid: string | null;
+  };
   dateCreated: string | null;
   lastUpdated: string | null;
   licenseType: string | null;
@@ -105,6 +110,11 @@ function Seedbank() {
               <Title maw={550} mb='xs'>
                 {event?.datasetTitle}
               </Title>
+              {collectory.institution?.name && (
+                <Title order={3} color='dimmed' maw={550} mb='sm'>
+                  {collectory.institution?.name}
+                </Title>
+              )}
               {collectory.websiteUrl && (
                 <Anchor
                   size='sm'

@@ -86,7 +86,7 @@ function Home() {
         <Container size='lg'>
           <Box p='xl'>
             <Title mb='xl' pb='md' order={2} weight={600}>
-              Our Data Providers
+              Our Datasets
             </Title>
             <Summaries />
           </Box>

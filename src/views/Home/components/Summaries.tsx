@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { gqlQueries, useGQLQuery } from '#/api';
 import { EventSearchResult } from '#/api/graphql/types';
 import { getShortInt } from '#/helpers';
+import queries from '#/api/queries';
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -54,22 +55,18 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface SummaryCardProps {
-  dataResource: string;
+  accessions?: EventSearchResult;
+  trials?: EventSearchResult;
 }
 
-function SummaryCard({ dataResource }: SummaryCardProps) {
-  const { data } = useGQLQuery<{
-    data: { accessions: EventSearchResult; trials: EventSearchResult };
-  }>(gqlQueries.QUERY_SEEDBANK_SUMMARY, {
-    datasetKey: dataResource,
-  });
+function SummaryCard({ accessions, trials }: SummaryCardProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const navigate = useNavigate();
 
   // Hoist the data from the response
-  const { total: totalAccessions, results } = data?.data.accessions?.documents || {};
-  const { total: totalTrials } = data?.data.trials?.documents || {};
+  const { total: totalAccessions, results } = accessions?.documents || {};
+  const { total: totalTrials } = trials?.documents || {};
 
   const event = results?.[0];
   const loading = !results;
@@ -133,12 +130,28 @@ function SummaryCard({ dataResource }: SummaryCardProps) {
   );
 }
 
+// Construct a query that fetches a summary all data resources
+const QUERY_SEEDBANK_SUMMARY_ALL = `
+query list {
+  ${queries.DATA_RESOURCES.map((dataResource: string) =>
+    queries.QUERY_SEEDBANK_SUMMARY_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
+  ).join('')}
+}
+`;
+
 function Summaries() {
+  const { data } = useGQLQuery<{ data: { [key: string]: EventSearchResult } }>(
+    QUERY_SEEDBANK_SUMMARY_ALL,
+  );
+
   return (
     <Grid gutter='xl'>
       {gqlQueries.PRED_DATA_RESOURCE.values.map((dataResource) => (
         <Grid.Col key={dataResource} xs={12} sm={6} md={4} lg={4}>
-          <SummaryCard dataResource={dataResource} />
+          <SummaryCard
+            accessions={data?.data[`${dataResource}Accessions`]}
+            trials={data?.data[`${dataResource}Trials`]}
+          />
         </Grid.Col>
       ))}
     </Grid>
