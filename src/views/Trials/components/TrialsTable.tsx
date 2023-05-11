@@ -7,6 +7,7 @@ import {
   Card,
   Center,
   Collapse,
+  Divider,
   Group,
   ScrollArea,
   Table,
@@ -15,7 +16,12 @@ import {
   rem,
   useMantineTheme,
 } from '@mantine/core';
-import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
+import {
+  IconArrowUpRight,
+  IconArrowsMaximize,
+  IconArrowsMinimize,
+  IconChevronDown,
+} from '@tabler/icons';
 import { Fragment, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
@@ -178,6 +184,17 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                       <Group spacing='xs' position='right' miw={145}>
                         {location.pathname.endsWith('trials') && (
                           <Button
+                            styles={{
+                              label: {
+                                textDecoration: 'underline',
+                                textUnderlineOffset: 2,
+                                textDecorationColor:
+                                  theme.colorScheme === 'dark'
+                                    ? 'rgba(165, 216, 255, 0.25)'
+                                    : 'rgba(34, 139, 230, 0.25)',
+                              },
+                            }}
+                            rightIcon={<IconArrowUpRight size='1rem' />}
                             disabled={!event.parentEventID}
                             component={Link}
                             to={`../accessions/${event.parentEventID}`}
@@ -188,6 +205,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                             View Accession
                           </Button>
                         )}
+                        <Divider orientation='vertical' />
                         <IconChevronDown
                           style={{
                             transition: 'transform ease-out 200ms',

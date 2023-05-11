@@ -7,6 +7,7 @@ import {
   Card,
   Center,
   Collapse,
+  Divider,
   Group,
   ScrollArea,
   Table,
@@ -15,7 +16,12 @@ import {
   rem,
   useMantineTheme,
 } from '@mantine/core';
-import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
+import {
+  IconArrowUpRight,
+  IconArrowsMaximize,
+  IconArrowsMinimize,
+  IconChevronDown,
+} from '@tabler/icons';
 import { Link } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
 
@@ -148,14 +154,26 @@ function AccessionTable({ events }: AccessionTableProps) {
                     <td align='right'>
                       <Group spacing='xs' position='right' miw={130}>
                         <Button
+                          styles={{
+                            label: {
+                              textDecoration: 'underline',
+                              textUnderlineOffset: 2,
+                              textDecorationColor:
+                                theme.colorScheme === 'dark'
+                                  ? 'rgba(165, 216, 255, 0.25)'
+                                  : 'rgba(34, 139, 230, 0.25)',
+                            },
+                          }}
+                          rightIcon={<IconArrowUpRight size='1rem' />}
                           component={Link}
                           to={event.eventID || '/'}
                           variant='subtle'
                           size='xs'
                           px='xs'
                         >
-                          View Details
+                          All Details
                         </Button>
+                        <Divider orientation='vertical' />
                         <IconChevronDown
                           style={{
                             transition: 'transform ease-out 200ms',
