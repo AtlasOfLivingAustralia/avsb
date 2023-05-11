@@ -79,7 +79,7 @@ function AccessionTable({ events }: AccessionTableProps) {
               <th style={{ paddingLeft: 25 }}>Catalogue</th>
               <th>Institution</th>
               <th>Date Collected</th>
-              <th>Thousand Seed Weight</th>
+              <th>Collection Size</th>
               <th>Purity</th>
               <th>Storage Temp</th>
               <th>Collector</th>
@@ -137,8 +137,7 @@ function AccessionTable({ events }: AccessionTableProps) {
                         new Date(accession?.dateCollected || 0).toLocaleDateString()}
                     </td>
                     <td>
-                      {getIsPresent(accession?.thousandSeedWeight) &&
-                        `${accession?.thousandSeedWeight}g`}
+                      {getIsPresent(accession?.sampleSize) && `${accession?.sampleSize} seeds`}
                     </td>
                     <td>
                       {getIsPresent(accession?.purityPercentage) &&
@@ -152,7 +151,7 @@ function AccessionTable({ events }: AccessionTableProps) {
                       {getIsPresent(accession?.primaryCollector) && accession?.primaryCollector}
                     </td>
                     <td align='right'>
-                      <Group spacing='xs' position='right' miw={130}>
+                      <Group spacing='xs' position='right' miw={150}>
                         <Button
                           styles={{
                             label: {

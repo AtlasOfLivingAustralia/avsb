@@ -1,4 +1,5 @@
 import {
+  IconBox,
   // IconBox,
   IconBrandAsana,
   IconBuildingWarehouse,
@@ -34,23 +35,23 @@ const fields: AccessionDetail[] = [
     name: 'Seed/gm',
     icon: IconSeeding,
   },
-  {
-    key: 'sampleSize',
-    name: 'Collection Size',
-    icon: IconBrandAsana,
-  },
+  // {
+  //   key: 'sampleSize',
+  //   name: 'Collection Size',
+  //   icon: IconBrandAsana,
+  // },
   {
     key: 'sampleWeightInGrams',
     name: 'Sample Weight',
     unit: 'g',
     icon: IconScale,
   },
-  // {
-  //   key: 'thousandSeedWeight',
-  //   name: 'Thousand Seed Weight',
-  //   icon: IconBox,
-  //   unit: 'g',
-  // },
+  {
+    key: 'thousandSeedWeight',
+    name: 'Thousand Seed Weight',
+    icon: IconBox,
+    unit: 'g',
+  },
   {
     key: 'relativeHumidityPercentage',
     name: 'Relative Humidity',
