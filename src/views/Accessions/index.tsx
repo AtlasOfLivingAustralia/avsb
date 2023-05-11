@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Center, Divider, Group, Pagination, Text } from '@mantine/core';
+import { Center, Divider, Group, Pagination, Select, Text } from '@mantine/core';
 import { Outlet, useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
 
 // Project components / helpers
@@ -21,6 +21,7 @@ import downloadFields from './downloadFields';
 function Accessions() {
   // State hooks
   const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
   const [query, setQuery] = useState<any>(useLoaderData());
   const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
 
@@ -52,15 +53,15 @@ function Accessions() {
           type: 'and',
           predicates,
         },
-        size: 10,
-        from: (page - 1) * 10,
+        size: pageSize,
+        from: (page - 1) * pageSize,
       });
       setQuery(data.eventSearch.documents);
     }
 
     if (mounted) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, filterPredicates]);
+  }, [page, pageSize, filterPredicates]);
 
   if (params.accession) return <Outlet />;
 
@@ -69,14 +70,28 @@ function Accessions() {
   return (
     <>
       <Group mb='lg' position='apart'>
-        <Filters
-          predicates={filterPredicates}
-          filters={filters}
-          onPredicates={(preds) => {
-            setPage(1);
-            setFilterPredicates(preds);
-          }}
-        />
+        <Group>
+          <Select
+            value={pageSize.toString()}
+            onChange={(value) => {
+              setPage(1);
+              setPageSize(parseInt(value || '10', 10));
+            }}
+            w={120}
+            data={['10', '20', '40'].map((size) => ({
+              label: `${size} results`,
+              value: size.toString(),
+            }))}
+          />
+          <Filters
+            predicates={filterPredicates}
+            filters={filters}
+            onPredicates={(preds) => {
+              setPage(1);
+              setFilterPredicates(preds);
+            }}
+          />
+        </Group>
         <Group>
           <Text color='dimmed' align='right' size='sm'>
             {query.total} total records
@@ -96,7 +111,7 @@ function Accessions() {
       <Center pt='md'>
         <Pagination
           value={page}
-          total={query ? Math.ceil(query.total / 10) : 1}
+          total={query ? Math.ceil(query.total / pageSize) : 1}
           onChange={(newPage) => setPage(newPage)}
         />
       </Center>

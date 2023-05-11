@@ -89,7 +89,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
     <Card withBorder p={0}>
       <ScrollArea
         type='auto'
-        h={height || 'calc(100vh - 420px)'}
+        h={height || 'calc(100vh - 425px)'}
         onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
       >
         <Table highlightOnHover>

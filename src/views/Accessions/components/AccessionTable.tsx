@@ -70,7 +70,7 @@ function AccessionTable({ events }: AccessionTableProps) {
     <Card withBorder p={0}>
       <ScrollArea
         type='auto'
-        h='calc(100vh - 420px)'
+        h='calc(100vh - 425px)'
         onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
       >
         <Table highlightOnHover>
