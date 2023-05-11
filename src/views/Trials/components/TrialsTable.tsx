@@ -82,6 +82,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
   return (
     <Card withBorder p={0}>
       <ScrollArea
+        type='auto'
         h={height || 'calc(100vh - 420px)'}
         onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
       >
