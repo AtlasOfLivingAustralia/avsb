@@ -227,7 +227,20 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                       }}
                     >
                       <Collapse in={isSelected}>
-                        <Box p='md'>
+                        <Box
+                          sx={{
+                            backgroundColor:
+                              theme.colorScheme === 'dark'
+                                ? theme.colors.dark[7]
+                                : theme.colors.gray[1],
+                            borderTop: `1px solid ${
+                              theme.colorScheme === 'dark'
+                                ? theme.colors.dark[4]
+                                : theme.colors.gray[3]
+                            }`,
+                          }}
+                          p='md'
+                        >
                           <TrialDetails event={event} />
                         </Box>
                       </Collapse>
