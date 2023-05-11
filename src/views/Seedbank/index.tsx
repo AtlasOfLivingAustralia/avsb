@@ -229,7 +229,10 @@ function Seedbank() {
             <EventMap width='100%' height={450} token={token} />
           </Grid.Col>
           <Grid.Col xl={4} lg={4} md={12} sm={12} xs={12}>
-            <SpeciesList species={occurrenceFacet?.species || []} />
+            <SpeciesList
+              name={event?.datasetTitle || 'Unknown Dataset'}
+              species={occurrenceFacet?.species || []}
+            />
           </Grid.Col>
           <Grid.Col span={12}>
             <Contact dataResource={params.id || ''} />

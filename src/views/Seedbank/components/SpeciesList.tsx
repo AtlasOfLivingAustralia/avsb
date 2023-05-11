@@ -12,10 +12,12 @@ import {
 import { FixedSizeList } from 'react-window';
 import { IconDownload, IconSearch } from '@tabler/icons';
 import { useDebouncedValue } from '@mantine/hooks';
+import { saveAs } from 'file-saver';
 
 type SpeciesFacet = { key: string; count: number };
 
 interface SpeciesListProps {
+  name: string;
   species: SpeciesFacet[];
 }
 
@@ -38,7 +40,7 @@ function Row({ index, style, data }: SpeciesRow) {
   );
 }
 
-function SpeciesList({ species }: SpeciesListProps) {
+function SpeciesList({ name, species }: SpeciesListProps) {
   const [search, setSearch] = useState<string>('');
   const [filtered, setFiltered] = useState<SpeciesFacet[]>([]);
   const [searchDebounced] = useDebouncedValue(search, 200);
@@ -51,7 +53,17 @@ function SpeciesList({ species }: SpeciesListProps) {
   }, [searchDebounced]);
 
   const onDownloadClick = () => {
-    console.log('Download records');
+    const csv = [
+      'Species Name,Count',
+      ...species.map((record) => Object.values(record).join(',')),
+    ].join('\n');
+
+    saveAs(
+      new Blob([csv], {
+        type: 'text/csv;charset=utf-8',
+      }),
+      `Species of ${name}, ${new Date().toLocaleDateString()}.csv`,
+    );
   };
 
   return (
