@@ -30,14 +30,18 @@ import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 
 // Project imports
 import { Event, SeedBankAccession } from '#/api/graphql/types';
+import { accessionFields } from '#/helpers/fields';
 import { getIsPresent } from '#/helpers';
+
+// Local imports
 import Contact from '../Contact';
 import HerbariumLink from './components/HerbariumLink';
 import Map from '../Map';
 import IconText from '../IconText';
-import { fields, longFields } from './fields';
 import MeasurementCard from '../MeasurementCard';
 import TrialSummary from './components/TrialSummary';
+
+import { fields, longFields } from './fields';
 
 interface AccessionPanelProps {
   taxon?: string;
@@ -87,8 +91,8 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
       <Grid.Col span={12}>
         <Grid gutter='xl'>
           {fields
-            // .filter(({ key }) => Boolean(accession[key]))
-            .map(({ key, name, unit, icon: Icon }) => (
+            .map((key) => ({ key, ...accessionFields[key] }))
+            .map(({ key, label, unit, icon: Icon }) => (
               <Grid.Col key={key} xs={6} sm={4} md={3} lg={3} xl={2}>
                 <Group>
                   <ThemeIcon variant='light' size='xl' radius='xl'>
@@ -96,7 +100,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
                   </ThemeIcon>
                   <Box>
                     <Text color='dimmed' size='xs'>
-                      {name}
+                      {label}
                     </Text>
                     {getIsPresent(accession?.[key]) ? (
                       <Text size='xl' weight='bold'>
@@ -115,16 +119,13 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
         </Grid>
         <Grid gutter='xs' p='sm' mt='md'>
           {longFields
-            // .filter(({ key }) => Boolean(accession[key]))
-            .map(({ key, name }) => (
+            .map((key) => ({ key, ...accessionFields[key] }))
+            .map(({ key, label }) => (
               <Grid.Col key={key} xs={12} sm={6} md={4} lg={4} xl={3}>
                 <Group>
-                  {/* <ThemeIcon variant='light' size={28} radius='xl'>
-                    <Icon size='1rem' />
-                  </ThemeIcon> */}
                   <Box>
                     <Text color='dimmed' size='xs'>
-                      {name}
+                      {label}
                     </Text>
                     {getIsPresent(accession?.[key]) ? (
                       <Text size='sm' weight='bold'>

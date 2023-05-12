@@ -1,12 +1,13 @@
-import { Box, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
+import { Box, Grid, Group, Paper, Text, ThemeIcon, Tooltip } from '@mantine/core';
 import { IconNotes } from '@tabler/icons';
 
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import { getIsPresent } from '#/helpers';
+import { trialFields } from '#/helpers/fields';
 
 import IconText from '../IconText';
-import fields from './fields';
 import TreatmentCard from '../TreatmentCard';
+import fields from './fields';
 
 interface TrialDetailsProps {
   event: Event;
@@ -39,16 +40,18 @@ function TrialDetails({ event }: TrialDetailsProps) {
   return (
     <Grid gutter='xs'>
       {fields
-        // .filter(({ key }) => Boolean(treatment[key]))
-        .map(({ key, name, icon: Icon, unit }) => (
+        .map((key) => ({ key, ...trialFields[key] }))
+        .map(({ key, label, icon: Icon, unit }) => (
           <Grid.Col key={key} xs={3} sm={3} md={3} lg={3} xl={3}>
             <Group>
-              <ThemeIcon variant='light' size={28} radius='xl'>
-                <Icon size='1rem' />
-              </ThemeIcon>
+              <Tooltip label='testing' position='right'>
+                <ThemeIcon variant='light' size={28} radius='xl'>
+                  <Icon size='1rem' />
+                </ThemeIcon>
+              </Tooltip>
               <Box>
                 <Text color='dimmed' size='xs'>
-                  {name}
+                  {label}
                 </Text>
                 {getIsPresent(trial?.[key]) ? (
                   <Text size='sm' weight='bold'>

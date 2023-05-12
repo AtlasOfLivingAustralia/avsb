@@ -1,6 +1,7 @@
 import { Box, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
 import { IconTestPipe } from '@tabler/icons';
 import { SeedBankTreatment } from '#/api/graphql/types';
+import { treatmentFields } from '#/helpers/fields';
 import { getIsPresent } from '#/helpers';
 
 import IconText from '../IconText';
@@ -25,8 +26,8 @@ function TreatmentCard({ treatment }: TreatmentCardProps) {
       />
       <Grid gutter='xs'>
         {fields
-          // .filter(({ key }) => Boolean(treatment[key]))
-          .map(({ key, name, icon: Icon, unit }) => (
+          .map((key) => ({ key, ...treatmentFields[key] }))
+          .map(({ key, label, icon: Icon, unit }) => (
             <Grid.Col key={key} xs={4} sm={3} md={2} lg={2} xl={2}>
               <Group>
                 <ThemeIcon variant='light' size={28} radius='xl'>
@@ -34,7 +35,7 @@ function TreatmentCard({ treatment }: TreatmentCardProps) {
                 </ThemeIcon>
                 <Box>
                   <Text color='dimmed' size='xs'>
-                    {name}
+                    {label}
                   </Text>
                   {getIsPresent(treatment?.[key]) ? (
                     <Text size='sm' weight='bold'>
