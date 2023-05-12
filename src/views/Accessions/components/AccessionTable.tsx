@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Fragment, useState } from 'react';
+import { CSSProperties, Fragment, useState } from 'react';
 import { Event, SeedBankAccession } from '#/api/graphql/types';
 import {
   Box,
@@ -26,8 +26,26 @@ import { Link } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
-import { AccessionDetails } from '#/components';
+import { AccessionDetails, FieldTooltip } from '#/components';
+import { accessionFields } from '#/helpers/fields';
 import { getIsPresent } from '#/helpers';
+
+interface ThTooltipProps<T> {
+  style?: CSSProperties;
+  field: keyof T;
+}
+
+function ThTooltip({ field, style }: ThTooltipProps<SeedBankAccession>) {
+  const { icon: Icon, label, ...props } = accessionFields[field];
+  return (
+    <th style={style}>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <FieldTooltip {...{ label, Icon, ...props }}>
+        <Text>{label}</Text>
+      </FieldTooltip>
+    </th>
+  );
+}
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -76,13 +94,12 @@ function AccessionTable({ events }: AccessionTableProps) {
         <Table highlightOnHover>
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>
-              <th style={{ paddingLeft: 25 }}>Catalogue</th>
+              <ThTooltip style={{ paddingLeft: 25 }} field='accessionNumber' />
               <th>Institution</th>
-              <th>Date Collected</th>
-              <th>Collection Size</th>
-              <th>Purity</th>
-              <th>Storage Temp</th>
-              <th>Collector</th>
+              <ThTooltip field='dateCollected' />
+              <ThTooltip field='sampleSize' />
+              <ThTooltip field='purityPercentage' />
+              <ThTooltip field='storageTemperatureInCelsius' />
               <th>
                 <Button.Group style={{ justifyContent: 'flex-end' }}>
                   <Button
@@ -146,9 +163,6 @@ function AccessionTable({ events }: AccessionTableProps) {
                     <td>
                       {getIsPresent(accession?.storageTemperatureInCelsius) &&
                         `${accession?.storageTemperatureInCelsius}°C`}
-                    </td>
-                    <td>
-                      {getIsPresent(accession?.primaryCollector) && accession?.primaryCollector}
                     </td>
                     <td align='right'>
                       <Group spacing='xs' position='right' miw={150}>

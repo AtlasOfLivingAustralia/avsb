@@ -17,9 +17,9 @@ function FieldTooltip({
   Icon,
 }: PropsWithChildren<FieldTooltipProps>) {
   return (
-    <Tooltip
-      position='top'
-      withArrow
+    <Tooltip.Floating
+      position='right-end'
+      // withArrow
       maw={300}
       multiline
       label={
@@ -36,6 +36,7 @@ function FieldTooltip({
             </Text>
           </Group>
           <Text
+            weight='normal'
             size='xs'
             sx={(theme) => ({
               color: theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
@@ -45,6 +46,7 @@ function FieldTooltip({
           </Text>
           <Divider opacity={0.15} my='xs' />
           <Text
+            weight='normal'
             size='xs'
             sx={(theme) => ({
               color: theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[5],
@@ -56,7 +58,7 @@ function FieldTooltip({
       }
     >
       {children}
-    </Tooltip>
+    </Tooltip.Floating>
   );
 }
 

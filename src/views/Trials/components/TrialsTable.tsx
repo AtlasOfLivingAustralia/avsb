@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { useState } from 'react';
+import { CSSProperties, Fragment, useState } from 'react';
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import {
   Box,
@@ -16,18 +16,21 @@ import {
   rem,
   useMantineTheme,
 } from '@mantine/core';
+
 import {
   IconArrowUpRight,
   IconArrowsMaximize,
   IconArrowsMinimize,
   IconChevronDown,
 } from '@tabler/icons';
-import { Fragment, useState } from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
+
 // Project components / helpers
-import { TrialDetails } from '#/components';
+import { FieldTooltip, TrialDetails } from '#/components';
 import { getIsPresent } from '#/helpers';
+import { trialFields } from '#/helpers/fields';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -53,6 +56,23 @@ const useStyles = createStyles((theme) => ({
     boxShadow: theme.shadows.md,
   },
 }));
+
+interface ThTooltipProps<T> {
+  style?: CSSProperties;
+  field: keyof T;
+}
+
+function ThTooltip({ field, style }: ThTooltipProps<SeedBankTrial>) {
+  const { icon: Icon, label, ...props } = trialFields[field];
+  return (
+    <th style={style}>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <FieldTooltip {...{ label, Icon, ...props }}>
+        <Text>{label}</Text>
+      </FieldTooltip>
+    </th>
+  );
+}
 
 interface TrialsTableProps {
   events: Event[];
@@ -95,13 +115,13 @@ function TrialsTable({ events, height }: TrialsTableProps) {
         <Table highlightOnHover>
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>
-              <th style={{ paddingLeft: 25 }}>Catalogue</th>
+              <ThTooltip style={{ paddingLeft: 25 }} field='accessionNumber' />
               <th>Institution</th>
-              <th>Adj. Germination</th>
+              <ThTooltip field='adjustedGerminationPercentage' />
               <th>Treatment</th>
-              <th>Viability</th>
-              <th>Date Tested</th>
-              <th>Test Length</th>
+              <ThTooltip field='viabilityPercentage' />
+              <ThTooltip field='testDateStarted' />
+              <ThTooltip field='testLengthInDays' />
               {/* <th>
               <Group spacing='xs'>
                 Tested

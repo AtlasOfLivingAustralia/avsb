@@ -5,9 +5,6 @@ const fields: (keyof SeedBankAccession)[] = [
   'sampleWeightInGrams',
   'thousandSeedWeight',
   'relativeHumidityPercentage',
-  'purityPercentage',
-  'storageTemperatureInCelsius',
-  'primaryStorageSeedBank',
   'primaryCollector',
   'duplicatesReplicates',
 ];

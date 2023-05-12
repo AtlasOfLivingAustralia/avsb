@@ -26,6 +26,12 @@ import {
   IconSun,
   TablerIcon,
   IconTestPipe,
+  IconId,
+  IconChartPie,
+  IconFlower,
+  IconCalendar,
+  IconCalendarTime,
+  IconPackage,
 } from '@tabler/icons';
 
 interface SeedbankField {
@@ -39,6 +45,12 @@ interface SeedbankField {
 type SeedbankFieldMap = { [key: string]: SeedbankField };
 
 const accessionFields: SeedbankFieldMap = {
+  accessionNumber: {
+    label: 'Accession',
+    icon: IconId,
+    examples: '"CANB 770480", "20061691"',
+    description: 'The unique identification number given to a accession of seed. ',
+  },
   seedPerGram: {
     label: 'Seed/gm',
     icon: IconSeeding,
@@ -156,9 +168,27 @@ const accessionFields: SeedbankFieldMap = {
     description:
       'The digital object identifier (DOI) of any published work related to the accession.',
   },
+  dateInStorage: {
+    label: 'Storage Date',
+    icon: IconPackage,
+    examples: '17/04/2022',
+    description: 'The date the accession was placed in current storage (DD/MM/YYYY)',
+  },
+  dateCollected: {
+    label: 'Collection Date',
+    icon: IconPackage,
+    examples: '17/04/2022',
+    description: 'Date the accession was harvested (DD/MM/YYYY)',
+  },
 };
 
 const trialFields: SeedbankFieldMap = {
+  accessionNumber: {
+    label: 'Accession',
+    icon: IconId,
+    examples: '"CANB 770480", "20061691"',
+    description: 'The unique identification number given to a accession of seed.',
+  },
   numberGerminated: {
     label: 'Number Germinated',
     icon: IconSeeding,
@@ -183,6 +213,32 @@ const trialFields: SeedbankFieldMap = {
     icon: IconCircleDashed,
     examples: '2',
     description: 'The number of seeds that were empty during the post-germination cut test.',
+  },
+  viabilityPercentage: {
+    label: 'Viability',
+    icon: IconChartPie,
+    examples: '80%',
+    description:
+      'The proportion of viable seeds in a germination test, determined by the number of germinated seeds and those that appear viable from a post-germination cut test.',
+  },
+  adjustedGerminationPercentage: {
+    label: 'Adj Germ',
+    icon: IconFlower,
+    examples: '100%',
+    description:
+      'The proportion of seeds germinated, expressed as a percentage of the total viable seeds tested.',
+  },
+  testDateStarted: {
+    label: 'Date Tested',
+    icon: IconCalendar,
+    examples: '12/04/2023',
+    description: 'The date that the germination test began (DD/MM/YYYY).',
+  },
+  testLengthInDays: {
+    label: 'Test Length',
+    icon: IconCalendarTime,
+    examples: '42 days',
+    description: 'The length of the germination test from start to final scoring date.',
   },
 };
 
