@@ -42,6 +42,7 @@ import MeasurementCard from '../MeasurementCard';
 import TrialSummary from './components/TrialSummary';
 
 import { fields, longFields } from './fields';
+import FieldTooltip from '../FieldTooltip';
 
 interface AccessionPanelProps {
   taxon?: string;
@@ -92,37 +93,39 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
         <Grid gutter='xl'>
           {fields
             .map((key) => ({ key, ...accessionFields[key] }))
-            .map(({ key, label, unit, icon: Icon }) => (
+            .map(({ key, label, description, examples, unit, icon: Icon }) => (
               <Grid.Col key={key} xs={6} sm={4} md={3} lg={3} xl={2}>
-                <Group>
-                  <ThemeIcon variant='light' size='xl' radius='xl'>
-                    <Icon />
-                  </ThemeIcon>
-                  <Box>
-                    <Text color='dimmed' size='xs'>
-                      {label}
-                    </Text>
-                    {getIsPresent(accession?.[key]) ? (
-                      <Text size='xl' weight='bold'>
-                        {accession?.[key]}
-                        {unit && unit}
+                <FieldTooltip {...{ label, description, examples, Icon }}>
+                  <Group>
+                    <ThemeIcon variant='light' size='xl' radius='xl'>
+                      <Icon />
+                    </ThemeIcon>
+                    <Box>
+                      <Text color='dimmed' size='xs'>
+                        {label}
                       </Text>
-                    ) : (
-                      <Text size='xl' weight='bold' color='dimmed'>
-                        {missingData}
-                      </Text>
-                    )}
-                  </Box>
-                </Group>
+                      {getIsPresent(accession?.[key]) ? (
+                        <Text size='xl' weight='bold'>
+                          {accession?.[key]}
+                          {unit && unit}
+                        </Text>
+                      ) : (
+                        <Text size='xl' weight='bold' color='dimmed'>
+                          {missingData}
+                        </Text>
+                      )}
+                    </Box>
+                  </Group>
+                </FieldTooltip>
               </Grid.Col>
             ))}
         </Grid>
         <Grid gutter='xs' p='sm' mt='md'>
           {longFields
             .map((key) => ({ key, ...accessionFields[key] }))
-            .map(({ key, label }) => (
+            .map(({ key, label, description, examples, icon: Icon }) => (
               <Grid.Col key={key} xs={12} sm={6} md={4} lg={4} xl={3}>
-                <Group>
+                <FieldTooltip {...{ label, description, examples, Icon }}>
                   <Box>
                     <Text color='dimmed' size='xs'>
                       {label}
@@ -137,7 +140,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
                       </Text>
                     )}
                   </Box>
-                </Group>
+                </FieldTooltip>
               </Grid.Col>
             ))}
         </Grid>

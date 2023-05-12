@@ -25,6 +25,7 @@ import {
   IconMoon,
   IconSun,
   TablerIcon,
+  IconTestPipe,
 } from '@tabler/icons';
 
 interface SeedbankField {
@@ -48,14 +49,14 @@ const accessionFields: SeedbankFieldMap = {
   sampleSize: {
     label: 'Collection Size',
     icon: IconBrandAsana,
-    examples: '',
+    examples: '3000',
     description: 'The total number of seeds currently available in the accession.',
   },
   sampleWeightInGrams: {
     label: 'Sample Weight',
     unit: 'g',
     icon: IconScale,
-    examples: '',
+    examples: '1.23g',
     description:
       'The total weight of the currently available accession in grams. Stock or quantity.',
   },
@@ -186,6 +187,13 @@ const trialFields: SeedbankFieldMap = {
 };
 
 const treatmentFields: SeedbankFieldMap = {
+  pretreatment: {
+    label: 'Pre-Treatment',
+    icon: IconTestPipe,
+    examples: '"scarification", "stratification",  "Gibberellic Acid", "smoke water"',
+    description:
+      'Summary of any physical or chemical treatment(s) applied to a seed before it is tested. For more details about the treatment contact the responsible seedbank.',
+  },
   mediaSubstrate: {
     label: 'Media / Substrate',
     icon: IconFlask,

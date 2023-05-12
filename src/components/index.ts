@@ -7,6 +7,7 @@ export { default as Map } from './Map';
 export { default as EventMap } from './EventMap';
 export { default as IconText } from './IconText';
 export { default as HerbariumLink } from './AccessionPanel/components/HerbariumLink';
+export { default as FieldTooltip } from './FieldTooltip';
 export { default as TaxonSearchInput } from './TaxonSearchInput';
 export { default as AccessionPanel } from './AccessionPanel';
 export { default as AccessionDetails } from './AccessionDetails';

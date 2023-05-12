@@ -1,4 +1,4 @@
-import { Box, Grid, Group, Paper, Text, ThemeIcon, Tooltip } from '@mantine/core';
+import { Box, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
 import { IconNotes } from '@tabler/icons';
 
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
@@ -8,6 +8,7 @@ import { trialFields } from '#/helpers/fields';
 import IconText from '../IconText';
 import TreatmentCard from '../TreatmentCard';
 import fields from './fields';
+import FieldTooltip from '../FieldTooltip';
 
 interface TrialDetailsProps {
   event: Event;
@@ -41,30 +42,30 @@ function TrialDetails({ event }: TrialDetailsProps) {
     <Grid gutter='xs'>
       {fields
         .map((key) => ({ key, ...trialFields[key] }))
-        .map(({ key, label, icon: Icon, unit }) => (
+        .map(({ key, label, description, examples, icon: Icon, unit }) => (
           <Grid.Col key={key} xs={3} sm={3} md={3} lg={3} xl={3}>
-            <Group>
-              <Tooltip label='testing' position='right'>
+            <FieldTooltip {...{ label, description, examples, Icon }}>
+              <Group>
                 <ThemeIcon variant='light' size={28} radius='xl'>
                   <Icon size='1rem' />
                 </ThemeIcon>
-              </Tooltip>
-              <Box>
-                <Text color='dimmed' size='xs'>
-                  {label}
-                </Text>
-                {getIsPresent(trial?.[key]) ? (
-                  <Text size='sm' weight='bold'>
-                    {trial[key]}
-                    {unit && unit}
+                <Box>
+                  <Text color='dimmed' size='xs'>
+                    {label}
                   </Text>
-                ) : (
-                  <Text size='sm' weight='bold' color='dimmed'>
-                    Not Supplied
-                  </Text>
-                )}
-              </Box>
-            </Group>
+                  {getIsPresent(trial?.[key]) ? (
+                    <Text size='sm' weight='bold'>
+                      {trial[key]}
+                      {unit && unit}
+                    </Text>
+                  ) : (
+                    <Text size='sm' weight='bold' color='dimmed'>
+                      Not Supplied
+                    </Text>
+                  )}
+                </Box>
+              </Group>
+            </FieldTooltip>
           </Grid.Col>
         ))}
       <Grid.Col span={12} pt={trial?.preTestProcessingNotes ? 'mt' : 0}>

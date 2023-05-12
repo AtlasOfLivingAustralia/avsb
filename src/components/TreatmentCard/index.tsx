@@ -1,22 +1,33 @@
 import { Box, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
-import { IconTestPipe } from '@tabler/icons';
 import { SeedBankTreatment } from '#/api/graphql/types';
 import { treatmentFields } from '#/helpers/fields';
 import { getIsPresent } from '#/helpers';
 
 import IconText from '../IconText';
 import fields from './fields';
+import FieldTooltip from '../FieldTooltip';
 
 interface TreatmentCardProps {
   treatment: SeedBankTreatment;
 }
 
 function TreatmentCard({ treatment }: TreatmentCardProps) {
+  const pretreatmentField = treatmentFields.pretreatment;
+
   return (
     <>
-      <IconText labelWidth={130} icon={IconTestPipe} title='Pre-Treatment'>
-        {treatment.pretreatment || 'Not Supplied'}
-      </IconText>{' '}
+      <FieldTooltip
+        label={pretreatmentField.label}
+        description={pretreatmentField.description}
+        examples={pretreatmentField.examples}
+        Icon={pretreatmentField.icon}
+      >
+        <Box>
+          <IconText labelWidth={130} icon={pretreatmentField.icon} title={pretreatmentField.label}>
+            {treatment.pretreatment || 'Not Supplied'}
+          </IconText>
+        </Box>
+      </FieldTooltip>
       <Divider
         my='sm'
         sx={(theme) => ({
@@ -27,28 +38,30 @@ function TreatmentCard({ treatment }: TreatmentCardProps) {
       <Grid gutter='xs'>
         {fields
           .map((key) => ({ key, ...treatmentFields[key] }))
-          .map(({ key, label, icon: Icon, unit }) => (
+          .map(({ key, label, description, examples, icon: Icon, unit }) => (
             <Grid.Col key={key} xs={4} sm={3} md={2} lg={2} xl={2}>
-              <Group>
-                <ThemeIcon variant='light' size={28} radius='xl'>
-                  <Icon size='1rem' />
-                </ThemeIcon>
-                <Box>
-                  <Text color='dimmed' size='xs'>
-                    {label}
-                  </Text>
-                  {getIsPresent(treatment?.[key]) ? (
-                    <Text size='sm' weight='bold'>
-                      {treatment?.[key]}
-                      {unit && unit}
+              <FieldTooltip {...{ label, description, examples, Icon }}>
+                <Group>
+                  <ThemeIcon variant='light' size={28} radius='xl'>
+                    <Icon size='1rem' />
+                  </ThemeIcon>
+                  <Box>
+                    <Text color='dimmed' size='xs'>
+                      {label}
                     </Text>
-                  ) : (
-                    <Text size='sm' weight='bold' color='dimmed'>
-                      Not Supplied
-                    </Text>
-                  )}
-                </Box>
-              </Group>
+                    {getIsPresent(treatment?.[key]) ? (
+                      <Text size='sm' weight='bold'>
+                        {treatment?.[key]}
+                        {unit && unit}
+                      </Text>
+                    ) : (
+                      <Text size='sm' weight='bold' color='dimmed'>
+                        Not Supplied
+                      </Text>
+                    )}
+                  </Box>
+                </Group>
+              </FieldTooltip>
             </Grid.Col>
           ))}
       </Grid>
