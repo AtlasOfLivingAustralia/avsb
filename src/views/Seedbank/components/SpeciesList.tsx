@@ -89,7 +89,7 @@ function SpeciesList({ name, species }: SpeciesListProps) {
       />
       <Divider mt='md' mb='xs' />
       <FixedSizeList
-        height={310}
+        height={410}
         width='calc(100% + 16px)'
         style={{ marginRight: -16 }}
         itemData={filtered}

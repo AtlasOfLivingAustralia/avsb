@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  Alert,
   Anchor,
   Box,
   Center,
@@ -26,6 +27,7 @@ import {
   IconExternalLink,
   IconInfoCircle,
   IconLicense,
+  IconMap,
 } from '@tabler/icons';
 import { useLoaderData, useParams } from 'react-router-dom';
 
@@ -225,6 +227,17 @@ function Seedbank() {
           </Grid.Col>
           <Grid.Col xl={8} lg={8} md={12} sm={12} xs={12}>
             <EventMap width='100%' height={450} token={token} />
+            <Alert
+              title='Accession Map'
+              icon={<IconMap />}
+              mt='sm'
+              styles={{ title: { marginBottom: 4 } }}
+            >
+              <Text>
+                Accessions of from this dataset were collected from the locations shown above. Click
+                a dot to be taken to that accession.
+              </Text>
+            </Alert>
           </Grid.Col>
           <Grid.Col xl={4} lg={4} md={12} sm={12} xs={12}>
             <SpeciesList

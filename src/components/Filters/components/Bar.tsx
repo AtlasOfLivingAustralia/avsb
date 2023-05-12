@@ -55,35 +55,37 @@ function FilterBar({ filters, predicates, onFiltersOpen, onRemove, ...rest }: Fi
         Filters
       </Button>
       <Divider ml={4} orientation='vertical' />
-      {predicates.length > 0 ? (
-        predicates.map((predicate) => (
-          <Badge
-            key={predicate.key}
-            variant='outline'
-            pl={3}
-            leftSection={
-              <ActionIcon
-                onClick={() => {
-                  if (onRemove) onRemove(predicate);
-                }}
-                size='xs'
-                color='blue'
-                radius='xl'
-                variant='transparent'
-              >
-                <IconX size={rem(10)} />
-              </ActionIcon>
-            }
-          >
-            {getPredicateLabel(predicate.key || '') || predicate.key}:&nbsp;
-            {getPredicateValue(predicate)}
-          </Badge>
-        ))
-      ) : (
-        <Text size='sm' color='dimmed'>
-          No filters selected
-        </Text>
-      )}
+      <Group maw={500} spacing={4}>
+        {predicates.length > 0 ? (
+          predicates.map((predicate) => (
+            <Badge
+              key={predicate.key}
+              variant='outline'
+              pl={3}
+              leftSection={
+                <ActionIcon
+                  onClick={() => {
+                    if (onRemove) onRemove(predicate);
+                  }}
+                  size='xs'
+                  color='blue'
+                  radius='xl'
+                  variant='transparent'
+                >
+                  <IconX size={rem(10)} />
+                </ActionIcon>
+              }
+            >
+              {getPredicateLabel(predicate.key || '') || predicate.key}:&nbsp;
+              {getPredicateValue(predicate)}
+            </Badge>
+          ))
+        ) : (
+          <Text size='sm' color='dimmed'>
+            No filters selected
+          </Text>
+        )}
+      </Group>
     </Group>
   );
 }

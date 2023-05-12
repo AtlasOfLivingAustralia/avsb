@@ -12,13 +12,14 @@ import {
   Badge,
   Divider,
   UnstyledButton,
+  Alert,
 } from '@mantine/core';
 
 // Project imports
 import { EventMap } from '#/components';
 import { useDisclosure } from '@mantine/hooks';
 import { Taxon } from '#/api/sources/taxon';
-import { IconExternalLink } from '@tabler/icons';
+import { IconExternalLink, IconMap } from '@tabler/icons';
 
 function Summary() {
   const [mapOpen, { open, close }] = useDisclosure(false);
@@ -49,6 +50,16 @@ function Summary() {
             token={token}
             itemListHeight={180}
           />
+          <Alert
+            title='Accession Map'
+            icon={<IconMap />}
+            mt='sm'
+            styles={{ title: { marginBottom: 4 } }}
+          >
+            Accessions of this species were collected from the locations shown above. Click a dot to
+            be taken to that accession, or visit the &apos;Accessions&apos; tab to see details for
+            all locations.
+          </Alert>
         </Grid.Col>
         <Grid.Col sm={5} md={4} lg={3}>
           <Card withBorder h='100%' p={0}>
