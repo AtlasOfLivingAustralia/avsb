@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button } from '@mantine/core';
+import { Box, Image, Paper, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
 import { IconExternalLink } from '@tabler/icons';
 import { useParams } from 'react-router-dom';
 
@@ -53,22 +53,39 @@ function HerbariumLink({ accession, taxon }: ContactProps) {
   if (!(taxon || guid)) return null;
 
   return (
-    <Button
+    <UnstyledButton
       component='a'
-      target='_blank'
-      fullWidth
       href={`https://avh.ala.org.au/occurrences/${uuid}`}
-      leftIcon={<IconExternalLink size='1.1rem' />}
-      loading={loading}
-      disabled={error || !uuid}
-      variant='outline'
+      target='_blank'
+      style={{
+        opacity: loading || !uuid ? 0.4 : 1,
+        cursor: loading || !uuid ? 'default' : 'pointer',
+      }}
     >
-      {(() => {
-        if (error) return 'An error occurred';
-        if (!loading && !uuid) return 'AVH specimen not found';
-        return 'View AVH Specimen';
-      })()}
-    </Button>
+      <Paper display='flex' withBorder>
+        <ThemeIcon variant='gradient' size={66} gradient={{ from: '#A6CE39', to: '#487759' }}>
+          <Image
+            width={25}
+            src='https://avh.ala.org.au/assets/avh/avh-logo-white-80-c3e8da50be1bebbd24b88e129582ccd2.png'
+          />
+        </ThemeIcon>
+        <Box w='100%' p='xs' ml='xs'>
+          <Box display='flex'>
+            <Text size='sm' mr='auto' lineClamp={1}>
+              Australasian Virtual Herbarium
+            </Text>
+            <IconExternalLink style={{ width: 18, height: 18, minWidth: 18, minHeight: 18 }} />
+          </Box>
+          <Text color='dimmed' size='xs' mt={4} lineClamp={1}>
+            {(() => {
+              if (loading) return 'Finding specimen';
+              if (error) return 'An error occurred';
+              return !uuid ? 'No specimen found' : 'View related herbarium specimen';
+            })()}
+          </Text>
+        </Box>
+      </Paper>
+    </UnstyledButton>
   );
 }
 
