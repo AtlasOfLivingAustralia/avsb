@@ -105,13 +105,15 @@ function AccessionTable({ events }: AccessionTableProps) {
                   <Button
                     variant='light'
                     p={8}
-                    size='sm'
+                    size='xs'
                     onClick={() => setSelected(events.map(({ eventID }) => eventID || ''))}
                   >
-                    <IconArrowsMaximize size={14} />
+                    <IconArrowsMaximize size={14} style={{ marginRight: 8 }} />
+                    Expand
                   </Button>
-                  <Button variant='light' p={8} size='sm' onClick={() => setSelected([])}>
-                    <IconArrowsMinimize size={14} />
+                  <Button variant='light' p={8} size='xs' onClick={() => setSelected([])}>
+                    <IconArrowsMinimize size={14} style={{ marginRight: 8 }} />
+                    Collapse
                   </Button>
                 </Button.Group>
               </th>
