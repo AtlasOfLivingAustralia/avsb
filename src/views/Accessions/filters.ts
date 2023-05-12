@@ -1,6 +1,5 @@
 import {
   IconBox,
-  IconChartPie,
   IconDatabase,
   IconDropletFilled,
   IconHandStop,
@@ -90,13 +89,6 @@ const filters: Filter[] = [
     label: 'Purity %',
     type: 'percent',
     icon: IconPercentage,
-    group: 'Collection',
-  },
-  {
-    key: 'seedbank_purityDebrisPercentage',
-    label: 'Purity / Debris %',
-    type: 'percent',
-    icon: IconChartPie,
     group: 'Collection',
   },
   {

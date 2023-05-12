@@ -44,7 +44,6 @@ interface SeedBankAccession {
   sampleWeightInGrams?: number | null;
   sampleSize?: number | null;
   collectionFillRate?: string | null;
-  purityDebrisPercentage?: number | null;
   purityPercentage?: number | null;
   dateCollected?: number | null;
   dateInStorage?: number | null;

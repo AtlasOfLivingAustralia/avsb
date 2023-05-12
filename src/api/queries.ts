@@ -27,7 +27,6 @@ query list($predicate: Predicate, $size: Int, $from: Int){
             sampleWeightInGrams
             sampleSize
             collectionFillRate
-            purityDebrisPercentage
             purityPercentage
             dateCollected
             storageTemperatureInCelsius
@@ -85,7 +84,6 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
             sampleWeightInGrams
             sampleSize
             collectionFillRate
-            purityDebrisPercentage
             purityPercentage
             dateCollected
             dateInStorage
@@ -290,7 +288,6 @@ query point($predicate: Predicate){
             sampleWeightInGrams
             sampleSize
             collectionFillRate
-            purityDebrisPercentage
             purityPercentage
             dateCollected
             dateInStorage
@@ -343,7 +340,6 @@ query point($predicate: Predicate){
             sampleWeightInGrams
             sampleSize
             collectionFillRate
-            purityDebrisPercentage
             purityPercentage
             dateCollected
             dateInStorage
@@ -564,7 +560,6 @@ query list($predicate: Predicate){
             sampleWeightInGrams
             sampleSize
             collectionFillRate
-            purityDebrisPercentage
             purityPercentage
             dateCollected
             dateInStorage

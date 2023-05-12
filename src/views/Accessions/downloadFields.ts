@@ -16,7 +16,6 @@ const downloadFields: DownloadField[] = [
     key: 'extensions.seedbank.relativeHumidityPercentage',
   },
   { label: 'Purity', key: 'extensions.seedbank.purityPercentage' },
-  { label: 'Purity / Debris', key: 'extensions.seedbank.purityDebrisPercentage' },
   {
     label: 'Storage Temperature',
     key: 'extensions.seedbank.storageTemperatureInCelsius',
