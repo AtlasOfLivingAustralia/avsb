@@ -18,7 +18,6 @@ function AccessionDetails({ event: eventProp }: AccessionDetailsProps) {
   const data = useLoaderData();
   const event = (eventProp || data) as Event;
   const accession = event?.extensions?.seedbank as SeedBankAccession;
-  console.log(event);
 
   return (
     <>
