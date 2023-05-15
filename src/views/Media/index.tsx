@@ -113,10 +113,10 @@ function Media() {
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={5} orderXs={1} orderSm={1} orderMd={2}>
         <Card shadow='sm' padding='lg' radius='md' withBorder>
           <Card.Section pos='relative' h={350}>
-            <Image pos='absolute' src={selectedMedia?.accessURI} height={350} />
+            <Image pos='absolute' src={selectedMedia?.accessOriginalURI} height={350} />
             <Overlay blur={8} opacity={0.1} center>
               <Image
-                src={selectedMedia?.accessURI}
+                src={selectedMedia?.accessOriginalURI}
                 height={350}
                 fit='contain'
                 styles={{ image: { margin: 0 } }}
