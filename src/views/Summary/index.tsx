@@ -13,13 +13,51 @@ import {
   Divider,
   UnstyledButton,
   Alert,
+  ThemeIcon,
+  DefaultMantineColor,
 } from '@mantine/core';
 
 // Project imports
 import { EventMap } from '#/components';
 import { useDisclosure } from '@mantine/hooks';
 import { Taxon } from '#/api/sources/taxon';
-import { IconExternalLink, IconMap } from '@tabler/icons';
+import {
+  IconAlertCircle,
+  IconAlertOctagon,
+  IconAlertTriangle,
+  IconExternalLink,
+  IconFlag,
+  IconMap,
+  IconX,
+  TablerIcon,
+} from '@tabler/icons';
+
+const conservationDetails: { [key: string]: { color: DefaultMantineColor; icon: TablerIcon } } = {
+  extinct: {
+    color: 'dark',
+    icon: IconX,
+  },
+  'locally extinct': {
+    color: 'dark',
+    icon: IconX,
+  },
+  'critically endangered': {
+    color: 'red',
+    icon: IconAlertOctagon,
+  },
+  endangered: {
+    color: 'orange',
+    icon: IconAlertTriangle,
+  },
+  vulnerable: {
+    color: 'yellow',
+    icon: IconAlertCircle,
+  },
+  'near threatened': {
+    color: 'yellow',
+    icon: IconFlag,
+  },
+};
 
 function Summary() {
   const [mapOpen, { open, close }] = useDisclosure(false);
@@ -42,6 +80,33 @@ function Summary() {
         <EventMap width='100%' height={650} token={token} itemListHeight={180} />
       </Modal>
       <Grid>
+        {Object.keys(taxon.conservationStatuses).length > 0 && (
+          <Grid.Col span={12} pb='lg'>
+            <Group align='center'>
+              <Group>
+                <IconAlertTriangle size='1.5rem' />
+                <Text weight='bold'>Conservation Status</Text>
+              </Group>
+              <Divider orientation='vertical' mx='xs' />
+              <Group>
+                {Object.entries(taxon.conservationStatuses).map(([key, { status }]) => {
+                  const { color } = conservationDetails[status.toLowerCase()];
+
+                  return (
+                    <Group key={key} spacing='sm'>
+                      <ThemeIcon variant='light' radius='xl' size='xl' color={color}>
+                        <Text weight='bold' color={color} size='xs'>
+                          {key}
+                        </Text>
+                      </ThemeIcon>
+                      <Text size='sm'>{status}</Text>
+                    </Group>
+                  );
+                })}
+              </Group>
+            </Group>
+          </Grid.Col>
+        )}
         <Grid.Col sm={7} md={8} lg={9}>
           <EventMap
             onFullscreen={open}
@@ -97,7 +162,7 @@ function Summary() {
                       }}
                     >
                       <Group position='apart'>
-                        <Text style={{ display: 'flex', alignItems: 'center' }} size='sm'>
+                        <Text maw={160} truncate size='sm'>
                           {(taxon.classification as any)[rank]}
                         </Text>
                         <Group spacing='xs'>

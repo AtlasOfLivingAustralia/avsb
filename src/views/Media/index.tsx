@@ -12,11 +12,13 @@ import {
   List,
   Loader,
   Overlay,
+  Stack,
   Text,
   ThemeIcon,
 } from '@mantine/core';
 import {
   IconAffiliate,
+  IconAlertCircle,
   IconCalendar,
   IconDimensions,
   IconExternalLink,
@@ -87,6 +89,16 @@ function Media() {
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(media?.[0] || null);
   const [selectedLoaded, setSelectedLoaded] = useState<boolean>(false);
   // const params = useParams();
+
+  if (media === null)
+    return (
+      <Center h='calc(100vh - 380px)'>
+        <Stack align='center'>
+          <IconAlertCircle size='3rem' />
+          <Text color='dimmed'>No media found for this taxon</Text>
+        </Stack>
+      </Center>
+    );
 
   return (
     <Grid gutter='xl'>

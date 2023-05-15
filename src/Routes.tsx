@@ -50,7 +50,7 @@ const routes = createBrowserRouter([
         loader: async ({ params }) =>
           (
             await fetch(
-              `${import.meta.env.VITE_API_BIE}/ws/species/${decodeURIComponent(params.guid || '')}`,
+              `${import.meta.env.VITE_API_BIE}/ws/taxon/${decodeURIComponent(params.guid || '')}`,
             )
           ).json(),
         children: [
@@ -206,7 +206,9 @@ const routes = createBrowserRouter([
                 from: 0,
               });
 
-              return data.taxonMedia;
+              console.log(data);
+
+              return data?.taxonMedia || null;
             },
           },
           {

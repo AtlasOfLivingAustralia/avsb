@@ -147,6 +147,13 @@ interface TaxonConcept {
   taxonRemarks: [string];
 }
 
+interface ConservationStatus {
+  dr: string;
+  status: string;
+}
+
+type ConservationStatuses = { [key: string]: ConservationStatus };
+
 interface Taxon {
   imageIdentifier: string | null;
   variants: [Variant];
@@ -161,6 +168,7 @@ interface Taxon {
   classification: Classification;
   taxonName: [string];
   taxonConcept: TaxonConcept;
+  conservationStatuses: ConservationStatuses;
 }
 
 async function taxonInfo(guid: string): Promise<Taxon> {
