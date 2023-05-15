@@ -19,6 +19,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         day
         datasetTitle
         datasetKey
+        locality
         extensions {
           seedbank {
             accessionNumber
