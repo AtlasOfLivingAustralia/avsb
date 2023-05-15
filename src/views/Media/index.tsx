@@ -43,24 +43,14 @@ interface ImageProperty {
 
 const imageProperties: ImageProperty[] = [
   {
-    key: 'type',
-    name: 'Type',
-    icon: IconQuestionMark,
+    key: 'pixelXDimension',
+    name: 'Original Width',
+    icon: IconDimensions,
   },
   {
-    key: 'subtypeLiteral',
-    name: 'Subtype',
-    icon: IconAffiliate,
-  },
-  {
-    key: 'title',
-    name: 'Title',
-    icon: IconTypography,
-  },
-  {
-    key: 'createDate',
-    name: 'Creation Date',
-    icon: IconCalendar,
+    key: 'pixelYDimension',
+    name: 'Original Height',
+    icon: IconDimensions,
   },
   {
     key: 'webStatement',
@@ -73,14 +63,24 @@ const imageProperties: ImageProperty[] = [
     icon: IconFileInfo,
   },
   {
-    key: 'pixelXDimension',
-    name: 'Original Width',
-    icon: IconDimensions,
+    key: 'title',
+    name: 'Title',
+    icon: IconTypography,
   },
   {
-    key: 'pixelYDimension',
-    name: 'Original Height',
-    icon: IconDimensions,
+    key: 'createDate',
+    name: 'Creation Date',
+    icon: IconCalendar,
+  },
+  {
+    key: 'type',
+    name: 'Type',
+    icon: IconQuestionMark,
+  },
+  {
+    key: 'subtypeLiteral',
+    name: 'Subtype',
+    icon: IconAffiliate,
   },
 ];
 
