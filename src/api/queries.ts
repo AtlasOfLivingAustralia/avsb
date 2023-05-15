@@ -232,29 +232,6 @@ query list($predicate: Predicate){
 }
 `;
 
-const QUERY_EVENT_MAP_WITH_DATA = `
-query map($predicate: Predicate, $size: Int){
-  eventSearch(predicate: $predicate, size: $size) {
-    _meta
-    _tileServerToken
-    documents {
-      total
-      results {
-        eventID
-        parentEventID
-        locality
-        year
-        month
-        day
-        datasetTitle
-        country
-        stateProvince
-      }
-    }
-  }
-}
-`;
-
 const QUERY_EVENT_MAP = `
 query map($predicate: Predicate){
   eventSearch(predicate: $predicate) {
@@ -641,7 +618,6 @@ export default {
   QUERY_EVENT_TRIALS,
   QUERY_EVENT_TREATMENTS,
   QUERY_EVENT_MAP,
-  QUERY_EVENT_MAP_WITH_DATA,
   QUERY_EVENT_MAP_POINT,
   QUERY_EVENT_MAP_POINT_KEY,
   QUERY_TAXON_MEDIA,

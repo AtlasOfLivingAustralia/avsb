@@ -29,6 +29,13 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   // Map refs
   const mapContainer = useRef<any | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const popup = useRef<mapboxgl.Popup>(
+    new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    }),
+  );
+
   const params = useParams();
 
   // Map state & data
@@ -51,8 +58,27 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
       const tile = `${import.meta.env.VITE_API_EVENT_TILE}/event/mvt/{z}/{x}/{y}?queryId=${token}`;
 
       map.current.addLayer(getMapLayer(tile));
-      map.current.on('mouseenter', 'events', () => {
-        if (map.current) map.current.getCanvas().style.cursor = 'pointer';
+      map.current.on('mouseenter', 'events', (e) => {
+        if (map.current) {
+          map.current.getCanvas().style.cursor = 'pointer';
+
+          // Populate the popup and set its coordinates
+          // based on the feature found.
+          popup.current
+            .setLngLat(e.lngLat)
+            .setHTML(
+              `<span style="color: black;"><b>Lng:</b> ${e.lngLat.lng.toFixed(
+                4,
+              )}<br/><b>Lat:</b> ${e.lngLat.lat.toFixed(4)}</span>`,
+            )
+            .addTo(map.current);
+        }
+      });
+      map.current.on('mouseleave', 'events', () => {
+        if (map.current) {
+          map.current.getCanvas().style.cursor = '';
+          popup.current.remove();
+        }
       });
       map.current.on('click', 'events', (e) => {
         setSelectedPoint({

@@ -5,7 +5,7 @@ function tile2lat(y: number, z: number) {
   const n = Math.PI - (2 * Math.PI * y) / 2 ** z;
   return (180 / Math.PI) * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n)));
 }
-function getBboxFromFeature(str: string) {
+export function getBboxFromFeature(str: string) {
   const [zStr, xStr, yStr] = str.split('/');
   const x = parseInt(xStr, 10);
   const y = parseInt(yStr, 10);
@@ -21,7 +21,7 @@ function getBboxFromFeature(str: string) {
 
 const wktBBoxTemplate = '((W S,E S,E N,W N,W S))';
 
-export default function getWktFromGeohash(geohash: string) {
+export function getWktFromGeohash(geohash: string) {
   const { N, S, E, W } = getBboxFromFeature(geohash);
 
   // Populate the wktBBoxTemplate string
