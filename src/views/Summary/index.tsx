@@ -84,8 +84,10 @@ function Summary() {
           <Grid.Col span={12} pb='lg'>
             <Group align='center'>
               <Group>
-                <IconAlertTriangle size='1.5rem' />
-                <Text weight='bold'>Conservation Status</Text>
+                <IconAlertTriangle size='1.2rem' />
+                <Text size='sm' weight='bold'>
+                  Conservation Status
+                </Text>
               </Group>
               <Divider orientation='vertical' mx='xs' />
               <Group>
