@@ -19,7 +19,7 @@ import {
 
 // Project imports
 import { EventMap } from '#/components';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Taxon } from '#/api/sources/taxon';
 import {
   IconAlertCircle,
@@ -64,6 +64,7 @@ function Summary() {
   const token = useLoaderData() as string;
   const taxon = useRouteLoaderData('taxon') as Taxon;
   const theme = useMantineTheme();
+  const mdOrLarger = useMediaQuery(`(min-width: ${theme.breakpoints.md})`, true);
 
   return (
     <>
@@ -89,7 +90,7 @@ function Summary() {
                   Conservation Status
                 </Text>
               </Group>
-              <Divider orientation='vertical' mx='xs' />
+              {mdOrLarger && <Divider orientation='vertical' mx='xs' />}
               <Group>
                 {Object.entries(taxon.conservationStatuses).map(([key, { status }]) => {
                   const { color } = conservationDetails[status.toLowerCase()];
