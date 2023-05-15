@@ -16,6 +16,7 @@ import {
   Alert,
 } from '@mantine/core';
 import {
+  IconAlertTriangle,
   IconArrowBackUp,
   IconChevronDown,
   IconChevronUp,
@@ -196,15 +197,24 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
             />
           )}
           <Stack spacing='xs' p='md'>
-            <Alert icon={<IconInfoCircle />} mb='sm'>
-              {accessionEvent.decimalLatitude && accessionEvent.decimalLongitude ? (
-                <>
-                  This map shows the seed <b>collection</b> location
-                </>
-              ) : (
-                'No locality data supplied'
-              )}
-            </Alert>
+            <Stack spacing='xs' mb='xs'>
+              <Alert icon={<IconInfoCircle />}>
+                {accessionEvent.decimalLatitude && accessionEvent.decimalLongitude ? (
+                  <>
+                    This map shows the seed <b>collection</b> location
+                  </>
+                ) : (
+                  'No locality data supplied'
+                )}
+              </Alert>
+              {accessionEvent.decimalLatitude &&
+                accessionEvent.decimalLongitude &&
+                accessionEvent.decimalLatitude.toString().split('.')[1].length < 6 && (
+                  <Alert color='yellow' icon={<IconAlertTriangle />} mb='sm'>
+                    Precise location data has been obfuscated for species protection
+                  </Alert>
+                )}
+            </Stack>
             <IconText labelWidth={120} title='Locality' icon={IconLocation}>
               {accessionEvent.locality || missingData}
             </IconText>
