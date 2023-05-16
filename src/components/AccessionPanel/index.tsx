@@ -209,7 +209,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
               </Alert>
               {accessionEvent.decimalLatitude &&
                 accessionEvent.decimalLongitude &&
-                accessionEvent.decimalLatitude.toString().split('.')[1].length < 6 && (
+                accessionEvent.decimalLatitude.toString().split('.')[1].length < 4 && (
                   <Alert color='yellow' icon={<IconAlertTriangle />} mb='sm'>
                     Precise location data has been obfuscated for species protection
                   </Alert>
