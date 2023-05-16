@@ -8,7 +8,7 @@ const downloadFields: DownloadField[] = [
   { label: 'Collect Lat', key: 'decimalLatitude' },
   { label: 'Collect Lng', key: 'decimalLongitude' },
   { label: 'Seed/gm', key: 'extensions.seedbank.seedPerGram' },
-  { label: 'Collection Size', key: 'extensions.seedbank.sampleSize' },
+  { label: 'Quantity (count)', key: 'extensions.seedbank.quantityCount' },
   { label: 'Quantity (g)', key: 'extensions.seedbank.quantityInGrams' },
   { label: 'Thousand Seed Weight', key: 'extensions.seedbank.thousandSeedWeight' },
   {

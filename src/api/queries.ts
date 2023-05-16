@@ -29,7 +29,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
             seedPerGram
             formInStorage
             quantityInGrams
-            sampleSize
+            quantityCount
             collectionFill
             purityPercentage
             dateCollected
@@ -86,7 +86,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
             seedPerGram
             formInStorage
             quantityInGrams
-            sampleSize
+            quantityCount
             collectionFill
             purityPercentage
             dateCollected
@@ -270,7 +270,7 @@ query point($predicate: Predicate){
             seedPerGram
             formInStorage
             quantityInGrams
-            sampleSize
+            quantityCount
             collectionFill
             purityPercentage
             dateCollected
@@ -322,7 +322,7 @@ query point($predicate: Predicate){
             seedPerGram
             formInStorage
             quantityInGrams
-            sampleSize
+            quantityCount
             collectionFill
             purityPercentage
             dateCollected
@@ -542,7 +542,7 @@ query list($predicate: Predicate){
             seedPerGram
             formInStorage
             quantityInGrams
-            sampleSize
+            quantityCount
             collectionFill
             purityPercentage
             dateCollected

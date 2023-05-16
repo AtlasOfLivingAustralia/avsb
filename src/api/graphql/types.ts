@@ -42,7 +42,7 @@ interface SeedBankAccession {
   seedPerGram?: number | null;
   formInStorage?: string | null;
   quantityInGrams?: number | null;
-  sampleSize?: number | null;
+  quantityCount?: number | null;
   collectionFill?: string | null;
   purityPercentage?: number | null;
   dateCollected?: number | null;

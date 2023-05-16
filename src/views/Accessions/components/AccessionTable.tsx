@@ -98,7 +98,7 @@ function AccessionTable({ events }: AccessionTableProps) {
               <th>Taxon</th>
               <th>Institution</th>
               <ThTooltip field='dateCollected' />
-              <ThTooltip field='sampleSize' />
+              <ThTooltip field='quantityCount' />
               <ThTooltip field='purityPercentage' />
               <ThTooltip field='storageTemperatureInCelsius' />
               <th>
@@ -158,7 +158,7 @@ function AccessionTable({ events }: AccessionTableProps) {
                         new Date(accession?.dateCollected || 0).toLocaleDateString()}
                     </td>
                     <td>
-                      {getIsPresent(accession?.sampleSize) && `${accession?.sampleSize} seeds`}
+                      {getIsPresent(accession?.quantityCount) && `${accession?.quantityCount} seeds`}
                     </td>
                     <td>
                       {getIsPresent(accession?.purityPercentage) &&

@@ -58,7 +58,7 @@ const accessionFields: SeedbankFieldMap = {
     description:
       'The average number of seeds or fruits per gram of the accession. This may be an estimate.',
   },
-  sampleSize: {
+  quantityCount: {
     label: 'Collection Size',
     icon: IconBrandAsana,
     examples: '3000',
