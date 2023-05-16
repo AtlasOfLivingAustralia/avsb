@@ -77,8 +77,8 @@ const filters: Filter[] = [
     group: 'Collection',
   },
   {
-    key: 'seedbank_sampleWeightInGrams',
-    label: 'Sample Weight',
+    key: 'seedbank_quantityInGrams',
+    label: 'Quantity (g)',
     type: 'numericGreaterLess',
     placeholder: 'Enter weight',
     icon: IconScale,
@@ -116,8 +116,8 @@ const filters: Filter[] = [
     group: 'Storage',
   },
   {
-    key: 'seedbank_relativeHumidityPercentage',
-    label: 'Relative Humidity %',
+    key: 'seedbank_storageRelativeHumidityPercentage',
+    label: 'Storage Relative Humidity %',
     type: 'percent',
     placeholder: 'Enter temperature',
     icon: IconDropletFilled,

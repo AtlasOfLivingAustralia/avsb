@@ -41,16 +41,16 @@ interface SeedBankAccession {
   accessionNumber?: string | null;
   seedPerGram?: number | null;
   formInStorage?: string | null;
-  sampleWeightInGrams?: number | null;
+  quantityInGrams?: number | null;
   sampleSize?: number | null;
-  collectionFillRate?: string | null;
+  collectionFill?: string | null;
   purityPercentage?: number | null;
   dateCollected?: number | null;
   dateInStorage?: number | null;
   storageTemperatureInCelsius?: number | null;
-  relativeHumidityPercentage?: number | null;
+  storageRelativeHumidityPercentage?: number | null;
   publicationDOI?: string | null;
-  preStorageTreatmentNotesHistory?: string | null;
+  preStorageTreatment?: string | null;
   primaryStorageSeedBank?: string | null;
   degreeOfEstablishment?: string | null;
   primaryCollector?: string | null;
@@ -60,7 +60,7 @@ interface SeedBankAccession {
   thousandSeedWeight?: number | null;
   numberPlantsSampled?: string | null;
   storageBehaviour?: string | null;
-  embryoType?: string | null;
+  esRatio?: string | null;
   dormancyClass?: string | null;
 }
 

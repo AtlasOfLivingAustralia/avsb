@@ -20,18 +20,21 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         datasetTitle
         datasetKey
         locality
+        distinctTaxa {
+          scientificName
+        }
         extensions {
           seedbank {
             accessionNumber
             seedPerGram
             formInStorage
-            sampleWeightInGrams
+            quantityInGrams
             sampleSize
-            collectionFillRate
+            collectionFill
             purityPercentage
             dateCollected
             storageTemperatureInCelsius
-            relativeHumidityPercentage
+            storageRelativeHumidityPercentage
             primaryStorageSeedBank
             primaryCollector
             duplicatesReplicates
@@ -82,16 +85,16 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
             accessionNumber
             seedPerGram
             formInStorage
-            sampleWeightInGrams
+            quantityInGrams
             sampleSize
-            collectionFillRate
+            collectionFill
             purityPercentage
             dateCollected
             dateInStorage
             storageTemperatureInCelsius
-            relativeHumidityPercentage
+            storageRelativeHumidityPercentage
             publicationDOI
-            preStorageTreatmentNotesHistory
+            preStorageTreatment
             primaryStorageSeedBank
             degreeOfEstablishment
             primaryCollector
@@ -101,7 +104,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
             thousandSeedWeight
             numberPlantsSampled
             storageBehaviour
-            embryoType
+            esRatio
             dormancyClass
           }
         }
@@ -162,6 +165,9 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         month
         day
         datasetTitle
+        distinctTaxa {
+          scientificName
+        }
         measurementOrFacts {
           measurementID
           measurementType
@@ -263,16 +269,16 @@ query point($predicate: Predicate){
             accessionNumber
             seedPerGram
             formInStorage
-            sampleWeightInGrams
+            quantityInGrams
             sampleSize
-            collectionFillRate
+            collectionFill
             purityPercentage
             dateCollected
             dateInStorage
             storageTemperatureInCelsius
-            relativeHumidityPercentage
+            storageRelativeHumidityPercentage
             publicationDOI
-            preStorageTreatmentNotesHistory
+            preStorageTreatment
             primaryStorageSeedBank
             degreeOfEstablishment
             primaryCollector
@@ -282,7 +288,7 @@ query point($predicate: Predicate){
             thousandSeedWeight
             numberPlantsSampled
             storageBehaviour
-            embryoType
+            esRatio
             dormancyClass
           }
         }
@@ -315,16 +321,16 @@ query point($predicate: Predicate){
             accessionNumber
             seedPerGram
             formInStorage
-            sampleWeightInGrams
+            quantityInGrams
             sampleSize
-            collectionFillRate
+            collectionFill
             purityPercentage
             dateCollected
             dateInStorage
             storageTemperatureInCelsius
-            relativeHumidityPercentage
+            storageRelativeHumidityPercentage
             publicationDOI
-            preStorageTreatmentNotesHistory
+            preStorageTreatment
             primaryStorageSeedBank
             degreeOfEstablishment
             primaryCollector
@@ -334,7 +340,7 @@ query point($predicate: Predicate){
             thousandSeedWeight
             numberPlantsSampled
             storageBehaviour
-            embryoType
+            esRatio
             dormancyClass
           }
         }
@@ -535,16 +541,16 @@ query list($predicate: Predicate){
             accessionNumber
             seedPerGram
             formInStorage
-            sampleWeightInGrams
+            quantityInGrams
             sampleSize
-            collectionFillRate
+            collectionFill
             purityPercentage
             dateCollected
             dateInStorage
             storageTemperatureInCelsius
-            relativeHumidityPercentage
+            storageRelativeHumidityPercentage
             publicationDOI
-            preStorageTreatmentNotesHistory
+            preStorageTreatment
             primaryStorageSeedBank
             degreeOfEstablishment
             primaryCollector
@@ -554,7 +560,7 @@ query list($predicate: Predicate){
             thousandSeedWeight
             numberPlantsSampled
             storageBehaviour
-            embryoType
+            esRatio
             dormancyClass
           }
         }

@@ -95,6 +95,7 @@ function AccessionTable({ events }: AccessionTableProps) {
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>
               <ThTooltip style={{ paddingLeft: 25 }} field='accessionNumber' />
+              <th>Taxon</th>
               <th>Institution</th>
               <ThTooltip field='dateCollected' />
               <ThTooltip field='sampleSize' />
@@ -150,6 +151,7 @@ function AccessionTable({ events }: AccessionTableProps) {
                     <td style={{ paddingLeft: 25 }}>
                       {accession?.accessionNumber || event.eventID}
                     </td>
+                    <td>{event.distinctTaxa?.[0].scientificName}</td>
                     <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
                     <td>
                       {getIsPresent(accession?.dateCollected) &&

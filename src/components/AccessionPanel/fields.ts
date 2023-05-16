@@ -3,9 +3,9 @@ import { SeedBankAccession } from '#/api/graphql/types';
 const fields: (keyof SeedBankAccession)[] = [
   'seedPerGram',
   'sampleSize',
-  'sampleWeightInGrams',
+  'quantityInGrams',
   'thousandSeedWeight',
-  'relativeHumidityPercentage',
+  'storageRelativeHumidityPercentage',
   'purityPercentage',
   'storageTemperatureInCelsius',
 ];
@@ -13,13 +13,13 @@ const fields: (keyof SeedBankAccession)[] = [
 const longFields: (keyof SeedBankAccession)[] = [
   'primaryStorageSeedBank',
   'primaryCollector',
-  'preStorageTreatmentNotesHistory',
+  'preStorageTreatment',
   'plantForm',
   'formInStorage',
   'degreeOfEstablishment',
   'duplicatesReplicates',
   'collectionPermitNumber',
-  'collectionFillRate',
+  'collectionFill',
   'publicationDOI',
 ];
 

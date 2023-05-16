@@ -55,7 +55,7 @@ function HerbariumLink({ accession, taxon }: ContactProps) {
   return (
     <UnstyledButton
       component='a'
-      href={`https://avh.ala.org.au/occurrences/${uuid}`}
+      href={uuid ? `https://avh.ala.org.au/occurrences/${uuid}` : undefined}
       target='_blank'
       style={{
         opacity: loading || !uuid ? 0.4 : 1,

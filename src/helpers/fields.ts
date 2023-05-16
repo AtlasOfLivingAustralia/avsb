@@ -64,8 +64,8 @@ const accessionFields: SeedbankFieldMap = {
     examples: '3000',
     description: 'The total number of seeds currently available in the accession.',
   },
-  sampleWeightInGrams: {
-    label: 'Sample Weight',
+  quantityInGrams: {
+    label: 'Quantity (g)',
     unit: 'g',
     icon: IconScale,
     examples: '1.23g',
@@ -79,7 +79,7 @@ const accessionFields: SeedbankFieldMap = {
     examples: '30g',
     description: 'The mass of 1000 pure seeds or fruits.',
   },
-  relativeHumidityPercentage: {
+  storageRelativeHumidityPercentage: {
     label: 'Relative Humidity',
     icon: IconDropletFilled,
     unit: '%',
@@ -113,7 +113,7 @@ const accessionFields: SeedbankFieldMap = {
     examples: 'L. Guja',
     description: 'Name (last name at minimum) of the collector.',
   },
-  preStorageTreatmentNotesHistory: {
+  preStorageTreatment: {
     label: 'Pre-Storage Treatment/History',
     icon: IconNotes,
     examples:
@@ -154,8 +154,8 @@ const accessionFields: SeedbankFieldMap = {
     examples: 'NSW SL100750',
     description: 'Agency and permit number for the permit the collection was made under.',
   },
-  collectionFillRate: {
-    label: 'Collection Fill Rate / X-Ray',
+  collectionFill: {
+    label: 'Collection Fill / X-Ray',
     icon: IconScan,
     examples: '46% determined via x-ray',
     description:

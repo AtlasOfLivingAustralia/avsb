@@ -2,9 +2,9 @@ import { SeedBankAccession } from '#/api/graphql/types';
 
 const fields: (keyof SeedBankAccession)[] = [
   'seedPerGram',
-  'sampleWeightInGrams',
+  'quantityInGrams',
   'thousandSeedWeight',
-  'relativeHumidityPercentage',
+  'storageRelativeHumidityPercentage',
   'primaryCollector',
   'duplicatesReplicates',
 ];

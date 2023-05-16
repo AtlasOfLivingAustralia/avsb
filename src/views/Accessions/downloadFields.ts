@@ -9,11 +9,11 @@ const downloadFields: DownloadField[] = [
   { label: 'Collect Lng', key: 'decimalLongitude' },
   { label: 'Seed/gm', key: 'extensions.seedbank.seedPerGram' },
   { label: 'Collection Size', key: 'extensions.seedbank.sampleSize' },
-  { label: 'Sample Weight', key: 'extensions.seedbank.sampleWeightInGrams' },
+  { label: 'Quantity (g)', key: 'extensions.seedbank.quantityInGrams' },
   { label: 'Thousand Seed Weight', key: 'extensions.seedbank.thousandSeedWeight' },
   {
-    label: 'Relative Humidity',
-    key: 'extensions.seedbank.relativeHumidityPercentage',
+    label: 'Storage Relative Humidity',
+    key: 'extensions.seedbank.storageRelativeHumidityPercentage',
   },
   { label: 'Purity', key: 'extensions.seedbank.purityPercentage' },
   {
@@ -34,7 +34,7 @@ const downloadFields: DownloadField[] = [
   { label: 'Collector', key: 'extensions.seedbank.primaryCollector' },
   {
     label: 'Pre-Storage Treatment/History',
-    key: 'extensions.seedbank.preStorageTreatmentNotesHistory',
+    key: 'extensions.seedbank.preStorageTreatment',
   },
   { label: 'Plant Form', key: 'extensions.seedbank.plantForm' },
   { label: 'Form in Storage', key: 'extensions.seedbank.formInStorage' },
@@ -46,7 +46,7 @@ const downloadFields: DownloadField[] = [
   { label: 'Permit Number', key: 'extensions.seedbank.collectionPermitNumber' },
   {
     label: 'Collection Fill Rate / X-Ray',
-    key: 'extensions.seedbank.collectionFillRate',
+    key: 'extensions.seedbank.collectionFill',
   },
   { label: 'Publication DOI', key: 'extensions.seedbank.publicationDOI' },
 ];

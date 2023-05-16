@@ -102,7 +102,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
       };
     }) || [],
     ['eventDateTs', 'extensions.seedbank.accessionNumber'],
-    ['asc'],
+    ['desc'],
   );
 
   return (
@@ -116,6 +116,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>
               <ThTooltip style={{ paddingLeft: 25 }} field='accessionNumber' />
+              <th>Taxon</th>
               <th>Institution</th>
               <ThTooltip field='adjustedGerminationPercentage' />
               <th>Treatment</th>
@@ -185,6 +186,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     }}
                   >
                     <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber}</td>
+                    <td>{event.distinctTaxa?.[0].scientificName}</td>
                     <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
                     <td>
                       {getIsPresent(trial?.adjustedGerminationPercentage) &&
