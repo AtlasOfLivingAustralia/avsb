@@ -130,6 +130,7 @@ interface Event {
   eventTypeHierarchy?: [string];
   eventTypeHierarchyJoined?: string | null;
   eventHierarchyLevels?: number | null;
+  eventRemarks?: string | null;
   locationID?: string | null;
   dataset?: JSON;
   speciesCount?: number;

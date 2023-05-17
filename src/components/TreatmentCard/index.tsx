@@ -1,5 +1,6 @@
 import { Box, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
-import { SeedBankTreatment } from '#/api/graphql/types';
+import { Event, SeedBankTreatment } from '#/api/graphql/types';
+import { IconFileDescription } from '@tabler/icons';
 import { treatmentFields } from '#/helpers/fields';
 import { getIsPresent } from '#/helpers';
 
@@ -8,10 +9,11 @@ import fields from './fields';
 import FieldTooltip from '../FieldTooltip';
 
 interface TreatmentCardProps {
-  treatment: SeedBankTreatment;
+  event: Event;
 }
 
-function TreatmentCard({ treatment }: TreatmentCardProps) {
+function TreatmentCard({ event }: TreatmentCardProps) {
+  const treatment = event.extensions?.seedbank as SeedBankTreatment;
   const pretreatmentField = treatmentFields.pretreatment;
 
   return (
@@ -23,6 +25,11 @@ function TreatmentCard({ treatment }: TreatmentCardProps) {
         Icon={pretreatmentField.icon}
       >
         <Box>
+          {event.eventRemarks && (
+            <IconText mb='xs' labelWidth={130} icon={IconFileDescription} title='Description'>
+              {event.eventRemarks || 'Not Supplied'}
+            </IconText>
+          )}
           <IconText labelWidth={130} icon={pretreatmentField.icon} title={pretreatmentField.label}>
             {treatment.pretreatment || 'Not Supplied'}
           </IconText>

@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { CSSProperties, PropsWithChildren } from 'react';
-import { Box, Text } from '@mantine/core';
+import { Box, BoxProps, Text } from '@mantine/core';
 import { TablerIcon } from '@tabler/icons';
 
-interface IconTextProps {
+interface IconTextProps extends BoxProps {
   icon?: TablerIcon;
   title?: string;
   labelWidth?: number;
@@ -14,9 +15,15 @@ const iconStyle: CSSProperties = {
   minHeight: 22,
 };
 
-function IconText({ icon: Icon, children, title, labelWidth }: PropsWithChildren<IconTextProps>) {
+function IconText({
+  icon: Icon,
+  children,
+  title,
+  labelWidth,
+  ...rest
+}: PropsWithChildren<IconTextProps>) {
   return (
-    <Box style={{ display: 'flex' }}>
+    <Box style={{ display: 'flex' }} {...rest}>
       {Icon && <Icon size={22} style={iconStyle} />}
       <Box style={{ display: 'flex', flexDirection: 'row' }}>
         {title && (

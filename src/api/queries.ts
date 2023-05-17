@@ -211,6 +211,7 @@ query list($predicate: Predicate){
         month
         day
         datasetTitle
+        eventRemarks
         measurementOrFacts {
           measurementID
           measurementType

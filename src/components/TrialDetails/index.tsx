@@ -33,10 +33,12 @@ const isValidTreatment = ({
 
 function TrialDetails({ event }: TrialDetailsProps) {
   const trial = event.extensions?.seedbank as SeedBankTrial;
-  const events = (event.treatments || []).filter((treatment) =>
-    isValidTreatment((treatment.extensions?.seedbank as SeedBankTreatment) || {}),
+  const events = (event.treatments || []).filter(
+    (treatment) =>
+      isValidTreatment((treatment.extensions?.seedbank as SeedBankTreatment) || {}) ||
+      treatment.eventRemarks,
   ) as Event[];
-  const treatments = events.map(({ extensions }) => extensions?.seedbank as SeedBankTreatment);
+  // const treatments = events.map(({ extensions }) => extensions?.seedbank as SeedBankTreatment);
 
   return (
     <Grid gutter='xs'>
@@ -75,22 +77,22 @@ function TrialDetails({ event }: TrialDetailsProps) {
           </IconText>
         )}
       </Grid.Col>
-      {treatments.length > 0 && (
+      {events.length > 0 && (
         <Grid.Col span={12}>
-          {treatments.map((treatment, num) => (
+          {events.map((treatment, num) => (
             <Paper
               withBorder
               p='md'
               mt='sm'
-              key={treatment.id}
+              key={event.eventID}
               sx={(theme) => ({
                 backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
               })}
             >
               <Text sx={(theme) => ({ fontFamily: theme.headings.fontFamily })} mb='xs'>
-                Treatment {num + 1}
+                Trial Conditions {num + 1}
               </Text>
-              <TreatmentCard treatment={treatment} />
+              <TreatmentCard event={treatment} />
             </Paper>
           ))}
         </Grid.Col>
