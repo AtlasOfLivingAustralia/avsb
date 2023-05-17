@@ -446,6 +446,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/carousel@npm:^6.0.11":
+  version: 6.0.11
+  resolution: "@mantine/carousel@npm:6.0.11"
+  dependencies:
+    "@mantine/utils": 6.0.11
+  peerDependencies:
+    "@mantine/core": 6.0.11
+    "@mantine/hooks": 6.0.11
+    embla-carousel-react: ^7.0.0
+    react: ">=16.8.0"
+  checksum: 627b6d06d2bb85680d4de2061719260fae2dbcf148e1baa16483f093b46ba579b3eea20b3aced3cc65a19b3e198e3eb99b5c9a4f78bdefdc6d0930134b706332
+  languageName: node
+  linkType: hard
+
 "@mantine/core@npm:^6.0.0":
   version: 6.0.0
   resolution: "@mantine/core@npm:6.0.0"
@@ -533,6 +547,15 @@ __metadata:
   peerDependencies:
     react: ">=16.8.0"
   checksum: a0f876ebb910ccebc6bbeedb093c14fe22c319d08d8504be6e6085f2e935f3aad8fc9cb1e0ede182c762a03a35e02618cf304ba3ba556a4ba3951945cf8cfc56
+  languageName: node
+  linkType: hard
+
+"@mantine/utils@npm:6.0.11":
+  version: 6.0.11
+  resolution: "@mantine/utils@npm:6.0.11"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 2ed85f45595793b059d5818704f75ad7844e85e2aecf901d65e02a3997b6ad4ac50e5dc4e8e2a52f3554b30426e48ddaaa4ba73627f19c2491340cc5e49feaed
   languageName: node
   linkType: hard
 
@@ -1389,6 +1412,7 @@ __metadata:
   resolution: "avsb@workspace:."
   dependencies:
     "@emotion/react": ^11.10.6
+    "@mantine/carousel": ^6.0.11
     "@mantine/core": ^6.0.0
     "@mantine/dates": ^6.0.7
     "@mantine/form": ^6.0.9
@@ -1405,6 +1429,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.54.0
     "@vitejs/plugin-react-swc": ^3.2.0
     dayjs: ^1.11.7
+    embla-carousel-react: ^8.0.0-rc03
     eslint: ^8.35.0
     eslint-config-airbnb: ^19.0.4
     eslint-config-prettier: ^8.6.0
@@ -1855,6 +1880,34 @@ __metadata:
   version: 2.2.4
   resolution: "earcut@npm:2.2.4"
   checksum: aea0466cb2f24e0c3c57148d8d28ac9846f53c4f43ee66780826474303ac851b305ef988152d0bdeb31e8f7ca939dc0df737e7505cfb1c1bdf2ff9d7f9ea2faa
+  languageName: node
+  linkType: hard
+
+"embla-carousel-react@npm:^8.0.0-rc03":
+  version: 8.0.0-rc03
+  resolution: "embla-carousel-react@npm:8.0.0-rc03"
+  dependencies:
+    embla-carousel: 8.0.0-rc03
+    embla-carousel-reactive-utils: 8.0.0-rc03
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.1 || ^18.0.0
+  checksum: 29309848fc341e148706bf2b499ffbae07c9d5c33ab9e15271412046df89275aa812329e08897ed5502058f566f5bd58684debee7e79bd72afd4fa3e2a9e1193
+  languageName: node
+  linkType: hard
+
+"embla-carousel-reactive-utils@npm:8.0.0-rc03":
+  version: 8.0.0-rc03
+  resolution: "embla-carousel-reactive-utils@npm:8.0.0-rc03"
+  peerDependencies:
+    embla-carousel: 8.0.0-rc03
+  checksum: cb7e4400012c0339e546dda7f27d570db3254dd6cea36fcb401e3560301ca5b0e4b6422009ea60b230ee728acc4cfa109af0a37d6d51966ee3393d2fad71780c
+  languageName: node
+  linkType: hard
+
+"embla-carousel@npm:8.0.0-rc03":
+  version: 8.0.0-rc03
+  resolution: "embla-carousel@npm:8.0.0-rc03"
+  checksum: 8865effe95dd58e27d6e081fe42c5a17da311b33ffcd5d0a3cfac41fad578d1ee41a24109d6412f7eebf5f68436bcfb1eec293c86ad89e9b84cb5016eb182ee6
   languageName: node
   linkType: hard
 
