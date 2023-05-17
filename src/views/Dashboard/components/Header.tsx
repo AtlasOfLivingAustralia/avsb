@@ -1,23 +1,30 @@
-import { useCallback } from 'react';
+// import { useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from 'react-oidc-context';
-import { IconLogout, IconBug, IconSun, IconMoon, IconHome } from '@tabler/icons';
+// import { useAuth } from 'react-oidc-context';
+import {
+  /* IconLogout, IconBug, */
+  IconSun,
+  IconMoon,
+  IconHome,
+  IconQuestionMark,
+} from '@tabler/icons';
 import {
   Header as MantineHeader,
   ActionIcon,
-  Avatar,
+  // Avatar,
   Button,
   Group,
-  Menu,
-  UnstyledButton,
+  // Menu,
+  // UnstyledButton,
   useMantineColorScheme,
   MediaQuery,
   Transition,
+  // Tooltip,
 } from '@mantine/core';
 
 // Project components & gelpers
 import { Logo, TaxonSearchInput } from '#/components';
-import getNameInitials from '#/helpers/getNameInitials';
+// import getNameInitials from '#/helpers/getNameInitials';
 
 const slideTransition = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -27,20 +34,20 @@ const slideTransition = {
 };
 
 function Header() {
-  const auth = useAuth();
+  // const auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
-  const handleSignOut = useCallback(async () => {
-    await auth.removeUser();
-    const params = new URLSearchParams({
-      client_id: import.meta.env.VITE_OIDC_CLIENT_ID,
-      logout_uri: import.meta.env.VITE_OIDC_REDIRECT_URI,
-    });
+  // const handleSignOut = useCallback(async () => {
+  //   await auth.removeUser();
+  //   const params = new URLSearchParams({
+  //     client_id: import.meta.env.VITE_OIDC_CLIENT_ID,
+  //     logout_uri: import.meta.env.VITE_OIDC_REDIRECT_URI,
+  //   });
 
-    window.location.href = `${import.meta.env.VITE_OIDC_LOGOUT_URI}?${params.toString()}`;
-  }, [auth]);
+  //   window.location.href = `${import.meta.env.VITE_OIDC_LOGOUT_URI}?${params.toString()}`;
+  // }, [auth]);
 
   return (
     <MantineHeader height={60}>
@@ -75,7 +82,10 @@ function Header() {
             />
           </MediaQuery>
         )}
-        <Group style={{ flexGrow: 1, maxWidth: 140 }} position='right'>
+        <Group style={{ flexGrow: 1, maxWidth: 140 }} position='right' spacing='xs'>
+          <ActionIcon component={Link} to='/help' variant='filled' radius='xl' size={38}>
+            <IconQuestionMark size={20} />
+          </ActionIcon>
           <ActionIcon variant='filled' radius='xl' size={38} onClick={() => toggleColorScheme()}>
             {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
           </ActionIcon>

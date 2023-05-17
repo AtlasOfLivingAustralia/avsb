@@ -7,4 +7,5 @@ export { default as SummaryView } from './Summary';
 export { default as TrialsView } from './Trials';
 export { default as SequencesView } from './Sequences';
 export { default as SeedbankView } from './Seedbank';
+export { default as HelpView } from './Help';
 export { default as DebugView } from './Debug';

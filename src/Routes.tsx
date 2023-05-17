@@ -12,6 +12,7 @@ import {
   SummaryView,
   SequencesView,
   SeedbankView,
+  HelpView,
 } from './views';
 import queries from './api/queries';
 import { Event } from './api/graphql/types';
@@ -247,6 +248,10 @@ const routes = createBrowserRouter([
             loader: () => redirect('summary'),
           },
         ],
+      },
+      {
+        path: 'help',
+        element: <HelpView />,
       },
       {
         path: 'debug',
