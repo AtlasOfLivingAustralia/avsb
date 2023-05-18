@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Box, Image, Paper, Text, ThemeIcon } from '@mantine/core';
+import { Box, Image, Paper, Text, ThemeIcon, rem } from '@mantine/core';
 import { Carousel, Embla, useAnimationOffsetEffect } from '@mantine/carousel';
+
 import { HelpTopicItem } from '.';
 
 interface TopicProps {
@@ -18,27 +19,43 @@ function Topic({ instructions }: TopicProps) {
     <>
       <Carousel
         onSlideChange={(index) => setSlide(index)}
-        styles={{
+        styles={(theme) => ({
           control: {
             '&[data-inactive]': {
               opacity: 0,
               cursor: 'default',
             },
           },
-        }}
+          indicator: {
+            width: rem(12),
+            height: rem(4),
+            transition: 'width 250ms ease',
+            backgroundColor: theme.colorScheme === 'dark' ? theme.white : theme.colors.dark[3],
+            '&[data-active]': {
+              width: rem(40),
+            },
+          },
+        })}
         mx='auto'
         withIndicators
-        height={350}
+        height={500}
         getEmblaApi={setEmbla}
       >
         {instructions.map(({ image }, index) => (
           <Carousel.Slide key={`${index * 2}`}>
-            <Image w='100%' height='100%' src={image} />
+            <Box
+              sx={(theme) => ({
+                backgroundColor:
+                  theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[3],
+              })}
+            >
+              <Image pt='md' fit='contain' width='100%' height={450} src={image} />
+            </Box>
           </Carousel.Slide>
         ))}
       </Carousel>
-      <Paper p='md'>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Paper px='md' pb='md'>
+        <Box sx={{ display: 'flex', alignItems: 'center', minHeight: 45 }}>
           <ThemeIcon mr='sm' size='lg' variant='light' radius='lg'>
             <Icon size='1rem' />
           </ThemeIcon>

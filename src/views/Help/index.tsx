@@ -8,6 +8,7 @@ import {
   Grid,
   Group,
   Modal,
+  Space,
   Text,
   Title,
   UnstyledButton,
@@ -17,10 +18,13 @@ import {
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import {
+  IconAdjustmentsHorizontal,
   IconAffiliate,
   IconBuildingBank,
   IconDna2,
+  IconFileDownload,
   IconFlask,
+  IconMoon,
   IconPackage,
   IconPhoto,
   TablerIcon,
@@ -28,7 +32,17 @@ import {
 
 import { Wave } from '#/components/Wave';
 
-import { viewSeedbankItems } from './topics';
+import {
+  downloadRecordsItems,
+  filterAccessionsTrialsItems,
+  switchThemeItems,
+  viewSeedbankItems,
+  viewTaxonAccessionItems,
+  viewTaxonMediaItems,
+  viewTaxonSequencesItems,
+  viewTaxonSummaryItems,
+  viewTaxonTrialItems,
+} from './topics';
 import Topic from './Topic';
 
 const useStyles = createStyles((theme) => ({
@@ -87,31 +101,49 @@ const helpTopics: { [key: string]: HelpTopic } = {
     topic: 'Taxon Summaries',
     description: 'View summary information about a plant taxon',
     icon: IconAffiliate,
-    instructions: viewSeedbankItems,
+    instructions: viewTaxonSummaryItems,
   },
   viewTaxonAccession: {
     topic: 'Taxon Accessions',
     description: 'View accessions for a plant taxon',
     icon: IconPackage,
-    instructions: viewSeedbankItems,
+    instructions: viewTaxonAccessionItems,
   },
   viewTaxonTrial: {
     topic: 'Taxon Trials',
     description: 'View trials for a plant taxon',
     icon: IconFlask,
-    instructions: viewSeedbankItems,
+    instructions: viewTaxonTrialItems,
+  },
+  filterAccessionsTrials: {
+    topic: 'Query Filtering',
+    description: 'Filter accesisons / trials for a plant taxon',
+    icon: IconAdjustmentsHorizontal,
+    instructions: filterAccessionsTrialsItems,
+  },
+  downloadRecords: {
+    topic: 'Download records',
+    description: 'Download accesison / trial records for a plant taxon',
+    icon: IconFileDownload,
+    instructions: downloadRecordsItems,
   },
   viewTaxonMedia: {
     topic: 'Taxon Media',
     description: 'View media for a plant taxon',
     icon: IconPhoto,
-    instructions: viewSeedbankItems,
+    instructions: viewTaxonMediaItems,
   },
   viewTaxonSequences: {
     topic: 'Taxon Sequences',
     description: 'View sequences for a plant taxon',
     icon: IconDna2,
-    instructions: viewSeedbankItems,
+    instructions: viewTaxonSequencesItems,
+  },
+  switchTheme: {
+    topic: 'Switch Theme',
+    description: 'Switch between light / dark themes',
+    icon: IconMoon,
+    instructions: switchThemeItems,
   },
 };
 
@@ -131,12 +163,12 @@ function Help() {
         opened={opened}
         onClose={close}
         withCloseButton={false}
+        size='xl'
         overlayProps={{
           color: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2],
           opacity: 0.55,
           blur: 3,
         }}
-        size='xl'
       >
         <Topic instructions={helpTopics[topic].instructions} />
       </Modal>
@@ -229,6 +261,7 @@ function Help() {
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
+        <Space h={80} />
       </Container>
     </>
   );

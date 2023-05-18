@@ -155,7 +155,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
           <tbody>
             {(!events || events?.length === 0) && (
               <tr>
-                <td colSpan={8}>
+                <td colSpan={100}>
                   <Center>
                     <Text>No trial data found</Text>
                   </Center>
