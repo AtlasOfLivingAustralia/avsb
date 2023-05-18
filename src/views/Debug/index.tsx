@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
-import { Text, Accordion, Button, Card } from '@mantine/core';
+import { Text, Accordion, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { TaxonSearchInput, TreatmentCard } from '#/components';
+import { TaxonSearchInput } from '#/components';
 
 // Debug views
 import DebugGQL from './components/DebugGQL';
@@ -54,19 +54,6 @@ function Debug() {
             accession='CANB 801450.6'
             taxon='https://id.biodiversity.org.au/node/apni/2920720'
           /> */}
-          <Card withBorder>
-            <TreatmentCard
-              treatment={{
-                id: 'ev12345',
-                pretreatment: 'notes about the pretreatment, long text here',
-                mediaSubstrate: 'AGAR 1%',
-                nightTemperatureInCelsius: 10,
-                dayTemperatureInCelsius: 10,
-                lightHours: 10,
-                darkHours: 14,
-              }}
-            />
-          </Card>
         </Accordion.Panel>
       </Accordion.Item>
       <Accordion.Item value='map'>
