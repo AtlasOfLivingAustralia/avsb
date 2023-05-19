@@ -1459,11 +1459,9 @@ __metadata:
     lodash: ^4.17.21
     logrocket: ^4.0.1
     mapbox-gl: ^2.14.1
-    oidc-client-ts: ^2.2.4
     prettier: ^2.8.8
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-oidc-context: ^2.2.2
     react-router-dom: ^6.11.2
     react-window: ^1.8.9
     rollup-plugin-visualizer: ^5.9.0
@@ -1729,13 +1727,6 @@ __metadata:
     shebang-command: ^2.0.0
     which: ^2.0.1
   checksum: 671cc7c7288c3a8406f3c69a3ae2fc85555c04169e9d611def9a675635472614f1c0ed0ef80955d5b6d4e724f6ced67f0ad1bb006c2ea643488fcfef994d7f52
-  languageName: node
-  linkType: hard
-
-"crypto-js@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "crypto-js@npm:4.1.1"
-  checksum: b3747c12ee3a7632fab3b3e171ea50f78b182545f0714f6d3e7e2858385f0f4101a15f2517e033802ce9d12ba50a391575ff4638c9de3dd9b2c4bc47768d5425
   languageName: node
   linkType: hard
 
@@ -3415,13 +3406,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jwt-decode@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "jwt-decode@npm:3.1.2"
-  checksum: 20a4b072d44ce3479f42d0d2c8d3dabeb353081ba4982e40b83a779f2459a70be26441be6c160bfc8c3c6eadf9f6380a036fbb06ac5406b5674e35d8c4205eeb
-  languageName: node
-  linkType: hard
-
 "kdbush@npm:^3.0.0":
   version: 3.0.0
   resolution: "kdbush@npm:3.0.0"
@@ -3894,16 +3878,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oidc-client-ts@npm:^2.2.4":
-  version: 2.2.4
-  resolution: "oidc-client-ts@npm:2.2.4"
-  dependencies:
-    crypto-js: ^4.1.1
-    jwt-decode: ^3.1.2
-  checksum: fe50944a4141c29f6439581d9850d4d3200a0083ee4e22b15dca8e164a08f53e975d522b1e3aa129b85862e1677c22f789fe90c8668b94482d97c569190657a2
-  languageName: node
-  linkType: hard
-
 "once@npm:^1.3.0":
   version: 1.4.0
   resolution: "once@npm:1.4.0"
@@ -4162,16 +4136,6 @@ __metadata:
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
-  languageName: node
-  linkType: hard
-
-"react-oidc-context@npm:^2.2.2":
-  version: 2.2.2
-  resolution: "react-oidc-context@npm:2.2.2"
-  peerDependencies:
-    oidc-client-ts: ^2.2.1
-    react: ">=16.8.0"
-  checksum: aad079623c95e372711e8d0e07d44be76ef9ce357d0ea2dcc73b71d59bb34762b31461a8fc864a17159b742d8e33f8466f5e914445aaccaeb4f1aea7e06102a1
   languageName: node
   linkType: hard
 

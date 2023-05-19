@@ -28,7 +28,6 @@ import {
   IconTypography,
   TablerIcon,
 } from '@tabler/icons';
-import { IdTokenClaims } from 'oidc-client-ts';
 
 // Project / local components
 import { MediaItem } from '#/api/graphql/types';
@@ -158,7 +157,7 @@ export function Component() {
                 {getNameInitials({
                   given_name: selectedMedia?.creator?.split(' ')?.[0],
                   family_name: selectedMedia?.creator?.split(' ')?.[1],
-                } as IdTokenClaims)}
+                })}
               </Avatar>
               <Text weight='bold'>{selectedMedia?.creator || 'Unknown Creator'}</Text>
             </Group>
