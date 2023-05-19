@@ -66,28 +66,6 @@ function Topic({ instructions }: TopicProps) {
         </Box>
       </Paper>
     </>
-    // <Stack spacing='sm'>
-    //   {instructions.map(({ content, icon: Icon, images }, index) => (
-    //     <Box>
-    //       <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-    // <ThemeIcon mr='sm' size='lg' variant='light' radius='lg'>
-    //   <Icon size='1rem' />
-    // </ThemeIcon>
-    // <Text size='sm'>
-    //   <b>{index + 1}.</b>&nbsp;
-    //   {content}
-    // </Text>
-    //       </Box>
-    //       {(images || []).length > 0 && (
-    //         <Group>
-    //           {images?.map((image) => (
-    //             <Image src={image} />
-    //           ))}
-    //         </Group>
-    //       )}
-    //     </Box>
-    //   ))}
-    // </Stack>
   );
 }
 
