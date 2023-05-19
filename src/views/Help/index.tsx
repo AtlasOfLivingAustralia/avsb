@@ -1,4 +1,5 @@
 import { ReactNode, useState } from 'react';
+
 import {
   Accordion,
   Anchor,
@@ -16,7 +17,7 @@ import {
   rem,
   useMantineTheme,
 } from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+
 import {
   IconAdjustmentsHorizontal,
   IconAffiliate,
@@ -30,6 +31,7 @@ import {
   TablerIcon,
 } from '@tabler/icons';
 
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Wave } from '#/components/Wave';
 
 import {
@@ -45,6 +47,7 @@ import {
 } from './topics';
 import Topic from './Topic';
 
+// Custom styles for Accordion component
 const useStyles = createStyles((theme) => ({
   root: {
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],

@@ -1,9 +1,10 @@
 import { IconClick, IconMoon, IconSun } from '@tabler/icons';
 
-// Theme switching images
 import imageHomeLight from '../images/home-light-min.png';
 
-export default [
+import { HelpTopicItem } from '..';
+
+const items: HelpTopicItem[] = [
   {
     icon: IconClick,
     content: (
@@ -15,3 +16,5 @@ export default [
     image: imageHomeLight,
   },
 ];
+
+export default items;

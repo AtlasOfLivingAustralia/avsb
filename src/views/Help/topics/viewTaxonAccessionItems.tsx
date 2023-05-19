@@ -1,20 +1,19 @@
 import { Code } from '@mantine/core';
 import { IconClick, IconEye } from '@tabler/icons';
 
-// Accession images
 import imageAccessions from '../images/taxon-accessions-min.png';
 import imageAccessionsExpanded from '../images/taxon-accessions-expanded-min.png';
 import imageAccessionsResults from '../images/taxon-accessions-results-min.png';
 import imageAccessionsFullHover from '../images/taxon-accessions-full-hover-min.png';
-
-// Accession details images
 import imageAccessionsDetails from '../images/taxon-accessions-details-min.png';
 import imageAccessionsDetailsMap from '../images/taxon-accessions-details-map-min.png';
 import imageAccessionsDetailsBottom from '../images/taxon-accessions-details-bottom-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 
-export default [
+import { HelpTopicItem } from '..';
+
+const items: HelpTopicItem[] = [
   ...gotoTaxonItems,
   {
     icon: IconClick,
@@ -91,3 +90,5 @@ export default [
     image: imageAccessionsDetailsBottom,
   },
 ];
+
+export default items;

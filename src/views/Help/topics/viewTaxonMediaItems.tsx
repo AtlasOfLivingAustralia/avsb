@@ -1,13 +1,14 @@
 import { Code } from '@mantine/core';
 import { IconClick } from '@tabler/icons';
 
-// Taxon media images
 import imageMedia from '../images/taxon-media-min.png';
 import imageMediaSelect from '../images/taxon-media-select-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 
-export default [
+import { HelpTopicItem } from '..';
+
+const items: HelpTopicItem[] = [
   ...gotoTaxonItems,
   {
     icon: IconClick,
@@ -26,3 +27,5 @@ export default [
     image: imageMediaSelect,
   },
 ];
+
+export default items;

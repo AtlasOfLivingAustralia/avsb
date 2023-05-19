@@ -1,10 +1,7 @@
 import { Code } from '@mantine/core';
 import { IconClick, IconEye } from '@tabler/icons';
 
-// Accession images
 import imageAccessions from '../images/taxon-accessions-min.png';
-
-// Filtering images
 import imageFiltersHover from '../images/taxon-filters-hover-min.png';
 import imageFilters from '../images/taxon-filters-min.png';
 import imageFiltersAbc from '../images/taxon-filters-abc-min.png';
@@ -12,7 +9,9 @@ import imageFiltersActive from '../images/taxon-filters-active-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 
-export default [
+import { HelpTopicItem } from '..';
+
+const items: HelpTopicItem[] = [
   ...gotoTaxonItems,
   {
     icon: IconClick,
@@ -62,3 +61,5 @@ export default [
     image: imageFiltersActive,
   },
 ];
+
+export default items;

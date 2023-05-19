@@ -1,3 +1,4 @@
+// Export each collection of 'slides' for each help topic
 export { default as viewSeedbankItems } from './viewSeedbankItems';
 export { default as viewTaxonSummaryItems } from './viewTaxonSummaryItems';
 export { default as viewTaxonAccessionItems } from './viewTaxonAccessionItems';

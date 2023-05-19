@@ -1,11 +1,12 @@
 import { Code, Kbd } from '@mantine/core';
 import { IconClick, IconMouse } from '@tabler/icons';
 
-// Taxon search images
 import imageHomeSearch from '../images/home-search-min.png';
 import imageHomeSearchSelect from '../images/home-search-select-min.png';
 
-export default [
+import { HelpTopicItem } from '..';
+
+const items: HelpTopicItem[] = [
   {
     icon: IconMouse,
     content: (
@@ -27,3 +28,5 @@ export default [
     image: imageHomeSearchSelect,
   },
 ];
+
+export default items;

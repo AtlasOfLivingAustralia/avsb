@@ -1,15 +1,14 @@
 import { Code } from '@mantine/core';
 import { IconClick, IconDownload } from '@tabler/icons';
 
-// Accession images
-import imageAccessions from '../images/taxon-accessions-min.png';
-
-// Downloads images
-import imageDownload from '../images/taxon-download-min.png';
-
 import gotoTaxonItems from './gotoTaxonItems';
 
-export default [
+import imageAccessions from '../images/taxon-accessions-min.png';
+import imageDownload from '../images/taxon-download-min.png';
+
+import { HelpTopicItem } from '..';
+
+const items: HelpTopicItem[] = [
   ...gotoTaxonItems,
   {
     icon: IconClick,
@@ -31,3 +30,5 @@ export default [
     image: imageDownload,
   },
 ];
+
+export default items;

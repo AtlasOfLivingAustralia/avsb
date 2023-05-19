@@ -1,13 +1,14 @@
 import { Code } from '@mantine/core';
 import { IconClick } from '@tabler/icons';
 
-// Sequences images
 import imageSequences from '../images/taxon-sequences-min.png';
 import imageSequencesHover from '../images/taxon-sequences-hover-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 
-export default [
+import { HelpTopicItem } from '..';
+
+const items: HelpTopicItem[] = [
   ...gotoTaxonItems,
   {
     icon: IconClick,
@@ -25,3 +26,5 @@ export default [
     image: imageSequencesHover,
   },
 ];
+
+export default items;

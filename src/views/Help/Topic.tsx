@@ -13,6 +13,8 @@ function Topic({ instructions }: TopicProps) {
   const [embla, setEmbla] = useState<Embla | null>(null);
   const { content, icon: Icon } = instructions[slide];
 
+  // Delay the slide offset calculation to compensate
+  // for the modal opening animation
   useAnimationOffsetEffect(embla, 200);
 
   return (

@@ -1,14 +1,15 @@
 import { Code } from '@mantine/core';
 import { IconClick, IconEye } from '@tabler/icons';
 
-// Trial images
 import imageTrials from '../images/taxon-trials-min.png';
 import imageTrialsExpanded from '../images/taxon-trials-expanded-min.png';
 import imageTrialsResults from '../images/taxon-trials-results-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 
-export default [
+import { HelpTopicItem } from '..';
+
+const items: HelpTopicItem[] = [
   ...gotoTaxonItems,
   {
     icon: IconClick,
@@ -51,3 +52,5 @@ export default [
     image: imageTrialsResults,
   },
 ];
+
+export default items;

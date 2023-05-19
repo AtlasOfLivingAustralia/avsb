@@ -1,11 +1,12 @@
 import { IconEye } from '@tabler/icons';
 
-// Taxon summary images
 import imageTaxonSummary from '../images/taxon-summary-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 
-export default [
+import { HelpTopicItem } from '..';
+
+const items: HelpTopicItem[] = [
   ...gotoTaxonItems,
   {
     icon: IconEye,
@@ -23,3 +24,5 @@ export default [
     image: imageTaxonSummary,
   },
 ];
+
+export default items;
