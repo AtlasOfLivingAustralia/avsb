@@ -4,13 +4,19 @@ import { useEffect, useRef, useState } from 'react';
 import { ActionIcon, ColorScheme, Tooltip, useMantineTheme } from '@mantine/core';
 import { IconMaximize } from '@tabler/icons';
 import { useParams } from 'react-router-dom';
+
+// Mapbox
 import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Project-imports
 import { getMapLayer, getWktFromGeohash } from '#/helpers';
 import { useGQLQuery } from '#/api';
 import queries from '#/api/queries';
 import ItemList from './components/ItemList';
+
+// Initialize MapBox
+mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_TOKEN;
 
 interface MapPoint {
   geohash: string | null;

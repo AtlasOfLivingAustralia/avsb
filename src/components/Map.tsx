@@ -2,7 +2,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { ColorScheme, useMantineTheme } from '@mantine/core';
+
+// Mapbox
 import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
+mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_TOKEN;
 
 interface MapProps {
   width?: string | number;

@@ -6,7 +6,6 @@ import { TaxonSearchInput } from '#/components';
 
 // Debug views
 import DebugGQL from './components/DebugGQL';
-import DebugMap from './components/DebugMap';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
@@ -55,12 +54,6 @@ export function Component() {
             accession='CANB 801450.6'
             taxon='https://id.biodiversity.org.au/node/apni/2920720'
           /> */}
-        </Accordion.Panel>
-      </Accordion.Item>
-      <Accordion.Item value='map'>
-        <Accordion.Control>Map</Accordion.Control>
-        <Accordion.Panel>
-          <DebugMap />
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>

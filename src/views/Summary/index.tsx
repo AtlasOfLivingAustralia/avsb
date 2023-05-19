@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Fragment } from 'react';
+import { Suspense, Fragment } from 'react';
 import { useLoaderData, useRouteLoaderData } from 'react-router-dom';
+
 import {
   Text,
   Card,
@@ -15,12 +16,9 @@ import {
   Alert,
   ThemeIcon,
   DefaultMantineColor,
+  Skeleton,
 } from '@mantine/core';
 
-// Project imports
-import { EventMap } from '#/components';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { Taxon } from '#/api/sources/taxon';
 import {
   IconAlertCircle,
   IconAlertOctagon,
@@ -31,6 +29,13 @@ import {
   IconX,
   TablerIcon,
 } from '@tabler/icons';
+
+// Project imports
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { Taxon } from '#/api/sources/taxon';
+import { EventMap } from '#/components';
+
+// const EventMap = lazy(() => import('#/components/EventMap'));
 
 const conservationDetails: { [key: string]: { color: DefaultMantineColor; icon: TablerIcon } } = {
   extinct: {
@@ -79,7 +84,9 @@ export function Component() {
           color: theme.colorScheme === 'dark' ? theme.colors.gray[7] : theme.colors.dark[8],
         }}
       >
-        <EventMap width='100%' height={650} token={token} itemListHeight={180} />
+        <Suspense fallback={<Skeleton w='100%' h={650} />}>
+          <EventMap width='100%' height={650} token={token} itemListHeight={180} />
+        </Suspense>
       </Modal>
       <Grid>
         {Object.keys(taxon.conservationStatuses).length > 0 && (
@@ -112,13 +119,15 @@ export function Component() {
           </Grid.Col>
         )}
         <Grid.Col sm={7} md={8} lg={9}>
-          <EventMap
-            onFullscreen={open}
-            width='100%'
-            height={450}
-            token={token}
-            itemListHeight={180}
-          />
+          <Suspense fallback={<Skeleton w='100%' height={450} />}>
+            <EventMap
+              onFullscreen={open}
+              width='100%'
+              height={450}
+              token={token}
+              itemListHeight={180}
+            />
+          </Suspense>
           <Alert
             title='Accession Map'
             icon={<IconMap />}

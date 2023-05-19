@@ -1,8 +1,8 @@
-import mapboxgl from 'mapbox-gl';
+import { AnyLayer } from 'mapbox-gl';
 
 const mapColors = ['#fed976', '#fd8d3c', '#F7642E', '#f03b20', '#bd0026'];
 
-export default function getLayerConfig(tile: string): mapboxgl.AnyLayer {
+export default function getLayerConfig(tile: string): AnyLayer {
   return {
     id: 'events',
     type: 'circle',

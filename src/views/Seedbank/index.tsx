@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import {
   Alert,
   Anchor,
@@ -18,7 +18,7 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
+
 import {
   IconChevronDown,
   IconChevronUp,
@@ -29,13 +29,19 @@ import {
   IconLicense,
   IconMap,
 } from '@tabler/icons';
-import { useLoaderData, useParams } from 'react-router-dom';
 
+import { useLoaderData, useParams } from 'react-router-dom';
+import { useMediaQuery } from '@mantine/hooks';
+
+// Project imports
 import { DataResource, EventSearchResult } from '#/api';
 import { Contact, EventMap } from '#/components';
 import { Wave } from '#/components/Wave';
 
+// Component imports
 import SpeciesList from './components/SpeciesList';
+
+// const EventMap = lazy(() => import('#/components/EventMap'));
 
 interface SeedbankRouteData {
   gql: {
@@ -205,7 +211,9 @@ export function Component() {
             <Divider variant='dashed' />
           </Grid.Col>
           <Grid.Col xl={8} lg={8} md={12} sm={12} xs={12}>
-            <EventMap width='100%' height={450} token={token} />
+            <Suspense fallback={<Skeleton w='100%' h={450} />}>
+              <EventMap width='100%' height={450} token={token} />
+            </Suspense>
             <Alert
               title='Accession Map'
               icon={<IconMap />}
@@ -233,3 +241,6 @@ export function Component() {
     </>
   );
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Component as any).displayName = 'Seedbank';

@@ -1,3 +1,4 @@
+import { Suspense, lazy } from 'react';
 import {
   Box,
   Paper,
@@ -14,6 +15,7 @@ import {
   Spoiler,
   Divider,
   Alert,
+  Skeleton,
 } from '@mantine/core';
 import {
   IconAlertTriangle,
@@ -34,15 +36,17 @@ import { Event, SeedBankAccession } from '#/api/graphql/types';
 import { getIsPresent, accessionFields } from '#/helpers';
 
 // Local imports
+import Map from '../Map';
 import Contact from '../Contact';
 import HerbariumLink from './components/HerbariumLink';
-import Map from '../Map';
 import IconText from '../IconText';
 import MeasurementCard from '../MeasurementCard';
 import TrialSummary from './components/TrialSummary';
 
 import { fields, longFields } from './fields';
 import FieldTooltip from '../FieldTooltip';
+
+// const Map = lazy(() => import('../Map'));
 
 interface AccessionPanelProps {
   taxon?: string;
@@ -189,11 +193,13 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
       <Grid.Col sm={8} md={8} lg={8}>
         <Paper h='100%' withBorder>
           {accessionEvent.decimalLatitude && accessionEvent.decimalLongitude && (
-            <Map
-              width='100%'
-              height={350}
-              center={[accessionEvent.decimalLongitude, accessionEvent.decimalLatitude]}
-            />
+            <Suspense fallback={<Skeleton w='100%' h={350} />}>
+              <Map
+                width='100%'
+                height={350}
+                center={[accessionEvent.decimalLongitude, accessionEvent.decimalLatitude]}
+              />
+            </Suspense>
           )}
           <Stack spacing='xs' p='md'>
             <Stack spacing='xs' mb='xs'>
