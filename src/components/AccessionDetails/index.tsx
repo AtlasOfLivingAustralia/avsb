@@ -3,9 +3,9 @@ import { useLoaderData } from 'react-router-dom';
 import { IconMapPin } from '@tabler/icons';
 
 // Project imports
-import { Event, SeedBankAccession } from '#/api/graphql/types';
-import { getIsPresent } from '#/helpers';
-import { accessionFields } from '#/helpers/fields';
+import { Event, SeedBankAccession } from '#/api';
+import { getIsPresent, accessionFields } from '#/helpers';
+
 import fields from './fields';
 import FieldTooltip from '../FieldTooltip';
 import IconText from '../IconText';

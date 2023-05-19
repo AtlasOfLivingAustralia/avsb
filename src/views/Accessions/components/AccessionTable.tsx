@@ -27,8 +27,7 @@ import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
 import { AccessionDetails, FieldTooltip } from '#/components';
-import { accessionFields } from '#/helpers/fields';
-import { getIsPresent } from '#/helpers';
+import { getIsPresent, accessionFields } from '#/helpers';
 
 interface ThTooltipProps<T> {
   style?: CSSProperties;
@@ -158,7 +157,8 @@ function AccessionTable({ events }: AccessionTableProps) {
                         new Date(accession?.dateCollected || 0).toLocaleDateString()}
                     </td>
                     <td>
-                      {getIsPresent(accession?.quantityCount) && `${accession?.quantityCount} seeds`}
+                      {getIsPresent(accession?.quantityCount) &&
+                        `${accession?.quantityCount} seeds`}
                     </td>
                     <td>
                       {getIsPresent(accession?.purityPercentage) &&

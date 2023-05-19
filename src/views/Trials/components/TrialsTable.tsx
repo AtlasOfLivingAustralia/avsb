@@ -29,8 +29,7 @@ import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
 import { FieldTooltip, TrialDetails } from '#/components';
-import { getIsPresent } from '#/helpers';
-import { trialFields } from '#/helpers/fields';
+import { getIsPresent, trialFields } from '#/helpers';
 
 const useStyles = createStyles((theme) => ({
   header: {

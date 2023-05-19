@@ -2,8 +2,7 @@ import { Box, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
 import { IconNotes } from '@tabler/icons';
 
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
-import { getIsPresent } from '#/helpers';
-import { trialFields } from '#/helpers/fields';
+import { getIsPresent, trialFields } from '#/helpers';
 
 import IconText from '../IconText';
 import TreatmentCard from '../TreatmentCard';

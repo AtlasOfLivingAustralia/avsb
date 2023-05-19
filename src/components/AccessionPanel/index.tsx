@@ -31,8 +31,7 @@ import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 
 // Project imports
 import { Event, SeedBankAccession } from '#/api/graphql/types';
-import { accessionFields } from '#/helpers/fields';
-import { getIsPresent } from '#/helpers';
+import { getIsPresent, accessionFields } from '#/helpers';
 
 // Local imports
 import Contact from '../Contact';

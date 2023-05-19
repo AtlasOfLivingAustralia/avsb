@@ -1,8 +1,7 @@
 import { Box, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
 import { Event, SeedBankTreatment } from '#/api/graphql/types';
 import { IconFileDescription } from '@tabler/icons';
-import { treatmentFields } from '#/helpers/fields';
-import { getIsPresent } from '#/helpers';
+import { getIsPresent, treatmentFields } from '#/helpers';
 
 import IconText from '../IconText';
 import fields from './fields';

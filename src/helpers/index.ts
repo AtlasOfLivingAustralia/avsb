@@ -6,3 +6,4 @@ export { default as getShortInt } from './getShortInt';
 export { default as mapTrialTreatments } from './mapTrialTreatments';
 export { default as useMounted } from './useMounted';
 export { getWktFromGeohash, getBboxFromFeature } from './getWktFromGeohash';
+export * from './fieldDefinitions';
