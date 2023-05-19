@@ -17,6 +17,11 @@ function TreatmentCard({ event }: TreatmentCardProps) {
 
   return (
     <>
+      {event.eventRemarks && (
+        <IconText mb='xs' labelWidth={130} icon={IconFileDescription} title='Description'>
+          {event.eventRemarks || 'Not Supplied'}
+        </IconText>
+      )}
       <FieldTooltip
         label={pretreatmentField.label}
         description={pretreatmentField.description}
@@ -24,11 +29,6 @@ function TreatmentCard({ event }: TreatmentCardProps) {
         Icon={pretreatmentField.icon}
       >
         <Box>
-          {event.eventRemarks && (
-            <IconText mb='xs' labelWidth={130} icon={IconFileDescription} title='Description'>
-              {event.eventRemarks || 'Not Supplied'}
-            </IconText>
-          )}
           <IconText labelWidth={130} icon={pretreatmentField.icon} title={pretreatmentField.label}>
             {treatment.pretreatment || 'Not Supplied'}
           </IconText>
