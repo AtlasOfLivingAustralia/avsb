@@ -5,21 +5,9 @@ import range from 'lodash/range';
 
 // Project components / helpers
 import { Await, useLoaderData } from 'react-router-dom';
+import { SequenceRecord, SequenceResult } from '#/api';
 
 import SequenceItem from './components/SequenceItem';
-
-export interface SequenceRecord {
-  title: string;
-  description: string;
-  furtherDescription: string;
-  link: string;
-}
-
-export interface SequenceResult {
-  total: string;
-  resultsUrl: string;
-  results: SequenceRecord[];
-}
 
 interface SequencesLoaderData {
   sequences: Promise<SequenceResult>;

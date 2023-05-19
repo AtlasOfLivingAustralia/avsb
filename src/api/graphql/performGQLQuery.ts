@@ -25,4 +25,4 @@ async function performGQLQuery<T = any>(query: string, variables?: Variables) {
 }
 
 export type { Variables };
-export { performGQLQuery };
+export default performGQLQuery;

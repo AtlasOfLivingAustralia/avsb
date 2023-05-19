@@ -3,11 +3,11 @@ import { PropsWithChildren, useMemo } from 'react';
 import APIContext from './APIContext';
 
 // API sources
-import apiTaxon from './sources/taxon';
+import taxon from './sources/taxon';
 
 function APIProvider({ children }: PropsWithChildren) {
   // const auth = useAuth();
-  const value = useMemo(() => ({ taxon: apiTaxon() }), []);
+  const value = useMemo(() => ({ taxon }), []);
   return <APIContext.Provider value={value}>{children}</APIContext.Provider>;
 }
 

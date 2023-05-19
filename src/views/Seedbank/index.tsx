@@ -31,33 +31,11 @@ import {
 } from '@tabler/icons';
 import { useLoaderData, useParams } from 'react-router-dom';
 
-import { EventSearchResult } from '#/api/graphql/types';
+import { DataResource, EventSearchResult } from '#/api';
 import { Contact, EventMap } from '#/components';
 import { Wave } from '#/components/Wave';
 
 import SpeciesList from './components/SpeciesList';
-
-interface CollectoryDataResource {
-  name: string | null;
-  acronym: string | null;
-  pubShortDescription: string | null;
-  pubDescription: string | null;
-  websiteUrl: string | null;
-  alaPublicUrl: string | null;
-  logoRef: {
-    uri: string | null;
-  };
-  institution: {
-    name: string | null;
-    uri: string | null;
-    uid: string | null;
-  };
-  dateCreated: string | null;
-  lastUpdated: string | null;
-  licenseType: string | null;
-  licenseVersion: string | null;
-  citation: string | null;
-}
 
 interface SeedbankRouteData {
   gql: {
@@ -65,7 +43,7 @@ interface SeedbankRouteData {
     accessions: EventSearchResult;
     trials: EventSearchResult;
   };
-  collectory: CollectoryDataResource;
+  collectory: DataResource;
 }
 
 function Seedbank() {

@@ -1,10 +1,10 @@
 import { createContext } from 'react';
 
 // API sources
-import apiTaxon from './sources/taxon';
+import taxon from './sources/taxon';
 
 interface APIState {
-  taxon: ReturnType<typeof apiTaxon>;
+  taxon: typeof taxon;
 }
 
-export default createContext<APIState>({ taxon: apiTaxon() });
+export default createContext<APIState>({ taxon });

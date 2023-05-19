@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider, redirect, defer } from 'react-router-dom';
 import { AccessionPanel, ErrorBoundary } from '#/components';
-import { performGQLQuery, gqlQueries } from './api';
+import { performGQLQuery, gqlQueries, taxonAPI, collectoryAPI, genbankAPI } from './api';
+
 import {
   DashboardView,
   HomeView,
@@ -14,10 +15,9 @@ import {
   SeedbankView,
   HelpView,
 } from './views';
-import queries from './api/queries';
+
 import { Event } from './api/graphql/types';
 import { mapTrialTreatments } from './helpers';
-import { Taxon } from './api/sources/taxon';
 
 const routes = createBrowserRouter([
   {
@@ -34,26 +34,21 @@ const routes = createBrowserRouter([
         element: <SeedbankView />,
         loader: async ({ params }) => {
           const [collectory, gql] = await Promise.all([
-            fetch(`${import.meta.env.VITE_API_COLLECTORY}/dataResource/${params.id}`),
+            collectoryAPI.dataResource(params.id || ''),
             performGQLQuery(gqlQueries.QUERY_SEEDBANK_SUMMARY_FULL, {
               datasetKey: params.id,
               size: 50,
             }),
           ]);
 
-          return { gql: gql.data, collectory: await collectory.json() };
+          return { gql: gql.data, collectory };
         },
       },
       {
         id: 'taxon',
         path: 'taxon/:guid',
         element: <TaxonView />,
-        loader: async ({ params }) =>
-          (
-            await fetch(
-              `${import.meta.env.VITE_API_BIE}/ws/taxon/${decodeURIComponent(params.guid || '')}`,
-            )
-          ).json(),
+        loader: async ({ params }) => taxonAPI.info(params.guid || ''),
         children: [
           {
             path: 'summary',
@@ -63,7 +58,7 @@ const routes = createBrowserRouter([
                 predicate: {
                   type: 'and',
                   predicates: [
-                    queries.PRED_DATA_RESOURCE,
+                    gqlQueries.PRED_DATA_RESOURCE,
                     {
                       type: 'in',
                       key: 'taxonKey',
@@ -91,7 +86,7 @@ const routes = createBrowserRouter([
                 predicate: {
                   type: 'and',
                   predicates: [
-                    queries.PRED_DATA_RESOURCE,
+                    gqlQueries.PRED_DATA_RESOURCE,
                     {
                       type: 'in',
                       key: 'taxonKey',
@@ -143,7 +138,7 @@ const routes = createBrowserRouter([
                 predicate: {
                   type: 'and',
                   predicates: [
-                    queries.PRED_DATA_RESOURCE,
+                    gqlQueries.PRED_DATA_RESOURCE,
                     {
                       type: 'equals',
                       key: 'eventType',
@@ -170,7 +165,7 @@ const routes = createBrowserRouter([
                   predicate: {
                     type: 'and',
                     predicates: [
-                      queries.PRED_DATA_RESOURCE,
+                      gqlQueries.PRED_DATA_RESOURCE,
                       {
                         type: 'equals',
                         key: 'eventType',
@@ -207,37 +202,16 @@ const routes = createBrowserRouter([
                 from: 0,
               });
 
-              console.log(data);
-
               return data?.taxonMedia || null;
             },
           },
           {
             path: 'sequences',
             element: <SequencesView />,
-            loader: async ({ params }) => {
-              async function fetchSequences() {
-                const taxon = (await (
-                  await fetch(
-                    `${import.meta.env.VITE_API_BIE}/ws/species/${decodeURIComponent(
-                      params.guid || '',
-                    )}`,
-                  )
-                ).json()) as Taxon;
-
-                return (
-                  await fetch(
-                    `${import.meta.env.VITE_API_BIE}/externalSite/genbank?s=${
-                      taxon.classification.scientificName
-                    }`,
-                  )
-                ).json();
-              }
-
-              return defer({
-                sequences: fetchSequences(),
-              });
-            },
+            loader: async ({ params }) =>
+              defer({
+                sequences: genbankAPI.sequences(params.guid || ''),
+              }),
           },
           {
             path: '*',

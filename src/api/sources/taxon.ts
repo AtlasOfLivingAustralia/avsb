@@ -171,13 +171,13 @@ interface Taxon {
   conservationStatuses: ConservationStatuses;
 }
 
-async function taxonInfo(guid: string): Promise<Taxon> {
-  return (await fetch(`${import.meta.env.VITE_API_BIE}/ws/species/${guid}`)).json();
+async function info(guid: string): Promise<Taxon> {
+  return (await fetch(`${import.meta.env.VITE_API_BIE}/ws/taxon/${guid}`)).json();
 }
 
-export default () => ({
+export default {
   suggest,
-  taxonInfo,
-});
+  info,
+};
 
-export type { Taxon };
+export type { SuggestedTaxon, Taxon };

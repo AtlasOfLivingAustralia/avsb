@@ -5,4 +5,15 @@ export { default as useAPI } from './useAPI';
 // GraphQL query exports
 export { default as gqlQueries } from './queries';
 export { default as useGQLQuery } from './graphql/useGQLQuery';
-export { performGQLQuery } from './graphql/performGQLQuery';
+export { default as performGQLQuery } from './graphql/performGQLQuery';
+
+// Standalone source & queries exports
+export { default as collectoryAPI } from './sources/collectory';
+export { default as genbankAPI } from './sources/genbank';
+export { default as taxonAPI } from './sources/taxon';
+
+// Types
+export * from './sources/collectory';
+export * from './sources/genbank';
+export * from './sources/taxon';
+export * from './graphql/types';
