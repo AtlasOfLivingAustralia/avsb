@@ -17,7 +17,8 @@ import { IconCopy, IconDotsVertical, IconExternalLink } from '@tabler/icons';
 import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { Taxon as TaxonType } from '#/api/sources/taxon';
 
-function Taxon() {
+// eslint-disable-next-line import/prefer-default-export
+export function Component() {
   const { pathname } = useLocation();
   const data = useLoaderData() as TaxonType;
   const navigate = useNavigate();
@@ -106,4 +107,5 @@ function Taxon() {
   );
 }
 
-export default Taxon;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Component as any).displayName = 'Taxon';

@@ -84,7 +84,8 @@ const imageProperties: ImageProperty[] = [
   },
 ];
 
-function Media() {
+// eslint-disable-next-line import/prefer-default-export
+export function Component() {
   const [media /* , setMedia */] = useState<MediaItem[] | null>(useLoaderData() as MediaItem[]);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(media?.[0] || null);
   const [selectedLoaded, setSelectedLoaded] = useState<boolean>(false);
@@ -208,4 +209,5 @@ function Media() {
   );
 }
 
-export default Media;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Component as any).displayName = 'Media';

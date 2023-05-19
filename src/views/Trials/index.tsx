@@ -14,7 +14,8 @@ import TrialsTable from './components/TrialsTable';
 import filters from './filters';
 import downloadFields from './downloadFields';
 
-function Trials() {
+// eslint-disable-next-line import/prefer-default-export
+export function Component() {
   // State hooks
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -170,4 +171,5 @@ function Trials() {
   );
 }
 
-export default Trials;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Component as any).displayName = 'Trials';

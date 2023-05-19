@@ -59,7 +59,8 @@ const conservationDetails: { [key: string]: { color: DefaultMantineColor; icon: 
   },
 };
 
-function Summary() {
+// eslint-disable-next-line import/prefer-default-export
+export function Component() {
   const [mapOpen, { open, close }] = useDisclosure(false);
   const token = useLoaderData() as string;
   const taxon = useRouteLoaderData('taxon') as Taxon;
@@ -192,4 +193,5 @@ function Summary() {
   );
 }
 
-export default Summary;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Component as any).displayName = 'Summary';

@@ -18,7 +18,8 @@ import AccessionTable from './components/AccessionTable';
 import filters from './filters';
 import downloadFields from './downloadFields';
 
-function Accessions() {
+// eslint-disable-next-line import/prefer-default-export
+export function Component() {
   // State hooks
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -119,4 +120,5 @@ function Accessions() {
   );
 }
 
-export default Accessions;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Component as any).displayName = 'Accessions';

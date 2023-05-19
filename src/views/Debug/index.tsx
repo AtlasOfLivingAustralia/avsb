@@ -8,7 +8,8 @@ import { TaxonSearchInput } from '#/components';
 import DebugGQL from './components/DebugGQL';
 import DebugMap from './components/DebugMap';
 
-function Debug() {
+// eslint-disable-next-line import/prefer-default-export
+export function Component() {
   const [taxonSearch, setTaxonSearch] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -66,4 +67,5 @@ function Debug() {
   );
 }
 
-export default Debug;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Component as any).displayName = 'Debug';

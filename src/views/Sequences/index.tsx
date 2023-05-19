@@ -13,7 +13,8 @@ interface SequencesLoaderData {
   sequences: Promise<SequenceResult>;
 }
 
-function Sequences() {
+// eslint-disable-next-line import/prefer-default-export
+export function Component() {
   const { sequences } = useLoaderData() as SequencesLoaderData;
 
   return (
@@ -78,4 +79,5 @@ function Sequences() {
   );
 }
 
-export default Sequences;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Component as any).displayName = 'Sequences';

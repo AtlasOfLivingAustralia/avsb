@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Box, Image, Paper, Text, ThemeIcon, rem } from '@mantine/core';
 import { Carousel, Embla, useAnimationOffsetEffect } from '@mantine/carousel';
 
-import { HelpTopicItem } from '.';
+import { HelpTopicItem } from '..';
 
 interface TopicProps {
   instructions: HelpTopicItem[];

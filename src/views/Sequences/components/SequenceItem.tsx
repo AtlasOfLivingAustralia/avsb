@@ -1,3 +1,4 @@
+import { SequenceRecord } from '#/api';
 import {
   Badge,
   Card,
@@ -12,7 +13,6 @@ import {
 
 // Project components / helpers
 import { IconExternalLink } from '@tabler/icons';
-import { SequenceRecord } from '..';
 
 const useStyles = createStyles((theme) => ({
   card: {

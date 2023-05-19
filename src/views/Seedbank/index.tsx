@@ -46,7 +46,8 @@ interface SeedbankRouteData {
   collectory: DataResource;
 }
 
-function Seedbank() {
+// eslint-disable-next-line import/prefer-default-export
+export function Component() {
   const [logoLoaded, setLogoLoaded] = useState<boolean>(false);
   const { gql, collectory } = useLoaderData() as SeedbankRouteData;
   const { eventSearch, accessions, trials } = gql;
@@ -232,5 +233,3 @@ function Seedbank() {
     </>
   );
 }
-
-export default Seedbank;
