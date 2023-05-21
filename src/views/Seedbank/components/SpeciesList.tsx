@@ -8,11 +8,14 @@ import {
   TextInput,
   ThemeIcon,
   Tooltip,
+  UnstyledButton,
 } from '@mantine/core';
 import { FixedSizeList } from 'react-window';
-import { IconDownload, IconSearch } from '@tabler/icons';
+import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons';
 import { useDebouncedValue } from '@mantine/hooks';
 import { saveAs } from 'file-saver';
+import { taxonAPI } from '#/api';
+import { useNavigate } from 'react-router-dom';
 
 type SpeciesFacet = { key: string; count: number };
 
@@ -28,15 +31,37 @@ interface SpeciesRow {
 }
 
 function Row({ index, style, data }: SpeciesRow) {
+  const navigate = useNavigate();
+
+  const handleRowClick = async () => {
+    const [suggest] = await taxonAPI.suggest(data[index].key);
+    if (suggest) navigate(`/taxon/${encodeURIComponent(suggest.guid)}`);
+  };
+
   return (
-    <Group style={style} key={index} position='apart'>
-      <Text size='sm'>{data[index].key}</Text>
-      <ThemeIcon variant='light' size='lg' radius='lg' mr='sm'>
-        <Text weight='bold' size='xs'>
-          {data[index].count}
-        </Text>
-      </ThemeIcon>
-    </Group>
+    <UnstyledButton
+      onClick={handleRowClick}
+      key={index}
+      style={style}
+      sx={{
+        transition: 'opacity cubic-bezier(0, 0, 0, 1) 200ms',
+        ':hover': {
+          opacity: 0.4,
+        },
+      }}
+    >
+      <Group position='apart'>
+        <Text size='sm'>{data[index].key}</Text>
+        <Group spacing='xs' mr='sm'>
+          <ThemeIcon variant='light' size='lg' radius='lg'>
+            <Text weight='bold' size='xs'>
+              {data[index].count}
+            </Text>
+          </ThemeIcon>
+          <IconArrowUpRight size='1rem' />
+        </Group>
+      </Group>
+    </UnstyledButton>
   );
 }
 

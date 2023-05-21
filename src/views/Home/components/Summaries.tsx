@@ -28,7 +28,7 @@ const useStyles = createStyles((theme) => ({
     padding: theme.spacing.md,
     boxShadow: theme.shadows.md,
     ':hover': {
-      opacity: 0.5,
+      opacity: 0.4,
     },
     [`&:hover .${getStylesRef('arrow')}`]: {
       transform: 'translate(6px, -6px)',

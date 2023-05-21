@@ -26,6 +26,7 @@ import {
   IconExternalLink,
   IconFlag,
   IconMap,
+  IconQuestionMark,
   IconX,
   TablerIcon,
 } from '@tabler/icons';
@@ -37,31 +38,51 @@ import { EventMap } from '#/components';
 
 // const EventMap = lazy(() => import('#/components/EventMap'));
 
-const conservationDetails: { [key: string]: { color: DefaultMantineColor; icon: TablerIcon } } = {
-  extinct: {
-    color: 'dark',
-    icon: IconX,
-  },
-  'locally extinct': {
-    color: 'dark',
-    icon: IconX,
-  },
-  'critically endangered': {
-    color: 'red',
-    icon: IconAlertOctagon,
-  },
-  endangered: {
-    color: 'orange',
-    icon: IconAlertTriangle,
-  },
-  vulnerable: {
-    color: 'yellow',
-    icon: IconAlertCircle,
-  },
-  'near threatened': {
-    color: 'yellow',
-    icon: IconFlag,
-  },
+const getConservationDetails = (
+  status: string,
+): { color: DefaultMantineColor; icon: TablerIcon } => {
+  switch (status.toLowerCase()) {
+    case 'extinct':
+      return {
+        color: 'dark',
+        icon: IconX,
+      };
+    case 'locally extinct':
+      return {
+        color: 'dark',
+        icon: IconX,
+      };
+    case 'critically endangered':
+      return {
+        color: 'red',
+        icon: IconAlertOctagon,
+      };
+    case 'endangered':
+      return {
+        color: 'orange',
+        icon: IconAlertTriangle,
+      };
+    case 'rare':
+      return {
+        color: 'orange',
+        icon: IconAlertTriangle,
+      };
+    case 'vulnerable':
+      return {
+        color: 'yellow',
+        icon: IconAlertCircle,
+      };
+    case 'near threatened':
+      return {
+        color: 'yellow',
+        icon: IconFlag,
+      };
+    default:
+      return {
+        color: 'red',
+        icon: IconQuestionMark,
+      };
+  }
 };
 
 // eslint-disable-next-line import/prefer-default-export
@@ -101,7 +122,7 @@ export function Component() {
               {mdOrLarger && <Divider orientation='vertical' mx='xs' />}
               <Group>
                 {Object.entries(taxon.conservationStatuses).map(([key, { status }]) => {
-                  const { color } = conservationDetails[status.toLowerCase()];
+                  const { color } = getConservationDetails(status);
 
                   return (
                     <Group key={key} spacing='sm'>
