@@ -19,7 +19,7 @@ const items: HelpTopicItem[] = [
     icon: IconClick,
     content: (
       <>
-        Click on the <Code>Accessions</Code> tab to navigate to the accessions tab
+        Click on the <Code>Accessions</Code> tab to see a list of accessions for that taxon
       </>
     ),
     image: imageAccessions,
@@ -86,7 +86,7 @@ const items: HelpTopicItem[] = [
   {
     icon: IconEye,
     content:
-      'The bottom of the page provides contact details for the data provider (and a link to their seed bank summary page), alongside as a table containing trials which are related to the chosen accession',
+      'The bottom of the page provides contact details for the data provider (and a link to their seed bank summary page), along with a table containing trials related to the selected accession',
     image: imageAccessionsDetailsBottom,
   },
 ];

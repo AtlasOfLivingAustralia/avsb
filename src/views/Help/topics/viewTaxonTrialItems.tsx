@@ -15,7 +15,7 @@ const items: HelpTopicItem[] = [
     icon: IconClick,
     content: (
       <>
-        Click on the <Code>Trials</Code> tab to navigate to the accessions tab
+        Click on the <Code>Trials</Code> tab to see a list of trials for that taxon
       </>
     ),
     image: imageTrials,
