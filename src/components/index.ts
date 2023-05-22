@@ -18,5 +18,6 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as SelectSearch } from './SelectSearch';
 export { default as Filters } from './Filters';
 export { default as Downloads } from './Downloads';
+export { default as ThField } from './ThField';
 
 export type { Filter } from './Filters/types';

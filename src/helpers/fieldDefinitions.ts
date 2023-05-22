@@ -288,4 +288,10 @@ const treatmentFields: SeedbankFieldMap = {
   },
 };
 
-export { accessionFields, trialFields, treatmentFields };
+const allFields = {
+  ...accessionFields,
+  ...trialFields,
+  ...treatmentFields,
+};
+
+export { accessionFields, trialFields, treatmentFields, allFields };

@@ -83,7 +83,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
               withBorder
               p='md'
               mt='sm'
-              key={event.eventID}
+              key={`${event.eventID}-${num + 1}`}
               sx={(theme) => ({
                 backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
               })}

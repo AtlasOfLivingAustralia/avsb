@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CSSProperties, Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import {
   Box,
@@ -28,8 +28,8 @@ import { Link, useLocation } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
-import { FieldTooltip, TrialDetails } from '#/components';
-import { getIsPresent, trialFields } from '#/helpers';
+import { TrialDetails, ThField } from '#/components';
+import { getIsPresent } from '#/helpers';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -56,23 +56,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface ThTooltipProps<T> {
-  style?: CSSProperties;
-  field: keyof T;
-}
-
-function ThTooltip({ field, style }: ThTooltipProps<SeedBankTrial>) {
-  const { icon: Icon, label, ...props } = trialFields[field];
-  return (
-    <th style={style}>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      <FieldTooltip {...{ label, Icon, ...props }}>
-        <Text>{label}</Text>
-      </FieldTooltip>
-    </th>
-  );
-}
-
 interface TrialsTableProps {
   events: Event[];
   height?: string | number;
@@ -86,23 +69,23 @@ function TrialsTable({ events, height }: TrialsTableProps) {
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
 
-  const sortedEvents = orderBy(
-    events.map((event) => {
-      const date = new Date();
-      if (event.year) date.setFullYear(event.year);
-      if (event.month) date.setMonth(event.month);
-      if (event.day) date.setDate(event.day);
+  // Sorting state
+  const [sortedData, setSortedData] = useState(events);
+  const [sortBy, setSortBy] = useState<string | null>(null);
+  const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-      date.setHours(0, 0, 0, 0);
+  // Sorting logic
+  const setSorting = (field: string, skipReverse = false) => {
+    const sortDirection = skipReverse ? reverseSortDirection : !reverseSortDirection;
+    const reversed = field === sortBy ? sortDirection : false;
 
-      return {
-        ...event,
-        eventDateTs: date.getTime(),
-      };
-    }) || [],
-    ['eventDateTs', 'extensions.seedbank.accessionNumber'],
-    ['desc'],
-  );
+    setReverseSortDirection(reversed);
+    setSortBy(field);
+    setSortedData(orderBy(events || [], [field], [reversed ? 'desc' : 'asc']));
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setSorting(sortBy || '', true), [events]);
 
   return (
     <Card withBorder p={0}>
@@ -114,24 +97,55 @@ function TrialsTable({ events, height }: TrialsTableProps) {
         <Table highlightOnHover>
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>
-              <ThTooltip style={{ paddingLeft: 25 }} field='accessionNumber' />
-              <th>Taxon</th>
-              <th>Institution</th>
-              <ThTooltip field='adjustedGerminationPercentage' />
-              <th>Treatment</th>
-              <ThTooltip field='viabilityPercentage' />
-              <ThTooltip field='testDateStarted' />
-              <ThTooltip field='testLengthInDays' />
-              {/* <th>
-              <Group spacing='xs'>
-                Tested
-                <Tooltip label='Test' withArrow position='top'>
-                  <ThemeIcon variant='light' size='xs' radius='xl'>
-                    <IconQuestionMark />
-                  </ThemeIcon>
-                </Tooltip>
-              </Group>
-            </th> */}
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.accessionNumber'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.accessionNumber')}
+                fieldKey='accessionNumber'
+              />
+              <ThField
+                sorted={sortBy === 'distinctTaxa[0].scientificName'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('distinctTaxa[0].scientificName')}
+                fieldKey='Taxon'
+              />
+              <ThField
+                sorted={sortBy === 'datasetTitle'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('datasetTitle')}
+                fieldKey='Institution'
+                style={{ maxWidth: 300 }}
+              />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.adjustedGerminationPercentage'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.adjustedGerminationPercentage')}
+                fieldKey='adjustedGerminationPercentage'
+              />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.mediaSubstrate'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.mediaSubstrate')}
+                fieldKey='mediaSubstrate'
+              />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.viabilityPercentage'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.viabilityPercentage')}
+                fieldKey='viabilityPercentage'
+              />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.testDateStarted'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.testDateStarted')}
+                fieldKey='testDateStarted'
+              />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.testLengthInDays'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.testLengthInDays')}
+                fieldKey='testLengthInDays'
+              />
               <th>
                 <Button.Group style={{ justifyContent: 'flex-end' }}>
                   <Button
@@ -161,7 +175,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 </td>
               </tr>
             )}
-            {sortedEvents.map((event) => {
+            {sortedData.map((event) => {
               const trial = event.extensions?.seedbank as SeedBankTrial;
               const [treatment] = event.treatments?.map(
                 (treatmentEvent) => treatmentEvent.extensions?.seedbank,
@@ -186,7 +200,12 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                   >
                     <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber}</td>
                     <td>{event.distinctTaxa?.[0].scientificName}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>
+                      {' '}
+                      <Text truncate maw={250}>
+                        {event?.datasetTitle}
+                      </Text>
+                    </td>
                     <td>
                       {getIsPresent(trial?.adjustedGerminationPercentage) &&
                         `${trial?.adjustedGerminationPercentage}%`}

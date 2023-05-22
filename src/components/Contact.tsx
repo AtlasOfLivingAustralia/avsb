@@ -15,6 +15,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useGQLQuery } from '#/api';
 import { Contact as ContactType } from '#/api/graphql/types';
+import { getOrgInitials } from '#/helpers';
 import queries from '#/api/queries';
 
 import IconText from './IconText';
@@ -37,15 +38,6 @@ interface DatasetQuery {
     };
   };
 }
-
-// Helper function to get the initials of an organisation string
-const getOrgInitials = (org: string) =>
-  org
-    .split(' ')
-    .map((part) => part.charAt(0))
-    .filter((part) => part === part.toUpperCase())
-    .slice(0, 3)
-    .join('');
 
 const contactItemStyle: CSSProperties = {
   marginRight: 12,
@@ -77,7 +69,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
                 ? `${contact.individualName[0].givenName?.[0].charAt(
                     0,
                   )}${contact.individualName[0].surName?.[0].charAt(0)}`
-                : getOrgInitials(contact?.organizationName?.[0] || '')}
+                : getOrgInitials(contact?.organizationName?.[0] || '', 3)}
             </Avatar>
           </Skeleton>
           <Stack spacing={6}>

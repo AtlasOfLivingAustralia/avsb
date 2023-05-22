@@ -49,12 +49,7 @@ export function Component() {
       </Accordion.Item>
       <Accordion.Item value='components'>
         <Accordion.Control>Components</Accordion.Control>
-        <Accordion.Panel>
-          {/* <HerbariumLink
-            accession='CANB 801450.6'
-            taxon='https://id.biodiversity.org.au/node/apni/2920720'
-          /> */}
-        </Accordion.Panel>
+        <Accordion.Panel />
       </Accordion.Item>
     </Accordion>
   );

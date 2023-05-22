@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CSSProperties, Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Event, SeedBankAccession } from '#/api/graphql/types';
 import {
   Box,
@@ -26,25 +26,8 @@ import { Link } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
-import { AccessionDetails, FieldTooltip } from '#/components';
-import { getIsPresent, accessionFields } from '#/helpers';
-
-interface ThTooltipProps<T> {
-  style?: CSSProperties;
-  field: keyof T;
-}
-
-function ThTooltip({ field, style }: ThTooltipProps<SeedBankAccession>) {
-  const { icon: Icon, label, ...props } = accessionFields[field];
-  return (
-    <th style={style}>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      <FieldTooltip {...{ label, Icon, ...props }}>
-        <Text>{label}</Text>
-      </FieldTooltip>
-    </th>
-  );
-}
+import { AccessionDetails, ThField } from '#/components';
+import { getIsPresent } from '#/helpers';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -81,7 +64,23 @@ function AccessionTable({ events }: AccessionTableProps) {
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
 
-  const sortedEvents = orderBy(events || [], ['extensions.seedbank.accessionNumber'], ['asc']);
+  // Sorting state
+  const [sortedData, setSortedData] = useState(events);
+  const [sortBy, setSortBy] = useState<string | null>(null);
+  const [reverseSortDirection, setReverseSortDirection] = useState(false);
+
+  // Sorting logic
+  const setSorting = (field: string, skipReverse = false) => {
+    const sortDirection = skipReverse ? reverseSortDirection : !reverseSortDirection;
+    const reversed = field === sortBy ? sortDirection : false;
+
+    setReverseSortDirection(reversed);
+    setSortBy(field);
+    setSortedData(orderBy(events || [], [field], [reversed ? 'desc' : 'asc']));
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setSorting(sortBy || '', true), [events]);
 
   return (
     <Card withBorder p={0}>
@@ -93,13 +92,48 @@ function AccessionTable({ events }: AccessionTableProps) {
         <Table highlightOnHover>
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>
-              <ThTooltip style={{ paddingLeft: 25 }} field='accessionNumber' />
-              <th>Taxon</th>
-              <th>Institution</th>
-              <ThTooltip field='dateCollected' />
-              <ThTooltip field='quantityCount' />
-              <ThTooltip field='purityPercentage' />
-              <ThTooltip field='storageTemperatureInCelsius' />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.accessionNumber'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.accessionNumber')}
+                fieldKey='accessionNumber'
+              />
+              <ThField
+                sorted={sortBy === 'distinctTaxa[0].scientificName'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('distinctTaxa[0].scientificName')}
+                fieldKey='Taxon'
+              />
+              <ThField
+                sorted={sortBy === 'datasetTitle'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('datasetTitle')}
+                fieldKey='Institution'
+              />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.dateCollected'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.dateCollected')}
+                fieldKey='dateCollected'
+              />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.quantityCount'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.quantityCount')}
+                fieldKey='quantityCount'
+              />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.purityPercentage'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.purityPercentage')}
+                fieldKey='purityPercentage'
+              />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.storageTemperatureInCelsius'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.storageTemperatureInCelsius')}
+                fieldKey='storageTemperatureInCelsius'
+              />
               <th>
                 <Button.Group style={{ justifyContent: 'flex-end' }}>
                   <Button
@@ -129,7 +163,7 @@ function AccessionTable({ events }: AccessionTableProps) {
                 </td>
               </tr>
             )}
-            {sortedEvents.map((event) => {
+            {sortedData.map((event) => {
               const accession = event.extensions?.seedbank as SeedBankAccession;
               const isSelected = selected.includes(event.eventID || '');
               return (
@@ -150,8 +184,12 @@ function AccessionTable({ events }: AccessionTableProps) {
                     <td style={{ paddingLeft: 25 }}>
                       {accession?.accessionNumber || event.eventID}
                     </td>
-                    <td>{event.distinctTaxa?.[0].scientificName}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{event.datasetTitle}</td>
+                    <td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>
+                      <Text truncate maw={250}>
+                        {event?.datasetTitle}
+                      </Text>
+                    </td>
                     <td>
                       {getIsPresent(accession?.dateCollected) &&
                         new Date(accession?.dateCollected || 0).toLocaleDateString()}
