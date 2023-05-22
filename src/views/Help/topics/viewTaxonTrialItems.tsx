@@ -24,7 +24,7 @@ const items: HelpTopicItem[] = [
     icon: IconEye,
     content: (
       <>
-        The accessions tab shows a summary of all trials related to your chosen taxon, providing key
+        The trials tab shows a summary of all trials related to your chosen taxon, providing key
         fields such as <Code>Adjusted Germination</Code> and <Code>Date Tested</Code>
       </>
     ),

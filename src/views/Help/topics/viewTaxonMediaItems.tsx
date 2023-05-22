@@ -15,7 +15,7 @@ const items: HelpTopicItem[] = [
     content: (
       <>
         Click on the <Code>Media</Code> tab, where you will see a collection of images related to
-        the chosen taxa
+        the chosen taxon
       </>
     ),
     image: imageMedia,
