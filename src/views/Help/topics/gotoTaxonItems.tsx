@@ -11,7 +11,7 @@ const items: HelpTopicItem[] = [
     icon: IconMouse,
     content: (
       <>
-        Enter the name of your desired taxon (speices, genus, etc) in the{' '}
+        Enter the name of your desired taxon (species, genus, etc.) in the{' '}
         <Code>Search for a taxon</Code> input, either on the top of the navigation bar, or on the
         home page.
       </>

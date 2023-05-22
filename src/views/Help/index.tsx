@@ -84,13 +84,13 @@ const helpTopics: { [key: string]: HelpTopic } = {
   },
   filterAccessionsTrials: {
     topic: 'Query Filtering',
-    description: 'Filter accesisons / trials for a plant taxon',
+    description: 'Filter accessions / trials for a plant taxon',
     icon: IconAdjustmentsHorizontal,
     instructions: filterAccessionsTrialsItems,
   },
   downloadRecords: {
     topic: 'Download records',
-    description: 'Download accesison / trial records for a plant taxon',
+    description: 'Download accession / trial records for a plant taxon',
     icon: IconFileDownload,
     instructions: downloadRecordsItems,
   },
