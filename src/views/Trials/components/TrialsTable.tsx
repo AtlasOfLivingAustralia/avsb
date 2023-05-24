@@ -222,7 +222,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     <td>
                       {getIsPresent(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
                     </td>
-                    <td align='right'>
+                    <td align='right' style={{ paddingLeft: 0 }}>
                       <Group spacing='xs' position='right' miw={145}>
                         {location.pathname.endsWith('trials') && (
                           <Button
