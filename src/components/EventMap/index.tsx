@@ -170,7 +170,13 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
         contentHeight={itemListHeight}
       />
       {onFullscreen && (
-        <Tooltip label='Toggle Fullscreen' color='blue' position='left' withArrow>
+        <Tooltip
+          transitionProps={{ transition: 'pop' }}
+          label='Toggle Fullscreen'
+          color='blue'
+          position='left'
+          withArrow
+        >
           <ActionIcon
             onClick={onFullscreen}
             variant='filled'

@@ -82,7 +82,13 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
   return (
     <Popover width={200} position='left' withArrow shadow='md'>
       <Popover.Target>
-        <Tooltip offset={10} withArrow label='Download Records' position='left'>
+        <Tooltip
+          transitionProps={{ transition: 'pop' }}
+          offset={10}
+          withArrow
+          label='Download Records'
+          position='left'
+        >
           <ActionIcon size={36} variant='outline' color='blue'>
             <IconDownload size='1rem' />
           </ActionIcon>

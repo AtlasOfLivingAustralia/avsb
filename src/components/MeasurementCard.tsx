@@ -35,6 +35,7 @@ function MeasurementCardContent({ measurement, ...rest }: MeasurementCardContent
 function MeasurementCard({ measurement }: MeasurementCardProps) {
   return measurement.measurementRemarks ? (
     <Tooltip
+      transitionProps={{ transition: 'pop' }}
       withArrow
       label={
         <Box>
