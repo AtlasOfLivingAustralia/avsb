@@ -480,8 +480,8 @@ query list($datasetKey: JSON){
 `;
 
 const QUERY_TAXON_MEDIA = `
-query image($key: String, $size: Int, $from: Int) {
-  taxonMedia(key: $key, size: $size, from: $from) {
+query image($key: String, $size: Int, $from: Int, $params: JSON) {
+  taxonMedia(key: $key, size: $size, from: $from, params: $params) {
     identifier
     type
     subtypeLiteral

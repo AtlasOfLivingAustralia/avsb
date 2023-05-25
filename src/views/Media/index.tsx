@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLoaderData, useParams } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -30,9 +30,14 @@ import {
 } from '@tabler/icons';
 
 // Project / local components
-import { MediaItem } from '#/api/graphql/types';
-import { getNameInitials } from '#/helpers';
+import { gqlQueries, performGQLQuery } from '#/api';
+import { Filters } from '#/components';
+import { MediaItem, Predicate } from '#/api/graphql/types';
+import { getNameInitials, useMounted } from '#/helpers';
+
+// Component imports
 import MediaImage from './components/MediaImage';
+import filters, { months } from './filters';
 
 interface ImageProperty {
   key: keyof MediaItem;
@@ -83,12 +88,62 @@ const imageProperties: ImageProperty[] = [
   },
 ];
 
+const predicateToQuery = ({ type, key, value }: Predicate) => {
+  if (type === 'equals') {
+    const iso = new Date(value as number).toISOString();
+    return {
+      [key || '']: `[${iso} TO ${iso}]`,
+    };
+  }
+
+  if (type === 'range') {
+    const { gte, lte } = value as { gte?: number | ''; lte?: number | '' };
+
+    // Construct dates from GTE & LTE values
+    const gteIso = gte ? new Date(gte).toISOString() : null;
+    const lteIso = lte ? new Date(lte).toISOString() : null;
+
+    return { [key || '']: `[${gteIso || '*'} TO ${lteIso || '*'}]` };
+  }
+
+  return {};
+};
+
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
-  const [media /* , setMedia */] = useState<MediaItem[] | null>(useLoaderData() as MediaItem[]);
+  const [media, setMedia] = useState<MediaItem[] | null>(useLoaderData() as MediaItem[]);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(media?.[0] || null);
   const [selectedLoaded, setSelectedLoaded] = useState<boolean>(false);
-  // const params = useParams();
+  const [predicates, setPredicates] = useState<{ [key: string]: Predicate }>({});
+  const params = useParams();
+  const mounted = useMounted();
+
+  useEffect(() => {
+    async function runQuery() {
+      const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
+        key: params.guid,
+        params: {
+          query: {
+            ...(predicates.occurrence_date ? predicateToQuery(predicates.occurrence_date) : {}),
+            ...(predicates.data_resource_uid
+              ? { data_resource_uid: predicates.data_resource_uid.value }
+              : {}),
+          },
+          filter: {
+            ...(predicates.month
+              ? { month: months.indexOf(predicates.month.value as string) + 1 }
+              : {}),
+          },
+        },
+        size: 20,
+      });
+      console.log(data);
+      setMedia(data?.taxonMedia);
+    }
+
+    if (mounted) runQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [predicates]);
 
   if (media === null)
     return (
@@ -102,6 +157,15 @@ export function Component() {
 
   return (
     <Grid gutter='xl'>
+      <Grid.Col span={12}>
+        <Filters
+          predicates={Object.values(predicates)}
+          filters={filters}
+          onPredicates={(data) => {
+            setPredicates(data.reduce((prev, cur) => ({ ...prev, [cur.key || '']: cur }), {}));
+          }}
+        />
+      </Grid.Col>
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={7} orderXs={2} orderSm={2} orderMd={1}>
         <Grid gutter='xs'>
           {media?.map((item) => (

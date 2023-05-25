@@ -22,7 +22,7 @@ function SelectSearch({ customTypes = [], fetchItems, onChange, ...props }: Sear
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [search, setSearch] = useState<string>('');
-  const [searchDebounced] = useDebouncedValue(search, 150);
+  const [searchDebounced] = useDebouncedValue(search, 300);
 
   useEffect(() => {
     async function performFetch() {
