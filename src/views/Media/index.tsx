@@ -12,6 +12,7 @@ import {
   List,
   Loader,
   Overlay,
+  Paper,
   Stack,
   Text,
   ThemeIcon,
@@ -23,6 +24,7 @@ import {
   IconDimensions,
   IconExternalLink,
   IconFileInfo,
+  IconInfoCircle,
   IconLicense,
   IconQuestionMark,
   IconTypography,
@@ -137,7 +139,6 @@ export function Component() {
         },
         size: 20,
       });
-      console.log(data);
       setMedia(data?.taxonMedia);
     }
 
@@ -167,24 +168,35 @@ export function Component() {
         />
       </Grid.Col>
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={7} orderXs={2} orderSm={2} orderMd={1}>
-        <Grid gutter='xs'>
-          {media?.map((item) => (
-            <Grid.Col key={item.identifier} xs={4} sm={4} md={4} lg={3} xl={3}>
-              <MediaImage
-                item={item}
-                onClick={() => {
-                  if (item.identifier !== selectedMedia?.identifier) {
-                    setSelectedLoaded(false);
-                    setSelectedMedia(item);
-                  }
-                }}
-                selected={selectedMedia?.identifier === item.identifier}
-                width='100%'
-                height={150}
-              />
-            </Grid.Col>
-          ))}
-        </Grid>
+        {media?.length > 0 ? (
+          <Grid gutter='xs' h='100%'>
+            {media?.map((item) => (
+              <Grid.Col key={item.identifier} xs={4} sm={4} md={4} lg={3} xl={3}>
+                <MediaImage
+                  item={item}
+                  onClick={() => {
+                    if (item.identifier !== selectedMedia?.identifier) {
+                      setSelectedLoaded(false);
+                      setSelectedMedia(item);
+                    }
+                  }}
+                  selected={selectedMedia?.identifier === item.identifier}
+                  width='100%'
+                  height={150}
+                />
+              </Grid.Col>
+            ))}
+          </Grid>
+        ) : (
+          <Paper h='100%' withBorder>
+            <Center h='100%'>
+              <Stack align='center'>
+                <IconInfoCircle size='3rem' />
+                <Text color='dimmed'>No matching media found</Text>
+              </Stack>
+            </Center>
+          </Paper>
+        )}
       </Grid.Col>
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={5} orderXs={1} orderSm={1} orderMd={2}>
         <Card shadow='sm' padding='lg' radius='md' withBorder>
