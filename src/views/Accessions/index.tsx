@@ -95,7 +95,8 @@ export function Component() {
         </Group>
         <Group>
           <Text color='dimmed' align='right' size='sm'>
-            {query.total} total records
+            {(page - 1) * pageSize + 1}-{(page - 1) * pageSize + pageSize} of {query.total} total
+            records
           </Text>
           <Divider orientation='vertical' />
           <Downloads
