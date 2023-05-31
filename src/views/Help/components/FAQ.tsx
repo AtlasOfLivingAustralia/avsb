@@ -117,7 +117,7 @@ function FAQ() {
               </Text>
               <List size='sm'>
                 {Object.values(trialFields).map((field) => (
-                  <List.Item>
+                  <List.Item key={field.label}>
                     {field.label}
                     {field.unit ? ` (${field.unit})` : ''}
                   </List.Item>
