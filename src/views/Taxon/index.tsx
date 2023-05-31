@@ -27,15 +27,15 @@ const pageDescriptions: { [key: string]: string[] } = {
   ],
   accessions: [
     'Below shows seed accession data for your chosen taxon. You can click on a table row to expand it, or click the details button to see all information about the accession.',
-    'Filters are also avaiable to aid in your search.',
+    'Filters are also available to aid in your search.',
   ],
   trials: [
     'Below shows seed trial data for your chosen taxon. You can click on a table row to expand it and see treatment information.',
-    'Filters are also avaiable to aid in your search.',
+    'Filters are also available to aid in your search.',
   ],
   media: [
     'Below shows related media for your chosen taxon. Click on an image to see a larger variant & its associated metadata.',
-    'Filters are also avaiable to aid in your search.',
+    'Filters are also available to aid in your search.',
   ],
   sequences: [
     'Below are sequences for your chosen taxon, retrieved from GenBank. Click on a card to be redirected to GenBank.',
