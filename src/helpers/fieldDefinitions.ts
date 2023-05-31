@@ -218,6 +218,7 @@ const trialFields: SeedbankFieldMap = {
   viabilityPercentage: {
     label: 'Viability',
     icon: IconChartPie,
+    unit: '%',
     examples: '80%',
     description:
       'The proportion of viable seeds in a germination test, determined by the number of germinated seeds and those that appear viable from a post-germination cut test.',
@@ -225,6 +226,7 @@ const trialFields: SeedbankFieldMap = {
   adjustedGerminationPercentage: {
     label: 'Adj Germ',
     icon: IconFlower,
+    unit: '%',
     examples: '100%',
     description:
       'The proportion of seeds germinated, expressed as a percentage of the total viable seeds tested.',
