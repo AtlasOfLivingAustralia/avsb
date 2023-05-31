@@ -58,12 +58,6 @@ const accessionFields: SeedbankFieldMap = {
     description:
       'The average number of seeds or fruits per gram of the accession. This may be an estimate.',
   },
-  quantityCount: {
-    label: 'Collection Size',
-    icon: IconBrandAsana,
-    examples: '3000',
-    description: 'The total number of seeds currently available in the accession.',
-  },
   quantityInGrams: {
     label: 'Quantity (g)',
     unit: 'g',
@@ -71,6 +65,13 @@ const accessionFields: SeedbankFieldMap = {
     examples: '1.23g',
     description:
       'The total weight of the currently available accession in grams. Stock or quantity.',
+  },
+  quantityCount: {
+    label: 'Collection Size',
+    unit: ' seeds',
+    icon: IconBrandAsana,
+    examples: '3000',
+    description: 'The total number of seeds currently available in the accession.',
   },
   thousandSeedWeight: {
     label: 'Thousand Seed Weight',
