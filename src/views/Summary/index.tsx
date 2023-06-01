@@ -140,7 +140,7 @@ export function Component() {
             </Group>
           </Grid.Col>
         )}
-        <Grid.Col sm={7} md={8} lg={9}>
+        <Grid.Col sm={12} md={7} lg={8}>
           <Suspense fallback={<Skeleton w='100%' height={450} />}>
             <EventMap
               onFullscreen={open}
@@ -161,7 +161,7 @@ export function Component() {
             all locations.
           </Alert>
         </Grid.Col>
-        <Grid.Col sm={5} md={4} lg={3}>
+        <Grid.Col sm={12} md={5} lg={4}>
           <Card withBorder h='100%' p={0}>
             <Text weight='bold' mx='md' mt='lg' mb='xs'>
               Classification
@@ -209,7 +209,7 @@ export function Component() {
                       }}
                     >
                       <Group position='apart'>
-                        <Text maw={160} truncate size='sm'>
+                        <Text maw={200} truncate size='sm'>
                           {(taxon.classification as any)[rank]}
                         </Text>
                         <Group spacing='xs'>
