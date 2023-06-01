@@ -60,6 +60,7 @@ function TaxonSearchInput(props: Omit<SearchSelectProps, 'fetchItems'>) {
       fetchItems={fetchItems}
       placeholder='Search for a taxon'
       itemComponent={SelectMenuItem}
+      filter={() => true}
     />
   );
 }
