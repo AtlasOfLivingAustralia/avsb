@@ -36,7 +36,6 @@ import { Event, SeedBankAccession } from '#/api/graphql/types';
 import { getIsPresent, accessionFields } from '#/helpers';
 
 // Local imports
-import Map from '../Map';
 import Contact from '../Contact';
 import HerbariumLink from './components/HerbariumLink';
 import IconText from '../IconText';
@@ -46,7 +45,7 @@ import TrialSummary from './components/TrialSummary';
 import { fields, longFields } from './fields';
 import FieldTooltip from '../FieldTooltip';
 
-// const Map = lazy(() => import('../Map'));
+const Map = lazy(() => import('../Map'));
 
 interface AccessionPanelProps {
   taxon?: string;

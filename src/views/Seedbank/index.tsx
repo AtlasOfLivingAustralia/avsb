@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { Suspense, lazy, useState } from 'react';
 import {
   Alert,
   Anchor,
@@ -35,13 +35,13 @@ import { useMediaQuery } from '@mantine/hooks';
 
 // Project imports
 import { DataResource, EventSearchResult } from '#/api';
-import { Contact, EventMap } from '#/components';
+import { Contact } from '#/components';
 import { Wave } from '#/components/Wave';
 
 // Component imports
 import SpeciesList from './components/SpeciesList';
 
-// const EventMap = lazy(() => import('#/components/EventMap'));
+const EventMap = lazy(() => import('#/components/EventMap'));
 
 interface SeedbankRouteData {
   gql: {

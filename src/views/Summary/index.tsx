@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Suspense, Fragment } from 'react';
-import { useLoaderData, useRouteLoaderData } from 'react-router-dom';
+import { Suspense, Fragment, lazy } from 'react';
+import { useLoaderData, useNavigate, useRouteLoaderData } from 'react-router-dom';
 
 import {
   Text,
@@ -17,6 +17,7 @@ import {
   ThemeIcon,
   DefaultMantineColor,
   Skeleton,
+  ActionIcon,
 } from '@mantine/core';
 
 import {
@@ -34,9 +35,8 @@ import {
 // Project imports
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Taxon } from '#/api/sources/taxon';
-import { EventMap } from '#/components';
 
-// const EventMap = lazy(() => import('#/components/EventMap'));
+const EventMap = lazy(() => import('#/components/EventMap'));
 
 const getConservationDetails = (
   status: string,
@@ -92,6 +92,7 @@ export function Component() {
   const taxon = useRouteLoaderData('taxon') as Taxon;
   const theme = useMantineTheme();
   const mdOrLarger = useMediaQuery(`(min-width: ${theme.breakpoints.md})`, true);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -181,11 +182,17 @@ export function Component() {
                 .map((rank, index, arr) => (
                   <Fragment key={rank}>
                     <UnstyledButton
-                      component='a'
                       px='sm'
                       py='xs'
-                      href={(taxon.classification as any)[`${rank}Guid`]}
-                      target='_blank'
+                      onClick={(e) => {
+                        const className = (e.target as any)?.className;
+                        if (!(typeof className === 'string' && className.includes('ActionIcon')))
+                          navigate(
+                            `/taxon/${encodeURIComponent(
+                              (taxon.classification as any)[`${rank}Guid`],
+                            )}`,
+                          );
+                      }}
                       sx={{
                         '&:hover': {
                           backgroundColor:
@@ -201,7 +208,16 @@ export function Component() {
                         </Text>
                         <Group spacing='xs'>
                           <Badge>{rank}</Badge>
-                          <IconExternalLink size={14} />
+                          <ActionIcon
+                            component='a'
+                            href={(taxon.classification as any)[`${rank}Guid`]}
+                            target='_blank'
+                            variant='light'
+                            color='blue'
+                            radius='lg'
+                          >
+                            <IconExternalLink size={14} />
+                          </ActionIcon>
                         </Group>
                       </Group>
                     </UnstyledButton>

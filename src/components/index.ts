@@ -3,8 +3,6 @@ export { default as Logo } from './Logo';
 export { default as LogoLoader } from './LogoLoader';
 export { default as Blob } from './Blob';
 export { default as Contact } from './Contact';
-export { default as Map } from './Map';
-export { default as EventMap } from './EventMap';
 export { default as IconText } from './IconText';
 export { default as HerbariumLink } from './AccessionPanel/components/HerbariumLink';
 export { default as FieldTooltip } from './FieldTooltip';
