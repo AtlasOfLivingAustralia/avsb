@@ -186,12 +186,18 @@ export function Component() {
                       py='xs'
                       onClick={(e) => {
                         const className = (e.target as any)?.className;
-                        if (!(typeof className === 'string' && className.includes('ActionIcon')))
+                        if (
+                          !(
+                            (typeof className === 'string' && className.includes('ActionIcon')) ||
+                            typeof className === 'object'
+                          )
+                        ) {
                           navigate(
                             `/taxon/${encodeURIComponent(
                               (taxon.classification as any)[`${rank}Guid`],
                             )}`,
                           );
+                        }
                       }}
                       sx={{
                         '&:hover': {
