@@ -27,9 +27,7 @@ function SelectSearch({ customTypes = [], fetchItems, onChange, ...props }: Sear
   useEffect(() => {
     async function performFetch() {
       try {
-        const fetchResult = await fetchItems(searchDebounced);
-        console.log(fetchResult);
-        setData(fetchResult);
+        setData(await fetchItems(searchDebounced));
         setError(null);
       } catch (suggestError) {
         setError(suggestError as Error);
