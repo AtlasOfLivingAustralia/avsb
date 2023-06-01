@@ -34,7 +34,7 @@ import {
   IconPackage,
 } from '@tabler/icons';
 
-interface SeedbankField {
+export interface SeedbankField {
   label: string;
   description: string;
   examples: string;
