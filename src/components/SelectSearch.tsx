@@ -28,6 +28,7 @@ function SelectSearch({ customTypes = [], fetchItems, onChange, ...props }: Sear
     async function performFetch() {
       try {
         const fetchResult = await fetchItems(searchDebounced);
+        console.log(fetchResult);
         setData(fetchResult);
         setError(null);
       } catch (suggestError) {
@@ -80,6 +81,10 @@ function SelectSearch({ customTypes = [], fetchItems, onChange, ...props }: Sear
         }
       }}
       onKeyDown={handleKeyPress}
+      filter={(searchValue, item) =>
+        item.label?.toLowerCase().includes(searchValue.toLowerCase().trim()) ||
+        item.commonName?.toLowerCase().includes(searchValue.toLowerCase().trim())
+      }
       data={[
         ...uniqBy(dataSorted, 'value'),
         ...(search.length > 0
