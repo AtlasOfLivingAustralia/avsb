@@ -1457,7 +1457,7 @@ __metadata:
     eslint-plugin-react-hooks: ^4.6.0
     file-saver: ^2.0.5
     lodash: ^4.17.21
-    logrocket: ^4.0.1
+    logrocket: ^4.0.2
     mapbox-gl: ^2.14.1
     prettier: ^2.8.8
     react: ^18.2.0
@@ -3476,10 +3476,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"logrocket@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "logrocket@npm:4.0.1"
-  checksum: 449a70cd201f27b64b19370ebe74b9600ce9f192516ae806384a21271386d745d947da415b15a1a8ac93cfadf286688ba3ceedd4be4704ac9f23766ffebdb91f
+"logrocket@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "logrocket@npm:4.0.2"
+  checksum: e5f5fc08e3dd15485309003b9b415c91208e7ee3d8bd2fb2b912cae68daa2fcc1ca0a59bcab2336914f4c6e4fc9886c6c3685d077b1594446d75145e33e0d8d8
   languageName: node
   linkType: hard
 
