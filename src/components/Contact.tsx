@@ -15,7 +15,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useGQLQuery } from '#/api';
 import { Contact as ContactType } from '#/api/graphql/types';
-import { getOrgInitials } from '#/helpers';
+import { getInitials } from '#/helpers';
 import queries from '#/api/queries';
 
 import IconText from './IconText';
@@ -69,7 +69,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
                 ? `${contact.individualName[0].givenName?.[0].charAt(
                     0,
                   )}${contact.individualName[0].surName?.[0].charAt(0)}`
-                : getOrgInitials(contact?.organizationName?.[0] || '', 3)}
+                : getInitials(contact?.organizationName?.[0] || '', 3)}
             </Avatar>
           </Skeleton>
           <Stack spacing={6}>
