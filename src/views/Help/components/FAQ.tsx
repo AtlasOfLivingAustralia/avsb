@@ -78,18 +78,19 @@ function FAQ() {
           <Accordion.Panel>
             <Stack spacing='sm'>
               <Text size='sm'>
-                Seeds held by the partnership are obtained under strict collection permits and can
-                only be provided for conservation and scientific research purposes. If you are
-                seeking seeds for personal use, we encourage you to contact your local native plant
-                nurseries and botanic gardens, who may be able to advise you better about the types
-                of plants that are available and appropriate to grow in your area.
+                Seeds held by the Australian Seed Bank Partnership are obtained under strict
+                collection permits and can only be provided for conservation and scientific research
+                purposes. If you are seeking seeds for personal use, we encourage you to contact
+                your local native plant nurseries and botanic gardens, who may be able to advise you
+                better about the types of plants that are available and appropriate to grow in your
+                area.
               </Text>
               <Text size='sm'>
                 If you require seeds for research or conservation,{' '}
                 <Anchor target='_blank' href='mailto:info@seedpartnership.org.au'>
                   please send us a request
                 </Anchor>
-                , providing the following information. On receipt of this information we will put
+                , providing the following information. On receipt of this information, we will put
                 you in touch with relevant seedbank(s) who may be able to assist with your request.
               </Text>
               <List size='sm'>
@@ -112,8 +113,8 @@ function FAQ() {
           <Accordion.Panel>
             <Stack spacing='sm'>
               <Text size='sm'>
-                A core set of germination data to be included in the Australian Virtual Seedbank was
-                agreed by the Australian Seedbank Partnership. Fields include:
+                A core set of germination data to be included in the Australian Virtual Seed Bank
+                was agreed by the Australian Seed Bank Partnership. Data includes:
               </Text>
               <List size='sm'>
                 {Object.values(trialFields).map((field) => (
@@ -124,41 +125,52 @@ function FAQ() {
                 ))}
               </List>
               <Text size='sm'>
-                Note, however, that not all seedbanks within the partnership collect data for all
-                the above fields but will work towards doing so in the future.
+                Note, however, that collecting germination data is time consuming and not all
+                seedbanks within the Partnership have the opportunity to collect data for every
+                collection. The Partnership will work towards providing additional germination data
+                in the future.
               </Text>
               <Text size='sm'>
                 Other information collected for accessions and trials can be found under the
-                “Additional Data” heading in the accession or trial details view.
+                “Additional Data” heading in the Accession or Trials view.
               </Text>
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
-        <Accordion.Item value='desensitised-locations'>
+        <Accordion.Item value='sort-download-display-germ-data'>
+          <Accordion.Control>
+            How can I sort, display and download accession or germination data?
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Text size='sm'>
+              Currently the Australian Virtual Seed Bank can only display up to 40 accession trial
+              records per page. The total number of accession / trial records are shown above the
+              results tables. You can use filters to query within the records for your selected
+              taxon. If you wish to view or query all accession or trial records for a specific
+              taxon, you can download the entire record set as a .csv file using the download button
+              on either the Trials or Accessions tabs.
+            </Text>
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item value='how-desensitised-locations'>
           <Accordion.Control>How are accession locations desensitised?</Accordion.Control>
           <Accordion.Panel>
             <Stack spacing='sm'>
               <Text size='sm'>
                 Each state and territory (and some major data providers) provide lists of species
-                which they use to sensitise / obfuscate locations of these taxa. The lists of
-                species which are used in the Australian Virtual Seedbank are those used in the
-                Atlas of Living Australia&apos;s Sensitive Data Service. You can view these lists{' '}
-                <Anchor
-                  target='_blank'
-                  href='https://lists.ala.org.au/public/speciesLists?&max=25&sort=listName&order=asc&isSDS=eq:true&isSDS=eq:true'
-                >
-                  here
-                </Anchor>
-                . The state and territory lists only apply to records located within that state /
-                territory. The lists provided by data providers will apply only to records in data
-                provided by them.
+                which they use restrict access to precise locations of these taxa. Restricted access
+                (often referred to as sensitive) species data includes point locality data on
+                species whose records are normally generalised when made available publicly as well
+                as data that is withheld or modified for a variety of reasons. Note that listed
+                threatened species may or may not be considered sensitive, and not all sensitive
+                species are listed as threatened.
               </Text>
               <Text size='sm'>
                 The rules for desensitising sensitive species are provided by each state and
                 territory. Some species may have their records withheld from public view. Others
                 will have their latitude and longitudes truncated to 1 or 2 decimal places. For more
                 information about principles for handling sensitive species data, see the{' '}
-                <Anchor target='_blank' href='https://rasd.org.au/'>
+                <Anchor target='_blank' href='https://rasd.org.au'>
                   National Framework for the Sharing of Restricted Access Species Data in Australia
                 </Anchor>{' '}
                 or contact the{' '}
@@ -167,17 +179,32 @@ function FAQ() {
                 </Anchor>
                 .
               </Text>
+              <Text size='sm'>
+                The lists of species which are used in the Australian Virtual Seed Bank are those
+                used in the Atlas of Living Australia&apos;s Sensitive Data Service. You can view
+                these lists{' '}
+                <Anchor
+                  target='_blank'
+                  href='https://lists.ala.org.au/public/speciesLists?&max=25&sort=listName&order=asc&isSDS=eq:true&isSDS=eq:true'
+                >
+                  here
+                </Anchor>
+                . The state and territory lists only apply to records located within that state /
+                territory (so records for a sensitised species may be visible in other states and
+                territories). The lists of sensitive species provided by other non-government data
+                providers will apply only to records provided by them.
+              </Text>
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
-        <Accordion.Item value='desensitised-locations-message'>
+        <Accordion.Item value='desensitised-locations'>
           <Accordion.Control>
             How do I know that an accession location has been desensitised?
           </Accordion.Control>
           <Accordion.Panel>
             <Text size='sm'>
               When you view the detailed information regarding an accession for a sensitive species
-              in the Australian Virtual Seedbank, a message appears below the map which reads
+              in the Australian Virtual Seed Bank, a message appears below the map which reads
               “Precise location data has been obfuscated for species protection”. In addition, these
               accession records will either have only one or two decimal places displayed in their
               latitude and longitude.
@@ -192,8 +219,32 @@ function FAQ() {
             <Text size='sm'>
               If there is no accession or trials data showing for the species you are interested in,
               try searching by genus or family instead. Often related species have similar
-              germination requirements. If you cannot find information you are after, and would like
-              more information, please contact the National Seedbank Partnership.
+              germination requirements.{' '}
+              <Anchor target='_blank' href='https://www.anpc.asn.au/plant-germplasm'>
+                The publication &lsquo;Plant Germplasm Conservation in Australia&rsquo; includes
+                up-to-date general information on germination and dormancy in Australian species
+              </Anchor>
+              . If you cannot find information you are after, and would like more information,
+              please contact the{' '}
+              <Anchor target='_blank' href='mailto:info@seedpartnership.org.au'>
+                Australian Seed Bank Partnership
+              </Anchor>
+              .
+            </Text>
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item value='how-often-data-uploaded'>
+          <Accordion.Control>
+            How often will data be uploaded to the Australian Virtual Seed Bank (AVSB)?
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Text size='sm'>
+              An annual refresh of data will be undertaken around August. If you wish to access more
+              recent data than what is shown in the AVSB, please contact the{' '}
+              <Anchor target='_blank' href='mailto:info@seedpartnership.org.au'>
+                Australian Seed Bank Partnership
+              </Anchor>
+              .
             </Text>
           </Accordion.Panel>
         </Accordion.Item>
@@ -205,7 +256,7 @@ function FAQ() {
             <Text size='sm'>
               You can provide feedback on the Australian Virtual Seedbank Portal either to the{' '}
               <Anchor target='_blank' href='mailto:info@seedpartnership.org.au'>
-                Australian Seedbank Partnership
+                Australian Seed Bank Partnership
               </Anchor>{' '}
               or to support at the{' '}
               <Anchor target='_blank' href='mailto:support@ala.org.au'>
@@ -222,39 +273,21 @@ function FAQ() {
           <Accordion.Panel>
             <Stack spacing='sm'>
               <Text size='sm'>
-                The current version of the Australian Virtual Seedbank does not contain this
-                functionality. The ability to search for and / select accessions in your area of
+                The current version of the Australian Virtual Seed Bank does not contain this
+                functionality. The ability to search for and select accessions in your area of
                 interest will be a priority for inclusion in future versions.
               </Text>
               <Text size='sm'>
-                The current version of the Australian Virtual Seedbank does not contain this
-                functionality. The ability to search for and / select accessions in your area of
-                interest will be a priority for inclusion in future versions. In the current version
-                you can zoom in and out on the summary map of accessions for a particular taxon. You
-                can also select individual accessions on the summary map to view details of the
-                accession and associated trials. For more information, please contact the{' '}
+                In the current version, you can zoom in and out on the summary map of accessions for
+                a particular taxon. You can also select individual accessions on the summary map to
+                view details of the accession and associated trials. For more information, please
+                contact the{' '}
                 <Anchor target='_blank' href='mailto:info@seedpartnership.org.au'>
-                  Australian Seedbank Partnership
+                  Australian Seed Bank Partnership
                 </Anchor>
                 .
               </Text>
             </Stack>
-          </Accordion.Panel>
-        </Accordion.Item>
-        <Accordion.Item value='dataset-load'>
-          <Accordion.Control>How can I provide my data to the portal?</Accordion.Control>
-          <Accordion.Panel>
-            <Text size='sm'>
-              If you&apos;re a seed ecologist or seed bank representative and wish to provide us
-              with your data, please contact us{' '}
-              <Anchor
-                target='_blank'
-                href='https://www.seedpartnership.org.au/about-us/contact-us/'
-              >
-                here
-              </Anchor>
-              .
-            </Text>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
