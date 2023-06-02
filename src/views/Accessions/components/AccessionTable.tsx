@@ -27,7 +27,7 @@ import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
 import { AccessionDetails, ThField } from '#/components';
-import { getIsPresent } from '#/helpers';
+import { getIsDefined } from '#/helpers';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -191,19 +191,19 @@ function AccessionTable({ events }: AccessionTableProps) {
                       </Text>
                     </td>
                     <td>
-                      {getIsPresent(accession?.dateCollected) &&
+                      {getIsDefined(accession?.dateCollected) &&
                         new Date(accession?.dateCollected || 0).toLocaleDateString()}
                     </td>
                     <td>
-                      {getIsPresent(accession?.quantityCount) &&
+                      {getIsDefined(accession?.quantityCount) &&
                         `${accession?.quantityCount} seeds`}
                     </td>
                     <td>
-                      {getIsPresent(accession?.purityPercentage) &&
+                      {getIsDefined(accession?.purityPercentage) &&
                         `${accession.purityPercentage}%`}
                     </td>
                     <td>
-                      {getIsPresent(accession?.storageTemperatureInCelsius) &&
+                      {getIsDefined(accession?.storageTemperatureInCelsius) &&
                         `${accession?.storageTemperatureInCelsius}°C`}
                     </td>
                     <td align='right'>

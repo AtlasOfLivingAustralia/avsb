@@ -4,7 +4,7 @@ import { IconMapPin } from '@tabler/icons';
 
 // Project imports
 import { Event, SeedBankAccession } from '#/api';
-import { getIsPresent, accessionFields } from '#/helpers';
+import { getIsDefined, accessionFields } from '#/helpers';
 
 import fields from './fields';
 import FieldTooltip from '../FieldTooltip';
@@ -35,7 +35,7 @@ function AccessionDetails({ event: eventProp }: AccessionDetailsProps) {
                     <Text color='dimmed' size='xs'>
                       {label}
                     </Text>
-                    {getIsPresent(accession?.[key]) ? (
+                    {getIsDefined(accession?.[key]) ? (
                       <Text size='sm' weight='bold'>
                         {accession?.[key]}
                         {unit && unit}
