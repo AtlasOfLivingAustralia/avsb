@@ -101,7 +101,7 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
               <Skeleton width={34} height={34} circle visible={loading}>
                 <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
                   <Text color={theme.primaryColor[0]} weight='bold' size='xs'>
-                    {getShortInt(totalAccessions || 10)}
+                    {getShortInt(totalAccessions || 0)}
                   </Text>
                 </ThemeIcon>
               </Skeleton>
@@ -115,7 +115,7 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
               <Skeleton width={34} height={34} circle visible={loading}>
                 <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
                   <Text color={theme.primaryColor[0]} weight='bold' size='xs'>
-                    {getShortInt(totalTrials || 10)}
+                    {getShortInt(totalTrials || 0)}
                   </Text>
                 </ThemeIcon>
               </Skeleton>
