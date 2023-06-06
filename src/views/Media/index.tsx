@@ -35,7 +35,7 @@ import {
 import { gqlQueries, performGQLQuery } from '#/api';
 import { Filters } from '#/components';
 import { MediaItem, Predicate } from '#/api/graphql/types';
-import { getNameInitials, useMounted } from '#/helpers';
+import { getInitials, useMounted } from '#/helpers';
 
 // Component imports
 import MediaImage from './components/MediaImage';
@@ -230,10 +230,7 @@ export function Component() {
           <Group position='apart' mt='md' mb='xs'>
             <Group>
               <Avatar variant='filled' radius='xl'>
-                {getNameInitials({
-                  given_name: selectedMedia?.creator?.split(' ')?.[0],
-                  family_name: selectedMedia?.creator?.split(' ')?.[1],
-                })}
+                {getInitials(selectedMedia?.creator || 'Unknown Creator')}
               </Avatar>
               <Text weight='bold'>{selectedMedia?.creator || 'Unknown Creator'}</Text>
             </Group>

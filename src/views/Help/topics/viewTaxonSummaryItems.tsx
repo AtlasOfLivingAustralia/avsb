@@ -1,6 +1,6 @@
 import { IconEye } from '@tabler/icons';
 
-import imageTaxonSummary from '../images/taxon-summary-min.png';
+import imageTaxonSummary from '#/assets/help/taxon-summary-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 

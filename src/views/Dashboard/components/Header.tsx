@@ -1,30 +1,17 @@
-// import { useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-// import { useAuth } from 'react-oidc-context';
-import {
-  /* IconLogout, IconBug, */
-  IconSun,
-  IconMoon,
-  IconHome,
-  IconQuestionMark,
-} from '@tabler/icons';
+import { IconSun, IconMoon, IconHome, IconQuestionMark } from '@tabler/icons';
 import {
   Header as MantineHeader,
   ActionIcon,
-  // Avatar,
   Button,
   Group,
-  // Menu,
-  // UnstyledButton,
   useMantineColorScheme,
   MediaQuery,
   Transition,
-  // Tooltip,
 } from '@mantine/core';
 
 // Project components & gelpers
 import { Logo, TaxonSearchInput } from '#/components';
-// import getNameInitials from '#/helpers/getNameInitials';
 
 const slideTransition = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -38,16 +25,6 @@ function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-
-  // const handleSignOut = useCallback(async () => {
-  //   await auth.removeUser();
-  //   const params = new URLSearchParams({
-  //     client_id: import.meta.env.VITE_OIDC_CLIENT_ID,
-  //     logout_uri: import.meta.env.VITE_OIDC_REDIRECT_URI,
-  //   });
-
-  //   window.location.href = `${import.meta.env.VITE_OIDC_LOGOUT_URI}?${params.toString()}`;
-  // }, [auth]);
 
   return (
     <MantineHeader height={60}>

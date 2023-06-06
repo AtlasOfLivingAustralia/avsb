@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { gqlQueries, useGQLQuery } from '#/api';
 import { EventSearchResult } from '#/api/graphql/types';
-import { getShortInt } from '#/helpers';
+import { getAbbreviatedNumber } from '#/helpers';
 import queries from '#/api/queries';
 
 const useStyles = createStyles((theme) => ({
@@ -101,7 +101,7 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
               <Skeleton width={34} height={34} circle visible={loading}>
                 <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
                   <Text color={theme.primaryColor[0]} weight='bold' size='xs'>
-                    {getShortInt(totalAccessions || 0)}
+                    {getAbbreviatedNumber(totalAccessions || 0)}
                   </Text>
                 </ThemeIcon>
               </Skeleton>
@@ -115,7 +115,7 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
               <Skeleton width={34} height={34} circle visible={loading}>
                 <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
                   <Text color={theme.primaryColor[0]} weight='bold' size='xs'>
-                    {getShortInt(totalTrials || 0)}
+                    {getAbbreviatedNumber(totalTrials || 0)}
                   </Text>
                 </ThemeIcon>
               </Skeleton>

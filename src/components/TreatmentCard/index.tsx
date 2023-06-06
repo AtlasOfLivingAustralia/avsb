@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
 import { Event, SeedBankTreatment } from '#/api/graphql/types';
 import { IconFileDescription } from '@tabler/icons';
-import { getIsPresent, treatmentFields } from '#/helpers';
+import { getIsDefined, treatmentFields } from '#/helpers';
 
 import IconText from '../IconText';
 import fields from './fields';
@@ -55,7 +55,7 @@ function TreatmentCard({ event }: TreatmentCardProps) {
                     <Text color='dimmed' size='xs'>
                       {label}
                     </Text>
-                    {getIsPresent(treatment?.[key]) ? (
+                    {getIsDefined(treatment?.[key]) ? (
                       <Text size='sm' weight='bold'>
                         {treatment?.[key]}
                         {unit && unit}

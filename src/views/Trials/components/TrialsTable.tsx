@@ -29,7 +29,7 @@ import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
 import { TrialDetails, ThField } from '#/components';
-import { getIsPresent } from '#/helpers';
+import { getIsDefined } from '#/helpers';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -207,12 +207,12 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                       </Text>
                     </td>
                     <td>
-                      {getIsPresent(trial?.adjustedGerminationPercentage) &&
+                      {getIsDefined(trial?.adjustedGerminationPercentage) &&
                         `${trial?.adjustedGerminationPercentage}%`}
                     </td>
-                    <td>{getIsPresent(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}</td>
+                    <td>{getIsDefined(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}</td>
                     <td>
-                      {getIsPresent(trial?.viabilityPercentage) && `${trial?.viabilityPercentage}%`}
+                      {getIsDefined(trial?.viabilityPercentage) && `${trial?.viabilityPercentage}%`}
                     </td>
                     <td>
                       {[event.day, event.month, event.year]
@@ -220,7 +220,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                         .join('/')}
                     </td>
                     <td>
-                      {getIsPresent(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
+                      {getIsDefined(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
                     </td>
                     <td align='right' style={{ paddingLeft: 0 }}>
                       <Group spacing='xs' position='right' miw={145}>

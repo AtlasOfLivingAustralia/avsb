@@ -33,7 +33,7 @@ import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 
 // Project imports
 import { Event, SeedBankAccession } from '#/api/graphql/types';
-import { getIsPresent, accessionFields } from '#/helpers';
+import { getIsDefined, accessionFields } from '#/helpers';
 
 // Local imports
 import Contact from '../Contact';
@@ -107,7 +107,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
                       <Text color='dimmed' size='xs'>
                         {label}
                       </Text>
-                      {getIsPresent(accession?.[key]) ? (
+                      {getIsDefined(accession?.[key]) ? (
                         <Text size='xl' weight='bold'>
                           {accession?.[key]}
                           {unit && unit}
@@ -133,7 +133,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
                     <Text color='dimmed' size='xs'>
                       {label}
                     </Text>
-                    {getIsPresent(accession?.[key]) ? (
+                    {getIsDefined(accession?.[key]) ? (
                       <Text size='sm' weight='bold'>
                         {accession?.[key]}
                       </Text>

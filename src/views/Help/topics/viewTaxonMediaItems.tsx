@@ -1,8 +1,8 @@
 import { Code } from '@mantine/core';
 import { IconClick } from '@tabler/icons';
 
-import imageMedia from '../images/taxon-media-min.png';
-import imageMediaSelect from '../images/taxon-media-select-min.png';
+import imageMedia from '#/assets/help/taxon-media-min.png';
+import imageMediaSelect from '#/assets/help/taxon-media-select-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 
