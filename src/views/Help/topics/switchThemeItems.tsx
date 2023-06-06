@@ -1,6 +1,6 @@
 import { IconClick, IconMoon, IconSun } from '@tabler/icons';
 
-import imageHomeLight from '../images/home-light-min.png';
+import imageHomeLight from '#/assets/help/home-light-min.png';
 
 import { HelpTopicItem } from '..';
 

@@ -1,9 +1,9 @@
 import { Code } from '@mantine/core';
 import { IconClick, IconEye } from '@tabler/icons';
 
-import imageTrials from '../images/taxon-trials-min.png';
-import imageTrialsExpanded from '../images/taxon-trials-expanded-min.png';
-import imageTrialsResults from '../images/taxon-trials-results-min.png';
+import imageTrials from '#/assets/help/taxon-trials-min.png';
+import imageTrialsExpanded from '#/assets/help/taxon-trials-expanded-min.png';
+import imageTrialsResults from '#/assets/help/taxon-trials-results-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 

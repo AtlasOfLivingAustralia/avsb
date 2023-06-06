@@ -1,8 +1,8 @@
 import { Code, Kbd } from '@mantine/core';
 import { IconClick, IconMouse } from '@tabler/icons';
 
-import imageHomeSearch from '../images/home-search-min.png';
-import imageHomeSearchSelect from '../images/home-search-select-min.png';
+import imageHomeSearch from '#/assets/help/home-search-min.png';
+import imageHomeSearchSelect from '#/assets/help/home-search-select-min.png';
 
 import { HelpTopicItem } from '..';
 

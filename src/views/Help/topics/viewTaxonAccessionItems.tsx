@@ -1,13 +1,13 @@
 import { Code } from '@mantine/core';
 import { IconClick, IconEye } from '@tabler/icons';
 
-import imageAccessions from '../images/taxon-accessions-min.png';
-import imageAccessionsExpanded from '../images/taxon-accessions-expanded-min.png';
-import imageAccessionsResults from '../images/taxon-accessions-results-min.png';
-import imageAccessionsFullHover from '../images/taxon-accessions-full-hover-min.png';
-import imageAccessionsDetails from '../images/taxon-accessions-details-min.png';
-import imageAccessionsDetailsMap from '../images/taxon-accessions-details-map-min.png';
-import imageAccessionsDetailsBottom from '../images/taxon-accessions-details-bottom-min.png';
+import imageAccessions from '#/assets/help/taxon-accessions-min.png';
+import imageAccessionsExpanded from '#/assets/help/taxon-accessions-expanded-min.png';
+import imageAccessionsResults from '#/assets/help/taxon-accessions-results-min.png';
+import imageAccessionsFullHover from '#/assets/help/taxon-accessions-full-hover-min.png';
+import imageAccessionsDetails from '#/assets/help/taxon-accessions-details-min.png';
+import imageAccessionsDetailsMap from '#/assets/help/taxon-accessions-details-map-min.png';
+import imageAccessionsDetailsBottom from '#/assets/help/taxon-accessions-details-bottom-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 
