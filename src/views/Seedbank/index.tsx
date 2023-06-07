@@ -221,8 +221,8 @@ export function Component() {
               styles={{ title: { marginBottom: 4 } }}
             >
               <Text>
-                Accessions of from this dataset were collected from the locations shown above. Click
-                a dot to be taken to that accession.
+                Accessions were collected from the locations shown above. Click a dot to be taken to
+                that accession.
               </Text>
             </Alert>
           </Grid.Col>

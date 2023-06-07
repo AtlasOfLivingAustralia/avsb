@@ -53,7 +53,9 @@ function Row({ index, style, data }: SpeciesRow) {
       <Group position='apart'>
         <Text size='sm'>{data[index].key}</Text>
         <Group spacing='xs' mr='sm'>
-          <Badge>{data[index].count} Records</Badge>
+          <Badge>
+            {data[index].count} Record{data[index].count > 1 && 's'}
+          </Badge>
           <IconArrowUpRight size='1rem' />
         </Group>
       </Group>
@@ -110,7 +112,7 @@ function SpeciesList({ name, species }: SpeciesListProps) {
       />
       <Divider mt='md' mb='xs' />
       <FixedSizeList
-        height={410}
+        height={395}
         width='calc(100% + 16px)'
         style={{ marginRight: -16 }}
         itemData={filtered}
