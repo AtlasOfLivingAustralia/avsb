@@ -1,12 +1,12 @@
 import { CSSProperties, useEffect, useState } from 'react';
 import {
   ActionIcon,
+  Badge,
   Divider,
   Group,
   Paper,
   Text,
   TextInput,
-  ThemeIcon,
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
@@ -53,11 +53,7 @@ function Row({ index, style, data }: SpeciesRow) {
       <Group position='apart'>
         <Text size='sm'>{data[index].key}</Text>
         <Group spacing='xs' mr='sm'>
-          <ThemeIcon variant='light' size='lg' radius='lg'>
-            <Text weight='bold' size='xs'>
-              {data[index].count}
-            </Text>
-          </ThemeIcon>
+          <Badge>{data[index].count} Records</Badge>
           <IconArrowUpRight size='1rem' />
         </Group>
       </Group>
