@@ -290,6 +290,20 @@ function FAQ() {
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
+        <Accordion.Item value='missing-accessions-summary-map'>
+          <Accordion.Control>
+            Why am I unable to see all accessions for a taxon on the summary map?
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Stack spacing='sm'>
+              <Text size='sm'>
+                The accessions seen on the summary map rely on coordinate data being provided by our
+                partners. Some partners provide full coordiante data with their accessions, whereas
+                others may only provide it for a subset of their records, or not at all.
+              </Text>
+            </Stack>
+          </Accordion.Panel>
+        </Accordion.Item>
       </Accordion>
       <Space h={80} />
     </Container>

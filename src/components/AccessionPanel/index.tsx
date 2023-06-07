@@ -208,7 +208,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
                     This map shows the seed <b>collection</b> location
                   </>
                 ) : (
-                  'No locality data supplied'
+                  'No coordinate data supplied'
                 )}
               </Alert>
               {accessionEvent.decimalLatitude &&
