@@ -35,7 +35,7 @@ function Row({ index, style, data }: SpeciesRow) {
 
   const handleRowClick = async () => {
     const [suggest] = await taxonAPI.suggest(data[index].key);
-    if (suggest) navigate(`/taxon/${encodeURIComponent(suggest.guid)}`);
+    if (suggest) navigate(`/taxon/${encodeURIComponent(suggest.guid)}/accessions`);
   };
 
   return (
