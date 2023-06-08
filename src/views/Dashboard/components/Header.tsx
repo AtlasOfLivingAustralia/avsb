@@ -8,6 +8,7 @@ import {
   useMantineColorScheme,
   MediaQuery,
   Transition,
+  Tooltip,
 } from '@mantine/core';
 
 // Project components & gelpers
@@ -60,12 +61,28 @@ function Header() {
           </MediaQuery>
         )}
         <Group style={{ flexGrow: 1, maxWidth: 140 }} position='right' spacing='xs'>
-          <ActionIcon component={Link} to='/help' variant='filled' radius='xl' size={38}>
-            <IconQuestionMark size={20} />
-          </ActionIcon>
-          <ActionIcon variant='filled' radius='xl' size={38} onClick={() => toggleColorScheme()}>
-            {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
-          </ActionIcon>
+          <Tooltip
+            transitionProps={{ transition: 'pop' }}
+            offset={10}
+            withArrow
+            label='Help / FAQ'
+            position='right'
+          >
+            <ActionIcon component={Link} to='/help' variant='filled' radius='xl' size={38}>
+              <IconQuestionMark size={20} />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip
+            transitionProps={{ transition: 'pop' }}
+            offset={10}
+            withArrow
+            label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
+            position='right'
+          >
+            <ActionIcon variant='filled' radius='xl' size={38} onClick={() => toggleColorScheme()}>
+              {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
+            </ActionIcon>
+          </Tooltip>
           {/* {auth.isAuthenticated ? (
             <Menu shadow='md' position='bottom-end'>
               <Menu.Target>

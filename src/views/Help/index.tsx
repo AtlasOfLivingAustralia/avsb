@@ -129,7 +129,7 @@ export function Component() {
         opened={opened}
         onClose={close}
         withCloseButton={false}
-        size='xl'
+        size={1000}
         overlayProps={{
           color: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2],
           opacity: 0.55,
