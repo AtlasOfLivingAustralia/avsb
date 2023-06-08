@@ -97,8 +97,10 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
           value={single}
           valueFormat='DD/MM/YYYY'
           onChange={setSingle}
+          onInput={({ target }) => {
+            if ((target as HTMLInputElement).value === '') setSingle(null);
+          }}
           placeholder={placeholder}
-          clearable
           dateParser={(input) => dayjs(input, 'DD/MM/YYYY').toDate()}
         />
         <DateInput
@@ -106,8 +108,10 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
           valueFormat='DD/MM/YYYY'
           style={{ flexGrow: 1, display: operation === 'range' ? 'block' : 'none' }}
           onChange={setRange}
+          onInput={({ target }) => {
+            if ((target as HTMLInputElement).value === '') setRange(null);
+          }}
           placeholder={placeholder}
-          clearable
           dateParser={(input) => dayjs(input, 'DD/MM/YYYY').toDate()}
         />
       </Group>

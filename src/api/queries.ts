@@ -80,6 +80,11 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
           measurementAccuracy
           measurementDeterminedDate
         }
+        distinctTaxa {
+          scientificName
+          species
+          key
+        }
         extensions {
           seedbank {
             accessionNumber

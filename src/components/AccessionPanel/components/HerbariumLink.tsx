@@ -5,10 +5,9 @@ import { useParams } from 'react-router-dom';
 
 interface ContactProps {
   accession: string;
-  taxon?: string;
 }
 
-function HerbariumLink({ accession, taxon }: ContactProps) {
+function HerbariumLink({ accession }: ContactProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const [uuid, setUuid] = useState<string | null>(null);
@@ -45,12 +44,12 @@ function HerbariumLink({ accession, taxon }: ContactProps) {
       setLoading(false);
     }
 
-    const taxonID = taxon || guid;
+    const taxonID = guid;
     if (taxonID) getAccession(taxonID);
-  }, [accession, taxon, guid]);
+  }, [accession, guid]);
 
   // Don't render anything if no taxon ID is supplied
-  if (!(taxon || guid)) return null;
+  if (!guid) return null;
 
   return (
     <UnstyledButton

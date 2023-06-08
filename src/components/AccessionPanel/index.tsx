@@ -16,10 +16,11 @@ import {
   Divider,
   Alert,
   Skeleton,
+  Chip,
 } from '@mantine/core';
 import {
-  IconAlertTriangle,
   IconArrowBackUp,
+  IconArrowUpRight,
   IconChevronDown,
   IconChevronUp,
   IconHandStop,
@@ -47,10 +48,6 @@ import FieldTooltip from '../FieldTooltip';
 
 const Map = lazy(() => import('../Map'));
 
-interface AccessionPanelProps {
-  taxon?: string;
-}
-
 const missingData = 'Not Supplied';
 
 interface AccessionPanelLoader {
@@ -58,13 +55,12 @@ interface AccessionPanelLoader {
   trialEvents: Event[];
 }
 
-function AccessionPanel({ taxon }: AccessionPanelProps) {
+function AccessionPanel() {
   const { accessionEvent, trialEvents } = useLoaderData() as AccessionPanelLoader;
   const accession = accessionEvent?.extensions?.seedbank as SeedBankAccession;
   const navigate = useNavigate();
 
-  // if (!accession && !event)
-  //   throw new Error('Tried to render an AccessionPanel without accession data');
+  const taxonInfo = accessionEvent.distinctTaxa?.[0];
 
   return (
     <Grid gutter='xl' pb='xl'>
@@ -72,14 +68,27 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
         <Grid.Col span={12}>
           <Paper p='sm' mb='lg' withBorder>
             <Group position='apart'>
-              <Breadcrumbs>
-                <Anchor weight='bold' size='sm' component={Link} to='..'>
-                  Accessions
-                </Anchor>
-                <Text weight='bold' size='sm'>
-                  {accession?.accessionNumber || 'Unknown'}
-                </Text>
-              </Breadcrumbs>
+              <Group spacing='md'>
+                <Breadcrumbs>
+                  <Anchor weight='bold' size='sm' component={Link} to='..'>
+                    Accessions
+                  </Anchor>
+                  <Text weight='bold' size='sm'>
+                    {accession?.accessionNumber || 'Unknown'}
+                  </Text>
+                </Breadcrumbs>
+                <Chip
+                  size='xs'
+                  mb={2}
+                  checked={false}
+                  onClick={() =>
+                    navigate(`/taxon/${encodeURIComponent(taxonInfo?.key || '')}/accessions`)
+                  }
+                >
+                  {taxonInfo?.scientificName || taxonInfo?.species}
+                  <IconArrowUpRight style={{ marginLeft: 4 }} size='1rem' />
+                </Chip>
+              </Group>
               <Button
                 variant='subtle'
                 size='xs'
@@ -211,13 +220,6 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
                   'No coordinate data supplied'
                 )}
               </Alert>
-              {accessionEvent.decimalLatitude &&
-                accessionEvent.decimalLongitude &&
-                accessionEvent.decimalLatitude.toString().split('.')[1].length < 4 && (
-                  <Alert color='yellow' icon={<IconAlertTriangle />} mb='sm'>
-                    Precise location data has been obfuscated for species protection
-                  </Alert>
-                )}
             </Stack>
             <IconText labelWidth={120} title='Locality' icon={IconLocation}>
               {accessionEvent.locality || missingData}
@@ -255,9 +257,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
                 </Text>
               </Timeline.Item>
             </Timeline>
-            {accession?.accessionNumber && (
-              <HerbariumLink accession={accession.accessionNumber} taxon={taxon} />
-            )}
+            {accession?.accessionNumber && <HerbariumLink accession={accession.accessionNumber} />}
           </Stack>
         </Paper>
       </Grid.Col>
