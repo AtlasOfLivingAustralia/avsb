@@ -94,9 +94,6 @@ Resources:
             - HEAD
           CachePolicyId: !Ref AvsbCachePolicy
           Compress: true
-          FunctionAssociations:
-            - EventType: viewer-request
-              FunctionARN: !GetAtt AvsbStaticCloudFrontFunction.FunctionMetadata.FunctionARN
           TargetOriginId: avsb-s3
           ViewerProtocolPolicy: redirect-to-https
         DefaultRootObject: index.html
@@ -146,44 +143,6 @@ Resources:
     Properties:
       CloudFrontOriginAccessIdentityConfig:
         Comment: !Sub CF Origin Access Identity for the AVSB ${pEnvironment}
-
-  AvsbStaticCloudFrontFunction:
-    Type: AWS::CloudFront::Function
-    Properties:
-      AutoPublish: true
-      FunctionCode: |
-                      function handler(event) {
-                        var request = event.request;
-                        var uri = request.uri;
-
-                        // Check whether the URI is missing a file name.
-                        if (uri.endsWith('/')) {
-                            request.uri += 'index.html';
-                        }
-                        // Check whether the URI is missing a file extension.
-                        // Redirect in this case otherwise relative links will
-                        // be broken
-                        else if (!uri.includes('.')) {
-                            request.uri += '/index.html';
-                            var response = {
-                                  statusCode: 301,
-                                  statusDescription: 'Moved Permanently',
-                                  headers:
-                                    { "location": { "value": request.uri } }
-                                }
-
-                            return response;
-                        }
-
-                        return request;
-                      }
-      FunctionConfig:
-        Comment: Rewrite any request ending in a directory to append index.html on the end
-        Runtime: cloudfront-js-1.0
-      Name: !Sub
-              - "avsb-rewrite-${ResourceName}"
-              - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
-
 
 Outputs:
   AvsbBucketName:
