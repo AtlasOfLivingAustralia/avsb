@@ -185,10 +185,10 @@ function AccessionTable({ events }: AccessionTableProps) {
                       {accession?.accessionNumber || event.eventID}
                     </td>
                     <td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>
-                      <Text truncate maw={250}>
-                        {event?.datasetTitle}
-                      </Text>
+                    <td>
+                      <Box maw={250}>
+                        <Text lineClamp={2}>{event?.datasetTitle}</Text>
+                      </Box>
                     </td>
                     <td>
                       {getIsDefined(accession?.dateCollected) &&

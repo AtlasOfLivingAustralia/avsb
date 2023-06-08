@@ -200,11 +200,10 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                   >
                     <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber}</td>
                     <td>{event.distinctTaxa?.[0].scientificName}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>
-                      {' '}
-                      <Text truncate maw={250}>
-                        {event?.datasetTitle}
-                      </Text>
+                    <td>
+                      <Box maw={250}>
+                        <Text lineClamp={2}>{event?.datasetTitle}</Text>
+                      </Box>
                     </td>
                     <td>
                       {getIsDefined(trial?.adjustedGerminationPercentage) &&
