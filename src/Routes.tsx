@@ -67,6 +67,7 @@ const routes = createBrowserRouter([
           {
             id: 'accessions',
             path: 'accessions',
+            errorElement: <ErrorBoundary />,
             lazy: () => import('./views/Accessions'),
             loader: async ({ params }) => {
               const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_ACCESSIONS, {
@@ -118,6 +119,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'trials',
+            errorElement: <ErrorBoundary />,
             lazy: () => import('./views/Trials'),
             loader: async ({ params }) => {
               // Perform the first query to retireve the trial data
@@ -181,6 +183,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'media',
+            errorElement: <ErrorBoundary />,
             lazy: () => import('./views/Media'),
             loader: async ({ params }) => {
               const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
@@ -194,6 +197,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'sequences',
+            errorElement: <ErrorBoundary />,
             lazy: () => import('./views/Sequences'),
             loader: async ({ params }) =>
               defer({
