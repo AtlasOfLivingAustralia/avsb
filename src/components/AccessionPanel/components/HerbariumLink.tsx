@@ -40,7 +40,7 @@ function HerbariumLink({ accession, ...rest }: ContactProps) {
       });
 
       const data = await fetch(
-        `${import.meta.env.VITE_API_BIOCACHE}/occurrences/search?${params.toString()}`,
+        `${import.meta.env.VITE_API_ALA}/occurrences/occurrences/search?${params.toString()}`,
       );
 
       if (data.ok) {

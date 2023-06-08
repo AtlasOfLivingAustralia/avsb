@@ -61,7 +61,9 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   // Helper function to add the events layer to the map
   const addLayer = () => {
     if (map.current) {
-      const tile = `${import.meta.env.VITE_API_EVENT_TILE}/event/mvt/{z}/{x}/{y}?queryId=${token}`;
+      const tile = `${
+        import.meta.env.VITE_API_ALA
+      }/event/tile/event/mvt/{z}/{x}/{y}?queryId=${token}`;
 
       map.current.addLayer(getMapLayer(tile));
       map.current.on('mouseenter', 'events', (e) => {
