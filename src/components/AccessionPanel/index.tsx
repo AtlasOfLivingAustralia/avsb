@@ -29,6 +29,8 @@ import {
   IconMap2,
   IconMapPin,
   IconPackage,
+  IconTimeline,
+  IconTimelineEvent,
 } from '@tabler/icons';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 
@@ -237,8 +239,14 @@ function AccessionPanel() {
         </Paper>
       </Grid.Col>
       <Grid.Col sm={4} md={4} lg={4}>
-        <Paper p='md' h='100%' withBorder>
-          <Stack justify='space-between' h='100%'>
+        <Paper style={{ display: 'flex', flexDirection: 'column' }} p='md' h='100%' withBorder>
+          <Group spacing='md' mb='xl'>
+            <IconTimelineEvent size='1.5rem' />
+            <Text size='xl' sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}>
+              Collection Timeline
+            </Text>
+          </Group>
+          <Stack justify='space-between'>
             <Timeline bulletSize={28}>
               <Timeline.Item bullet={<IconHandStop size={18} />}>
                 <Text>Seed Collected</Text>
@@ -257,7 +265,9 @@ function AccessionPanel() {
                 </Text>
               </Timeline.Item>
             </Timeline>
-            {accession?.accessionNumber && <HerbariumLink accession={accession.accessionNumber} />}
+            {accession?.accessionNumber && (
+              <HerbariumLink mt='xl' accession={accession.accessionNumber} />
+            )}
           </Stack>
         </Paper>
       </Grid.Col>

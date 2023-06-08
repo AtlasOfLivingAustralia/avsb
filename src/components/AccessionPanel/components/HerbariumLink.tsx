@@ -1,13 +1,22 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { useEffect, useState } from 'react';
-import { Box, Image, Paper, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
+import {
+  Box,
+  Image,
+  Paper,
+  Text,
+  ThemeIcon,
+  UnstyledButton,
+  UnstyledButtonProps,
+} from '@mantine/core';
 import { IconExternalLink } from '@tabler/icons';
 import { useParams } from 'react-router-dom';
 
-interface ContactProps {
+interface ContactProps extends UnstyledButtonProps {
   accession: string;
 }
 
-function HerbariumLink({ accession }: ContactProps) {
+function HerbariumLink({ accession, ...rest }: ContactProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const [uuid, setUuid] = useState<string | null>(null);
@@ -53,6 +62,7 @@ function HerbariumLink({ accession }: ContactProps) {
 
   return (
     <UnstyledButton
+      {...rest}
       component='a'
       href={uuid ? `https://avh.ala.org.au/occurrences/${uuid}` : undefined}
       target='_blank'
