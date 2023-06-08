@@ -2,24 +2,34 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Code pipeline for the AVSB site
 
 Parameters:
-  pEnvironment:
+  pAppStackName:
     Type: String
-    Description: The AWS environment this belongs to
+    Description: The name of the application stack
+  pArtifactsBucket:
+    Type: String
+    Description: Common artifacts bucket used by CodePipeline and CodeBuild
+  pAutoDeploy:
+    Type: String
+    Description: Sets the pipeline to autodeploy on repo changes
+  pCleanBranch:
+    Type: String
+    Description: A cleaned version of the code branch name
+    Default: development
   pCloudFormationServiceRole:
     Type: String
     Description: Common service role used by Cloudformation
   pCodeBuildServiceRole:
     Type: String
     Description: Common service role used by CodeBuild
-  pAppStackName:
-    Type: String
-    Description: The name of the application stack
   pCodePipelineServiceRole:
     Type: String
     Description: Common service role used by CodePipeline
-  pArtifactsBucket:
+  pCodestarConnection:
     Type: String
-    Description: Common artifacts bucket used by CodePipeline and CodeBuild
+    Description: Codestar connection ARN
+  pEnvironment:
+    Type: String
+    Description: The AWS environment this belongs to
   pGitHubRepositoryName:
     Type: String
     Description: GitHub repository name.
@@ -29,15 +39,26 @@ Parameters:
   pGitHubBranch:
     Type: String
     Description: GitHub branch we're deploying from
-  pCodestarConnection:
+  pProductComponent:
     Type: String
-    Description: Codestar connection ARN
+    Description: The name of the product component
+  pProductName:
+    Type: String
+    Description: The name of the product
+
+Conditions:
+  IsDev: !Equals
+    - !Ref pEnvironment
+    - development
+
 
 Resources:
   ExportConfig:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: !Sub avsb-export-config-${pEnvironment}
+      Name: !Sub
+              - "${pProductName}-${pProductComponent}-export-config-${ResourceName}"
+              - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Load the environment and build the CloudFormation template config file
       ServiceRole: !Ref pCodeBuildServiceRole
       Artifacts:
@@ -51,13 +72,15 @@ Resources:
             Value: !Ref pArtifactsBucket
       Source:
         Type: CODEPIPELINE
-        BuildSpec: cicd/export_config_buildspec.yaml
+        BuildSpec: cicd/pipeline/export_config_buildspec.yaml
       TimeoutInMinutes: 5
 
-  BuildAvsb:
+  BuildCode:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: !Sub avsb-build-site-${pEnvironment}
+      Name: !Sub
+              - "${pProductName}-${pProductComponent}-build-site-${ResourceName}"
+              - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Build the AVSB site
       ServiceRole: !Ref pCodeBuildServiceRole
       Artifacts:
@@ -71,13 +94,15 @@ Resources:
             Value: !Ref pArtifactsBucket
       Source:
         Type: CODEPIPELINE
-        BuildSpec: cicd/npm_build_buildspec.yaml
+        BuildSpec: cicd/pipeline/npm_build_buildspec.yaml
       TimeoutInMinutes: 10
 
   EmptyBucket:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: !Sub avsb-empty-bucket-${pEnvironment}
+      Name: !Sub
+              - "${pProductName}-${pProductComponent}-empty-bucket-${ResourceName}"
+              - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Empty the source s3 bucket so it can be deleted
       ServiceRole: !Ref pCodeBuildServiceRole
       Artifacts:
@@ -91,13 +116,15 @@ Resources:
             Value: !Ref pArtifactsBucket
       Source:
         Type: CODEPIPELINE
-        BuildSpec: cicd/empty_bucket_buildspec.yaml
+        BuildSpec: cicd/pipeline/empty_bucket_buildspec.yaml
       TimeoutInMinutes: 5
 
   Pipeline:
     Type: 'AWS::CodePipeline::Pipeline'
     Properties:
-      Name: !Sub avsb-site-${pEnvironment}
+      Name: !Sub
+              - "${pProductName}-${pProductComponent}-${ResourceName}"
+              - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       RoleArn: !Ref pCodePipelineServiceRole
       ArtifactStore:
         Type: S3
@@ -116,7 +143,7 @@ Resources:
                 FullRepositoryId: !Sub ${pGitHubOwner}/${pGitHubRepositoryName}
                 BranchName: !Ref pGitHubBranch
                 OutputArtifactFormat: CODE_ZIP
-                DetectChanges: false
+                DetectChanges: !Ref pAutoDeploy
               Namespace: CheckoutSrcNS
               OutputArtifacts:
                 - Name: 'AvsbSourceArtifact'
@@ -147,8 +174,8 @@ Resources:
                 Version: 1
                 Provider: CloudFormation
               Configuration:
-                TemplatePath: 'ExportConfigArtifact::cicd/avsb.yaml'
-                TemplateConfiguration: 'ExportConfigArtifact::cicd/template_config.json'
+                TemplatePath: 'ExportConfigArtifact::cicd/app/avsb.yaml'
+                TemplateConfiguration: 'ExportConfigArtifact::cicd/pipeline/template_config.json'
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn: !Ref pCloudFormationServiceRole
@@ -160,14 +187,14 @@ Resources:
               RunOrder: 2
         - Name: Publish_Website
           Actions:
-            - Name: BuildAvsb
+            - Name: BuildCode
               ActionTypeId:
                 Owner: AWS
                 Category: Build
                 Version: 1
                 Provider: CodeBuild
               Configuration:
-                ProjectName: !Ref BuildAvsb
+                ProjectName: !Ref BuildCode
                 EnvironmentVariables: '[
                   { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
                   { "name":"ENVIRONMENT", "value":"#{ExportConfigNS.ENVIRONMENT}" },
@@ -248,6 +275,64 @@ Resources:
                 StackName: !Ref pAppStackName
                 RoleArn: !Ref pCloudFormationServiceRole
               RunOrder: 3
+            - Name: ApprovalForPipelineTeardown
+              ActionTypeId:
+                Owner: AWS
+                Category: Approval
+                Version: 1
+                Provider: Manual
+              Configuration:
+                CustomData: Approval required to tear down this stack
+              RunOrder: 4
+            - Name: TeardownCodePipeline
+              ActionTypeId:
+                Owner: AWS
+                Category: Deploy
+                Version: 1
+                Provider: CloudFormation
+              Configuration:
+                ActionMode: DELETE_ONLY
+                StackName: !Ref AWS::StackName
+                RoleArn: !Ref pCloudFormationServiceRole
+              RunOrder: 5
+
+
+  ExportConfigLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete 
+    Properties:
+      LogGroupName: !Sub
+                       - /aws/codebuild/${ProjectName}
+                       - ProjectName: !Ref ExportConfig
+      RetentionInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+    
+  BuildCodeLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub
+                       - /aws/codebuild/${ProjectName}
+                       - ProjectName: !Ref BuildCode
+      RetentionInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+    
+  EmptyBucketLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub
+                       - /aws/codebuild/${ProjectName}
+                       - ProjectName: !Ref EmptyBucket
+      RetentionInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
 
 Outputs:
   PipelineUrl:

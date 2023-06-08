@@ -2,15 +2,19 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: AVSB Infrastructure
 
 Parameters:
-  pEnvironment:
-    Type: String
-    Description: The AWS environment this belongs to
   pBucketName:
     Type: String
     Description: The bucket name for the site
   pBucketPath:
     Type: String
     Description: Optional path that the files are stored under
+  pCleanBranch:
+    Type: String
+    Description: A cleaned version of the code branch name
+    Default: development
+  pEnvironment:
+    Type: String
+    Description: The AWS environment this belongs to
   pHostedZone:
     Type: String
     Description: The hosted zone the site are accessed under
@@ -20,6 +24,12 @@ Parameters:
   pSslCertificate:
     Type: String
     Description: The arn of the SSL certificate to be used
+
+Conditions:
+  IsDev: !Equals
+    - !Ref pEnvironment
+    - development
+  NotDev: !Not [ Condition: IsDev ]
 
 Resources:
   AvsbBucket:
@@ -35,7 +45,7 @@ Resources:
         - Key: component
           Value: website
         - Key: Name
-          Value: !Sub avsb-${pEnvironment}
+          Value: !Sub ${pBucketName}
 
   AvsbBucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -49,14 +59,7 @@ Resources:
             Effect: Allow
             Resource: !Join ['', ['arn:aws:s3:::', !Ref AvsbBucket, '/*']]
             Principal:
-              AWS:
-                !Join [
-                  '',
-                  [
-                    'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ',
-                    !Ref AvsbCloudFrontOai,
-                  ],
-                ]
+              AWS: !Join [ '', [ 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ', !Ref AvsbCloudFrontOai, ], ]
 
   AvsbDnsRecord:
     Type: AWS::Route53::RecordSet
@@ -77,11 +80,6 @@ Resources:
         Aliases:
           - !Sub '${pSubDomain}.${pHostedZone}'
         Comment: !Sub CF Distribution for the AVSB site ${pEnvironment}
-        CustomErrorResponses:
-          - ErrorCode: 403
-            ErrorCachingMinTTL: 10
-            ResponseCode: 200
-            ResponsePagePath: /index.html
         DefaultCacheBehavior:
           AllowedMethods:
             - GET
@@ -91,6 +89,9 @@ Resources:
             - HEAD
           CachePolicyId: !Ref AvsbCachePolicy
           Compress: true
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt AvsbStaticCloudFrontFunction.FunctionMetadata.FunctionARN
           TargetOriginId: avsb-s3
           ViewerProtocolPolicy: redirect-to-https
         DefaultRootObject: index.html
@@ -120,7 +121,9 @@ Resources:
         DefaultTTL: 300
         MaxTTL: 86400
         MinTTL: 1
-        Name: !Sub Avsb-cache-Policy-${pEnvironment}
+        Name: !Sub
+          - "Avsb-cache-Policy-${ResourceName}"
+          - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
         ParametersInCacheKeyAndForwardedToOrigin:
           CookiesConfig:
             CookieBehavior: none
@@ -138,6 +141,44 @@ Resources:
     Properties:
       CloudFrontOriginAccessIdentityConfig:
         Comment: !Sub CF Origin Access Identity for the AVSB ${pEnvironment}
+
+  AvsbStaticCloudFrontFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      AutoPublish: true
+      FunctionCode: |
+                      function handler(event) {
+                        var request = event.request;
+                        var uri = request.uri;
+
+                        // Check whether the URI is missing a file name.
+                        if (uri.endsWith('/')) {
+                            request.uri += 'index.html';
+                        }
+                        // Check whether the URI is missing a file extension.
+                        // Redirect in this case otherwise relative links will
+                        // be broken
+                        else if (!uri.includes('.')) {
+                            request.uri += '/index.html';
+                            var response = {
+                                  statusCode: 301,
+                                  statusDescription: 'Moved Permanently',
+                                  headers:
+                                    { "location": { "value": request.uri } }
+                                }
+
+                            return response;
+                        }
+
+                        return request;
+                      }
+      FunctionConfig:
+        Comment: Rewrite any request ending in a directory to append index.html on the end
+        Runtime: cloudfront-js-1.0
+      Name: !Sub
+              - "avsb-rewrite-${ResourceName}"
+              - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+
 
 Outputs:
   AvsbBucketName:
