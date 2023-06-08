@@ -47,9 +47,9 @@ const filters: Filter[] = [
   },
   {
     key: 'datasetTitle',
-    label: 'Dataset',
+    label: 'Institution',
     type: 'selectSearch',
-    placeholder: 'Search for a dataset',
+    placeholder: 'Search for a institution',
     icon: IconDatabase,
     group: 'Collection',
     fetchItems,
