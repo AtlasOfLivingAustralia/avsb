@@ -1,6 +1,14 @@
 import { createBrowserRouter, RouterProvider, redirect, defer } from 'react-router-dom';
 import { AccessionPanel, ErrorBoundary } from '#/components';
-import { Event, performGQLQuery, gqlQueries, taxonAPI, collectoryAPI, genbankAPI } from './api';
+import {
+  Event,
+  performGQLQuery,
+  gqlQueries,
+  taxonAPI,
+  collectoryAPI,
+  genbankAPI,
+  sdsAPI,
+} from './api';
 
 import { DashboardView, HomeView } from './views';
 
@@ -17,13 +25,13 @@ const routes = createBrowserRouter([
         element: <HomeView />,
       },
       {
-        path: 'seedbank/:id',
+        path: 'seedbank/:resource',
         lazy: () => import('./views/Seedbank'),
         loader: async ({ params }) => {
           const [collectory, gql] = await Promise.all([
-            collectoryAPI.dataResource(params.id || ''),
+            collectoryAPI.dataResource(params.resource || ''),
             performGQLQuery(gqlQueries.QUERY_SEEDBANK_SUMMARY_FULL, {
-              datasetKey: params.id,
+              datasetKey: params.resource,
               size: 50,
             }),
           ]);
@@ -35,7 +43,12 @@ const routes = createBrowserRouter([
         id: 'taxon',
         path: 'taxon/:guid',
         lazy: () => import('./views/Taxon'),
-        loader: async ({ params }) => taxonAPI.info(params.guid || ''),
+        loader: async ({ params }) => {
+          const taxon = await taxonAPI.info(params.guid || '');
+          const sds = await sdsAPI.get(taxon.classification.scientificName);
+
+          return { taxon, sds };
+        },
         children: [
           {
             path: 'summary',

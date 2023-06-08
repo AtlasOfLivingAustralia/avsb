@@ -34,6 +34,7 @@ import { useLoaderData, useParams } from 'react-router-dom';
 import { useMediaQuery } from '@mantine/hooks';
 
 // Project imports
+import { getSpeciesForDr } from '#/helpers';
 import { DataResource, EventSearchResult } from '#/api';
 import { Contact } from '#/components';
 import { Wave } from '#/components/Wave';
@@ -56,8 +57,9 @@ interface SeedbankRouteData {
 export function Component() {
   const [logoLoaded, setLogoLoaded] = useState<boolean>(false);
   const { gql, collectory } = useLoaderData() as SeedbankRouteData;
+  const { resource } = useParams();
   const { eventSearch, accessions, trials } = gql;
-  const { _tileServerToken: token, documents, stats, occurrenceFacet } = eventSearch;
+  const { _tileServerToken: token, documents, stats } = eventSearch;
 
   const [event] = documents?.results || [];
   const params = useParams();
@@ -229,11 +231,11 @@ export function Component() {
           <Grid.Col xl={4} lg={4} md={12} sm={12} xs={12}>
             <SpeciesList
               name={event?.datasetTitle || 'Unknown Dataset'}
-              species={occurrenceFacet?.species || []}
+              species={getSpeciesForDr(resource || '')}
             />
           </Grid.Col>
           <Grid.Col span={12}>
-            <Contact dataResource={params.id || ''} />
+            <Contact dataResource={params.resource || ''} />
           </Grid.Col>
         </Grid>
       </Container>

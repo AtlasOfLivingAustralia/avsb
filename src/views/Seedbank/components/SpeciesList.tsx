@@ -1,7 +1,6 @@
 import { CSSProperties, useEffect, useState } from 'react';
 import {
   ActionIcon,
-  Badge,
   Divider,
   Group,
   Paper,
@@ -10,31 +9,31 @@ import {
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
+
 import { FixedSizeList } from 'react-window';
 import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons';
 import { useDebouncedValue } from '@mantine/hooks';
 import { saveAs } from 'file-saver';
-import { taxonAPI } from '#/api';
 import { useNavigate } from 'react-router-dom';
 
-type SpeciesFacet = { key: string; count: number };
+import { taxonAPI } from '#/api';
 
 interface SpeciesListProps {
   name: string;
-  species: SpeciesFacet[];
+  species: string[];
 }
 
 interface SpeciesRow {
   index: number;
   style: CSSProperties;
-  data: SpeciesFacet[];
+  data: string[];
 }
 
 function Row({ index, style, data }: SpeciesRow) {
   const navigate = useNavigate();
 
   const handleRowClick = async () => {
-    const [suggest] = await taxonAPI.suggest(data[index].key);
+    const [suggest] = await taxonAPI.suggest(data[index]);
     if (suggest) navigate(`/taxon/${encodeURIComponent(suggest.guid)}`);
   };
 
@@ -50,14 +49,9 @@ function Row({ index, style, data }: SpeciesRow) {
         },
       }}
     >
-      <Group position='apart'>
-        <Text size='sm'>{data[index].key}</Text>
-        <Group spacing='xs' mr='sm'>
-          <Badge>
-            {data[index].count} Record{data[index].count > 1 && 's'}
-          </Badge>
-          <IconArrowUpRight size='1rem' />
-        </Group>
+      <Group position='apart' pr='lg'>
+        <Text size='sm'>{data[index]}</Text>
+        <IconArrowUpRight size='1rem' />
       </Group>
     </UnstyledButton>
   );
@@ -65,21 +59,20 @@ function Row({ index, style, data }: SpeciesRow) {
 
 function SpeciesList({ name, species }: SpeciesListProps) {
   const [search, setSearch] = useState<string>('');
-  const [filtered, setFiltered] = useState<SpeciesFacet[]>([]);
+  const [filtered, setFiltered] = useState<string[]>([]);
   const [searchDebounced] = useDebouncedValue(search, 200);
 
   useEffect(() => {
     setFiltered(
-      species.filter(({ key }) => key.toLowerCase().includes(searchDebounced.toLowerCase())),
+      species.filter((speciesName) =>
+        speciesName.toLowerCase().includes(searchDebounced.toLowerCase()),
+      ),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDebounced]);
 
   const onDownloadClick = () => {
-    const csv = [
-      'Species Name,Count',
-      ...species.map((record) => Object.values(record).join(',')),
-    ].join('\n');
+    const csv = ['Species Name', ...species.sort()].join('\n');
 
     saveAs(
       new Blob([csv], {
@@ -115,7 +108,7 @@ function SpeciesList({ name, species }: SpeciesListProps) {
         height={395}
         width='calc(100% + 16px)'
         style={{ marginRight: -16 }}
-        itemData={filtered}
+        itemData={filtered.sort()}
         itemCount={filtered.length}
         itemSize={45}
       >

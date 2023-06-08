@@ -6,4 +6,6 @@ export { default as getAbbreviatedNumber } from './getAbbreviatedNumber';
 export { default as mapTrialTreatments } from './mapTrialTreatments';
 export { default as useMounted } from './useMounted';
 export { getWktFromGeohash, getBboxFromFeature } from './getWktFromGeohash';
+
+export * from './datasetSpecies';
 export * from './fieldDefinitions';
