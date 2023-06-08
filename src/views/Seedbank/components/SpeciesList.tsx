@@ -56,7 +56,9 @@ function Row({ index, style, data }: SpeciesRow) {
       }}
     >
       <Group position='apart'>
-        <Text size='sm'>{data[index].key}</Text>
+        <Text size='sm' maw={205} truncate>
+          {data[index].key}
+        </Text>
         <Group spacing='xs' mr='sm'>
           <Badge>
             {data[index].count} Record{data[index].count > 1 && 's'}
