@@ -29,7 +29,7 @@ There are also dynamic environments that are created for each feature branch. Th
 | git branch                                  | environment | URL                                      |
 | ------------------------------------------- | ----------- | ---------------------------------------- |
 | main                                        | production  | https://avsb.ala.org.au                  | 
-| main                                        | staging     | https://avsb.staging.ala.org.au          |
+| main                                        | staging     | https://avsb-staging.ala.org.au          |
 | testing                                     | testing     | https://avsb.test.ala.org.au             |
 | feature\* (e.g. feature/121-new-logo)       | development | https://avsb-121-new-logo.dev.ala.org.au |
 
