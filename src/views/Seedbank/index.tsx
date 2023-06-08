@@ -34,7 +34,6 @@ import { useLoaderData, useParams } from 'react-router-dom';
 import { useMediaQuery } from '@mantine/hooks';
 
 // Project imports
-import { getSpeciesForDr } from '#/helpers';
 import { DataResource, EventSearchResult } from '#/api';
 import { Contact } from '#/components';
 import { Wave } from '#/components/Wave';
@@ -231,7 +230,7 @@ export function Component() {
           <Grid.Col xl={4} lg={4} md={12} sm={12} xs={12}>
             <SpeciesList
               name={event?.datasetTitle || 'Unknown Dataset'}
-              species={getSpeciesForDr(resource || '')}
+              dataResource={resource || ''}
             />
           </Grid.Col>
           <Grid.Col span={12}>

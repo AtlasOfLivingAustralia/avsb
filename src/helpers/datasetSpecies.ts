@@ -1,16 +1,18 @@
 import speciesData from '#/assets/species.json';
 
-interface Species {
+type SpeciesEntries = { [key: string]: number };
+
+export interface Species {
   _meta: {
     updated: number;
   };
   all: string[];
   datasets: {
-    [key: string]: string[];
+    [dataset: string]: SpeciesEntries;
   };
 }
 
-export const getSpeciesForDr = (dataResource: string): string[] =>
+export const getSpeciesForDr = (dataResource: string): SpeciesEntries =>
   (speciesData as Species).datasets[dataResource];
 
 export const isSpeciesInList = (scientificName: string): boolean =>
