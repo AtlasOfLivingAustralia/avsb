@@ -85,7 +85,8 @@ const accessionFields: SeedbankFieldMap = {
     icon: IconDropletFilled,
     unit: '%',
     examples: '15%',
-    description: 'The relative humidity at which the accession was stored on the "dateInStorage"',
+    description:
+      'The relative humidity at which the accession was stored on the "Seed in Storage" date',
   },
   purityPercentage: {
     label: 'Purity',
@@ -99,7 +100,7 @@ const accessionFields: SeedbankFieldMap = {
     icon: IconTemperature,
     unit: '°C',
     examples: '"15C" "-20C" "-196C"',
-    description: 'The temperature at which the accession is stored on the "dateInStorage"',
+    description: 'The temperature at which the accession is stored on the "Seed in Storage" date',
   },
   primaryStorageSeedBank: {
     label: 'Storage Seed Bank',
