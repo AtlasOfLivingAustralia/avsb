@@ -1,17 +1,52 @@
-import { Title, Text, Code, Container } from '@mantine/core';
-import { useRouteError } from 'react-router-dom';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Title, Text, Code, Container, Stack, Image, Center, Anchor } from '@mantine/core';
+import { Link, useRouteError } from 'react-router-dom';
 
 import { getErrorMessage } from '#/helpers';
+import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
+
+import { Blob } from '.';
 
 function ErrorBoundary() {
   const error = useRouteError() as Error;
+
+  if ((error as any).status === 404) {
+    return (
+      <Center h='100vh'>
+        <Stack spacing='xs' align='center' pb={125} p='xl'>
+          <div style={{ width: 250, height: 250 }}>
+            <Blob style={{ position: 'absolute' }} width={250} height={250} />
+            <Center h='100%' style={{ zIndex: 10 }}>
+              <Image fit='contain' width={125} height={125} src={spottedPlant} />
+            </Center>
+          </div>
+          <Title variant='gradient' gradient={{ from: '#A6CE39', to: '#487759' }} size='5rem'>
+            404
+          </Title>
+          <Title order={2}>Empty cut test</Title>
+          <Text color='dimmed' align='center'>
+            We can&apos;t find the page you&apos;re looking for, perhaps{' '}
+            <Anchor component={Link} to='/'>
+              go home
+            </Anchor>
+            ?
+          </Text>
+          <Text color='dimmed' size='sm' mt='xl'>
+            Illustration by{' '}
+            <Anchor href='https://icons8.com/illustrations/author/zD2oqC8lLBBA'>Icons 8</Anchor>{' '}
+            from <Anchor href='https://icons8.com/illustrations'>Ouch!</Anchor>
+          </Text>
+        </Stack>
+      </Center>
+    );
+  }
 
   return (
     <Container>
       <Title>Oops, a seedy error!</Title>
       <Text mt='xs'>{getErrorMessage(error)}</Text>
       <Code block mt='lg'>
-        {error.stack}
+        {error.stack || (error as any).data}
       </Code>
     </Container>
   );
