@@ -102,13 +102,13 @@ function AccessionTable({ events }: AccessionTableProps) {
                 sorted={sortBy === 'distinctTaxa[0].scientificName'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('distinctTaxa[0].scientificName')}
-                fieldKey='Taxon'
+                fieldKey='taxon'
               />
               <ThField
                 sorted={sortBy === 'datasetTitle'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('datasetTitle')}
-                fieldKey='Institution'
+                fieldKey='datasetTitle'
               />
               <ThField
                 sorted={sortBy === 'extensions.seedbank.dateCollected'}

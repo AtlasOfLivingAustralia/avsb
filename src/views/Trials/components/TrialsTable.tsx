@@ -107,14 +107,13 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 sorted={sortBy === 'distinctTaxa[0].scientificName'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('distinctTaxa[0].scientificName')}
-                fieldKey='Taxon'
+                fieldKey='taxon'
               />
               <ThField
                 sorted={sortBy === 'datasetTitle'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('datasetTitle')}
-                fieldKey='Institution'
-                style={{ maxWidth: 300 }}
+                fieldKey='datasetTitle'
               />
               <ThField
                 sorted={sortBy === 'extensions.seedbank.adjustedGerminationPercentage'}

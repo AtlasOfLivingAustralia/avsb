@@ -32,6 +32,8 @@ import {
   IconCalendar,
   IconCalendarTime,
   IconPackage,
+  IconAbc,
+  IconBuildingBank,
 } from '@tabler/icons';
 
 export interface SeedbankField {
@@ -292,10 +294,26 @@ const treatmentFields: SeedbankFieldMap = {
   },
 };
 
+const customFields: SeedbankFieldMap = {
+  taxon: {
+    label: 'Taxon',
+    icon: IconAbc,
+    examples: '"Acacia dealbata"',
+    description: 'The scientific name of the taxon associated with the record.',
+  },
+  datasetTitle: {
+    label: 'Institution',
+    icon: IconBuildingBank,
+    examples: '"Greening Australia"',
+    description: 'Name of the institution or seed bank where the record has been supplied from.',
+  },
+};
+
 const allFields = {
   ...accessionFields,
   ...trialFields,
   ...treatmentFields,
+  ...customFields,
 };
 
 export { accessionFields, trialFields, treatmentFields, allFields };
