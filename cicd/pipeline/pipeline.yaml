@@ -133,6 +133,9 @@ Resources:
       ArtifactStore:
         Type: S3
         Location: !Ref pArtifactsBucket
+      DisableInboundStageTransitions:
+        - Reason: To prevent accidental teardown
+          StageName: Teardown
       Stages:
         - Name: Checkout_Source
           Actions:
