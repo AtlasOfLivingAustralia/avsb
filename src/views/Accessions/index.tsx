@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Center, Divider, Group, Pagination, Select, Text } from '@mantine/core';
+import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mantine/core';
 import { Outlet, useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
 
 // Project components / helpers
@@ -72,18 +72,26 @@ export function Component() {
     <>
       <Group mb='lg' position='apart'>
         <Group>
-          <Select
-            value={pageSize.toString()}
-            onChange={(value) => {
-              setPage(1);
-              setPageSize(parseInt(value || '10', 10));
-            }}
-            w={120}
-            data={['10', '20', '40'].map((size) => ({
-              label: `${size} results`,
-              value: size.toString(),
-            }))}
-          />
+          <Tooltip
+            transitionProps={{ transition: 'pop' }}
+            offset={10}
+            withArrow
+            label='Change number results per page'
+            position='right'
+          >
+            <Select
+              value={pageSize.toString()}
+              onChange={(value) => {
+                setPage(1);
+                setPageSize(parseInt(value || '10', 10));
+              }}
+              w={120}
+              data={['10', '20', '40'].map((size) => ({
+                label: `${size} results`,
+                value: size.toString(),
+              }))}
+            />
+          </Tooltip>
           <Filters
             predicates={filterPredicates}
             filters={filters}
@@ -95,8 +103,8 @@ export function Component() {
         </Group>
         <Group>
           <Text color='dimmed' align='right' size='sm'>
-            {(page - 1) * pageSize + 1}-{(page - 1) * pageSize + pageSize} of {query.total} total
-            records
+            {(page - 1) * pageSize + 1}-{Math.min((page - 1) * pageSize + pageSize, query.total)} of{' '}
+            {query.total} total records
           </Text>
           <Divider orientation='vertical' />
           <Downloads
