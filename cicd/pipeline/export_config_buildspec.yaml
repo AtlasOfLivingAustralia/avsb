@@ -33,7 +33,7 @@ phases:
       - echo source branch is $SRC_BRANCH
       - echo clean branch is $CLEAN_BRANCH
       - echo Environment is $ENVIRONMENT
-      - cicd/pipeline/gen_env_vars.py --env $ENVIRONMENT --conf cicd/config.ini --clean-branch $CLEAN_BRANCH env.txt
+      - cicd/pipeline/gen_env_vars.py --env $ENVIRONMENT --conf cicd/config.ini --clean-branch $CLEAN_BRANCH > env.txt
       - echo loading config..
       - cat env.txt
       - set -a ; source env.txt ; set +a
