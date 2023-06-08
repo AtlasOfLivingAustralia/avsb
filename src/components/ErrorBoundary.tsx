@@ -54,9 +54,9 @@ function ErrorBoundary() {
           </div>
           <Stack spacing={0}>
             <Title variant='gradient' gradient={{ from: '#A6CE39', to: '#487759' }} size='2.5rem'>
-              Oops!
+              Oops
             </Title>
-            <Title order={3}>A seedy error occurred</Title>
+            <Title order={3}>A seedy error!</Title>
             <Text mt='sm' size='sm' color='dimmed'>
               {getErrorMessage(error)}
             </Text>
