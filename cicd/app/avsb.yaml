@@ -149,5 +149,5 @@ Outputs:
     Value: !Ref AvsbBucket
   AvsbBucketArn:
     Value: !GetAtt AvsbBucket.Arn
-  AvsbCloudFrontDistributionId:
-    Value: !Ref AvsbCloudFrontDistro
+  AvsbCloudFrontDistributionArn:
+    Value: !GetAtt AvsbCloudFrontDistro.Arn

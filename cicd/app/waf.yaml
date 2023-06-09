@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AVSB WAF - needs to launch in us-east-1
+
+Parameters:
+  pAllowlistedIps:
+    Type: CommaDelimitedList
+    Description: List of IPs to allow 
+  pCleanBranch:
+    Type: String
+    Description: A cleaned version of the code branch name
+    Default: development
+  pCloudFrontArn:
+    Type: String
+    Description: The Arn of the CloudFront distribution to attach the WAF to
+  pEnvironment:
+    Type: String
+    Description: The AWS environment this belongs to
+
+Conditions:
+  IsDev: !Equals
+    - !Ref pEnvironment
+    - development
+  NotDev: !Not [ Condition: IsDev ]
+
+Resources:
+
+  CsiroIpsAllowlistIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Name: !Sub csiro-ips-allowlist-${pEnvironment}
+      Description: List of CSIRO IPs to allow
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
+      Addresses: !Ref pAllowlistedIps
+
+  AvsbWafWebACL:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: !Sub
+        - "avsb-${ResourceName}"
+        - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+      Description: AVSB Web ACL
+      Scope: CLOUDFRONT
+      DefaultAction:
+        Allow: { }
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: !Sub avsb-waf-wacl-${pCleanBranch}
+      Rules:
+        - Name: csiro-ips-only
+          Action:
+            Block: { }
+          Priority: 0
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub avsb-waf-wacl-rule-${pCleanBranch}
+          Statement:
+            NotStatement:
+              Statement:
+                IPSetReferenceStatement:
+                  Arn: !GetAtt CsiroIpsAllowlistIpSet.Arn
+        - Name: aws-managed-common-rule-set
+          Action:
+            Block: {}
+          Priority: 1
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub avsb-waf-wacl-rule-${pCleanBranch}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesCommonRuleSet
+              ExcludedRules: []
+      Tags:
+        - Key: Environment
+          Value: !Ref pEnvironment
+
+  AvsbWafWebACLAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties: 
+      ResourceArn: !Ref pCloudFrontArn
+      WebACLArn: !GetAtt AvsbWafWebACL.Arn
+
