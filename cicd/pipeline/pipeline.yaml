@@ -185,7 +185,7 @@ Resources:
               OutputArtifacts:
                 - Name: ExportConfigArtifact
               RunOrder: 1
-            - Name: DeployCFStackSite
+            - Name: DeploySiteCFStack
               ActionTypeId:
                 Owner: AWS
                 Category: Deploy
@@ -203,7 +203,7 @@ Resources:
               Namespace: AppCloudFormationOutNS
               OutputArtifacts: []
               RunOrder: 2
-            - Name: DeployCFStackWaf
+            - Name: DeployWafCFStac
               ActionTypeId:
                 Owner: AWS
                 Category: Deploy
