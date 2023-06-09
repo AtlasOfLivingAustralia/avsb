@@ -46,7 +46,8 @@ phases:
       - echo Entered the build phase...
       - echo Generating the template config
       - cicd/pipeline/gen_template_config.py  --template cicd/pipeline/template_config.j2 > cicd/pipeline/template_config.json
-      - cat cicd/pipeline/template_config.json
+      - echo Generating the waf template config
+      - cicd/pipeline/gen_template_config.py  --template cicd/pipeline/waf_template_config.j2 > cicd/pipeline/waf_template_config.json
     finally:
       -  #echo This always runs
       -  #notify Slack on failure
@@ -59,6 +60,8 @@ phases:
 artifacts:
   files:
     - cicd/app/avsb.yaml
+    - cicd/app/waf.yaml
     - cicd/pipeline/template_config.json
+    - cicd/pipeline/waf_template_config.json
   name: BuildTemplateConfigArtifact
   discard-paths: no
