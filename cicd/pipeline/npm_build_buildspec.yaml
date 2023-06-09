@@ -9,7 +9,7 @@ phases:
   install:
     on-failure: ABORT
     runtime-versions:
-      nodejs: 14
+      nodejs: 18
     commands:
       - echo installing...
       - npm i
