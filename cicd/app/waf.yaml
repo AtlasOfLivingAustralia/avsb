@@ -62,8 +62,8 @@ Resources:
                 IPSetReferenceStatement:
                   Arn: !GetAtt CsiroIpsAllowlistIpSet.Arn
         - Name: aws-managed-common-rule-set
-          Action:
-            Block: {}
+          OverrideAction:
+            None: {}
           Priority: 1
           VisibilityConfig:
             SampledRequestsEnabled: true
@@ -73,7 +73,6 @@ Resources:
             ManagedRuleGroupStatement:
               VendorName: AWS
               Name: AWSManagedRulesCommonRuleSet
-              ExcludedRules: []
       Tags:
         - Key: Environment
           Value: !Ref pEnvironment
