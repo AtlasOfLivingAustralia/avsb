@@ -29,7 +29,6 @@ import {
   IconMap2,
   IconMapPin,
   IconPackage,
-  IconTimeline,
   IconTimelineEvent,
 } from '@tabler/icons';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
@@ -50,7 +49,7 @@ import FieldTooltip from '../FieldTooltip';
 
 const Map = lazy(() => import('../Map'));
 
-const missingData = 'Not Supplied';
+const missingData = 'Not Available';
 
 interface AccessionPanelLoader {
   accessionEvent: Event;
