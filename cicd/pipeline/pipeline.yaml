@@ -216,7 +216,7 @@ Resources:
                 Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
                 ParameterOverrides: |
                   { 
-                    'pCloudFrontArn': '#{AppCloudFormationOutNS.AvsbCloudFrontDistributionArn}'
+                    "pCloudFrontArn": "#{AppCloudFormationOutNS.AvsbCloudFrontDistributionArn}"
                   }
                 RoleArn: !Ref pCloudFormationServiceRole
                 StackName: !Ref pWafStackName
