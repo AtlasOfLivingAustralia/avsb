@@ -136,7 +136,8 @@ Resources:
       ArtifactStores:
         - ArtifactStore:
             Type: S3
-            Location: !Ref pArtifactsBucket
+            #Location: !Ref pArtifactsBucket
+            Location: tmp-artifact-bucket-codepipeline
           Region: us-east-1
         - ArtifactStore:
             Type: S3
