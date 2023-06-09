@@ -150,4 +150,6 @@ Outputs:
   AvsbBucketArn:
     Value: !GetAtt AvsbBucket.Arn
   AvsbCloudFrontDistributionArn:
-    Value: !GetAtt AvsbCloudFrontDistro.Arn
+    Value: !Sub
+      - "arn:aws:cloudfront::${AWS::AccountId}:distribution/${DistributionId}"
+      - DistributionId: !GetAtt AvsbCloudFrontDistro.Id
