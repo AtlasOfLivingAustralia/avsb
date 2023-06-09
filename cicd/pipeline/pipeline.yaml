@@ -133,9 +133,15 @@ Resources:
               - "${pProductName}-${pProductComponent}-${ResourceName}"
               - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       RoleArn: !Ref pCodePipelineServiceRole
-      ArtifactStore:
-        Type: S3
-        Location: !Ref pArtifactsBucket
+      ArtifactStores:
+        - ArtifactStore:
+            Type: S3
+            Location: !Ref pArtifactsBucket
+          Region: us-west-1
+        - ArtifactStore:
+            Type: S3
+            Location: !Ref pArtifactsBucket
+          Region: !Ref AWS::Region
       DisableInboundStageTransitions:
         - Reason: To prevent accidental teardown
           StageName: Teardown
