@@ -137,7 +137,7 @@ Resources:
         - ArtifactStore:
             Type: S3
             Location: !Ref pArtifactsBucket
-          Region: us-west-1
+          Region: us-east-1
         - ArtifactStore:
             Type: S3
             Location: !Ref pArtifactsBucket
