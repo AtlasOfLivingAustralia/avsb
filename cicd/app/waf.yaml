@@ -75,5 +75,5 @@ Resources:
           Value: !Ref pEnvironment
 Outputs:
  AvsbWafWebAclArn:
-    Description: The ARN of the WAF Web ACL
-    Value: !Getatt AvsbWafWebACL.Arn
+   Description: The ARN of the WAF Web ACL
+   Value: !GetAtt AvsbWafWebACL.Arn
