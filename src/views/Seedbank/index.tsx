@@ -221,8 +221,9 @@ export function Component() {
               styles={{ title: { marginBottom: 4 } }}
             >
               <Text>
-                Accessions were collected from the locations shown above. Click a dot to be taken to
-                that accession.
+                Accessions were collected from the locations shown above. Click a dot to be shown a
+                list of accessions at that location. Click an accession entry to see more details
+                about it.
               </Text>
             </Alert>
           </Grid.Col>

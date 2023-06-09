@@ -157,8 +157,8 @@ export function Component() {
             styles={{ title: { marginBottom: 4 } }}
           >
             Accessions of this species were collected from the locations shown above. Click a dot to
-            be taken to that accession, or visit the &apos;Accessions&apos; tab to see details for
-            all locations.
+            be shown a list of accessions at that location. Click an accession entry to see more
+            details about it. Visit the &apos;Accessions&apos; tab to see details for all locations.
           </Alert>
         </Grid.Col>
         <Grid.Col sm={12} md={5} lg={4}>
