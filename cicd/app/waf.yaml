@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: AVSB WAF - needs to launch in us-east-1
 
 Parameters:
-  pAllowlistedIps:
+  pAllowListedIps:
     Type: CommaDelimitedList
     Description: List of IPs to allow 
   pCleanBranch:
@@ -31,7 +31,7 @@ Resources:
       Description: List of CSIRO IPs to allow
       Scope: CLOUDFRONT
       IPAddressVersion: IPV4
-      Addresses: !Ref pAllowlistedIps
+      Addresses: !Ref pAllowListedIps
 
   AvsbWafWebACL:
     Type: AWS::WAFv2::WebACL
