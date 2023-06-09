@@ -9,9 +9,6 @@ Parameters:
     Type: String
     Description: A cleaned version of the code branch name
     Default: development
-  pCloudFrontArn:
-    Type: String
-    Description: The Arn of the CloudFront distribution to attach the WAF to
   pEnvironment:
     Type: String
     Description: The AWS environment this belongs to
@@ -76,10 +73,7 @@ Resources:
       Tags:
         - Key: Environment
           Value: !Ref pEnvironment
-
-  AvsbWafWebACLAssociation:
-    Type: AWS::WAFv2::WebACLAssociation
-    Properties: 
-      ResourceArn: !Ref pCloudFrontArn
-      WebACLArn: !GetAtt AvsbWafWebACL.Arn
-
+Outputs:
+ AvsbWafWebAclArn:
+    Description: The ARN of the WAF Web ACL
+    Value: !Getatt AvsbWafWebACL.Arn

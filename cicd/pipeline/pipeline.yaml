@@ -185,6 +185,25 @@ Resources:
               OutputArtifacts:
                 - Name: ExportConfigArtifact
               RunOrder: 1
+            - Name: DeployWafCFStack
+              ActionTypeId:
+                Owner: AWS
+                Category: Deploy
+                Version: 1
+                Provider: CloudFormation
+              Configuration:
+                TemplatePath: 'ExportConfigArtifact::cicd/app/waf.yaml'
+                TemplateConfiguration: 'ExportConfigArtifact::cicd/pipeline/waf_template_config.json'
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
+                RoleArn: !Ref pCloudFormationServiceRole
+                StackName: !Ref pWafStackName
+              InputArtifacts:
+                - Name: 'ExportConfigArtifact'
+              Namespace: WafCloudFormationOutNS
+              OutputArtifacts: []
+              Region: us-east-1
+              RunOrder: 2
             - Name: DeploySiteCFStack
               ActionTypeId:
                 Owner: AWS
@@ -196,35 +215,16 @@ Resources:
                 TemplateConfiguration: 'ExportConfigArtifact::cicd/pipeline/template_config.json'
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
+                ParameterOverrides: |
+                  { 
+                    "pAvsbWafWebAclArn": "#{WafCloudFormationOutNS.AvsbWafWebAclArn}"
+                  }
                 RoleArn: !Ref pCloudFormationServiceRole
                 StackName: !Ref pAppStackName
               InputArtifacts:
                 - Name: 'ExportConfigArtifact'
               Namespace: AppCloudFormationOutNS
               OutputArtifacts: []
-              RunOrder: 2
-            - Name: DeployWafCFStac
-              ActionTypeId:
-                Owner: AWS
-                Category: Deploy
-                Version: 1
-                Provider: CloudFormation
-              Configuration:
-                TemplatePath: 'ExportConfigArtifact::cicd/app/waf.yaml'
-                TemplateConfiguration: 'ExportConfigArtifact::cicd/pipeline/waf_template_config.json'
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
-                ParameterOverrides: |
-                  { 
-                    "pCloudFrontArn": "#{AppCloudFormationOutNS.AvsbCloudFrontDistributionArn}"
-                  }
-                RoleArn: !Ref pCloudFormationServiceRole
-                StackName: !Ref pWafStackName
-              InputArtifacts:
-                - Name: 'ExportConfigArtifact'
-              Namespace: WafCloudFormationOutNS
-              OutputArtifacts: []
-              Region: us-east-1
               RunOrder: 3
         - Name: Publish_Website
           Actions:

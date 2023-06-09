@@ -2,6 +2,9 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: AVSB Infrastructure
 
 Parameters:
+  pAvsbWafWebAclArn:
+    Type: String
+    Description: The WAF Web ACL to attach the CloudFront distribution to
   pBucketName:
     Type: String
     Description: The bucket name for the site
@@ -111,6 +114,7 @@ Resources:
           AcmCertificateArn: !Ref pSslCertificate
           MinimumProtocolVersion: TLSv1.2_2021
           SslSupportMethod: sni-only
+        WebACLId: !Ref pAvsbWafWebAclArn
       Tags:
         - Key: component
           Value: cdn
