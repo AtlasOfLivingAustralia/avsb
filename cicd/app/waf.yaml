@@ -58,18 +58,42 @@ Resources:
               Statement:
                 IPSetReferenceStatement:
                   Arn: !GetAtt CsiroIpsAllowlistIpSet.Arn
-        - Name: aws-managed-common-rule-set
+        - Name: aws-managed-ip-reputation-rule-set
           OverrideAction:
             None: {}
           Priority: 1
           VisibilityConfig:
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true
-            MetricName: !Sub avsb-waf-wacl-rule-${pCleanBranch}
+            MetricName: !Sub avsb-waf-wacl-ip-reputation-rule-${pCleanBranch}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAmazonIpReputationList
+        - Name: aws-managed-common-rule-set
+          OverrideAction:
+            None: {}
+          Priority: 2
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub avsb-waf-wacl-common-rule-${pCleanBranch}
           Statement:
             ManagedRuleGroupStatement:
               VendorName: AWS
               Name: AWSManagedRulesCommonRuleSet
+        - Name: aws-managed-bad-inputs-rule-set
+          OverrideAction:
+            None: {}
+          Priority: 3
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub avsb-waf-wacl-bad-inputs-rule-${pCleanBranch}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesKnownBadInputsRuleSet
       Tags:
         - Key: Environment
           Value: !Ref pEnvironment
