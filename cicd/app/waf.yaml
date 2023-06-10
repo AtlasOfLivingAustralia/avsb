@@ -24,8 +24,8 @@ Resources:
   CsiroIpsAllowlistIpSet:
     Type: AWS::WAFv2::IPSet
     Properties:
-      Name: !Sub csiro-ips-allowlist-${pEnvironment}
-      Description: List of CSIRO IPs to allow
+      Name: !Sub avsb-ip-allowlist-${pEnvironment}
+      Description: !Sub List of IPs to allow for AVSB ${pEnvironment}
       Scope: CLOUDFRONT
       IPAddressVersion: IPV4
       Addresses: !Ref pAllowListedIps
@@ -45,7 +45,7 @@ Resources:
         CloudWatchMetricsEnabled: true
         MetricName: !Sub avsb-waf-wacl-${pCleanBranch}
       Rules:
-        - Name: csiro-ips-only
+        - Name: ip-allowlist
           Action:
             Block: { }
           Priority: 0
