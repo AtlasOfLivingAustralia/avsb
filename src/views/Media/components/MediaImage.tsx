@@ -38,7 +38,7 @@ function MediaImage({ onClick, selected, width, height, item }: MediaImageProps)
             gradient='linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)'
           >
             <Group spacing='xs' mt='lg'>
-              <IconCalendar size='1rem' />
+              <IconCalendar color='white' size='1rem' />
               <Text mr='sm' size='xs' weight='bold' color='white' opacity={0.85}>
                 {new Date(item.createDate).toLocaleDateString()}
               </Text>
