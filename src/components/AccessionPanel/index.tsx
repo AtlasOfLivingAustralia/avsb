@@ -253,7 +253,7 @@ function AccessionPanel() {
               Collection Timeline
             </Text>
           </Group>
-          <Stack justify='space-between'>
+          <Stack justify='space-between' h='100%'>
             <Timeline bulletSize={28}>
               <Timeline.Item bullet={<IconHandStop size={18} />}>
                 <Text>Seed Collected</Text>
@@ -272,9 +272,7 @@ function AccessionPanel() {
                 </Text>
               </Timeline.Item>
             </Timeline>
-            {accession?.accessionNumber && (
-              <HerbariumLink mt='xl' accession={accession.accessionNumber} />
-            )}
+            {accession?.accessionNumber && <HerbariumLink accession={accession.accessionNumber} />}
           </Stack>
         </Card>
       </Grid.Col>
