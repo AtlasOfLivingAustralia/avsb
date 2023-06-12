@@ -1,10 +1,10 @@
 import { SDSInstance } from '#/api';
-import { Anchor, Center, Chip, Paper, Stack, Text, ThemeIcon, Title } from '@mantine/core';
+import { Anchor, Center, Divider, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 import { IconAlertTriangle, IconExternalLink } from '@tabler/icons';
 import { Link } from 'react-router-dom';
 
 // Project imports
-import { getInitials, speciesListLastUpdated } from '#/helpers';
+import { getInitials } from '#/helpers';
 import ConservationStatus from './ConservationStatus';
 
 interface SDSProps {
@@ -13,18 +13,18 @@ interface SDSProps {
 
 function SDS({ instances }: SDSProps) {
   return (
-    <Center pt='xl'>
-      <Stack pt='xl' align='center' spacing='xl'>
-        <ThemeIcon size={120} color='yellow' variant='light' radius={60}>
-          <IconAlertTriangle size='3rem' />
+    <Center>
+      <Stack w='100%' align='center' spacing='xl'>
+        <ThemeIcon size={100} color='yellow' variant='light' radius={50}>
+          <IconAlertTriangle size='2.5rem' />
         </ThemeIcon>
         <Stack spacing='xs' align='center'>
-          <Title order={2} mb='sm'>
+          <Title order={3} mb='xs'>
             Sensitive Species
           </Title>
-          <Text color='dimmed' align='center' maw={525}>
-            We&apos;ve withheld records for this taxon due to their sensitive nature. If you wish to
-            request these records, please&nbsp;
+          <Text size='0.9rem' color='dimmed' align='center' maw={525}>
+            We&apos;ve withheld location data for this taxon due to its sensitive nature. If you
+            wish to request this data, please&nbsp;
             <Anchor href='mailto:info@seedpartnership.org.au'>enquire here</Anchor>, or{' '}
             <Anchor component={Link} to='/help'>
               see our FAQs <IconExternalLink size='0.8rem' />
@@ -32,22 +32,18 @@ function SDS({ instances }: SDSProps) {
             for more information.
           </Text>
         </Stack>
-        <Chip size='xs' checked={false} disabled>
-          Dataset species list updated {speciesListLastUpdated}
-        </Chip>
+        <Divider w='100%' mt='sm' />
         {instances.length > 0 && (
-          <Paper mt='sm' withBorder px='sm' py='xs'>
-            <Stack spacing='xs' align='center'>
-              {instances.map(({ authority, zone, category }) => (
-                <ConservationStatus
-                  key={authority}
-                  place={zone.name}
-                  initials={getInitials(zone.name)}
-                  status={category.value}
-                />
-              ))}
-            </Stack>
-          </Paper>
+          <Stack spacing='xs'>
+            {instances.map(({ authority, zone, category }) => (
+              <ConservationStatus
+                key={authority}
+                place={zone.name}
+                initials={getInitials(zone.name)}
+                status={category.value}
+              />
+            ))}
+          </Stack>
         )}
       </Stack>
     </Center>

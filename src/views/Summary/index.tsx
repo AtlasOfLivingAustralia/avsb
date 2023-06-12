@@ -73,13 +73,15 @@ export function Component() {
         )}
         <Grid.Col sm={12} md={7} lg={8}>
           <Suspense fallback={<Skeleton w='100%' height={450} />}>
-            <EventMap
-              onFullscreen={open}
-              width='100%'
-              height={450}
-              token={token}
-              itemListHeight={180}
-            />
+            <Card shadow='lg' p={0}>
+              <EventMap
+                onFullscreen={open}
+                width='100%'
+                height={450}
+                token={token}
+                itemListHeight={180}
+              />
+            </Card>
           </Suspense>
           <Alert
             title='Accession Map'
@@ -93,7 +95,7 @@ export function Component() {
           </Alert>
         </Grid.Col>
         <Grid.Col sm={12} md={5} lg={4}>
-          <Card withBorder h='100%' p={0}>
+          <Card shadow='lg' h='100%' p={0} withBorder>
             <Text weight='bold' mx='md' mt='lg' mb='xs'>
               Classification
             </Text>

@@ -4,12 +4,12 @@ import { Center, Divider, Group, Pagination, Select, Text } from '@mantine/core'
 import { useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
 
 // Project components / helpers
-import { Downloads, Filters, SDS } from '#/components';
+import { Downloads, Filters } from '#/components';
 import { Taxon } from '#/api/sources/taxon';
 import { SDSResult, gqlQueries, performGQLQuery } from '#/api';
 import { Event, EventDocuments, Predicate } from '#/api/graphql/types';
 import queries from '#/api/queries';
-import { useMounted, mapTrialTreatments, isSpeciesInList } from '#/helpers';
+import { useMounted, mapTrialTreatments } from '#/helpers';
 import TrialsTable from './components/TrialsTable';
 import filters from './filters';
 import downloadFields from './downloadFields';
@@ -22,7 +22,7 @@ export function Component() {
   const [query, setQuery] = useState<EventDocuments>(useLoaderData() as EventDocuments);
   const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
 
-  const { taxon, sds } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult };
+  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult };
   const params = useParams();
   const mounted = useMounted();
   const events = query?.results as any[];
@@ -120,13 +120,13 @@ export function Component() {
   };
 
   // SDS Check
-  if (
-    query.total === 0 &&
-    (sds?.instances.length || 0) > 0 &&
-    isSpeciesInList(taxon.classification.scientificName)
-  ) {
-    return <SDS instances={sds?.instances || []} />;
-  }
+  // if (
+  //   query.total === 0 &&
+  //   (sds?.instances.length || 0) > 0 &&
+  //   isSpeciesInList(taxon.classification.scientificName)
+  // ) {
+  //   return <SDS instances={sds?.instances || []} />;
+  // }
 
   return (
     <>

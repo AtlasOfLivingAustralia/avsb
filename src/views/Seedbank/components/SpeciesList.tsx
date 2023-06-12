@@ -19,14 +19,13 @@ import { saveAs } from 'file-saver';
 
 // Project helpers
 import { taxonAPI } from '#/api';
-import { getSpeciesForDr } from '#/helpers';
 import { orderBy } from 'lodash';
 
 type SpeciesFacet = { key: string; count: number };
 
 interface SpeciesListProps {
   name: string;
-  dataResource: string;
+  species: SpeciesFacet[];
 }
 
 interface SpeciesRow {
@@ -72,13 +71,7 @@ function Row({ index, style, data }: SpeciesRow) {
 
 type SpeciesListSort = 'numeric' | 'alphabetical';
 
-function SpeciesList({ name, dataResource }: SpeciesListProps) {
-  // Generate the species entiries
-  const species = Object.entries(getSpeciesForDr(dataResource)).map(([key, count]) => ({
-    key,
-    count,
-  }));
-
+function SpeciesList({ name, species }: SpeciesListProps) {
   const [search, setSearch] = useState<string>('');
   const [sort, setSort] = useState<SpeciesListSort>('alphabetical');
   const [filtered, setFiltered] = useState<SpeciesFacet[]>(species);

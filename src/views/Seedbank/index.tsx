@@ -56,9 +56,8 @@ interface SeedbankRouteData {
 export function Component() {
   const [logoLoaded, setLogoLoaded] = useState<boolean>(false);
   const { gql, collectory } = useLoaderData() as SeedbankRouteData;
-  const { resource } = useParams();
   const { eventSearch, accessions, trials } = gql;
-  const { _tileServerToken: token, documents, stats } = eventSearch;
+  const { _tileServerToken: token, documents, stats, occurrenceFacet } = eventSearch;
 
   const [event] = documents?.results || [];
   const params = useParams();
@@ -230,7 +229,7 @@ export function Component() {
           <Grid.Col xl={4} lg={4} md={12} sm={12} xs={12}>
             <SpeciesList
               name={event?.datasetTitle || 'Unknown Dataset'}
-              dataResource={resource || ''}
+              species={occurrenceFacet?.species || []}
             />
           </Grid.Col>
           <Grid.Col span={12}>

@@ -3,8 +3,8 @@ import {
   Anchor,
   Avatar,
   Button,
+  Card,
   Group,
-  Paper,
   PaperProps,
   Skeleton,
   Stack,
@@ -60,7 +60,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
 
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <Paper {...rest} withBorder p='md'>
+    <Card {...rest} shadow='lg' withBorder>
       <Group position='apart'>
         <Group>
           <Skeleton height={50} circle visible={!contact}>
@@ -138,7 +138,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
           </Button>
         )}
       </Group>
-    </Paper>
+    </Card>
   );
 }
 

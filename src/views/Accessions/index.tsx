@@ -5,8 +5,8 @@ import { Outlet, useLoaderData, useParams, useRouteLoaderData } from 'react-rout
 
 // Project components / helpers
 import { SDSResult, gqlQueries, performGQLQuery, Taxon, EventDocuments, Predicate } from '#/api';
-import { Downloads, Filters, SDS } from '#/components';
-import { useMounted, isSpeciesInList } from '#/helpers';
+import { Downloads, Filters } from '#/components';
+import { useMounted } from '#/helpers';
 
 // Accession components
 import AccessionTable from './components/AccessionTable';
@@ -23,7 +23,7 @@ export function Component() {
   const [query, setQuery] = useState<EventDocuments>(useLoaderData() as EventDocuments);
   const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
 
-  const { taxon, sds } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult | null };
+  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult | null };
   const params = useParams();
   const mounted = useMounted();
   const events = query?.results as any[];
@@ -65,14 +65,14 @@ export function Component() {
 
   const downloadFetcher = (data: any) => data.eventSearch.documents.results;
 
-  // SDS Check
-  if (
-    query.total === 0 &&
-    (sds?.instances.length || 0) > 0 &&
-    isSpeciesInList(taxon.classification.scientificName)
-  ) {
-    return <SDS instances={sds?.instances || []} />;
-  }
+  // // SDS Check
+  // if (
+  //   query.total === 0 &&
+  //   (sds?.instances.length || 0) > 0 &&
+  //   isSpeciesInList(taxon.classification.scientificName)
+  // ) {
+  //   return <SDS instances={sds?.instances || []} />;
+  // }
 
   return (
     <>

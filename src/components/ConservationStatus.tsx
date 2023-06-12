@@ -1,4 +1,4 @@
-import { DefaultMantineColor, Group, Text, ThemeIcon } from '@mantine/core';
+import { DefaultMantineColor, Group, Text, ThemeIcon, useMantineTheme } from '@mantine/core';
 import {
   IconAlertCircle,
   IconAlertOctagon,
@@ -38,12 +38,22 @@ const getConservationDetails = (
         color: 'orange',
         icon: IconAlertTriangle,
       };
+    case 'sensitive':
+      return {
+        color: 'orange',
+        icon: IconAlertTriangle,
+      };
     case 'vulnerable':
       return {
         color: 'yellow',
         icon: IconAlertCircle,
       };
     case 'near threatened':
+      return {
+        color: 'yellow',
+        icon: IconFlag,
+      };
+    case 'special least concern':
       return {
         color: 'yellow',
         icon: IconFlag,
@@ -58,22 +68,32 @@ const getConservationDetails = (
 
 interface ConservationStatusProps {
   place: string;
-  initials: string;
+  initials?: string;
   status: string;
 }
 
 function ConservationStatus({ place, status, initials }: ConservationStatusProps) {
   const { color } = getConservationDetails(status);
+  const theme = useMantineTheme();
 
   return (
-    <Group spacing='sm'>
-      <ThemeIcon variant='light' radius='xl' size='xl' color={color}>
-        <Text weight='bold' color={color} size='xs'>
-          {initials}
-        </Text>
+    <Group spacing='md'>
+      <ThemeIcon
+        opacity={initials ? 1 : 0.6}
+        variant={initials ? 'light' : 'gradient'}
+        radius='xl'
+        size={initials ? 'xl' : 'md'}
+        color={color}
+        gradient={{ from: theme.colors[color][9], to: theme.colors[color][6] }}
+      >
+        {initials && (
+          <Text weight='bold' color={color} size='xs'>
+            {initials === 'Q' ? 'QLD' : initials}
+          </Text>
+        )}
       </ThemeIcon>
       <Text size='sm'>
-        {status} in {place}
+        <b>{status}</b> in {place}
       </Text>
     </Group>
   );
