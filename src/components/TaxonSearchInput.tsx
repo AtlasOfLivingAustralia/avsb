@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { forwardRef, ComponentPropsWithoutRef } from 'react';
 import { Badge, Group, SelectItem, Stack, Text } from '@mantine/core';
 import { useAPI } from '#/api';

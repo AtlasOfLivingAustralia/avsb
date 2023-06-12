@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/jsx-props-no-spreading */
 import { Fragment, useEffect, useState } from 'react';
 import { Accordion, Divider, Stack, StackProps, createStyles } from '@mantine/core';
 import { Predicate } from '#/api/graphql/types';

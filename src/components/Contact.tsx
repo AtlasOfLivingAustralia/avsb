@@ -59,7 +59,6 @@ function Contact({ dataResource, ...rest }: ContactProps) {
   const contact = dataset?.value?.contact?.[0];
 
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
     <Card {...rest} shadow='lg' withBorder>
       <Group position='apart'>
         <Group>

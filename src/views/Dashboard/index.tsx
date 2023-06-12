@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useEffect } from 'react';
 // import { useAuth, hasAuthParams } from 'react-oidc-context';
 import { Outlet, useNavigation } from 'react-router-dom';

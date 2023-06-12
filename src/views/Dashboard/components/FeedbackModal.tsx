@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useEffect } from 'react';
 import { Button, Modal, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';

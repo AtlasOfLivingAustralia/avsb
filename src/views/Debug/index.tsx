@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
 import { Text, Accordion, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';

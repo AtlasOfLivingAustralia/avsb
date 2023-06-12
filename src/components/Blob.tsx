@@ -4,7 +4,6 @@ import { SVGProps } from 'react';
 export default function Corner(props: SVGProps<SVGSVGElement>) {
   const theme = useMantineTheme();
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
     <svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg' {...props}>
       <path
         fill={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2]}
