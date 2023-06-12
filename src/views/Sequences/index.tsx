@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-import { Button, Grid, Group, Paper, Skeleton, Text } from '@mantine/core';
-import { IconExternalLink } from '@tabler/icons';
+import { Button, Center, Grid, Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
+import { IconDna, IconExternalLink } from '@tabler/icons';
 import range from 'lodash/range';
 
 // Project components / helpers
@@ -46,34 +46,43 @@ export function Component() {
       }
     >
       <Await resolve={sequences}>
-        {({ total, resultsUrl, results }) => (
-          <>
-            <Paper p='sm' mb='lg' radius='lg' withBorder>
-              <Group position='apart'>
-                <Text weight='bold' size='sm'>
-                  {total}
-                </Text>
-                <Button
-                  component='a'
-                  href={resultsUrl}
-                  target='_blank'
-                  variant='subtle'
-                  size='xs'
-                  leftIcon={<IconExternalLink size={16} />}
-                >
-                  View all records
-                </Button>
-              </Group>
-            </Paper>
-            <Grid>
-              {results.map((sequence: SequenceRecord) => (
-                <Grid.Col key={sequence.link} xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <SequenceItem h='100%' sequence={sequence} />
-                </Grid.Col>
-              ))}
-            </Grid>
-          </>
-        )}
+        {({ total, resultsUrl, results }) =>
+          total > 0 ? (
+            <>
+              <Paper p='sm' mb='lg' radius='lg' withBorder>
+                <Group position='apart'>
+                  <Text weight='bold' size='sm'>
+                    {total}
+                  </Text>
+                  <Button
+                    component='a'
+                    href={resultsUrl}
+                    target='_blank'
+                    variant='subtle'
+                    size='xs'
+                    leftIcon={<IconExternalLink size={16} />}
+                  >
+                    View all records
+                  </Button>
+                </Group>
+              </Paper>
+              <Grid>
+                {results.map((sequence: SequenceRecord) => (
+                  <Grid.Col key={sequence.link} xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <SequenceItem h='100%' sequence={sequence} />
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </>
+          ) : (
+            <Center h='calc(100vh - 350px)'>
+              <Stack align='center'>
+                <IconDna size='3rem' />
+                <Text color='dimmed'>No matching sequences found</Text>
+              </Stack>
+            </Center>
+          )
+        }
       </Await>
     </Suspense>
   );

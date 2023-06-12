@@ -222,8 +222,8 @@ export function Component() {
             >
               <Text>
                 Accessions were collected from the locations shown above. Click a dot to be shown a
-                list of accessions at that location. Click an accession entry to see more details
-                about it.
+                list of accessions at that location, then click an accession entry to see full
+                accession details.
               </Text>
             </Alert>
           </Grid.Col>
