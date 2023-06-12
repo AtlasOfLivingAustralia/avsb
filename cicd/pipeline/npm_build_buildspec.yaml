@@ -11,7 +11,12 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo installing...
+      - echo installing yarn...
+      - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+      - apt-get update && apt-get install -y yarn
+      - yarn --version
+      - echo running yarn...
       - yarn
   pre_build:
     commands:
