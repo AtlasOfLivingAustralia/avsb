@@ -88,7 +88,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
   useEffect(() => setSorting(sortBy || '', true), [events]);
 
   return (
-    <Card withBorder p={0}>
+    <Card shadow='lg' p={0} withBorder>
       <ScrollArea
         type='auto'
         h={height || 'calc(100vh - 425px)'}

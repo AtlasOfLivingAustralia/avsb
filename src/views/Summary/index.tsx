@@ -14,82 +14,24 @@ import {
   Divider,
   UnstyledButton,
   Alert,
-  ThemeIcon,
-  DefaultMantineColor,
   Skeleton,
   ActionIcon,
 } from '@mantine/core';
 
-import {
-  IconAlertCircle,
-  IconAlertOctagon,
-  IconAlertTriangle,
-  IconExternalLink,
-  IconFlag,
-  IconMap,
-  IconQuestionMark,
-  IconX,
-  TablerIcon,
-} from '@tabler/icons';
+import { IconAlertTriangle, IconExternalLink, IconMap } from '@tabler/icons';
 
 // Project imports
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Taxon } from '#/api/sources/taxon';
+import { ConservationStatus } from '#/components';
 
 const EventMap = lazy(() => import('#/components/EventMap'));
-
-const getConservationDetails = (
-  status: string,
-): { color: DefaultMantineColor; icon: TablerIcon } => {
-  switch (status.toLowerCase()) {
-    case 'extinct':
-      return {
-        color: 'dark',
-        icon: IconX,
-      };
-    case 'locally extinct':
-      return {
-        color: 'dark',
-        icon: IconX,
-      };
-    case 'critically endangered':
-      return {
-        color: 'red',
-        icon: IconAlertOctagon,
-      };
-    case 'endangered':
-      return {
-        color: 'orange',
-        icon: IconAlertTriangle,
-      };
-    case 'rare':
-      return {
-        color: 'orange',
-        icon: IconAlertTriangle,
-      };
-    case 'vulnerable':
-      return {
-        color: 'yellow',
-        icon: IconAlertCircle,
-      };
-    case 'near threatened':
-      return {
-        color: 'yellow',
-        icon: IconFlag,
-      };
-    default:
-      return {
-        color: 'red',
-        icon: IconQuestionMark,
-      };
-  }
-};
 
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const [mapOpen, { open, close }] = useDisclosure(false);
   const token = useLoaderData() as string;
-  const taxon = useRouteLoaderData('taxon') as Taxon;
+  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon };
   const theme = useMantineTheme();
   const mdOrLarger = useMediaQuery(`(min-width: ${theme.breakpoints.md})`, true);
   const navigate = useNavigate();
@@ -122,33 +64,24 @@ export function Component() {
               </Group>
               {mdOrLarger && <Divider orientation='vertical' mx='xs' />}
               <Group>
-                {Object.entries(taxon.conservationStatuses).map(([key, { status }]) => {
-                  const { color } = getConservationDetails(status);
-
-                  return (
-                    <Group key={key} spacing='sm'>
-                      <ThemeIcon variant='light' radius='xl' size='xl' color={color}>
-                        <Text weight='bold' color={color} size='xs'>
-                          {key}
-                        </Text>
-                      </ThemeIcon>
-                      <Text size='sm'>{status}</Text>
-                    </Group>
-                  );
-                })}
+                {Object.entries(taxon.conservationStatuses).map(([key, { status }]) => (
+                  <ConservationStatus key={key} place={key} initials={key} status={status} />
+                ))}
               </Group>
             </Group>
           </Grid.Col>
         )}
         <Grid.Col sm={12} md={7} lg={8}>
           <Suspense fallback={<Skeleton w='100%' height={450} />}>
-            <EventMap
-              onFullscreen={open}
-              width='100%'
-              height={450}
-              token={token}
-              itemListHeight={180}
-            />
+            <Card shadow='lg' p={0}>
+              <EventMap
+                onFullscreen={open}
+                width='100%'
+                height={450}
+                token={token}
+                itemListHeight={180}
+              />
+            </Card>
           </Suspense>
           <Alert
             title='Accession Map'
@@ -163,7 +96,7 @@ export function Component() {
           </Alert>
         </Grid.Col>
         <Grid.Col sm={12} md={5} lg={4}>
-          <Card withBorder h='100%' p={0}>
+          <Card shadow='lg' h='100%' p={0} withBorder>
             <Text weight='bold' mx='md' mt='lg' mb='xs'>
               Classification
             </Text>

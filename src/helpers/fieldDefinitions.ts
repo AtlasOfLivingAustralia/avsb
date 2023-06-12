@@ -176,7 +176,7 @@ const accessionFields: SeedbankFieldMap = {
     label: 'Storage Date',
     icon: IconPackage,
     examples: '17/04/2022',
-    description: 'The date the accession was placed in current storage (DD/MM/YYYY)',
+    description: 'The date the accession was placed in current or long term storage (DD/MM/YYYY)',
   },
   dateCollected: {
     label: 'Collection Date',

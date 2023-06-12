@@ -339,6 +339,7 @@ export type {
   Predicate,
   DistinctTaxon,
   Event,
+  EventDocuments,
   EventSearchResult,
   Measurement,
   SeedBankAccession,

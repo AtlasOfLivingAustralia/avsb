@@ -19,7 +19,7 @@ import {
 import { useClipboard } from '@mantine/hooks';
 import { IconCopy, IconDotsVertical, IconExternalLink, IconQuestionCircle } from '@tabler/icons';
 import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
-import { Taxon as TaxonType } from '#/api/sources/taxon';
+import { Taxon } from '#/api/sources/taxon';
 
 const pageDescriptions: { [key: string]: string[] } = {
   summary: [
@@ -46,7 +46,7 @@ const pageDescriptions: { [key: string]: string[] } = {
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const { pathname } = useLocation();
-  const data = useLoaderData() as TaxonType;
+  const { taxon: data } = useLoaderData() as { taxon: Taxon };
   const navigate = useNavigate();
   const clipboard = useClipboard({ timeout: 500 });
   const theme = useMantineTheme();

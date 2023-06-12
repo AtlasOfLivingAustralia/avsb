@@ -17,6 +17,7 @@ import {
   Alert,
   Skeleton,
   Chip,
+  Card,
 } from '@mantine/core';
 import {
   IconArrowBackUp,
@@ -31,10 +32,10 @@ import {
   IconPackage,
   IconTimelineEvent,
 } from '@tabler/icons';
-import { Link, useLoaderData, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate, useRouteLoaderData } from 'react-router-dom';
 
 // Project imports
-import { Event, SeedBankAccession } from '#/api/graphql/types';
+import { SDSResult, Event, SeedBankAccession } from '#/api';
 import { getIsDefined, accessionFields } from '#/helpers';
 
 // Local imports
@@ -46,6 +47,7 @@ import TrialSummary from './components/TrialSummary';
 
 import { fields, longFields } from './fields';
 import FieldTooltip from '../FieldTooltip';
+import SDS from '../SDS';
 
 const Map = lazy(() => import('../Map'));
 
@@ -58,10 +60,12 @@ interface AccessionPanelLoader {
 
 function AccessionPanel() {
   const { accessionEvent, trialEvents } = useLoaderData() as AccessionPanelLoader;
+  const { sds } = useRouteLoaderData('taxon') as { sds: SDSResult };
   const accession = accessionEvent?.extensions?.seedbank as SeedBankAccession;
   const navigate = useNavigate();
 
   const taxonInfo = accessionEvent.distinctTaxa?.[0];
+  const hasCoordinates = accessionEvent.decimalLatitude && accessionEvent.decimalLongitude;
 
   return (
     <Grid gutter='xl' pb='xl'>
@@ -200,7 +204,7 @@ function AccessionPanel() {
         </Grid.Col>
       )}
       <Grid.Col sm={8} md={8} lg={8}>
-        <Paper h='100%' withBorder>
+        <Card h='100%' p={0} shadow='lg' withBorder>
           {accessionEvent.decimalLatitude && accessionEvent.decimalLongitude && (
             <Suspense fallback={<Skeleton w='100%' h={350} />}>
               <Map
@@ -210,10 +214,14 @@ function AccessionPanel() {
               />
             </Suspense>
           )}
-          <Stack spacing='xs' p='md'>
-            <Stack spacing='xs' mb='xs'>
-              <Alert icon={<IconInfoCircle />}>
-                {accessionEvent.decimalLatitude && accessionEvent.decimalLongitude ? (
+          {!hasCoordinates && sds.instances.length > 0 && !accessionEvent.locality ? (
+            <Box p='lg'>
+              <SDS instances={sds.instances} />
+            </Box>
+          ) : (
+            <Stack spacing='xs' p='md'>
+              <Alert mb='xs' icon={<IconInfoCircle />}>
+                {hasCoordinates ? (
                   <>
                     This map shows the seed <b>collection</b> location
                   </>
@@ -221,24 +229,24 @@ function AccessionPanel() {
                   'No coordinate data supplied'
                 )}
               </Alert>
+              <IconText labelWidth={120} title='Locality' icon={IconLocation}>
+                {accessionEvent.locality || missingData}
+              </IconText>
+              <IconText labelWidth={120} title='Decimal Lat' icon={IconMapPin}>
+                {accessionEvent.decimalLatitude || missingData}
+              </IconText>
+              <IconText labelWidth={120} title='Decimal Lng' icon={IconMapPin}>
+                {accessionEvent.decimalLongitude || missingData}
+              </IconText>
+              <IconText labelWidth={120} title='State Province' icon={IconMap2}>
+                {accessionEvent.stateProvince || missingData}
+              </IconText>
             </Stack>
-            <IconText labelWidth={120} title='Locality' icon={IconLocation}>
-              {accessionEvent.locality || missingData}
-            </IconText>
-            <IconText labelWidth={120} title='Decimal Lat' icon={IconMapPin}>
-              {accessionEvent.decimalLatitude || missingData}
-            </IconText>
-            <IconText labelWidth={120} title='Decimal Lng' icon={IconMapPin}>
-              {accessionEvent.decimalLongitude || missingData}
-            </IconText>
-            <IconText labelWidth={120} title='State Province' icon={IconMap2}>
-              {accessionEvent.stateProvince || missingData}
-            </IconText>
-          </Stack>
-        </Paper>
+          )}
+        </Card>
       </Grid.Col>
       <Grid.Col sm={4} md={4} lg={4}>
-        <Paper style={{ display: 'flex', flexDirection: 'column' }} p='md' h='100%' withBorder>
+        <Card shadow='lg' style={{ display: 'flex', flexDirection: 'column' }} h='100%' withBorder>
           <Group spacing='md' mb='xl'>
             <IconTimelineEvent size='1.5rem' />
             <Text size='xl' sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}>
@@ -268,7 +276,7 @@ function AccessionPanel() {
               <HerbariumLink mt='xl' accession={accession.accessionNumber} />
             )}
           </Stack>
-        </Paper>
+        </Card>
       </Grid.Col>
       {accessionEvent.datasetKey && (
         <Grid.Col span={12}>

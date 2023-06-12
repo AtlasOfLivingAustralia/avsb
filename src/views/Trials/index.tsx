@@ -6,8 +6,8 @@ import { useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
 // Project components / helpers
 import { Downloads, Filters } from '#/components';
 import { Taxon } from '#/api/sources/taxon';
-import { gqlQueries, performGQLQuery } from '#/api';
-import { Event, Predicate } from '#/api/graphql/types';
+import { SDSResult, gqlQueries, performGQLQuery } from '#/api';
+import { Event, EventDocuments, Predicate } from '#/api/graphql/types';
 import queries from '#/api/queries';
 import { useMounted, mapTrialTreatments } from '#/helpers';
 import TrialsTable from './components/TrialsTable';
@@ -19,10 +19,10 @@ export function Component() {
   // State hooks
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [query, setQuery] = useState<any>(useLoaderData());
+  const [query, setQuery] = useState<EventDocuments>(useLoaderData() as EventDocuments);
   const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
 
-  const taxon = useRouteLoaderData('taxon') as Taxon;
+  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult };
   const params = useParams();
   const mounted = useMounted();
   const events = query?.results as any[];
@@ -119,6 +119,15 @@ export function Component() {
     );
   };
 
+  // SDS Check
+  // if (
+  //   query.total === 0 &&
+  //   (sds?.instances.length || 0) > 0 &&
+  //   isSpeciesInList(taxon.classification.scientificName)
+  // ) {
+  //   return <SDS instances={sds?.instances || []} />;
+  // }
+
   return (
     <>
       <Group mb='lg' position='apart'>
@@ -164,7 +173,7 @@ export function Component() {
             predicates={predicates}
             fields={downloadFields}
             fetcher={downloadFetcher}
-            total={query.total}
+            total={query.total as number}
             fileName={`AVSB Trials, ${taxon.classification.scientificName}`}
           />
         </Group>
@@ -173,7 +182,7 @@ export function Component() {
       <Center pt='md'>
         <Pagination
           value={page}
-          total={query ? Math.ceil(query.total / pageSize) : 1}
+          total={query ? Math.ceil((query.total as number) / pageSize) : 1}
           onChange={(newPage) => setPage(newPage)}
         />
       </Center>

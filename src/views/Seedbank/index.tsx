@@ -114,10 +114,10 @@ export function Component() {
               )}
               <Group mt='xl' pt='md'>
                 <Chip checked={false}>
-                  <b>{accessions.documents?.total?.toLocaleString()}</b> Accessions
+                  <b>{accessions.documents?.total?.toLocaleString()}</b>&nbsp;Accessions
                 </Chip>
                 <Chip checked={false}>
-                  <b>{trials.documents?.total?.toLocaleString()}</b> Trials
+                  <b>{trials.documents?.total?.toLocaleString()}</b>&nbsp;Trials
                 </Chip>
               </Group>
             </Box>
@@ -234,7 +234,7 @@ export function Component() {
             />
           </Grid.Col>
           <Grid.Col span={12}>
-            <Contact dataResource={params.id || ''} />
+            <Contact dataResource={params.resource || ''} />
           </Grid.Col>
         </Grid>
       </Container>
