@@ -161,9 +161,9 @@ const accessionFields: SeedbankFieldMap = {
   collectionFill: {
     label: 'Collection Fill / X-Ray',
     icon: IconScan,
-    examples: '46% determined via x-ray',
+    examples: '"xray - 10 filled", "46% determined via x-ray"',
     description:
-      'The proportion of seeds or fruits that are filled, as determined by cut-test, x-ray or other assessments of seed fill or viability such as tetrazolium test.',
+      'Seeds or fruits that are filled, as determined by cut-test, x-ray or other assessments of seed fill or viability such as tetrazolium test.',
   },
   publicationDOI: {
     label: 'Publication DOI',
