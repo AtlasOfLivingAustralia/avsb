@@ -21,7 +21,7 @@ Conditions:
 
 Resources:
 
-  CsiroIpsAllowlistIpSet:
+  AllowlistIpSet:
     Type: AWS::WAFv2::IPSet
     Properties:
       Name: !Sub avsb-ip-allowlist-${pEnvironment}
@@ -39,7 +39,7 @@ Resources:
       Description: AVSB Web ACL
       Scope: CLOUDFRONT
       DefaultAction:
-        Allow: { }
+        Allow: {}
       VisibilityConfig:
         SampledRequestsEnabled: true
         CloudWatchMetricsEnabled: true
@@ -47,7 +47,7 @@ Resources:
       Rules:
         - Name: ip-allowlist
           Action:
-            Block: { }
+            Block: {}
           Priority: 0
           VisibilityConfig:
             SampledRequestsEnabled: true
@@ -57,7 +57,7 @@ Resources:
             NotStatement:
               Statement:
                 IPSetReferenceStatement:
-                  Arn: !GetAtt CsiroIpsAllowlistIpSet.Arn
+                  Arn: !GetAtt AllowlistIpSet.Arn
         - Name: aws-managed-ip-reputation-rule-set
           OverrideAction:
             None: {}
@@ -97,6 +97,7 @@ Resources:
       Tags:
         - Key: Environment
           Value: !Ref pEnvironment
+
 Outputs:
  AvsbWafWebAclArn:
    Description: The ARN of the WAF Web ACL
