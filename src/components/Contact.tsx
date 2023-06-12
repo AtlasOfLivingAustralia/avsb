@@ -50,7 +50,6 @@ interface ContactProps extends PaperProps {
 }
 
 function Contact({ dataResource, ...rest }: ContactProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const location = useLocation();
   const { data: response } = useGQLQuery<DatasetQuery>(queries.QUERY_DATASET, {
     key: dataResource,

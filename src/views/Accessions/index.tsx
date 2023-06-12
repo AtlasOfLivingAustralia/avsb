@@ -1,10 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mantine/core';
 import { Outlet, useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
 
 // Project components / helpers
-import { SDSResult, gqlQueries, performGQLQuery, Taxon, EventDocuments, Predicate } from '#/api';
+import {
+  SDSResult,
+  gqlQueries,
+  performGQLQuery,
+  Taxon,
+  EventDocuments,
+  Predicate,
+  EventSearchResult,
+} from '#/api';
 import { Downloads, Filters } from '#/components';
 import { useMounted } from '#/helpers';
 
@@ -26,7 +33,7 @@ export function Component() {
   const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult | null };
   const params = useParams();
   const mounted = useMounted();
-  const events = query?.results as any[];
+  const events = query?.results;
 
   // Construct the base predicates array
   const predicates: Predicate[] = [
@@ -63,7 +70,8 @@ export function Component() {
 
   if (params.accession) return <Outlet />;
 
-  const downloadFetcher = (data: any) => data.eventSearch.documents.results;
+  const downloadFetcher = (data: { eventSearch: EventSearchResult }) =>
+    data?.eventSearch?.documents?.results || [];
 
   // // SDS Check
   // if (
@@ -124,7 +132,7 @@ export function Component() {
           />
         </Group>
       </Group>
-      <AccessionTable events={events} />
+      <AccessionTable events={events || []} />
       <Center pt='md'>
         <Pagination
           value={page}

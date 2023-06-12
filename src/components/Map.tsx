@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { ColorScheme, useMantineTheme } from '@mantine/core';
 
@@ -17,7 +16,7 @@ interface MapProps {
 
 function Map({ width, height, center }: MapProps) {
   // Map refs
-  const mapContainer = useRef<any | null>(null);
+  const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
 
   // Map state & data
@@ -40,7 +39,7 @@ function Map({ width, height, center }: MapProps) {
 
   // Add the map to the DOM when the component loads
   useEffect(() => {
-    if (map.current) return;
+    if (map.current || !mapContainer.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,

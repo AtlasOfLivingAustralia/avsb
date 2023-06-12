@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useEffect, useState } from 'react';
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import {
@@ -187,7 +186,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                   <tr
                     style={{ cursor: 'pointer' }}
                     onClick={(e) => {
-                      const className = (e.target as any)?.className;
+                      const className = (e.target as HTMLElement)?.className;
                       if (!(typeof className === 'string' && className.includes('Button'))) {
                         setSelected(
                           isSelected

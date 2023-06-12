@@ -1,16 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Title, Text, Code, Stack, Image, Center, Anchor, Group } from '@mantine/core';
 import { Link, useRouteError } from 'react-router-dom';
 
-import { getErrorMessage } from '#/helpers';
 import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
 import waterTap from '#/assets/ecology-water-tap.png';
+import { getErrorMessage } from '#/helpers';
 
 import { Blob } from '.';
 
 function ErrorBoundary() {
   const error = useRouteError() as Error;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if ((error as any).status === 404) {
     return (
       <Center h='100vh'>
