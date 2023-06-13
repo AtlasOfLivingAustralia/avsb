@@ -203,5 +203,4 @@ export function Component() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Component as any).displayName = 'Help';
+Object.assign(Component, { displayName: 'Help' });

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IconCalendar, IconCalendarEvent, IconDatabase } from '@tabler/icons';
 
 import { SelectItem } from '@mantine/core';
@@ -12,7 +11,7 @@ const fetchItems = async (query: string): Promise<SelectItem[]> => {
   return dataResources
     .filter(({ name }) => name.toLowerCase().includes(query.toLowerCase()))
     .slice(0, 100)
-    .map(({ uid: value, name: label }: any) => ({
+    .map(({ uid: value, name: label }) => ({
       value,
       label,
     }));

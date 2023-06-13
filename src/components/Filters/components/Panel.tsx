@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/jsx-props-no-spreading */
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, ReactElement, useEffect, useState } from 'react';
 import { Accordion, Divider, Stack, StackProps, createStyles } from '@mantine/core';
 import { Predicate } from '#/api/graphql/types';
 
@@ -18,7 +16,9 @@ import DateFilter from './filters/DateFilter';
 
 import { Filter, FilterItemProps } from '../types';
 
-const filterComponents: { [key: string]: any } = {
+const filterComponents: {
+  [key: string]: ({ filter, resetKey, onChange }: FilterItemProps) => ReactElement;
+} = {
   text: TextFilter,
   numeric: NumericFilter,
   numericGreaterLess: NumericGreaterLessFilter,

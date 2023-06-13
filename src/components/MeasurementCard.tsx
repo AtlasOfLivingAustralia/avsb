@@ -11,7 +11,6 @@ interface MeasurementCardProps {
 
 function MeasurementCardContent({ measurement, ...rest }: MeasurementCardContentProps) {
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
     <Paper py={6} px={8} mih={60} withBorder {...rest}>
       <Group position='apart' spacing='xs'>
         <Text weight='bold' size='sm'>

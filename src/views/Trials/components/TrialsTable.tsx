@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useEffect, useState } from 'react';
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import {
@@ -88,7 +87,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
   useEffect(() => setSorting(sortBy || '', true), [events]);
 
   return (
-    <Card withBorder p={0}>
+    <Card shadow='lg' p={0} withBorder>
       <ScrollArea
         type='auto'
         h={height || 'calc(100vh - 425px)'}
@@ -107,14 +106,13 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 sorted={sortBy === 'distinctTaxa[0].scientificName'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('distinctTaxa[0].scientificName')}
-                fieldKey='Taxon'
+                fieldKey='taxon'
               />
               <ThField
                 sorted={sortBy === 'datasetTitle'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('datasetTitle')}
-                fieldKey='Institution'
-                style={{ maxWidth: 300 }}
+                fieldKey='datasetTitle'
               />
               <ThField
                 sorted={sortBy === 'extensions.seedbank.adjustedGerminationPercentage'}
@@ -188,7 +186,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                   <tr
                     style={{ cursor: 'pointer' }}
                     onClick={(e) => {
-                      const className = (e.target as any)?.className;
+                      const className = (e.target as HTMLElement)?.className;
                       if (!(typeof className === 'string' && className.includes('Button'))) {
                         setSelected(
                           isSelected

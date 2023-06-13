@@ -1,15 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mantine/core';
 import { Outlet, useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
 
 // Project components / helpers
-import { gqlQueries, performGQLQuery } from '#/api';
-import { Taxon } from '#/api/sources/taxon';
-import { Predicate } from '#/api/graphql/types';
+import {
+  SDSResult,
+  gqlQueries,
+  performGQLQuery,
+  Taxon,
+  EventDocuments,
+  Predicate,
+  EventSearchResult,
+} from '#/api';
 import { Downloads, Filters } from '#/components';
-import queries from '#/api/queries';
-import useMounted from '#/helpers/useMounted';
+import { useMounted } from '#/helpers';
 
 // Accession components
 import AccessionTable from './components/AccessionTable';
@@ -23,17 +27,17 @@ export function Component() {
   // State hooks
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [query, setQuery] = useState<any>(useLoaderData());
+  const [query, setQuery] = useState<EventDocuments>(useLoaderData() as EventDocuments);
   const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
 
-  const taxon = useRouteLoaderData('taxon') as Taxon;
+  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult | null };
   const params = useParams();
   const mounted = useMounted();
-  const events = query?.results as any[];
+  const events = query?.results;
 
   // Construct the base predicates array
   const predicates: Predicate[] = [
-    queries.PRED_DATA_RESOURCE,
+    gqlQueries.PRED_DATA_RESOURCE,
     {
       type: 'in',
       key: 'taxonKey',
@@ -66,7 +70,17 @@ export function Component() {
 
   if (params.accession) return <Outlet />;
 
-  const downloadFetcher = (data: any) => data.eventSearch.documents.results;
+  const downloadFetcher = (data: { eventSearch: EventSearchResult }) =>
+    data?.eventSearch?.documents?.results || [];
+
+  // // SDS Check
+  // if (
+  //   query.total === 0 &&
+  //   (sds?.instances.length || 0) > 0 &&
+  //   isSpeciesInList(taxon.classification.scientificName)
+  // ) {
+  //   return <SDS instances={sds?.instances || []} />;
+  // }
 
   return (
     <>
@@ -103,8 +117,9 @@ export function Component() {
         </Group>
         <Group>
           <Text color='dimmed' align='right' size='sm'>
-            {(page - 1) * pageSize + 1}-{Math.min((page - 1) * pageSize + pageSize, query.total)} of{' '}
-            {query.total} total records
+            {(page - 1) * pageSize + 1}-
+            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {query.total} total
+            records
           </Text>
           <Divider orientation='vertical' />
           <Downloads
@@ -112,16 +127,16 @@ export function Component() {
             predicates={predicates}
             fields={downloadFields}
             fetcher={downloadFetcher}
-            total={query.total}
+            total={query.total as number}
             fileName={`AVSB Accessions, ${taxon.classification.scientificName}`}
           />
         </Group>
       </Group>
-      <AccessionTable events={events} />
+      <AccessionTable events={events || []} />
       <Center pt='md'>
         <Pagination
           value={page}
-          total={query ? Math.ceil(query.total / pageSize) : 1}
+          total={query ? Math.ceil((query.total as number) / pageSize) : 1}
           onChange={(newPage) => setPage(newPage)}
         />
       </Center>
