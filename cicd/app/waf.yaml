@@ -24,7 +24,9 @@ Resources:
   AllowlistIpSet:
     Type: AWS::WAFv2::IPSet
     Properties:
-      Name: !Sub avsb-ip-allowlist-${pEnvironment}
+      Name: !Sub
+        - "avsb-ip-allowlist-${ResourceName}"
+        - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: !Sub List of IPs to allow for AVSB ${pEnvironment}
       Scope: CLOUDFRONT
       IPAddressVersion: IPV4
