@@ -13,7 +13,7 @@ interface SDSProps {
 
 function SDS({ instances }: SDSProps) {
   return (
-    <Center>
+    <Center w='100%'>
       <Stack w='100%' align='center' spacing='xl'>
         <ThemeIcon size={100} color='yellow' variant='light' radius={50}>
           <IconAlertTriangle size='2.5rem' />

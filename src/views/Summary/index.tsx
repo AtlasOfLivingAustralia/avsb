@@ -23,15 +23,16 @@ import { IconAlertTriangle, IconExternalLink, IconMap } from '@tabler/icons';
 // Project imports
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Taxon } from '#/api/sources/taxon';
-import { ConservationStatus } from '#/components';
+import { ConservationStatus, SDS } from '#/components';
+import { SDSResult } from '#/api';
 
 const EventMap = lazy(() => import('#/components/EventMap'));
 
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const [mapOpen, { open, close }] = useDisclosure(false);
+  const { taxon, sds } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult };
   const token = useLoaderData() as string;
-  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon };
   const theme = useMantineTheme();
   const mdOrLarger = useMediaQuery(`(min-width: ${theme.breakpoints.md})`, true);
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ export function Component() {
           <Grid.Col span={12} pb='lg'>
             <Group align='center'>
               <Group>
-                <IconAlertTriangle size='1.2rem' />
+                <IconAlertTriangle size='1.4rem' />
                 <Text size='sm' weight='bold'>
                   Conservation Status
                 </Text>
@@ -72,28 +73,42 @@ export function Component() {
           </Grid.Col>
         )}
         <Grid.Col sm={12} md={7} lg={8}>
-          <Suspense fallback={<Skeleton w='100%' height={450} />}>
-            <Card shadow='lg' p={0}>
-              <EventMap
-                onFullscreen={open}
-                width='100%'
-                height={450}
-                token={token}
-                itemListHeight={180}
-              />
+          {sds.instances.length > 0 ? (
+            <Card
+              style={{ display: 'flex', alignItems: 'center' }}
+              shadow='lg'
+              h='100%'
+              miw={345}
+              withBorder
+            >
+              <SDS instances={sds.instances} />
             </Card>
-          </Suspense>
-          <Alert
-            title='Accession Map'
-            icon={<IconMap />}
-            mt='sm'
-            styles={{ title: { marginBottom: 4 } }}
-          >
-            Accessions of this species were collected from the locations shown above. Click a dot to
-            be shown a list of accessions at that location, then click an accession entry to see
-            full accession details. Visit the &apos;Accessions&apos; tab to see details for all
-            locations.
-          </Alert>
+          ) : (
+            <>
+              <Suspense fallback={<Skeleton w='100%' height={450} />}>
+                <Card shadow='lg' p={0}>
+                  <EventMap
+                    onFullscreen={open}
+                    width='100%'
+                    height={450}
+                    token={token}
+                    itemListHeight={180}
+                  />
+                </Card>
+              </Suspense>
+              <Alert
+                title='Accession Map'
+                icon={<IconMap />}
+                mt='sm'
+                styles={{ title: { marginBottom: 4 } }}
+              >
+                Accessions of this species were collected from the locations shown above. Click a
+                dot to be shown a list of accessions at that location, then click an accession entry
+                to see full accession details. Visit the &apos;Accessions&apos; tab to see details
+                for all locations.
+              </Alert>
+            </>
+          )}
         </Grid.Col>
         <Grid.Col sm={12} md={5} lg={4}>
           <Card shadow='lg' h='100%' p={0} withBorder>
