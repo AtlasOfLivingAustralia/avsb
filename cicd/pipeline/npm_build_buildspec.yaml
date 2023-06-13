@@ -9,18 +9,23 @@ phases:
   install:
     on-failure: ABORT
     runtime-versions:
-      nodejs: 14
+      nodejs: 18
     commands:
-      - echo installing...
-      - npm i
+      - echo installing yarn...
+      - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+      - apt-get update && apt-get install -y yarn
+      - yarn --version
+      - echo running yarn...
+      - yarn
   pre_build:
     commands:
       - echo running tests...
-      - npm run test
+      - yarn test
   build:
     commands:
       - echo building...
-      - npm run build:$ENVIRONMENT
+      - yarn build:$ENVIRONMENT
 
 artifacts:
   base-directory: ./dist
