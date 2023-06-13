@@ -51,7 +51,6 @@ aws cloudformation deploy \
     --parameter-overrides \
         pAppStackName=$APP_STACK_NAME \
         pApSe2ArtifactsBucket=$AP_SE_2_ARTIFACTS_BUCKET \
-        pUsE1ArtifactsBucket=$US_E_1_ARTIFACTS_BUCKET \
         pAutoDeploy=$AUTO_DEPLOY \
         pCloudFormationServiceRole=$CLOUDFORMATION_SERVICE_ROLE \
         pCodeBuildServiceRole=$CODEBUILD_SERVICE_ROLE \
@@ -64,6 +63,7 @@ aws cloudformation deploy \
         pGitHubRepositoryName=$GITHUB_REPO_NAME \
         pProductComponent=$PRODUCT_COMPONENT \
         pProductName=$PRODUCT_NAME \
+        pUsE1ArtifactsBucket=$US_E_1_ARTIFACTS_BUCKET \
         pWafStackName=$WAF_STACK_NAME
 
 

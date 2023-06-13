@@ -8,9 +8,6 @@ Parameters:
   pApSe2ArtifactsBucket:
     Type: String
     Description: Common ap-southeast-2 artifacts bucket used by CodePipeline and CodeBuild
-  pUsE1ArtifactsBucket:
-    Type: String
-    Description: Common us-east-1 artifacts bucket used by CodePipeline and CodeBuild
   pAutoDeploy:
     Type: String
     Description: Sets the pipeline to autodeploy on repo changes
@@ -48,6 +45,9 @@ Parameters:
   pProductName:
     Type: String
     Description: The name of the product
+  pUsE1ArtifactsBucket:
+    Type: String
+    Description: Common us-east-1 artifacts bucket used by CodePipeline and CodeBuild
   pWafStackName:
     Type: String
     Description: The name of the product
