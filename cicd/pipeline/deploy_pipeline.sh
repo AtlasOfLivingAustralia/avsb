@@ -50,7 +50,8 @@ aws cloudformation deploy \
     --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
     --parameter-overrides \
         pAppStackName=$APP_STACK_NAME \
-        pArtifactsBucket=$ARTIFACTS_BUCKET \
+        pApSe2ArtifactsBucket=$AP_SE_2_ARTIFACTS_BUCKET \
+        pUsE1ArtifactsBucket=$US_E_1_ARTIFACTS_BUCKET \
         pAutoDeploy=$AUTO_DEPLOY \
         pCloudFormationServiceRole=$CLOUDFORMATION_SERVICE_ROLE \
         pCodeBuildServiceRole=$CODEBUILD_SERVICE_ROLE \

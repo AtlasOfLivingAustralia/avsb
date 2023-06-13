@@ -5,9 +5,12 @@ Parameters:
   pAppStackName:
     Type: String
     Description: The name of the application stack
-  pArtifactsBucket:
+  pApSe2ArtifactsBucket:
     Type: String
-    Description: Common artifacts bucket used by CodePipeline and CodeBuild
+    Description: Common ap-southeast-2 artifacts bucket used by CodePipeline and CodeBuild
+  pUsE1ArtifactsBucket:
+    Type: String
+    Description: Common us-east-1 artifacts bucket used by CodePipeline and CodeBuild
   pAutoDeploy:
     Type: String
     Description: Sets the pipeline to autodeploy on repo changes
@@ -72,7 +75,7 @@ Resources:
         Image: aws/codebuild/standard:7.0
         EnvironmentVariables:
           - Name: AWS_ARTIFACTS_BUCKET
-            Value: !Ref pArtifactsBucket
+            Value: !Ref pApSe2ArtifactsBucket
           - Name: CLEAN_BRANCH
             Value: !Ref pCleanBranch
           - Name: ENVIRONMENT
@@ -98,7 +101,7 @@ Resources:
         Image: aws/codebuild/standard:7.0
         EnvironmentVariables:
           - Name: 'AWS_ARTIFACTS_BUCKET'
-            Value: !Ref pArtifactsBucket
+            Value: !Ref pApSe2ArtifactsBucket
       Source:
         Type: CODEPIPELINE
         BuildSpec: cicd/pipeline/npm_build_buildspec.yaml
@@ -120,7 +123,7 @@ Resources:
         Image: aws/codebuild/standard:7.0
         EnvironmentVariables:
           - Name: 'AWS_ARTIFACTS_BUCKET'
-            Value: !Ref pArtifactsBucket
+            Value: !Ref pApSe2ArtifactsBucket
       Source:
         Type: CODEPIPELINE
         BuildSpec: cicd/pipeline/empty_bucket_buildspec.yaml
@@ -136,12 +139,11 @@ Resources:
       ArtifactStores:
         - ArtifactStore:
             Type: S3
-            #Location: !Ref pArtifactsBucket
-            Location: tmp-artifact-bucket-codepipeline
+            Location: !Ref pUsE1ArtifactsBucket
           Region: us-east-1
         - ArtifactStore:
             Type: S3
-            Location: !Ref pArtifactsBucket
+            Location: !Ref pApSe2ArtifactsBucket
           Region: !Ref AWS::Region
       DisableInboundStageTransitions:
         - Reason: To prevent accidental teardown
@@ -307,7 +309,7 @@ Resources:
               InputArtifacts:
                 - Name: 'AvsbSourceArtifact'
               RunOrder: 2
-            - Name: TeardownAvsb
+            - Name: TeardownAvsbSite
               ActionTypeId:
                 Owner: AWS
                 Category: Deploy
@@ -318,6 +320,18 @@ Resources:
                 StackName: !Ref pAppStackName
                 RoleArn: !Ref pCloudFormationServiceRole
               RunOrder: 3
+            - Name: TeardownAvsbWaf
+              ActionTypeId:
+                Owner: AWS
+                Category: Deploy
+                Version: 1
+                Provider: CloudFormation
+              Configuration:
+                ActionMode: DELETE_ONLY
+                StackName: !Ref pWafStackName
+                RoleArn: !Ref pCloudFormationServiceRole
+              Region: us-east-1
+              RunOrder: 4
             - Name: ApprovalForPipelineTeardown
               ActionTypeId:
                 Owner: AWS
@@ -326,7 +340,7 @@ Resources:
                 Provider: Manual
               Configuration:
                 CustomData: Approval required to tear down this stack
-              RunOrder: 4
+              RunOrder: 5
             - Name: TeardownCodePipeline
               ActionTypeId:
                 Owner: AWS
