@@ -218,6 +218,13 @@ const trialFields: SeedbankFieldMap = {
     examples: '2',
     description: 'The number of seeds that were empty during the post-germination cut test.',
   },
+  numberNotViable: {
+    label: 'Number Not Viable',
+    icon: IconCircleDotted,
+    examples: '10',
+    description:
+      'The number of seeds not viable (i.e. moudly, infested, etc) in a germination test.',
+  },
   viabilityPercentage: {
     label: 'Viability',
     icon: IconChartPie,
