@@ -22,6 +22,7 @@ template = template_env.get_template(args.template)
 
 # get the values from the environment
 template_vals = {
+    "allow_listed_ips"  : os.environ['ALLOW_LISTED_IPS'],
     "branch"            : os.environ['SRC_BRANCH'],
     "bucket_name"       : os.environ['SOURCE_BUCKET'],
     "bucket_path"       : os.environ['BUCKET_PATH'],

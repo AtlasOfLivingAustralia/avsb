@@ -29,5 +29,6 @@ env_config = config[args.env]
 
 # print key/vals
 for key in env_config:
-  print(f"{key.upper()}={env_config[key]}")
+  value = env_config[key].replace("\n", "")
+  print(f"{key.upper()}={value}")
 

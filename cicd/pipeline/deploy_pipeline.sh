@@ -62,6 +62,7 @@ aws cloudformation deploy \
         pGitHubOwner=$GITHUB_OWNER \
         pGitHubRepositoryName=$GITHUB_REPO_NAME \
         pProductComponent=$PRODUCT_COMPONENT \
-        pProductName=$PRODUCT_NAME
+        pProductName=$PRODUCT_NAME \
+        pWafStackName=$WAF_STACK_NAME
 
 

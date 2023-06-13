@@ -45,6 +45,9 @@ Parameters:
   pProductName:
     Type: String
     Description: The name of the product
+  pWafStackName:
+    Type: String
+    Description: The name of the product
 
 Conditions:
   IsDev: !Equals
@@ -66,7 +69,7 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:5.0
+        Image: aws/codebuild/standard:7.0
         EnvironmentVariables:
           - Name: AWS_ARTIFACTS_BUCKET
             Value: !Ref pArtifactsBucket
@@ -114,7 +117,7 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:5.0
+        Image: aws/codebuild/standard:7.0
         EnvironmentVariables:
           - Name: 'AWS_ARTIFACTS_BUCKET'
             Value: !Ref pArtifactsBucket
@@ -130,9 +133,16 @@ Resources:
               - "${pProductName}-${pProductComponent}-${ResourceName}"
               - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       RoleArn: !Ref pCodePipelineServiceRole
-      ArtifactStore:
-        Type: S3
-        Location: !Ref pArtifactsBucket
+      ArtifactStores:
+        - ArtifactStore:
+            Type: S3
+            #Location: !Ref pArtifactsBucket
+            Location: tmp-artifact-bucket-codepipeline
+          Region: us-east-1
+        - ArtifactStore:
+            Type: S3
+            Location: !Ref pArtifactsBucket
+          Region: !Ref AWS::Region
       DisableInboundStageTransitions:
         - Reason: To prevent accidental teardown
           StageName: Teardown
@@ -164,17 +174,37 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref ExportConfig
-                EnvironmentVariables: '[
-                  { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
-                  { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" }
-                  ]'
+                EnvironmentVariables: |
+                  [
+                    { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
+                    { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" }
+                  ]
               Namespace: ExportConfigNS
               InputArtifacts:
                 - Name: 'AvsbSourceArtifact'
               OutputArtifacts:
                 - Name: ExportConfigArtifact
               RunOrder: 1
-            - Name: DeployCFStack
+            - Name: DeployWafCFStack
+              ActionTypeId:
+                Owner: AWS
+                Category: Deploy
+                Version: 1
+                Provider: CloudFormation
+              Configuration:
+                TemplatePath: 'ExportConfigArtifact::cicd/app/waf.yaml'
+                TemplateConfiguration: 'ExportConfigArtifact::cicd/pipeline/waf_template_config.json'
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
+                RoleArn: !Ref pCloudFormationServiceRole
+                StackName: !Ref pWafStackName
+              InputArtifacts:
+                - Name: 'ExportConfigArtifact'
+              Namespace: WafCloudFormationOutNS
+              OutputArtifacts: []
+              Region: us-east-1
+              RunOrder: 2
+            - Name: DeploySiteCFStack
               ActionTypeId:
                 Owner: AWS
                 Category: Deploy
@@ -185,13 +215,17 @@ Resources:
                 TemplateConfiguration: 'ExportConfigArtifact::cicd/pipeline/template_config.json'
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
+                ParameterOverrides: |
+                  { 
+                    "pAvsbWafWebAclArn": "#{WafCloudFormationOutNS.AvsbWafWebAclArn}"
+                  }
                 RoleArn: !Ref pCloudFormationServiceRole
                 StackName: !Ref pAppStackName
               InputArtifacts:
                 - Name: 'ExportConfigArtifact'
-              Namespace: CloudFormationOutNS
+              Namespace: AppCloudFormationOutNS
               OutputArtifacts: []
-              RunOrder: 2
+              RunOrder: 3
         - Name: Publish_Website
           Actions:
             - Name: BuildCode
@@ -202,11 +236,12 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref BuildCode
-                EnvironmentVariables: '[
-                  { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
-                  { "name":"ENVIRONMENT", "value":"#{ExportConfigNS.ENVIRONMENT}" },
-                  { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" }
-                  ]'
+                EnvironmentVariables: |
+                  [
+                    { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
+                    { "name":"ENVIRONMENT", "value":"#{ExportConfigNS.ENVIRONMENT}" },
+                    { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" }
+                  ]
               Namespace: BuildAvsbNS
               InputArtifacts:
                 - Name: 'AvsbSourceArtifact'
@@ -221,10 +256,11 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref EmptyBucket
-                EnvironmentVariables: '[
-                  { "name":"SOURCE_BUCKET", "value":"#{ExportConfigNS.SOURCE_BUCKET}" },
-                  { "name":"BUCKET_PATH", "value":"#{ExportConfigNS.BUCKET_PATH}" }
-                  ]'
+                EnvironmentVariables: |
+                  [
+                    { "name":"SOURCE_BUCKET", "value":"#{ExportConfigNS.SOURCE_BUCKET}" },
+                    { "name":"BUCKET_PATH", "value":"#{ExportConfigNS.BUCKET_PATH}" }
+                  ]
               Namespace: EmptyBucketPreDeployNS
               InputArtifacts:
                 - Name: 'AvsbSourceArtifact'
