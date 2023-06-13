@@ -11,6 +11,7 @@ import {
   ScrollArea,
   Table,
   Text,
+  Tooltip,
   createStyles,
   rem,
   useMantineTheme,
@@ -127,6 +128,12 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 fieldKey='mediaSubstrate'
               />
               <ThField
+                sorted={sortBy === 'extensions.seedbank.pretreatment'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.pretreatment')}
+                fieldKey='pretreatment'
+              />
+              <ThField
                 sorted={sortBy === 'extensions.seedbank.viabilityPercentage'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('extensions.seedbank.viabilityPercentage')}
@@ -199,15 +206,22 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber}</td>
                     <td>{event.distinctTaxa?.[0].scientificName}</td>
                     <td>
-                      <Box maw={250}>
-                        <Text lineClamp={2}>{event?.datasetTitle}</Text>
-                      </Box>
+                      <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
+                        <Box maw={250}>
+                          <Text lineClamp={2}>{event?.datasetTitle}</Text>
+                        </Box>
+                      </Tooltip.Floating>
                     </td>
                     <td>
                       {getIsDefined(trial?.adjustedGerminationPercentage) &&
                         `${trial?.adjustedGerminationPercentage}%`}
                     </td>
                     <td>{getIsDefined(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}</td>
+                    <td>
+                      <Box maw={250}>
+                        <Text lineClamp={2}>{treatment?.pretreatment}</Text>
+                      </Box>
+                    </td>
                     <td>
                       {getIsDefined(trial?.viabilityPercentage) && `${trial?.viabilityPercentage}%`}
                     </td>
