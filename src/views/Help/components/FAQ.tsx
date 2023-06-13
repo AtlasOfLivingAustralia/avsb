@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 import {
   Accordion,
@@ -58,6 +58,7 @@ export interface HelpTopicItem {
 }
 
 function FAQ() {
+  const [value, setValue] = useState<string | null>('access-seeds');
   const { classes } = useStyles();
 
   return (
@@ -69,7 +70,8 @@ function FAQ() {
       </Center>
       <Accordion
         variant='filled'
-        defaultValue='access-seeds'
+        value={value}
+        onChange={setValue}
         classNames={classes}
         className={classes.root}
       >
@@ -152,6 +154,79 @@ function FAQ() {
             </Text>
           </Accordion.Panel>
         </Accordion.Item>
+        <Accordion.Item value='download-threatend-species'>
+          <Accordion.Control>
+            How do I add threatened species status to my downloaded data?
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Text size='sm'>
+              Although Threatened Species Status for taxa listed under state, territory and
+              commonwealth threatened species legislation is shown on the AVSB summary pages, this
+              is currently not included in the data downloads. You can download threatened species
+              lists for all jurisdictions in Australia from the ALA{' '}
+              <Anchor
+                target='_blank'
+                href='https://lists.ala.org.au/public/speciesLists?&max=25&sort=listName&order=asc&isThreatened=eq:true&isAuthoritative=eq:true&listType=eq:CONSERVATION_LIST'
+              >
+                here
+              </Anchor>{' '}
+              and attribute taxa in your downloads with their conservation status. If you need
+              further assistance, please contact{' '}
+              <Anchor target='_blank' href='mailto:support@ala.org.au'>
+                support@ala.org.au
+              </Anchor>
+            </Text>
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item value='resolve-taxonomic-name-matching'>
+          <Accordion.Control>
+            How does the AVSB resolve taxonomic name matching issues?
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Text size='sm'>
+              When a seedbank provides data to be included in the AVSB, the ALA&apos;s name matching
+              service aligns the scientific names in the dataset with those in the{' '}
+              <Anchor
+                target='_blank'
+                href='https://biodiversity.org.au/nsl/services/search/taxonomy'
+              >
+                Australian Plant Census
+              </Anchor>{' '}
+              (where they have been included) or the{' '}
+              <Anchor target='_blank' href='https://biodiversity.org.au/nsl/services/search/names'>
+                Australian Plant Names Index
+              </Anchor>
+              .
+            </Text>
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item value='raw-scientific-name'>
+          <Accordion.Control>
+            How can I find what raw scientific name was supplied with a record?
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Text size='sm'>
+              The AVSB doesn&apos;t display the scientific name as provided by the seedbanks (i.e.,
+              the verbatim / supplied scientific name). You can, however, find the supplied
+              scientific name provided by the seedbank by searching species observations in the
+              Atlas of Living Australia and filtering records for the taxon by Data Resource (i.e.,
+              your seedbank name e.g. National Seedbank). You can then look at the details of
+              records and will be able to see the supplied and matched names for the taxon record.
+              For more information about how to filter data in the ALA please contact{' '}
+              <Anchor target='_blank' href='mailto:support@ala.org.au'>
+                support@ala.org.au
+              </Anchor>{' '}
+              or see{' '}
+              <Anchor
+                target='_blank'
+                href='https://support.ala.org.au/support/solutions/articles/6000249564-how-to-use-facets-to-filter-ala-data'
+              >
+                this
+              </Anchor>{' '}
+              help desk article.
+            </Text>
+          </Accordion.Panel>
+        </Accordion.Item>
         <Accordion.Item value='how-desensitised-locations'>
           <Accordion.Control>How are accession locations desensitised?</Accordion.Control>
           <Accordion.Panel>
@@ -189,10 +264,10 @@ function FAQ() {
                 >
                   here
                 </Anchor>
-                . The state and territory lists only apply to records located within that state /
-                territory (so records for a sensitised species may be visible in other states and
-                territories). The lists of sensitive species provided by other non-government data
-                providers will apply only to records provided by them.
+                . The state and territory lists generally only apply to records located within that
+                state / territory. Observation records of these species in the ALA are generalised,
+                however, in the AVSB, all locality information for these taxa is withheld. Accession
+                and trial data, where it exists, will still be accessible.
               </Text>
             </Stack>
           </Accordion.Panel>
@@ -203,11 +278,12 @@ function FAQ() {
           </Accordion.Control>
           <Accordion.Panel>
             <Text size='sm'>
-              When you view the detailed information regarding an accession for a sensitive species
-              in the Australian Virtual Seed Bank, a message appears below the map which reads
-              “Precise location data has been obfuscated for species protection”. In addition, these
-              accession records will either have only one or two decimal places displayed in their
-              latitude and longitude.
+              When you search for data in the AVSB for a taxon which is considered sensitive, the
+              summary map will be replace with a sensitive data redaction message. Where seed bank
+              data exists, when you click on either the trials or accessions tab you can still
+              access the data for trials and accessions for these taxa. When viewing the details of
+              an accession record, the same sensitive data redacation message appears (where the
+              locality map usually shows).
             </Text>
           </Accordion.Panel>
         </Accordion.Item>
@@ -268,7 +344,7 @@ function FAQ() {
         </Accordion.Item>
         <Accordion.Item value='select-accession-area'>
           <Accordion.Control>
-            Is it possible to select accession for an area using the map?
+            Is it possible to select accessions for an area using the map?
           </Accordion.Control>
           <Accordion.Panel>
             <Stack spacing='sm'>
@@ -292,15 +368,41 @@ function FAQ() {
         </Accordion.Item>
         <Accordion.Item value='missing-accessions-summary-map'>
           <Accordion.Control>
-            Why am I unable to see all accessions for a taxon on the summary map?
+            Why don&apos;t all seedbank accessions appear on the summary maps / seedbank maps?
           </Accordion.Control>
           <Accordion.Panel>
             <Stack spacing='sm'>
               <Text size='sm'>
-                The accessions seen on the summary map rely on coordinate data being provided by our
-                partners. Some partners provide full coordiante data with their accessions, whereas
-                others may only provide it for a subset of their records, or not at all.
+                The presence of seedbank locations on maps depends on a number of factors, i.e.:
               </Text>
+              <List size='sm'>
+                <List.Item>Not all seed banks collect location data for all accessions</List.Item>
+                <List.Item>
+                  Some seed banks may withhold point locations for some accessions
+                </List.Item>
+                <List.Item>
+                  Coordinates for sensitive species in each of the states and territories are
+                  withheld in the AVSB. See FAQs:
+                  <List size='sm'>
+                    <List.Item>
+                      <Anchor onClick={() => setValue('how-desensitised-locations')}>
+                        How are accession locations desensitised?
+                      </Anchor>
+                    </List.Item>
+                    <List.Item>
+                      <Anchor onClick={() => setValue('desensitised-locations')}>
+                        How do I know that an accession location has been desensitised?
+                      </Anchor>
+                    </List.Item>
+                    <List.Item>
+                      <Anchor onClick={() => setValue('no-accessions-trials')}>
+                        What do I do if I can&apos;t find accessions or trials for a particular
+                        species?
+                      </Anchor>
+                    </List.Item>
+                  </List>
+                </List.Item>
+              </List>
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
