@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLoaderData, useParams } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -12,6 +12,7 @@ import {
   List,
   Loader,
   Overlay,
+  Paper,
   Stack,
   Text,
   ThemeIcon,
@@ -24,15 +25,21 @@ import {
   IconExternalLink,
   IconFileInfo,
   IconLicense,
+  IconPhoto,
   IconQuestionMark,
   IconTypography,
   TablerIcon,
 } from '@tabler/icons';
 
 // Project / local components
-import { MediaItem } from '#/api/graphql/types';
-import { getNameInitials } from '#/helpers';
+import { gqlQueries, performGQLQuery } from '#/api';
+import { Filters } from '#/components';
+import { MediaItem, Predicate } from '#/api/graphql/types';
+import { getInitials, useMounted } from '#/helpers';
+
+// Component imports
 import MediaImage from './components/MediaImage';
+import filters, { months } from './filters';
 
 interface ImageProperty {
   key: keyof MediaItem;
@@ -83,12 +90,61 @@ const imageProperties: ImageProperty[] = [
   },
 ];
 
+const predicateToQuery = ({ type, key, value }: Predicate) => {
+  if (type === 'equals') {
+    const iso = new Date(value as number).toISOString();
+    return {
+      [key || '']: `[${iso} TO ${iso}]`,
+    };
+  }
+
+  if (type === 'range') {
+    const { gte, lte } = value as { gte?: number | ''; lte?: number | '' };
+
+    // Construct dates from GTE & LTE values
+    const gteIso = gte ? new Date(gte).toISOString() : null;
+    const lteIso = lte ? new Date(lte).toISOString() : null;
+
+    return { [key || '']: `[${gteIso || '*'} TO ${lteIso || '*'}]` };
+  }
+
+  return {};
+};
+
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
-  const [media /* , setMedia */] = useState<MediaItem[] | null>(useLoaderData() as MediaItem[]);
+  const [media, setMedia] = useState<MediaItem[] | null>(useLoaderData() as MediaItem[]);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(media?.[0] || null);
   const [selectedLoaded, setSelectedLoaded] = useState<boolean>(false);
-  // const params = useParams();
+  const [predicates, setPredicates] = useState<{ [key: string]: Predicate }>({});
+  const params = useParams();
+  const mounted = useMounted();
+
+  useEffect(() => {
+    async function runQuery() {
+      const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
+        key: params.guid,
+        params: {
+          query: {
+            ...(predicates.occurrence_date ? predicateToQuery(predicates.occurrence_date) : {}),
+            ...(predicates.data_resource_uid
+              ? { data_resource_uid: predicates.data_resource_uid.value }
+              : {}),
+          },
+          filter: {
+            ...(predicates.month
+              ? { month: months.indexOf(predicates.month.value as string) + 1 }
+              : {}),
+          },
+        },
+        size: 20,
+      });
+      setMedia(data?.taxonMedia);
+    }
+
+    if (mounted) runQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [predicates]);
 
   if (media === null)
     return (
@@ -102,28 +158,48 @@ export function Component() {
 
   return (
     <Grid gutter='xl'>
+      <Grid.Col span={12}>
+        <Filters
+          predicates={Object.values(predicates)}
+          filters={filters}
+          onPredicates={(data) => {
+            setPredicates(data.reduce((prev, cur) => ({ ...prev, [cur.key || '']: cur }), {}));
+          }}
+        />
+      </Grid.Col>
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={7} orderXs={2} orderSm={2} orderMd={1}>
-        <Grid gutter='xs'>
-          {media?.map((item) => (
-            <Grid.Col key={item.identifier} xs={4} sm={4} md={4} lg={3} xl={3}>
-              <MediaImage
-                item={item}
-                onClick={() => {
-                  if (item.identifier !== selectedMedia?.identifier) {
-                    setSelectedLoaded(false);
-                    setSelectedMedia(item);
-                  }
-                }}
-                selected={selectedMedia?.identifier === item.identifier}
-                width='100%'
-                height={150}
-              />
-            </Grid.Col>
-          ))}
-        </Grid>
+        {media?.length > 0 ? (
+          <Grid gutter='xs'>
+            {media?.map((item) => (
+              <Grid.Col key={item.identifier} xs={4} sm={4} md={4} lg={3} xl={3}>
+                <MediaImage
+                  item={item}
+                  onClick={() => {
+                    if (item.identifier !== selectedMedia?.identifier) {
+                      setSelectedLoaded(false);
+                      setSelectedMedia(item);
+                    }
+                  }}
+                  selected={selectedMedia?.identifier === item.identifier}
+                  width='100%'
+                  height={150}
+                />
+              </Grid.Col>
+            ))}
+          </Grid>
+        ) : (
+          <Paper h='100%' withBorder>
+            <Center h='100%'>
+              <Stack align='center'>
+                <IconPhoto size='3rem' />
+                <Text color='dimmed'>No matching media found</Text>
+              </Stack>
+            </Center>
+          </Paper>
+        )}
       </Grid.Col>
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={5} orderXs={1} orderSm={1} orderMd={2}>
-        <Card shadow='sm' padding='lg' radius='md' withBorder>
+        <Card shadow='lg' padding='lg' radius='md' withBorder>
           <Card.Section pos='relative' h={350}>
             <Image pos='absolute' src={selectedMedia?.accessOriginalURI} height={350} />
             <Overlay blur={8} opacity={0.1} center>
@@ -154,10 +230,7 @@ export function Component() {
           <Group position='apart' mt='md' mb='xs'>
             <Group>
               <Avatar variant='filled' radius='xl'>
-                {getNameInitials({
-                  given_name: selectedMedia?.creator?.split(' ')?.[0],
-                  family_name: selectedMedia?.creator?.split(' ')?.[1],
-                })}
+                {getInitials(selectedMedia?.creator || 'Unknown Creator')}
               </Avatar>
               <Text weight='bold'>{selectedMedia?.creator || 'Unknown Creator'}</Text>
             </Group>
@@ -208,5 +281,4 @@ export function Component() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Component as any).displayName = 'Media';
+Object.assign(Component, { displayName: 'Media' });

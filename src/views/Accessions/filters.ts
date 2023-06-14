@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   IconBox,
   IconDatabase,
@@ -13,26 +12,29 @@ import {
 } from '@tabler/icons';
 
 import { SelectItem } from '@mantine/core';
-import { gqlQueries, performGQLQuery } from '#/api';
+import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';
 import { Filter } from '#/components';
 
 // Define a data fetcher for the dataset select search
 const fetchItems = async (query: string): Promise<SelectItem[]> => {
-  const { data } = await performGQLQuery(gqlQueries.QUERY_DATASET_SUGGEST, {
-    predicate: {
-      type: 'and',
-      predicates: [
-        { type: 'like', key: 'datasetTitle', value: `*${query}*` },
-        gqlQueries.PRED_DATA_RESOURCE,
-      ],
+  const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+    gqlQueries.QUERY_DATASET_SUGGEST,
+    {
+      predicate: {
+        type: 'and',
+        predicates: [
+          { type: 'like', key: 'datasetTitle', value: `*${query}*` },
+          gqlQueries.PRED_DATA_RESOURCE,
+        ],
+      },
     },
-  });
+  );
 
   return (data.eventSearch?.facet?.datasetKey || [])
-    .filter((result: any) => result !== null)
-    .map(({ /* key: datasetKey, */ datasetTitle }: any) => ({
-      value: datasetTitle,
-      label: datasetTitle,
+    .filter((result) => result !== null)
+    .map(({ datasetTitle }) => ({
+      value: datasetTitle || '',
+      label: datasetTitle || '',
     }));
 };
 
@@ -47,9 +49,9 @@ const filters: Filter[] = [
   },
   {
     key: 'datasetTitle',
-    label: 'Dataset',
+    label: 'Institution',
     type: 'selectSearch',
-    placeholder: 'Search for a dataset',
+    placeholder: 'Search for a institution',
     icon: IconDatabase,
     group: 'Collection',
     fetchItems,

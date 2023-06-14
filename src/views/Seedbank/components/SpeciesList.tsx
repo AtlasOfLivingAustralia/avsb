@@ -1,21 +1,25 @@
 import { CSSProperties, useEffect, useState } from 'react';
 import {
   ActionIcon,
+  Badge,
   Divider,
   Group,
   Paper,
+  SegmentedControl,
   Text,
   TextInput,
-  ThemeIcon,
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
 import { FixedSizeList } from 'react-window';
 import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons';
 import { useDebouncedValue } from '@mantine/hooks';
+import { useNavigate, useParams } from 'react-router-dom';
 import { saveAs } from 'file-saver';
+
+// Project helpers
 import { taxonAPI } from '#/api';
-import { useNavigate } from 'react-router-dom';
+import { orderBy } from 'lodash';
 
 type SpeciesFacet = { key: string; count: number };
 
@@ -32,10 +36,22 @@ interface SpeciesRow {
 
 function Row({ index, style, data }: SpeciesRow) {
   const navigate = useNavigate();
+  const params = useParams();
 
   const handleRowClick = async () => {
     const [suggest] = await taxonAPI.suggest(data[index].key);
-    if (suggest) navigate(`/taxon/${encodeURIComponent(suggest.guid)}`);
+    if (suggest)
+      navigate(`/taxon/${encodeURIComponent(suggest.guid)}/accessions`, {
+        state: {
+          predicates: [
+            {
+              type: 'equals',
+              key: 'datasetKey',
+              value: params.resource || '',
+            },
+          ],
+        },
+      });
   };
 
   return (
@@ -51,13 +67,13 @@ function Row({ index, style, data }: SpeciesRow) {
       }}
     >
       <Group position='apart'>
-        <Text size='sm'>{data[index].key}</Text>
+        <Text size='sm' maw={205} truncate>
+          {data[index].key}
+        </Text>
         <Group spacing='xs' mr='sm'>
-          <ThemeIcon variant='light' size='lg' radius='lg'>
-            <Text weight='bold' size='xs'>
-              {data[index].count}
-            </Text>
-          </ThemeIcon>
+          <Badge>
+            {data[index].count} Record{data[index].count > 1 && 's'}
+          </Badge>
           <IconArrowUpRight size='1rem' />
         </Group>
       </Group>
@@ -65,10 +81,20 @@ function Row({ index, style, data }: SpeciesRow) {
   );
 }
 
+type SpeciesListSort = 'numeric' | 'alphabetical';
+
 function SpeciesList({ name, species }: SpeciesListProps) {
   const [search, setSearch] = useState<string>('');
-  const [filtered, setFiltered] = useState<SpeciesFacet[]>([]);
+  const [sort, setSort] = useState<SpeciesListSort>('alphabetical');
+  const [filtered, setFiltered] = useState<SpeciesFacet[]>(species);
   const [searchDebounced] = useDebouncedValue(search, 200);
+
+  // Sort the filtered entries
+  const sorted = orderBy(
+    filtered,
+    sort === 'alphabetical' ? 'key' : 'count',
+    sort === 'alphabetical' ? 'asc' : 'desc',
+  );
 
   useEffect(() => {
     setFiltered(
@@ -80,7 +106,7 @@ function SpeciesList({ name, species }: SpeciesListProps) {
   const onDownloadClick = () => {
     const csv = [
       'Species Name,Count',
-      ...species.map((record) => Object.values(record).join(',')),
+      ...sorted.map((record) => Object.values(record).join(',')),
     ].join('\n');
 
     saveAs(
@@ -97,11 +123,22 @@ function SpeciesList({ name, species }: SpeciesListProps) {
         <Text size='xl' sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}>
           {species.length} Species
         </Text>
-        <Tooltip label='Download species list' position='left'>
-          <ActionIcon variant='subtle' onClick={onDownloadClick}>
-            <IconDownload size='1rem' />
-          </ActionIcon>
-        </Tooltip>
+        <Group spacing='xs'>
+          <SegmentedControl
+            size='xs'
+            value={sort}
+            onChange={(value) => setSort(value as SpeciesListSort)}
+            data={[
+              { label: 'ABC', value: 'alphabetical' },
+              { label: '#', value: 'numeric' },
+            ]}
+          />
+          <Tooltip label='Download species list' position='left'>
+            <ActionIcon variant='subtle' onClick={onDownloadClick}>
+              <IconDownload size='1rem' />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
       </Group>
       <TextInput
         icon={<IconSearch size='1rem' />}
@@ -114,11 +151,11 @@ function SpeciesList({ name, species }: SpeciesListProps) {
       />
       <Divider mt='md' mb='xs' />
       <FixedSizeList
-        height={410}
+        height={395}
         width='calc(100% + 16px)'
         style={{ marginRight: -16 }}
-        itemData={filtered}
-        itemCount={filtered.length}
+        itemData={sorted}
+        itemCount={sorted.length}
         itemSize={45}
       >
         {Row}

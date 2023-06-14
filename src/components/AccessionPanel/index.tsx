@@ -16,10 +16,12 @@ import {
   Divider,
   Alert,
   Skeleton,
+  Chip,
+  Card,
 } from '@mantine/core';
 import {
-  IconAlertTriangle,
   IconArrowBackUp,
+  IconArrowUpRight,
   IconChevronDown,
   IconChevronUp,
   IconHandStop,
@@ -28,15 +30,15 @@ import {
   IconMap2,
   IconMapPin,
   IconPackage,
+  IconTimelineEvent,
 } from '@tabler/icons';
-import { Link, useLoaderData, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate, useRouteLoaderData } from 'react-router-dom';
 
 // Project imports
-import { Event, SeedBankAccession } from '#/api/graphql/types';
-import { getIsPresent, accessionFields } from '#/helpers';
+import { SDSResult, Event, SeedBankAccession } from '#/api';
+import { getIsDefined, accessionFields } from '#/helpers';
 
 // Local imports
-import Map from '../Map';
 import Contact from '../Contact';
 import HerbariumLink from './components/HerbariumLink';
 import IconText from '../IconText';
@@ -45,27 +47,25 @@ import TrialSummary from './components/TrialSummary';
 
 import { fields, longFields } from './fields';
 import FieldTooltip from '../FieldTooltip';
+import SDS from '../SDS';
 
-// const Map = lazy(() => import('../Map'));
+const Map = lazy(() => import('../Map'));
 
-interface AccessionPanelProps {
-  taxon?: string;
-}
-
-const missingData = 'Not Supplied';
+const missingData = 'Not Available';
 
 interface AccessionPanelLoader {
   accessionEvent: Event;
   trialEvents: Event[];
 }
 
-function AccessionPanel({ taxon }: AccessionPanelProps) {
+function AccessionPanel() {
   const { accessionEvent, trialEvents } = useLoaderData() as AccessionPanelLoader;
+  const { sds } = useRouteLoaderData('taxon') as { sds: SDSResult };
   const accession = accessionEvent?.extensions?.seedbank as SeedBankAccession;
   const navigate = useNavigate();
 
-  // if (!accession && !event)
-  //   throw new Error('Tried to render an AccessionPanel without accession data');
+  const taxonInfo = accessionEvent.distinctTaxa?.[0];
+  const hasCoordinates = accessionEvent.decimalLatitude && accessionEvent.decimalLongitude;
 
   return (
     <Grid gutter='xl' pb='xl'>
@@ -73,14 +73,27 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
         <Grid.Col span={12}>
           <Paper p='sm' mb='lg' withBorder>
             <Group position='apart'>
-              <Breadcrumbs>
-                <Anchor weight='bold' size='sm' component={Link} to='..'>
-                  Accessions
-                </Anchor>
-                <Text weight='bold' size='sm'>
-                  {accession?.accessionNumber || 'Unknown'}
-                </Text>
-              </Breadcrumbs>
+              <Group spacing='md'>
+                <Breadcrumbs>
+                  <Anchor weight='bold' size='sm' component={Link} to='..'>
+                    Accessions
+                  </Anchor>
+                  <Text weight='bold' size='sm'>
+                    {accession?.accessionNumber || 'Unknown'}
+                  </Text>
+                </Breadcrumbs>
+                <Chip
+                  size='xs'
+                  mb={2}
+                  checked={false}
+                  onClick={() =>
+                    navigate(`/taxon/${encodeURIComponent(taxonInfo?.key || '')}/accessions`)
+                  }
+                >
+                  {taxonInfo?.scientificName || taxonInfo?.species}
+                  <IconArrowUpRight style={{ marginLeft: 4 }} size='1rem' />
+                </Chip>
+              </Group>
               <Button
                 variant='subtle'
                 size='xs'
@@ -108,7 +121,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
                       <Text color='dimmed' size='xs'>
                         {label}
                       </Text>
-                      {getIsPresent(accession?.[key]) ? (
+                      {getIsDefined(accession?.[key]) ? (
                         <Text size='xl' weight='bold'>
                           {accession?.[key]}
                           {unit && unit}
@@ -134,7 +147,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
                     <Text color='dimmed' size='xs'>
                       {label}
                     </Text>
-                    {getIsPresent(accession?.[key]) ? (
+                    {getIsDefined(accession?.[key]) ? (
                       <Text size='sm' weight='bold'>
                         {accession?.[key]}
                       </Text>
@@ -191,7 +204,7 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
         </Grid.Col>
       )}
       <Grid.Col sm={8} md={8} lg={8}>
-        <Paper h='100%' withBorder>
+        <Card h='100%' p={0} shadow='lg' withBorder>
           {accessionEvent.decimalLatitude && accessionEvent.decimalLongitude && (
             <Suspense fallback={<Skeleton w='100%' h={350} />}>
               <Map
@@ -201,42 +214,45 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
               />
             </Suspense>
           )}
-          <Stack spacing='xs' p='md'>
-            <Stack spacing='xs' mb='xs'>
-              <Alert icon={<IconInfoCircle />}>
-                {accessionEvent.decimalLatitude && accessionEvent.decimalLongitude ? (
+          {!hasCoordinates && sds.instances.length > 0 && !accessionEvent.locality ? (
+            <Box p='lg'>
+              <SDS instances={sds.instances} />
+            </Box>
+          ) : (
+            <Stack spacing='xs' p='md'>
+              <Alert mb='xs' icon={<IconInfoCircle />}>
+                {hasCoordinates ? (
                   <>
                     This map shows the seed <b>collection</b> location
                   </>
                 ) : (
-                  'No locality data supplied'
+                  'No coordinate data supplied'
                 )}
               </Alert>
-              {accessionEvent.decimalLatitude &&
-                accessionEvent.decimalLongitude &&
-                accessionEvent.decimalLatitude.toString().split('.')[1].length < 4 && (
-                  <Alert color='yellow' icon={<IconAlertTriangle />} mb='sm'>
-                    Precise location data has been obfuscated for species protection
-                  </Alert>
-                )}
+              <IconText labelWidth={120} title='Locality' icon={IconLocation}>
+                {accessionEvent.locality || missingData}
+              </IconText>
+              <IconText labelWidth={120} title='Decimal Lat' icon={IconMapPin}>
+                {accessionEvent.decimalLatitude || missingData}
+              </IconText>
+              <IconText labelWidth={120} title='Decimal Lng' icon={IconMapPin}>
+                {accessionEvent.decimalLongitude || missingData}
+              </IconText>
+              <IconText labelWidth={120} title='State Province' icon={IconMap2}>
+                {accessionEvent.stateProvince || missingData}
+              </IconText>
             </Stack>
-            <IconText labelWidth={120} title='Locality' icon={IconLocation}>
-              {accessionEvent.locality || missingData}
-            </IconText>
-            <IconText labelWidth={120} title='Decimal Lat' icon={IconMapPin}>
-              {accessionEvent.decimalLatitude || missingData}
-            </IconText>
-            <IconText labelWidth={120} title='Decimal Lng' icon={IconMapPin}>
-              {accessionEvent.decimalLongitude || missingData}
-            </IconText>
-            <IconText labelWidth={120} title='State Province' icon={IconMap2}>
-              {accessionEvent.stateProvince || missingData}
-            </IconText>
-          </Stack>
-        </Paper>
+          )}
+        </Card>
       </Grid.Col>
       <Grid.Col sm={4} md={4} lg={4}>
-        <Paper p='md' h='100%' withBorder>
+        <Card shadow='lg' style={{ display: 'flex', flexDirection: 'column' }} h='100%' withBorder>
+          <Group spacing='md' mb='xl'>
+            <IconTimelineEvent size='1.5rem' />
+            <Text size='xl' sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}>
+              Collection Timeline
+            </Text>
+          </Group>
           <Stack justify='space-between' h='100%'>
             <Timeline bulletSize={28}>
               <Timeline.Item bullet={<IconHandStop size={18} />}>
@@ -256,11 +272,9 @@ function AccessionPanel({ taxon }: AccessionPanelProps) {
                 </Text>
               </Timeline.Item>
             </Timeline>
-            {accession?.accessionNumber && (
-              <HerbariumLink accession={accession.accessionNumber} taxon={taxon} />
-            )}
+            {accession?.accessionNumber && <HerbariumLink accession={accession.accessionNumber} />}
           </Stack>
-        </Paper>
+        </Card>
       </Grid.Col>
       {accessionEvent.datasetKey && (
         <Grid.Col span={12}>

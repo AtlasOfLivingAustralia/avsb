@@ -32,7 +32,6 @@ const waves = {
 export default function Wave({ waveType, waveColour, ...rest }: WaveProps) {
   const theme = useMantineTheme();
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' {...rest}>
       <path
         fill={

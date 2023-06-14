@@ -1,4 +1,4 @@
-function getShortInt(input: number) {
+function getAbbreviatedNumber(input: number) {
   let num = input;
   num = parseInt(num.toString().replace(/[^0-9.]/g, ''), 10);
   if (num < 1000) {
@@ -21,4 +21,4 @@ function getShortInt(input: number) {
   return (num / si[index].v).toFixed(0).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') + si[index].s;
 }
 
-export default getShortInt;
+export default getAbbreviatedNumber;

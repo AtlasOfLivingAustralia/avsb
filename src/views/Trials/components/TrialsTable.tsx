@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useEffect, useState } from 'react';
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import {
@@ -12,6 +11,7 @@ import {
   ScrollArea,
   Table,
   Text,
+  Tooltip,
   createStyles,
   rem,
   useMantineTheme,
@@ -29,7 +29,7 @@ import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
 import { TrialDetails, ThField } from '#/components';
-import { getIsPresent } from '#/helpers';
+import { getIsDefined } from '#/helpers';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -88,7 +88,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
   useEffect(() => setSorting(sortBy || '', true), [events]);
 
   return (
-    <Card withBorder p={0}>
+    <Card shadow='lg' p={0} withBorder>
       <ScrollArea
         type='auto'
         h={height || 'calc(100vh - 425px)'}
@@ -107,14 +107,13 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 sorted={sortBy === 'distinctTaxa[0].scientificName'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('distinctTaxa[0].scientificName')}
-                fieldKey='Taxon'
+                fieldKey='taxon'
               />
               <ThField
                 sorted={sortBy === 'datasetTitle'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('datasetTitle')}
-                fieldKey='Institution'
-                style={{ maxWidth: 300 }}
+                fieldKey='datasetTitle'
               />
               <ThField
                 sorted={sortBy === 'extensions.seedbank.adjustedGerminationPercentage'}
@@ -127,6 +126,12 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('extensions.seedbank.mediaSubstrate')}
                 fieldKey='mediaSubstrate'
+              />
+              <ThField
+                sorted={sortBy === 'extensions.seedbank.pretreatment'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('extensions.seedbank.pretreatment')}
+                fieldKey='pretreatment'
               />
               <ThField
                 sorted={sortBy === 'extensions.seedbank.viabilityPercentage'}
@@ -188,7 +193,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                   <tr
                     style={{ cursor: 'pointer' }}
                     onClick={(e) => {
-                      const className = (e.target as any)?.className;
+                      const className = (e.target as HTMLElement)?.className;
                       if (!(typeof className === 'string' && className.includes('Button'))) {
                         setSelected(
                           isSelected
@@ -200,19 +205,25 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                   >
                     <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber}</td>
                     <td>{event.distinctTaxa?.[0].scientificName}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>
-                      {' '}
-                      <Text truncate maw={250}>
-                        {event?.datasetTitle}
-                      </Text>
+                    <td>
+                      <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
+                        <Box maw={250}>
+                          <Text lineClamp={2}>{event?.datasetTitle}</Text>
+                        </Box>
+                      </Tooltip.Floating>
                     </td>
                     <td>
-                      {getIsPresent(trial?.adjustedGerminationPercentage) &&
+                      {getIsDefined(trial?.adjustedGerminationPercentage) &&
                         `${trial?.adjustedGerminationPercentage}%`}
                     </td>
-                    <td>{getIsPresent(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}</td>
+                    <td>{getIsDefined(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}</td>
                     <td>
-                      {getIsPresent(trial?.viabilityPercentage) && `${trial?.viabilityPercentage}%`}
+                      <Box maw={250}>
+                        <Text lineClamp={2}>{treatment?.pretreatment}</Text>
+                      </Box>
+                    </td>
+                    <td>
+                      {getIsDefined(trial?.viabilityPercentage) && `${trial?.viabilityPercentage}%`}
                     </td>
                     <td>
                       {[event.day, event.month, event.year]
@@ -220,7 +231,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                         .join('/')}
                     </td>
                     <td>
-                      {getIsPresent(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
+                      {getIsDefined(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
                     </td>
                     <td align='right' style={{ paddingLeft: 0 }}>
                       <Group spacing='xs' position='right' miw={145}>

@@ -12,6 +12,7 @@ import {
   ScrollArea,
   Table,
   Text,
+  Tooltip,
   createStyles,
   rem,
   useMantineTheme,
@@ -27,7 +28,7 @@ import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
 import { AccessionDetails, ThField } from '#/components';
-import { getIsPresent } from '#/helpers';
+import { getIsDefined } from '#/helpers';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -83,7 +84,7 @@ function AccessionTable({ events }: AccessionTableProps) {
   useEffect(() => setSorting(sortBy || '', true), [events]);
 
   return (
-    <Card withBorder p={0}>
+    <Card shadow='lg' p={0} withBorder>
       <ScrollArea
         type='auto'
         h='calc(100vh - 425px)'
@@ -102,13 +103,13 @@ function AccessionTable({ events }: AccessionTableProps) {
                 sorted={sortBy === 'distinctTaxa[0].scientificName'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('distinctTaxa[0].scientificName')}
-                fieldKey='Taxon'
+                fieldKey='taxon'
               />
               <ThField
                 sorted={sortBy === 'datasetTitle'}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('datasetTitle')}
-                fieldKey='Institution'
+                fieldKey='datasetTitle'
               />
               <ThField
                 sorted={sortBy === 'extensions.seedbank.dateCollected'}
@@ -185,25 +186,27 @@ function AccessionTable({ events }: AccessionTableProps) {
                       {accession?.accessionNumber || event.eventID}
                     </td>
                     <td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>
-                      <Text truncate maw={250}>
-                        {event?.datasetTitle}
-                      </Text>
+                    <td>
+                      <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
+                        <Box maw={250}>
+                          <Text lineClamp={2}>{event?.datasetTitle}</Text>
+                        </Box>
+                      </Tooltip.Floating>
                     </td>
                     <td>
-                      {getIsPresent(accession?.dateCollected) &&
+                      {getIsDefined(accession?.dateCollected) &&
                         new Date(accession?.dateCollected || 0).toLocaleDateString()}
                     </td>
                     <td>
-                      {getIsPresent(accession?.quantityCount) &&
+                      {getIsDefined(accession?.quantityCount) &&
                         `${accession?.quantityCount} seeds`}
                     </td>
                     <td>
-                      {getIsPresent(accession?.purityPercentage) &&
+                      {getIsDefined(accession?.purityPercentage) &&
                         `${accession.purityPercentage}%`}
                     </td>
                     <td>
-                      {getIsPresent(accession?.storageTemperatureInCelsius) &&
+                      {getIsDefined(accession?.storageTemperatureInCelsius) &&
                         `${accession?.storageTemperatureInCelsius}°C`}
                     </td>
                     <td align='right'>

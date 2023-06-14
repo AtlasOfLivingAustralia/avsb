@@ -1,11 +1,11 @@
 import { Code } from '@mantine/core';
 import { IconArrowUpRight, IconClick, IconDownload, IconEye, IconMouse } from '@tabler/icons';
 
-import imageHome from '../images/home-min.png';
-import imageHomeDatasets from '../images/home-datasets-min.png';
-import imageHomeDatasetsHover from '../images/home-datasets-hover-min.png';
-import imageSeedbank from '../images/seedbank-min.png';
-import imageSeedbankMapContact from '../images/seedbank-map-contact-min.png';
+import imageHome from '#/assets/help/home-min.png';
+import imageHomeDatasets from '#/assets/help/home-datasets-min.png';
+import imageHomeDatasetsHover from '#/assets/help/home-datasets-hover-min.png';
+import imageSeedbank from '#/assets/help/seedbank-min.png';
+import imageSeedbankMapContact from '#/assets/help/seedbank-map-contact-min.png';
 
 import { HelpTopicItem } from '..';
 

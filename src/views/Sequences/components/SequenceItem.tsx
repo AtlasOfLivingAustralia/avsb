@@ -49,7 +49,6 @@ function SequenceItem({ sequence, ...rest }: SequenceItemProps) {
       href={sequence?.link}
       target='_blank'
       className={classes.root}
-      // eslint-disable-next-line react/jsx-props-no-spreading
       {...rest}
     >
       <Card p='sm' className={classes.card}>

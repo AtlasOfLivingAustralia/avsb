@@ -3,8 +3,8 @@ import {
   Anchor,
   Avatar,
   Button,
+  Card,
   Group,
-  Paper,
   PaperProps,
   Skeleton,
   Stack,
@@ -15,7 +15,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useGQLQuery } from '#/api';
 import { Contact as ContactType } from '#/api/graphql/types';
-import { getOrgInitials } from '#/helpers';
+import { getInitials } from '#/helpers';
 import queries from '#/api/queries';
 
 import IconText from './IconText';
@@ -50,7 +50,6 @@ interface ContactProps extends PaperProps {
 }
 
 function Contact({ dataResource, ...rest }: ContactProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const location = useLocation();
   const { data: response } = useGQLQuery<DatasetQuery>(queries.QUERY_DATASET, {
     key: dataResource,
@@ -59,8 +58,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
   const contact = dataset?.value?.contact?.[0];
 
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <Paper {...rest} withBorder p='md'>
+    <Card {...rest} shadow='lg' withBorder>
       <Group position='apart'>
         <Group>
           <Skeleton height={50} circle visible={!contact}>
@@ -69,7 +67,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
                 ? `${contact.individualName[0].givenName?.[0].charAt(
                     0,
                   )}${contact.individualName[0].surName?.[0].charAt(0)}`
-                : getOrgInitials(contact?.organizationName?.[0] || '', 3)}
+                : getInitials(contact?.organizationName?.[0] || '', 3)}
             </Avatar>
           </Skeleton>
           <Stack spacing={6}>
@@ -138,7 +136,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
           </Button>
         )}
       </Group>
-    </Paper>
+    </Card>
   );
 }
 

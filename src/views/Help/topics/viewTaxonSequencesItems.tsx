@@ -1,8 +1,8 @@
 import { Code } from '@mantine/core';
 import { IconClick } from '@tabler/icons';
 
-import imageSequences from '../images/taxon-sequences-min.png';
-import imageSequencesHover from '../images/taxon-sequences-hover-min.png';
+import imageSequences from '#/assets/help/taxon-sequences-min.png';
+import imageSequencesHover from '#/assets/help/taxon-sequences-hover-min.png';
 
 import gotoTaxonItems from './gotoTaxonItems';
 

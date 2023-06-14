@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
 import { Event, SeedBankTreatment } from '#/api/graphql/types';
 import { IconFileDescription } from '@tabler/icons';
-import { getIsPresent, treatmentFields } from '#/helpers';
+import { getIsDefined, treatmentFields } from '#/helpers';
 
 import IconText from '../IconText';
 import fields from './fields';
@@ -19,7 +19,7 @@ function TreatmentCard({ event }: TreatmentCardProps) {
     <>
       {event.eventRemarks && (
         <IconText mb='xs' labelWidth={130} icon={IconFileDescription} title='Description'>
-          {event.eventRemarks || 'Not Supplied'}
+          {event.eventRemarks || 'Not Available'}
         </IconText>
       )}
       <FieldTooltip
@@ -30,7 +30,7 @@ function TreatmentCard({ event }: TreatmentCardProps) {
       >
         <Box>
           <IconText labelWidth={130} icon={pretreatmentField.icon} title={pretreatmentField.label}>
-            {treatment.pretreatment || 'Not Supplied'}
+            {treatment.pretreatment || 'Not Available'}
           </IconText>
         </Box>
       </FieldTooltip>
@@ -55,14 +55,14 @@ function TreatmentCard({ event }: TreatmentCardProps) {
                     <Text color='dimmed' size='xs'>
                       {label}
                     </Text>
-                    {getIsPresent(treatment?.[key]) ? (
+                    {getIsDefined(treatment?.[key]) ? (
                       <Text size='sm' weight='bold'>
                         {treatment?.[key]}
                         {unit && unit}
                       </Text>
                     ) : (
                       <Text size='sm' weight='bold' color='dimmed'>
-                        Not Supplied
+                        Not Available
                       </Text>
                     )}
                   </Box>

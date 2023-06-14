@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useEffect } from 'react';
 // import { useAuth, hasAuthParams } from 'react-oidc-context';
 import { Outlet, useNavigation } from 'react-router-dom';
@@ -14,7 +13,6 @@ import {
 // import { LogoLoader } from '#/components';
 import Header from './components/Header';
 import './index.css';
-import FeedbackModal from './components/FeedbackModal';
 
 function Dashboard() {
   // const auth = useAuth();
@@ -46,7 +44,6 @@ function Dashboard() {
 
   return (
     <>
-      <FeedbackModal />
       <NavigationProgress stepInterval={20} />
       <AppShell
         padding={0}

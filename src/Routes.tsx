@@ -1,6 +1,14 @@
 import { createBrowserRouter, RouterProvider, redirect, defer } from 'react-router-dom';
 import { AccessionPanel, ErrorBoundary } from '#/components';
-import { Event, performGQLQuery, gqlQueries, taxonAPI, collectoryAPI, genbankAPI } from './api';
+import {
+  Event,
+  performGQLQuery,
+  gqlQueries,
+  taxonAPI,
+  collectoryAPI,
+  genbankAPI,
+  sdsAPI,
+} from './api';
 
 import { DashboardView, HomeView } from './views';
 
@@ -17,13 +25,13 @@ const routes = createBrowserRouter([
         element: <HomeView />,
       },
       {
-        path: 'seedbank/:id',
+        path: 'seedbank/:resource',
         lazy: () => import('./views/Seedbank'),
         loader: async ({ params }) => {
           const [collectory, gql] = await Promise.all([
-            collectoryAPI.dataResource(params.id || ''),
+            collectoryAPI.dataResource(params.resource || ''),
             performGQLQuery(gqlQueries.QUERY_SEEDBANK_SUMMARY_FULL, {
-              datasetKey: params.id,
+              datasetKey: params.resource,
               size: 50,
             }),
           ]);
@@ -35,7 +43,12 @@ const routes = createBrowserRouter([
         id: 'taxon',
         path: 'taxon/:guid',
         lazy: () => import('./views/Taxon'),
-        loader: async ({ params }) => taxonAPI.info(params.guid || ''),
+        loader: async ({ params }) => {
+          const taxon = await taxonAPI.info(params.guid || '');
+          const sds = await sdsAPI.get(taxon.classification.scientificName);
+
+          return { taxon, sds };
+        },
         children: [
           {
             path: 'summary',
@@ -67,6 +80,7 @@ const routes = createBrowserRouter([
           {
             id: 'accessions',
             path: 'accessions',
+            errorElement: <ErrorBoundary />,
             lazy: () => import('./views/Accessions'),
             loader: async ({ params }) => {
               const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_ACCESSIONS, {
@@ -118,6 +132,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'trials',
+            errorElement: <ErrorBoundary />,
             lazy: () => import('./views/Trials'),
             loader: async ({ params }) => {
               // Perform the first query to retireve the trial data
@@ -181,6 +196,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'media',
+            errorElement: <ErrorBoundary />,
             lazy: () => import('./views/Media'),
             loader: async ({ params }) => {
               const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
@@ -194,6 +210,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'sequences',
+            errorElement: <ErrorBoundary />,
             lazy: () => import('./views/Sequences'),
             loader: async ({ params }) =>
               defer({

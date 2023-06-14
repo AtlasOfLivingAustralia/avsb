@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { KeyboardEvent, useEffect, useState } from 'react';
 import { Loader, Select, SelectItem, SelectProps } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
@@ -22,13 +21,12 @@ function SelectSearch({ customTypes = [], fetchItems, onChange, ...props }: Sear
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [search, setSearch] = useState<string>('');
-  const [searchDebounced] = useDebouncedValue(search, 150);
+  const [searchDebounced] = useDebouncedValue(search, 300);
 
   useEffect(() => {
     async function performFetch() {
       try {
-        const fetchResult = await fetchItems(searchDebounced);
-        setData(fetchResult);
+        setData(await fetchItems(searchDebounced));
         setError(null);
       } catch (suggestError) {
         setError(suggestError as Error);

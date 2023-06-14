@@ -1,15 +1,16 @@
 {
   "Parameters" : {
-    "pEnvironment"    : "{{ environment }}",
     "pBucketName"     : "{{ bucket_name }}",
     "pBucketPath"     : "{{ bucket_path }}",
+    "pCleanBranch"    : "{{ clean_branch }}",
+    "pEnvironment"    : "{{ environment }}",
     "pHostedZone"     : "{{ hosted_zone }}",
-    "pSubDomain"      : "{{ sub_domain }}",
-    "pSslCertificate" : "{{ ssl_certificate }}"
+    "pSslCertificate" : "{{ ssl_certificate }}",
+    "pSubDomain"      : "{{ sub_domain }}"
   },
   "Tags" : {
-    "product"    : "avsb",
-    "component"   : "website",
+    "product"     : "{{ product_name }}",
+    "component"   : "{{ product_component }}",
     "environment" : "{{ environment }}",
     "branch"      : "{{ branch }}",
     "version"     : "{{ commit_id }}",

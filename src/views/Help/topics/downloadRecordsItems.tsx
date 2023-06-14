@@ -1,10 +1,10 @@
 import { Code } from '@mantine/core';
 import { IconClick, IconDownload } from '@tabler/icons';
 
-import gotoTaxonItems from './gotoTaxonItems';
+import imageAccessions from '#/assets/help/taxon-accessions-min.png';
+import imageDownload from '#/assets/help/taxon-download-min.png';
 
-import imageAccessions from '../images/taxon-accessions-min.png';
-import imageDownload from '../images/taxon-download-min.png';
+import gotoTaxonItems from './gotoTaxonItems';
 
 import { HelpTopicItem } from '..';
 
