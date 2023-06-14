@@ -1,6 +1,7 @@
 import { Fragment, ReactElement, useEffect, useState } from 'react';
 import { Accordion, Divider, Stack, StackProps, createStyles } from '@mantine/core';
 import { Predicate } from '#/api/graphql/types';
+import { useMounted } from '#/helpers';
 
 import isEqual from 'lodash/isEqual';
 import groupBy from 'lodash/groupBy';
@@ -57,6 +58,7 @@ function FilterPanel({
 }: FilterPanelProps) {
   const [lastPredicates, setLastPredicates] = useState<Predicate[]>([]);
   const { classes } = useStyles();
+  const mounted = useMounted();
 
   const handleChange = (newPred: Predicate) => {
     if (!onPredicates) return;
@@ -79,7 +81,7 @@ function FilterPanel({
 
   // Reset the selected predicates for UI consistency
   useEffect(() => {
-    if (predicates.length !== 0) onPredicates([]);
+    if (predicates.length !== 0 && mounted) onPredicates([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort]);
 

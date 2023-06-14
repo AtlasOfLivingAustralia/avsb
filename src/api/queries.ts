@@ -131,6 +131,11 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         month
         day
         datasetTitle
+        distinctTaxa {
+          scientificName
+          species
+          key
+        }
         extensions {
           seedbank {
             accessionNumber
