@@ -14,7 +14,7 @@ import {
 import { FixedSizeList } from 'react-window';
 import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons';
 import { useDebouncedValue } from '@mantine/hooks';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { saveAs } from 'file-saver';
 
 // Project helpers
@@ -36,10 +36,22 @@ interface SpeciesRow {
 
 function Row({ index, style, data }: SpeciesRow) {
   const navigate = useNavigate();
+  const params = useParams();
 
   const handleRowClick = async () => {
     const [suggest] = await taxonAPI.suggest(data[index].key);
-    if (suggest) navigate(`/taxon/${encodeURIComponent(suggest.guid)}/accessions`);
+    if (suggest)
+      navigate(`/taxon/${encodeURIComponent(suggest.guid)}/accessions`, {
+        state: {
+          predicates: [
+            {
+              type: 'equals',
+              key: 'datasetKey',
+              value: params.resource || '',
+            },
+          ],
+        },
+      });
   };
 
   return (

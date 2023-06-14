@@ -43,6 +43,8 @@ const pageDescriptions: { [key: string]: string[] } = {
   ],
 };
 
+const MAX_WIDTH = 1450;
+
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const { pathname } = useLocation();
@@ -55,7 +57,7 @@ export function Component() {
 
   return (
     <>
-      <Container size='xl' py='xl'>
+      <Container size={MAX_WIDTH} py='xl'>
         <Group position='apart' align='start'>
           <Group align='start'>
             <Box mr='md'>
@@ -110,7 +112,7 @@ export function Component() {
             px='md'
             style={{
               width: '100%',
-              maxWidth: 1320,
+              maxWidth: MAX_WIDTH,
               marginLeft: 'auto',
               marginRight: 'auto',
             }}
@@ -168,7 +170,7 @@ export function Component() {
           </Group>
         </Tabs.List>
         <ScrollArea type='auto' h='calc(100vh - 250px)'>
-          <Container size='xl' py='xl'>
+          <Container size={MAX_WIDTH} py='xl'>
             <Outlet />
           </Container>
         </ScrollArea>

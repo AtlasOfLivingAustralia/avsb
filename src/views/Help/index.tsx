@@ -1,6 +1,7 @@
 import { ReactNode, useState } from 'react';
 
 import {
+  ActionIcon,
   Box,
   Center,
   Container,
@@ -23,6 +24,7 @@ import {
   IconMoon,
   IconPackage,
   IconPhoto,
+  IconX,
   TablerIcon,
 } from '@tabler/icons';
 
@@ -129,13 +131,26 @@ export function Component() {
         opened={opened}
         onClose={close}
         withCloseButton={false}
-        size={1000}
+        size={1100}
         overlayProps={{
           color: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2],
           opacity: 0.55,
           blur: 3,
         }}
       >
+        <ActionIcon
+          style={{ zIndex: 100 }}
+          onClick={close}
+          pos='absolute'
+          variant='light'
+          color='dark'
+          size='lg'
+          radius='lg'
+          right={10}
+          top={10}
+        >
+          <IconX />
+        </ActionIcon>
         <Topic instructions={helpTopics[topic].instructions} />
       </Modal>
       <Box

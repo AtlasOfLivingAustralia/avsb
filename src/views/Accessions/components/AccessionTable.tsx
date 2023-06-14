@@ -12,6 +12,7 @@ import {
   ScrollArea,
   Table,
   Text,
+  Tooltip,
   createStyles,
   rem,
   useMantineTheme,
@@ -186,9 +187,11 @@ function AccessionTable({ events }: AccessionTableProps) {
                     </td>
                     <td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</td>
                     <td>
-                      <Box maw={250}>
-                        <Text lineClamp={2}>{event?.datasetTitle}</Text>
-                      </Box>
+                      <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
+                        <Box maw={250}>
+                          <Text lineClamp={2}>{event?.datasetTitle}</Text>
+                        </Box>
+                      </Tooltip.Floating>
                     </td>
                     <td>
                       {getIsDefined(accession?.dateCollected) &&

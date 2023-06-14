@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mantine/core';
-import { useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
+import { useLoaderData, useLocation, useParams, useRouteLoaderData } from 'react-router-dom';
 
 // Project components / helpers
 import { Downloads, Filters } from '#/components';
@@ -13,13 +13,18 @@ import TrialsTable from './components/TrialsTable';
 import filters from './filters';
 import downloadFields from './downloadFields';
 
+interface LocationState {
+  predicates?: Predicate[];
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
   // State hooks
+  const { state } = useLocation() as { state: LocationState };
+  const [filterPredicates, setFilterPredicates] = useState<Predicate[]>(state?.predicates || []);
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [query, setQuery] = useState<EventDocuments>(useLoaderData() as EventDocuments);
-  const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
 
   const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult };
   const params = useParams();

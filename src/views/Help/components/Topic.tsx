@@ -40,7 +40,7 @@ function Topic({ instructions }: TopicProps) {
         })}
         mx='auto'
         withIndicators
-        height={650}
+        height={700}
         getEmblaApi={setEmbla}
       >
         {instructions.map(({ image }, index) => (
@@ -51,7 +51,7 @@ function Topic({ instructions }: TopicProps) {
                   theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[3],
               })}
             >
-              <Image pt='md' fit='contain' width='100%' height={600} src={image} />
+              <Image pt='md' fit='contain' width='100%' height={650} src={image} />
             </Box>
           </Carousel.Slide>
         ))}
