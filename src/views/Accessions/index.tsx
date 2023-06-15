@@ -115,6 +115,7 @@ export function Component() {
                 label: `${size} results`,
                 value: size.toString(),
               }))}
+              aria-label='Results per page'
             />
           </Tooltip>
           <Filters
@@ -149,6 +150,7 @@ export function Component() {
           value={page}
           total={query ? Math.ceil((query.total as number) / pageSize) : 1}
           onChange={(newPage) => setPage(newPage)}
+          getControlProps={(control) => ({ 'aria-label': `${control} pagination button` })}
         />
       </Center>
     </>
