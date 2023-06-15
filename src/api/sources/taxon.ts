@@ -172,7 +172,7 @@ interface Taxon {
 }
 
 async function info(guid: string): Promise<Taxon> {
-  return (await fetch(`${import.meta.env.VITE_API_BIE}/ws/taxon/${guid}`)).json();
+  return (await fetch(`${import.meta.env.VITE_API_ALA}/species/taxon/${guid}`)).json();
 }
 
 export default {
