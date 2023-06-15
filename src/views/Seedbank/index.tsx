@@ -84,6 +84,7 @@ export function Component() {
             <Skeleton circle width={120} height={120} visible={!logoLoaded} mr='xl'>
               <Image
                 src={collectory.logoRef?.uri}
+                alt='Seedbank logo'
                 width={120}
                 height={120}
                 fit='cover'
