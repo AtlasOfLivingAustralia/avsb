@@ -148,6 +148,7 @@ export function Component() {
           radius='lg'
           right={10}
           top={10}
+          aria-label='Close help modal'
         >
           <IconX />
         </ActionIcon>

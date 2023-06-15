@@ -186,6 +186,7 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
             top={theme.spacing.md}
             right={theme.spacing.md}
             style={{ zIndex: 20 }}
+            aria-label='View full screen map'
           >
             <IconMaximize />
           </ActionIcon>

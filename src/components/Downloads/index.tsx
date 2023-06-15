@@ -88,7 +88,7 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
           label='Download Records'
           position='left'
         >
-          <ActionIcon size={36} variant='outline' color='blue'>
+          <ActionIcon size={36} variant='outline' color='blue' aria-label='Download records'>
             <IconDownload size='1rem' />
           </ActionIcon>
         </Tooltip>

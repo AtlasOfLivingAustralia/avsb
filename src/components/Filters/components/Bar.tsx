@@ -69,6 +69,7 @@ function FilterBar({ filters, predicates, onFiltersOpen, onRemove, ...rest }: Fi
                   color='blue'
                   radius='xl'
                   variant='transparent'
+                  aria-label={`Remove ${predicate.key} filter`}
                 >
                   <IconX size={rem(10)} />
                 </ActionIcon>

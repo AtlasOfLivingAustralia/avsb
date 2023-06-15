@@ -83,7 +83,7 @@ export function Component() {
           </Group>
           <Menu shadow='md' position='bottom-end'>
             <Menu.Target>
-              <ActionIcon size='xl' variant='light' radius='xl'>
+              <ActionIcon size='xl' variant='light' radius='xl' aria-label='View taxon action menu'>
                 <IconDotsVertical />
               </ActionIcon>
             </Menu.Target>

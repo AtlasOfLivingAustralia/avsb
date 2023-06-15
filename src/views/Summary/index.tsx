@@ -170,6 +170,7 @@ export function Component() {
                             variant='light'
                             color='blue'
                             radius='lg'
+                            aria-label='Go to original taxon classification'
                           >
                             <IconExternalLink size={14} />
                           </ActionIcon>
