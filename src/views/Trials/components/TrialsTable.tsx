@@ -204,7 +204,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     }}
                   >
                     <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber}</td>
-                    <td>{event.distinctTaxa?.[0].scientificName}</td>
+                    <td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</td>
                     <td>
                       <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
                         <Box maw={250}>
