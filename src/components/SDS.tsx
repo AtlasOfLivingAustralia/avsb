@@ -38,8 +38,8 @@ function SDS({ instances }: SDSProps) {
             {instances.map(({ authority, zone, category }) => (
               <ConservationStatus
                 key={authority}
-                place={zone.name}
-                initials={getInitials(zone.name)}
+                place={zone?.name || 'Australia'}
+                initials={zone?.name ? getInitials(zone.name) : 'AUS'}
                 status={category.value}
               />
             ))}
