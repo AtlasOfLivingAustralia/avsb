@@ -2,7 +2,7 @@
 type Variables = { [key: string]: any };
 
 async function performGQLQuery<T = any>(query: string, variables?: Variables) {
-  const response = await fetch(`${import.meta.env.VITE_API_ALA}/event/graphql`, {
+  const response = await fetch(import.meta.env.VITE_API_GRAPHQL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
