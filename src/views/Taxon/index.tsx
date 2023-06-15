@@ -71,6 +71,7 @@ export function Component() {
                 width={90}
                 height={90}
                 radius='lg'
+                alt={`Representative image of ${data.classification.scientificName}`}
               />
             </Box>
             <Box>

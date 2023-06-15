@@ -11,6 +11,9 @@ import {
 import { IconExternalLink } from '@tabler/icons';
 import { useParams } from 'react-router-dom';
 
+// AVH logo
+import avhLogo from '#/assets/avh-logo-white.png';
+
 interface ContactProps extends UnstyledButtonProps {
   accession: string;
 }
@@ -72,10 +75,7 @@ function HerbariumLink({ accession, ...rest }: ContactProps) {
     >
       <Paper display='flex' withBorder>
         <ThemeIcon variant='gradient' size={66} gradient={{ from: '#A6CE39', to: '#487759' }}>
-          <Image
-            width={25}
-            src='https://avh.ala.org.au/assets/avh/avh-logo-white-80-c3e8da50be1bebbd24b88e129582ccd2.png'
-          />
+          <Image width={25} src={avhLogo} alt='Australian Virtual Herbarium logo' />
         </ThemeIcon>
         <Box w='100%' p='xs' ml='xs'>
           <Box display='flex'>

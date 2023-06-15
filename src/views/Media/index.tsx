@@ -201,7 +201,12 @@ export function Component() {
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={5} orderXs={1} orderSm={1} orderMd={2}>
         <Card shadow='lg' padding='lg' radius='md' withBorder>
           <Card.Section pos='relative' h={350}>
-            <Image pos='absolute' src={selectedMedia?.accessOriginalURI} height={350} />
+            <Image
+              pos='absolute'
+              src={selectedMedia?.accessOriginalURI}
+              height={350}
+              alt={`Background ${selectedMedia?.title || 'image for currently selected image'}`}
+            />
             <Overlay blur={8} opacity={0.1} center>
               <Image
                 src={selectedMedia?.accessOriginalURI}
@@ -209,6 +214,7 @@ export function Component() {
                 fit='contain'
                 styles={{ image: { margin: 0 } }}
                 onLoad={() => setSelectedLoaded(true)}
+                alt={selectedMedia?.title || 'Currently selected image'}
               />
             </Overlay>
             {!selectedLoaded && (

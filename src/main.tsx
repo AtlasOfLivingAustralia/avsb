@@ -18,7 +18,7 @@ if (VITE_APP_LOGROCKET_ENABLED === 'true' && VITE_APP_LOGROCKET_ID)
   LogRocket.init(VITE_APP_LOGROCKET_ID);
 
 // Initialize axe-core for development
-if (import.meta.env.DEV) axe(React, ReactDOM, 3000);
+if (import.meta.env.DEV) setTimeout(() => axe(React, ReactDOM, 1000), 2000);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
