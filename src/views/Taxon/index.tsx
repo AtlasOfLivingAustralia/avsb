@@ -66,7 +66,7 @@ export function Component() {
                 withPlaceholder
                 src={
                   data.imageIdentifier &&
-                  `https://images.ala.org.au/image/${data.imageIdentifier}/thumbnail`
+                  `${import.meta.env.VITE_ALA_IMAGES}/image/${data.imageIdentifier}/thumbnail`
                 }
                 width={90}
                 height={90}
@@ -92,7 +92,7 @@ export function Component() {
                 icon={<IconExternalLink size={14} />}
                 component='a'
                 target='_blank'
-                href={`https://bie.ala.org.au/species/${data.taxonConcept.guid}`}
+                href={`${import.meta.env.VITE_ALA_BIE}/species/${data.taxonConcept.guid}`}
               >
                 View on ALA BIE
               </Menu.Item>
