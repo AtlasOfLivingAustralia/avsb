@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { CSSProperties, PropsWithChildren } from 'react';
 import { Box, Center, Text, UnstyledButton, createStyles, rem } from '@mantine/core';
 

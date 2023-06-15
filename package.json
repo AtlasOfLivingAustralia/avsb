@@ -11,6 +11,7 @@
     "build:development": "tsc && vite build --mode development",
     "test": "vitest run --reporter=verbose",
     "test:coverage": "vitest run --coverage",
+    "lint": "eslint ./src",
     "preview": "vite preview"
   },
   "dependencies": {

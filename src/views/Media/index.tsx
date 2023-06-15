@@ -24,8 +24,8 @@ import {
   IconDimensions,
   IconExternalLink,
   IconFileInfo,
-  IconInfoCircle,
   IconLicense,
+  IconPhoto,
   IconQuestionMark,
   IconTypography,
   TablerIcon,
@@ -169,7 +169,7 @@ export function Component() {
       </Grid.Col>
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={7} orderXs={2} orderSm={2} orderMd={1}>
         {media?.length > 0 ? (
-          <Grid gutter='xs' h='100%'>
+          <Grid gutter='xs'>
             {media?.map((item) => (
               <Grid.Col key={item.identifier} xs={4} sm={4} md={4} lg={3} xl={3}>
                 <MediaImage
@@ -191,7 +191,7 @@ export function Component() {
           <Paper h='100%' withBorder>
             <Center h='100%'>
               <Stack align='center'>
-                <IconInfoCircle size='3rem' />
+                <IconPhoto size='3rem' />
                 <Text color='dimmed'>No matching media found</Text>
               </Stack>
             </Center>
@@ -199,7 +199,7 @@ export function Component() {
         )}
       </Grid.Col>
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={5} orderXs={1} orderSm={1} orderMd={2}>
-        <Card shadow='sm' padding='lg' radius='md' withBorder>
+        <Card shadow='lg' padding='lg' radius='md' withBorder>
           <Card.Section pos='relative' h={350}>
             <Image pos='absolute' src={selectedMedia?.accessOriginalURI} height={350} />
             <Overlay blur={8} opacity={0.1} center>
@@ -281,5 +281,4 @@ export function Component() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Component as any).displayName = 'Media';
+Object.assign(Component, { displayName: 'Media' });

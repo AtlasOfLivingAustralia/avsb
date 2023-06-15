@@ -13,7 +13,7 @@ interface SequenceResult {
   results: SequenceRecord[];
 }
 
-async function sequences(guid: string) {
+async function sequences(guid: string): Promise<SequenceResult> {
   const { classification } = await taxonAPI.info(guid);
 
   return (

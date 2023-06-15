@@ -14,7 +14,7 @@ import {
 } from '@mantine/core';
 
 import { IconX } from '@tabler/icons';
-import { Event, SeedBankAccession } from '#/api/graphql/types';
+import { Event, EventDocuments, SeedBankAccession } from '#/api/graphql/types';
 import { Link } from 'react-router-dom';
 
 const slideX = {
@@ -26,15 +26,14 @@ const slideX = {
 
 interface ItemListProps {
   open: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  events: any;
+  documents: EventDocuments;
   contentHeight?: number | string;
   onClose?: () => void;
 }
 
-function ItemList({ open, events, contentHeight, onClose }: ItemListProps) {
+function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
   const theme = useMantineTheme();
-  const { results, total } = events?.data?.eventSearch?.documents || {};
+  const { results, total } = documents;
 
   return (
     <Transition mounted={open} transition={slideX}>

@@ -2,15 +2,22 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: AVSB Infrastructure
 
 Parameters:
-  pEnvironment:
+  pAvsbWafWebAclArn:
     Type: String
-    Description: The AWS environment this belongs to
+    Description: The WAF Web ACL to attach the CloudFront distribution to
   pBucketName:
     Type: String
     Description: The bucket name for the site
   pBucketPath:
     Type: String
     Description: Optional path that the files are stored under
+  pCleanBranch:
+    Type: String
+    Description: A cleaned version of the code branch name
+    Default: development
+  pEnvironment:
+    Type: String
+    Description: The AWS environment this belongs to
   pHostedZone:
     Type: String
     Description: The hosted zone the site are accessed under
@@ -20,6 +27,12 @@ Parameters:
   pSslCertificate:
     Type: String
     Description: The arn of the SSL certificate to be used
+
+Conditions:
+  IsDev: !Equals
+    - !Ref pEnvironment
+    - development
+  NotDev: !Not [ Condition: IsDev ]
 
 Resources:
   AvsbBucket:
@@ -35,7 +48,7 @@ Resources:
         - Key: component
           Value: website
         - Key: Name
-          Value: !Sub avsb-${pEnvironment}
+          Value: !Sub ${pBucketName}
 
   AvsbBucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -49,14 +62,7 @@ Resources:
             Effect: Allow
             Resource: !Join ['', ['arn:aws:s3:::', !Ref AvsbBucket, '/*']]
             Principal:
-              AWS:
-                !Join [
-                  '',
-                  [
-                    'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ',
-                    !Ref AvsbCloudFrontOai,
-                  ],
-                ]
+              AWS: !Join [ '', [ 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ', !Ref AvsbCloudFrontOai, ], ]
 
   AvsbDnsRecord:
     Type: AWS::Route53::RecordSet
@@ -79,7 +85,7 @@ Resources:
         Comment: !Sub CF Distribution for the AVSB site ${pEnvironment}
         CustomErrorResponses:
           - ErrorCode: 403
-            ErrorCachingMinTTL: 10
+            ErrorCachingMinTTL: 300
             ResponseCode: 200
             ResponsePagePath: /index.html
         DefaultCacheBehavior:
@@ -108,6 +114,7 @@ Resources:
           AcmCertificateArn: !Ref pSslCertificate
           MinimumProtocolVersion: TLSv1.2_2021
           SslSupportMethod: sni-only
+        WebACLId: !Ref pAvsbWafWebAclArn
       Tags:
         - Key: component
           Value: cdn
@@ -120,7 +127,9 @@ Resources:
         DefaultTTL: 300
         MaxTTL: 86400
         MinTTL: 1
-        Name: !Sub Avsb-cache-Policy-${pEnvironment}
+        Name: !Sub
+          - "Avsb-cache-Policy-${ResourceName}"
+          - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
         ParametersInCacheKeyAndForwardedToOrigin:
           CookiesConfig:
             CookieBehavior: none
@@ -144,5 +153,7 @@ Outputs:
     Value: !Ref AvsbBucket
   AvsbBucketArn:
     Value: !GetAtt AvsbBucket.Arn
-  AvsbCloudFrontDistributionId:
-    Value: !Ref AvsbCloudFrontDistro
+  AvsbCloudFrontDistributionArn:
+    Value: !Sub
+      - "arn:aws:cloudfront::${AWS::AccountId}:distribution/${DistributionId}"
+      - DistributionId: !GetAtt AvsbCloudFrontDistro.Id

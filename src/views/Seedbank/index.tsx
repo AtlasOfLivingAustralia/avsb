@@ -114,10 +114,10 @@ export function Component() {
               )}
               <Group mt='xl' pt='md'>
                 <Chip checked={false}>
-                  <b>{accessions.documents?.total?.toLocaleString()}</b> Accessions
+                  <b>{accessions.documents?.total?.toLocaleString()}</b>&nbsp;Accessions
                 </Chip>
                 <Chip checked={false}>
-                  <b>{trials.documents?.total?.toLocaleString()}</b> Trials
+                  <b>{trials.documents?.total?.toLocaleString()}</b>&nbsp;Trials
                 </Chip>
               </Group>
             </Box>
@@ -221,8 +221,9 @@ export function Component() {
               styles={{ title: { marginBottom: 4 } }}
             >
               <Text>
-                Accessions were collected from the locations shown above. Click a dot to be taken to
-                that accession.
+                Accessions were collected from the locations shown above. Click a dot to be shown a
+                list of accessions at that location, then click an accession entry to see full
+                accession details.
               </Text>
             </Alert>
           </Grid.Col>
@@ -233,7 +234,7 @@ export function Component() {
             />
           </Grid.Col>
           <Grid.Col span={12}>
-            <Contact dataResource={params.id || ''} />
+            <Contact dataResource={params.resource || ''} />
           </Grid.Col>
         </Grid>
       </Container>

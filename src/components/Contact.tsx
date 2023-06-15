@@ -3,8 +3,8 @@ import {
   Anchor,
   Avatar,
   Button,
+  Card,
   Group,
-  Paper,
   PaperProps,
   Skeleton,
   Stack,
@@ -50,7 +50,6 @@ interface ContactProps extends PaperProps {
 }
 
 function Contact({ dataResource, ...rest }: ContactProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const location = useLocation();
   const { data: response } = useGQLQuery<DatasetQuery>(queries.QUERY_DATASET, {
     key: dataResource,
@@ -59,8 +58,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
   const contact = dataset?.value?.contact?.[0];
 
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <Paper {...rest} withBorder p='md'>
+    <Card {...rest} shadow='lg' withBorder>
       <Group position='apart'>
         <Group>
           <Skeleton height={50} circle visible={!contact}>
@@ -138,7 +136,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
           </Button>
         )}
       </Group>
-    </Paper>
+    </Card>
   );
 }
 

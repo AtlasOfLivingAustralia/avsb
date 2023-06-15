@@ -1,31 +1,35 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mantine/core';
-import { useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
+import { useLoaderData, useLocation, useParams, useRouteLoaderData } from 'react-router-dom';
 
 // Project components / helpers
 import { Downloads, Filters } from '#/components';
 import { Taxon } from '#/api/sources/taxon';
-import { gqlQueries, performGQLQuery } from '#/api';
-import { Event, Predicate } from '#/api/graphql/types';
+import { SDSResult, gqlQueries, performGQLQuery } from '#/api';
+import { Event, EventDocuments, EventSearchResult, Predicate } from '#/api/graphql/types';
 import queries from '#/api/queries';
 import { useMounted, mapTrialTreatments } from '#/helpers';
 import TrialsTable from './components/TrialsTable';
 import filters from './filters';
 import downloadFields from './downloadFields';
 
+interface LocationState {
+  predicates?: Predicate[];
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
   // State hooks
+  const { state } = useLocation() as { state: LocationState };
+  const [filterPredicates, setFilterPredicates] = useState<Predicate[]>(state?.predicates || []);
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [query, setQuery] = useState<any>(useLoaderData());
-  const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
+  const [query, setQuery] = useState<EventDocuments>(useLoaderData() as EventDocuments);
 
-  const taxon = useRouteLoaderData('taxon') as Taxon;
+  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult };
   const params = useParams();
   const mounted = useMounted();
-  const events = query?.results as any[];
+  const events = query?.results;
 
   const predicates: Predicate[] = [
     queries.PRED_DATA_RESOURCE,
@@ -92,8 +96,8 @@ export function Component() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pageSize, filterPredicates]);
 
-  const downloadFetcher = async (data: any) => {
-    const eventIDs = (data.eventSearch.documents.results as Event[]).map(({ eventID }) => eventID);
+  const downloadFetcher = async (data: { eventSearch: EventSearchResult }) => {
+    const eventIDs = data.eventSearch.documents?.results?.map(({ eventID }) => eventID);
     const { data: treatmentData } = await performGQLQuery(gqlQueries.QUERY_EVENT_TREATMENTS, {
       predicate: {
         type: 'and',
@@ -114,10 +118,19 @@ export function Component() {
       size: 10000,
     });
     return mapTrialTreatments(
-      data.eventSearch?.documents.results || [],
+      data.eventSearch.documents?.results || [],
       treatmentData.eventSearch?.documents.results || [],
     );
   };
+
+  // SDS Check
+  // if (
+  //   query.total === 0 &&
+  //   (sds?.instances.length || 0) > 0 &&
+  //   isSpeciesInList(taxon.classification.scientificName)
+  // ) {
+  //   return <SDS instances={sds?.instances || []} />;
+  // }
 
   return (
     <>
@@ -164,16 +177,16 @@ export function Component() {
             predicates={predicates}
             fields={downloadFields}
             fetcher={downloadFetcher}
-            total={query.total}
+            total={query.total as number}
             fileName={`AVSB Trials, ${taxon.classification.scientificName}`}
           />
         </Group>
       </Group>
-      <TrialsTable events={events} />
+      <TrialsTable events={events || []} />
       <Center pt='md'>
         <Pagination
           value={page}
-          total={query ? Math.ceil(query.total / pageSize) : 1}
+          total={query ? Math.ceil((query.total as number) / pageSize) : 1}
           onChange={(newPage) => setPage(newPage)}
         />
       </Center>
@@ -181,5 +194,4 @@ export function Component() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Component as any).displayName = 'Trials';
+Object.assign(Component, { displayName: 'Trials' });

@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { ActionIcon, ColorScheme, Tooltip, useMantineTheme } from '@mantine/core';
 import { IconMaximize } from '@tabler/icons';
@@ -11,7 +10,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Project-imports
 import { getMapLayer, getWktFromGeohash } from '#/helpers';
-import { useGQLQuery } from '#/api';
+import { EventSearchResult, useGQLQuery } from '#/api';
 import queries from '#/api/queries';
 import ItemList from './components/ItemList';
 
@@ -33,7 +32,7 @@ interface MapProps {
 
 function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   // Map refs
-  const mapContainer = useRef<any | null>(null);
+  const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const popup = useRef<mapboxgl.Popup>(
     new mapboxgl.Popup({
@@ -47,7 +46,9 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   // Map state & data
   const [styleLoaded, setStyleLoaded] = useState<boolean>(false);
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
-  const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery(
+  const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery<{
+    data: { eventSearch: EventSearchResult };
+  }>(
     params.guid ? queries.QUERY_EVENT_MAP_POINT : queries.QUERY_EVENT_MAP_POINT_KEY,
     {},
     { lazy: true },
@@ -152,7 +153,7 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
 
   // Add the map to the DOM when the component loads
   useEffect(() => {
-    if (map.current) return;
+    if (map.current || !mapContainer.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
@@ -167,7 +168,7 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
     <div style={{ position: 'relative', width, height, borderRadius, boxShadow: theme.shadows.md }}>
       <ItemList
         onClose={() => setSelectedPoint(null)}
-        events={selectedEvents}
+        documents={selectedEvents?.data.eventSearch.documents || {}}
         open={Boolean(selectedPoint)}
         contentHeight={itemListHeight}
       />

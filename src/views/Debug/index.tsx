@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
 import { Text, Accordion, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
@@ -55,5 +54,4 @@ export function Component() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Component as any).displayName = 'Debug';
+Object.assign(Component, { displayName: 'Debug' });

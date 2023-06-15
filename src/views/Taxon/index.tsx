@@ -19,7 +19,7 @@ import {
 import { useClipboard } from '@mantine/hooks';
 import { IconCopy, IconDotsVertical, IconExternalLink, IconQuestionCircle } from '@tabler/icons';
 import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
-import { Taxon as TaxonType } from '#/api/sources/taxon';
+import { Taxon } from '#/api/sources/taxon';
 
 const pageDescriptions: { [key: string]: string[] } = {
   summary: [
@@ -43,10 +43,12 @@ const pageDescriptions: { [key: string]: string[] } = {
   ],
 };
 
+const MAX_WIDTH = 1450;
+
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const { pathname } = useLocation();
-  const data = useLoaderData() as TaxonType;
+  const { taxon: data } = useLoaderData() as { taxon: Taxon };
   const navigate = useNavigate();
   const clipboard = useClipboard({ timeout: 500 });
   const theme = useMantineTheme();
@@ -55,7 +57,7 @@ export function Component() {
 
   return (
     <>
-      <Container size='xl' py='xl'>
+      <Container size={MAX_WIDTH} py='xl'>
         <Group position='apart' align='start'>
           <Group align='start'>
             <Box mr='md'>
@@ -110,7 +112,7 @@ export function Component() {
             px='md'
             style={{
               width: '100%',
-              maxWidth: 1320,
+              maxWidth: MAX_WIDTH,
               marginLeft: 'auto',
               marginRight: 'auto',
             }}
@@ -168,7 +170,7 @@ export function Component() {
           </Group>
         </Tabs.List>
         <ScrollArea type='auto' h='calc(100vh - 250px)'>
-          <Container size='xl' py='xl'>
+          <Container size={MAX_WIDTH} py='xl'>
             <Outlet />
           </Container>
         </ScrollArea>
@@ -177,5 +179,4 @@ export function Component() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Component as any).displayName = 'Taxon';
+Object.assign(Component, { displayName: 'Taxon' });

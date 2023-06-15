@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { KeyboardEvent, useEffect, useState } from 'react';
 import { Loader, Select, SelectItem, SelectProps } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';

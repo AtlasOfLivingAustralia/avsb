@@ -42,7 +42,7 @@ function AccessionDetails({ event: eventProp }: AccessionDetailsProps) {
                       </Text>
                     ) : (
                       <Text size='sm' weight='bold' color='dimmed'>
-                        Not Supplied
+                        Not Available
                       </Text>
                     )}
                   </Box>

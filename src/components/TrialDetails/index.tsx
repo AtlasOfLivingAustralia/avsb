@@ -61,7 +61,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
                     </Text>
                   ) : (
                     <Text size='sm' weight='bold' color='dimmed'>
-                      Not Supplied
+                      Not Available
                     </Text>
                   )}
                 </Box>
@@ -72,7 +72,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
       <Grid.Col span={12} pt={trial?.preTestProcessingNotes ? 'mt' : 0}>
         {trial?.preTestProcessingNotes && (
           <IconText labelWidth={225} icon={IconNotes} title='Pre-Test Processing / Notes'>
-            {trial?.preTestProcessingNotes || 'Not Supplied'}
+            {trial?.preTestProcessingNotes || 'Not Available'}
           </IconText>
         )}
       </Grid.Col>

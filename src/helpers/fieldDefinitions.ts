@@ -32,6 +32,8 @@ import {
   IconCalendar,
   IconCalendarTime,
   IconPackage,
+  IconAbc,
+  IconBuildingBank,
 } from '@tabler/icons';
 
 export interface SeedbankField {
@@ -85,7 +87,8 @@ const accessionFields: SeedbankFieldMap = {
     icon: IconDropletFilled,
     unit: '%',
     examples: '15%',
-    description: 'The relative humidity at which the accession was stored on the "dateInStorage"',
+    description:
+      'The relative humidity at which the accession was stored on the "Seed in Storage" date',
   },
   purityPercentage: {
     label: 'Purity',
@@ -99,7 +102,7 @@ const accessionFields: SeedbankFieldMap = {
     icon: IconTemperature,
     unit: '°C',
     examples: '"15C" "-20C" "-196C"',
-    description: 'The temperature at which the accession is stored on the "dateInStorage"',
+    description: 'The temperature at which the accession is stored on the "Seed in Storage" date',
   },
   primaryStorageSeedBank: {
     label: 'Storage Seed Bank',
@@ -158,9 +161,9 @@ const accessionFields: SeedbankFieldMap = {
   collectionFill: {
     label: 'Collection Fill / X-Ray',
     icon: IconScan,
-    examples: '46% determined via x-ray',
+    examples: '"xray - 10 filled", "46% determined via x-ray"',
     description:
-      'The proportion of seeds or fruits that are filled, as determined by cut-test, x-ray or other assessments of seed fill or viability such as tetrazolium test.',
+      'Seeds or fruits that are filled, as determined by cut-test, x-ray or other assessments of seed fill or viability such as tetrazolium test.',
   },
   publicationDOI: {
     label: 'Publication DOI',
@@ -173,7 +176,7 @@ const accessionFields: SeedbankFieldMap = {
     label: 'Storage Date',
     icon: IconPackage,
     examples: '17/04/2022',
-    description: 'The date the accession was placed in current storage (DD/MM/YYYY)',
+    description: 'The date the accession was placed in current or long term storage (DD/MM/YYYY)',
   },
   dateCollected: {
     label: 'Collection Date',
@@ -214,6 +217,13 @@ const trialFields: SeedbankFieldMap = {
     icon: IconCircleDashed,
     examples: '2',
     description: 'The number of seeds that were empty during the post-germination cut test.',
+  },
+  numberNotViable: {
+    label: 'Number Not Viable',
+    icon: IconCircleDotted,
+    examples: '10',
+    description:
+      'The number of seeds not viable (i.e. moudly, infested, etc) in a germination test.',
   },
   viabilityPercentage: {
     label: 'Viability',
@@ -291,10 +301,26 @@ const treatmentFields: SeedbankFieldMap = {
   },
 };
 
+const customFields: SeedbankFieldMap = {
+  taxon: {
+    label: 'Taxon',
+    icon: IconAbc,
+    examples: '"Acacia dealbata"',
+    description: 'The scientific name of the taxon associated with the record.',
+  },
+  datasetTitle: {
+    label: 'Institution',
+    icon: IconBuildingBank,
+    examples: '"Greening Australia"',
+    description: 'Name of the institution or seed bank where the record has been supplied from.',
+  },
+};
+
 const allFields = {
   ...accessionFields,
   ...trialFields,
   ...treatmentFields,
+  ...customFields,
 };
 
 export { accessionFields, trialFields, treatmentFields, allFields };
