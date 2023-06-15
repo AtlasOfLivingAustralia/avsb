@@ -231,10 +231,6 @@ const routes = createBrowserRouter([
         path: 'help',
         lazy: () => import('./views/Help'),
       },
-      {
-        path: 'debug',
-        lazy: () => import('./views/Debug'),
-      },
     ],
   },
 ]);

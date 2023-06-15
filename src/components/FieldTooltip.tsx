@@ -19,7 +19,6 @@ function FieldTooltip({
   return (
     <Tooltip.Floating
       position='right-end'
-      // withArrow
       maw={300}
       multiline
       label={
