@@ -279,7 +279,7 @@ function FAQ() {
           <Accordion.Panel>
             <Text size='sm'>
               When you search for data in the AVSB for a taxon which is considered sensitive, the
-              summary map will be replace with a sensitive data redaction message. Where seed bank
+              summary map will be replaced with a sensitive data redaction message. Where seed bank
               data exists, when you click on either the trials or accessions tab you can still
               access the data for trials and accessions for these taxa. When viewing the details of
               an accession record, the same sensitive data redacation message appears (where the
