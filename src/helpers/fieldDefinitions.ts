@@ -1,6 +1,5 @@
 import {
   IconCircle,
-  IconCircleDashed,
   IconCircleDotted,
   IconSeeding,
   IconBox,

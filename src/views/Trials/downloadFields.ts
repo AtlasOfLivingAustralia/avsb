@@ -17,6 +17,7 @@ const downloadFields: DownloadField[] = [
   { label: 'Number Germinated', key: 'extensions.seedbank.numberGerminated' },
   { label: 'Number Full', key: 'extensions.seedbank.numberFull' },
   { label: 'Number Empty', key: 'extensions.seedbank.numberEmpty' },
+  { label: 'Number Not Viable', key: 'extensions.seedbank.numberNotViable' },
   { label: 'Number Tested', key: 'extensions.seedbank.numberTested' },
   { label: 'Germination Rate', key: 'extensions.seedbank.germinationRateInDays' },
   { label: 'Adjusted Germination', key: 'extensions.seedbank.adjustedGerminationPercentage' },
