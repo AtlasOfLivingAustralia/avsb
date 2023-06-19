@@ -130,52 +130,52 @@ export function Component() {
                 .filter((rank) => Boolean((taxon.classification as any)[rank]))
                 .map((rank, index, arr) => (
                   <Fragment key={rank}>
-                    <UnstyledButton
-                      px='sm'
-                      py='xs'
-                      onClick={(e) => {
-                        const className = (e.target as any)?.className;
-                        if (
-                          !(
-                            (typeof className === 'string' && className.includes('ActionIcon')) ||
-                            typeof className === 'object'
-                          )
-                        ) {
+                    <Group spacing={0}>
+                      <UnstyledButton
+                        style={{
+                          flexGrow: 1,
+                          borderTopRightRadius: theme.radius.md,
+                          borderBottomRightRadius: theme.radius.md,
+                        }}
+                        pl='md'
+                        pr='xs'
+                        py='xs'
+                        onClick={() =>
                           navigate(
                             `/taxon/${encodeURIComponent(
                               (taxon.classification as any)[`${rank}Guid`],
                             )}`,
-                          );
+                          )
                         }
-                      }}
-                      sx={{
-                        '&:hover': {
-                          backgroundColor:
-                            theme.colorScheme === 'dark'
-                              ? theme.colors.dark[4]
-                              : theme.colors.gray[2],
-                        },
-                      }}
-                    >
-                      <Group position='apart'>
-                        <Text maw={200} truncate size='sm'>
-                          {(taxon.classification as any)[rank]}
-                        </Text>
-                        <Group spacing='xs'>
+                        sx={{
+                          '&:hover': {
+                            backgroundColor:
+                              theme.colorScheme === 'dark'
+                                ? theme.colors.dark[4]
+                                : theme.colors.gray[2],
+                          },
+                        }}
+                      >
+                        <Group position='apart'>
+                          <Text maw={200} truncate size='sm'>
+                            {(taxon.classification as any)[rank]}
+                          </Text>
                           <Badge>{rank}</Badge>
-                          <ActionIcon
-                            component='a'
-                            href={(taxon.classification as any)[`${rank}Guid`]}
-                            target='_blank'
-                            variant='light'
-                            color='blue'
-                            radius='lg'
-                          >
-                            <IconExternalLink size={14} />
-                          </ActionIcon>
                         </Group>
-                      </Group>
-                    </UnstyledButton>
+                      </UnstyledButton>
+                      <ActionIcon
+                        component='a'
+                        href={(taxon.classification as any)[`${rank}Guid`]}
+                        target='_blank'
+                        variant='light'
+                        color='blue'
+                        radius='lg'
+                        aria-label='Go to original taxon classification'
+                        mx='xs'
+                      >
+                        <IconExternalLink size={14} />
+                      </ActionIcon>
+                    </Group>
                     {index !== arr.length - 1 && (
                       <Divider
                         sx={() => ({

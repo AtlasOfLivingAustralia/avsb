@@ -30,7 +30,7 @@ function Header() {
     <MantineHeader height={60}>
       <Group sx={{ height: '100%' }} px={20} position='apart'>
         <Group spacing='lg'>
-          <Link to='/' style={{ display: 'flex' }}>
+          <Link to='/' style={{ display: 'flex' }} aria-label='Go to home'>
             <Logo width={50} height={50} />
           </Link>
           <Transition transition={slideTransition} mounted={location.pathname !== '/'}>
@@ -42,6 +42,7 @@ function Header() {
                 leftIcon={<IconHome size='0.8rem' />}
                 size='xs'
                 variant='subtle'
+                aria-label='Home'
               >
                 Home
               </Button>
@@ -66,8 +67,16 @@ function Header() {
             withArrow
             label='Help / FAQ'
             position='right'
+            aria-label=''
           >
-            <ActionIcon component={Link} to='/help' variant='filled' radius='xl' size={38}>
+            <ActionIcon
+              component={Link}
+              to='/help'
+              variant='filled'
+              radius='xl'
+              size={38}
+              aria-label='Help and frequently asked questions'
+            >
               <IconQuestionMark size={20} />
             </ActionIcon>
           </Tooltip>
@@ -78,7 +87,13 @@ function Header() {
             label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
             position='right'
           >
-            <ActionIcon variant='filled' radius='xl' size={38} onClick={() => toggleColorScheme()}>
+            <ActionIcon
+              variant='filled'
+              radius='xl'
+              size={38}
+              onClick={() => toggleColorScheme()}
+              aria-label='Switch interface colour scheme'
+            >
               {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
             </ActionIcon>
           </Tooltip>

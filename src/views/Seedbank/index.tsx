@@ -84,6 +84,7 @@ export function Component() {
             <Skeleton circle width={120} height={120} visible={!logoLoaded} mr='xl'>
               <Image
                 src={collectory.logoRef?.uri}
+                alt='Seedbank logo'
                 width={120}
                 height={120}
                 fit='cover'
@@ -96,7 +97,7 @@ export function Component() {
             <Box>
               <Title maw={550}>{event?.datasetTitle}</Title>
               {collectory.institution?.name && (
-                <Title order={3} color='dimmed' maw={550} mb='md'>
+                <Title order={2} size={22} color='dimmed' maw={550} mb='md'>
                   {collectory.institution?.name}
                 </Title>
               )}
@@ -131,7 +132,9 @@ export function Component() {
             <Grid.Col span={12} pb='lg'>
               <Group align='center' mb='sm'>
                 <IconInfoCircle size='2rem' style={{ minWidth: 22, minHeight: 22 }} />
-                <Title order={4}>About</Title>
+                <Title order={3} size={18}>
+                  About
+                </Title>
               </Group>
               <Spoiler
                 maxHeight={65}

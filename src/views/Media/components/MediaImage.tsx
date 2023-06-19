@@ -29,7 +29,14 @@ function MediaImage({ onClick, selected, width, height, item }: MediaImageProps)
       })}
     >
       <Skeleton pos='absolute' radius='lg' width={width} height={height} />
-      <Image radius='lg' withPlaceholder width={width} height={height} src={item.accessURI} />
+      <Image
+        radius='lg'
+        withPlaceholder
+        width={width}
+        height={height}
+        src={item.accessURI}
+        alt={item.title || 'Preview image from taxon'}
+      />
       {item.createDate && (
         <Box pos='absolute' bottom={0} left={0} right={0} h={64}>
           <Overlay

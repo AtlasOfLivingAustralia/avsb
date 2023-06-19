@@ -134,7 +134,11 @@ function SpeciesList({ name, species }: SpeciesListProps) {
             ]}
           />
           <Tooltip label='Download species list' position='left'>
-            <ActionIcon variant='subtle' onClick={onDownloadClick}>
+            <ActionIcon
+              variant='subtle'
+              onClick={onDownloadClick}
+              aria-label='Download species list'
+            >
               <IconDownload size='1rem' />
             </ActionIcon>
           </Tooltip>

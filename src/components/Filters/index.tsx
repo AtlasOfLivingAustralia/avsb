@@ -33,7 +33,7 @@ function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
     <>
       <Drawer.Root opened={opened} onClose={close} keepMounted>
         <Drawer.Overlay />
-        <Drawer.Content>
+        <Drawer.Content aria-label='Filters drawer'>
           <Drawer.Header style={{ zIndex: 300 }}>
             <Group position='apart' w='100%'>
               <Group>
@@ -58,7 +58,7 @@ function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
                     { label: 'ABC', value: 'alphabetical' },
                   ]}
                 />
-                <Drawer.CloseButton />
+                <Drawer.CloseButton aria-label='Close filters drawer' />
               </Group>
             </Group>
           </Drawer.Header>

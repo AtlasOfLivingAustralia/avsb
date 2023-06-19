@@ -18,7 +18,13 @@ function ErrorBoundary() {
           <div style={{ position: 'relative', width: 250, height: 250 }}>
             <Blob style={{ position: 'absolute' }} width={250} height={250} />
             <Center h='100%' style={{ zIndex: 10 }}>
-              <Image fit='contain' width={125} height={125} src={spottedPlant} />
+              <Image
+                fit='contain'
+                width={125}
+                height={125}
+                src={spottedPlant}
+                alt='Spotted plant'
+              />
             </Center>
           </div>
           <Title variant='gradient' gradient={{ from: '#A6CE39', to: '#487759' }} size='5rem'>
@@ -49,7 +55,7 @@ function ErrorBoundary() {
           <div style={{ position: 'relative', width: 150, height: 150 }}>
             <Blob style={{ position: 'absolute' }} width={150} height={150} />
             <Center h='100%' style={{ zIndex: 10 }}>
-              <Image fit='contain' width={100} height={100} src={waterTap} />
+              <Image fit='contain' width={100} height={100} src={waterTap} alt='Leaky water tap' />
             </Center>
           </div>
           <Stack spacing={0}>

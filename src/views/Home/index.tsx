@@ -64,7 +64,7 @@ function Home() {
             <div style={{ width: 450, height: 450 }}>
               <Blob style={{ position: 'absolute' }} width={450} height={450} />
               <Center h='100%' style={{ zIndex: 10 }}>
-                <Image width={250} height={285} src={wateringCan} />
+                <Image width={250} height={285} src={wateringCan} alt='Watering can with plant' />
               </Center>
             </div>
           )}
@@ -120,9 +120,9 @@ function Home() {
               <Group spacing='xl'>
                 <IconQuestionCircle size='2rem' />
                 <Stack>
-                  <Title order={4} weight={600}>
+                  <Text size='lg' sx={{ fontFamily: theme.headings.fontFamily }}>
                     Have a query?
-                  </Title>
+                  </Text>
                   <Button
                     variant='outline'
                     leftIcon={<IconExternalLink size='1rem' />}

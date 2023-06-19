@@ -26,7 +26,11 @@ function Dashboard() {
 
   return (
     <>
-      <NavigationProgress stepInterval={20} />
+      <NavigationProgress
+        stepInterval={20}
+        progressLabel='Navigation progress bar'
+        portalProps={{ 'aria-hidden': true }}
+      />
       <AppShell
         padding={0}
         header={<Header />}
