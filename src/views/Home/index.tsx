@@ -92,8 +92,11 @@ function Home() {
             </Title>
             <Alert title='Data Disclaimer' mt='xl' radius='lg' icon={<IconInfoCircle />}>
               <Text>
-                The data currently provided is a only subset of what&apos;s available in the legacy
-                ASBP portal,{' '}
+                The data currently provided is a only subset of what&apos;s available in the{' '}
+                <Anchor target='_blank' href='https://asbp.ala.org.au'>
+                  legacy ASBP portal
+                </Anchor>
+                ,{' '}
                 <b>
                   new and updated datasets will be available in the system in the coming months.
                 </b>
