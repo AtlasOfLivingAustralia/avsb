@@ -22,7 +22,6 @@ const slideTransition = {
 };
 
 function Header() {
-  // const auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -83,36 +82,6 @@ function Header() {
               {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
             </ActionIcon>
           </Tooltip>
-          {/* {auth.isAuthenticated ? (
-            <Menu shadow='md' position='bottom-end'>
-              <Menu.Target>
-                <UnstyledButton>
-                  <Avatar variant='filled' radius='xl'>
-                    {getNameInitials(auth.user?.profile)}
-                  </Avatar>
-                </UnstyledButton>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Label>Account</Menu.Label>
-                <Menu.Item icon={<IconLogout size={14} />} onClick={handleSignOut}>
-                  Sign Out
-                </Menu.Item>
-                {import.meta.env.MODE === 'development' && (
-                  <>
-                    <Menu.Divider />
-                    <Menu.Label>Developer</Menu.Label>
-                    <Menu.Item icon={<IconBug size={14} />} onClick={() => navigate('debug')}>
-                      Debug Information
-                    </Menu.Item>
-                  </>
-                )}
-              </Menu.Dropdown>
-            </Menu>
-          ) : (
-            <Button variant='light' onClick={() => auth.signinRedirect()}>
-              Sign In
-            </Button>
-          )} */}
         </Group>
       </Group>
     </MantineHeader>

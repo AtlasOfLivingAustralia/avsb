@@ -16,13 +16,6 @@ export default function getLayerConfig(tile: string): AnyLayer {
       'circle-radius': {
         property: '_count',
         type: 'interval',
-        // stops: [
-        //   [0, 2],
-        //   [5, 3],
-        //   [10, 5],
-        //   [100, 8],
-        //   [1000, 12],
-        // ],
         stops: [
           [0, 4],
           [5, 5],

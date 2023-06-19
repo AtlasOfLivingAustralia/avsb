@@ -64,13 +64,6 @@ const filters: Filter[] = [
     icon: IconSeeding,
     group: 'Collection',
   },
-  // {
-  //   key: 'seedbank_formInStorage',
-  //   label: 'Form in Storage',
-  //   type: 'select',
-  //   placeholder: 'Select one',
-  //   items: [{ label: 'Thing', value: 'testing' }],
-  // },
   {
     key: 'seedbank_thousandSeedWeight',
     label: 'Thousand Seed Weight',
@@ -126,13 +119,6 @@ const filters: Filter[] = [
     icon: IconDropletFilled,
     group: 'Storage',
   },
-  // {
-  //   key: 'seedbank_plantForm',
-  //   label: 'Plant form',
-  //   type: 'select',
-  //   placeholder: 'Select plant form',
-  //   items: [{ label: 'Thing', value: 'testing' }],
-  // },
 ];
 
 export default filters;

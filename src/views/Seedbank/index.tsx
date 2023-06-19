@@ -125,7 +125,6 @@ export function Component() {
         </Container>
       </Box>
       <Wave width='100%' height={200} preserveAspectRatio='none' waveType='bodyBottom' />
-      {/* <Container size='xl' pt='xl' mt={mdOrLarger ? -125 : -25}> */}
       <Container size='xl' pt='xl' mt={-85}>
         <Grid>
           {(collectory.pubDescription || collectory.pubShortDescription) && (

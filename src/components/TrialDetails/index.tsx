@@ -37,7 +37,6 @@ function TrialDetails({ event }: TrialDetailsProps) {
       isValidTreatment((treatment.extensions?.seedbank as SeedBankTreatment) || {}) ||
       treatment.eventRemarks,
   ) as Event[];
-  // const treatments = events.map(({ extensions }) => extensions?.seedbank as SeedBankTreatment);
 
   return (
     <Grid gutter='xs'>

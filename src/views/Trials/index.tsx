@@ -123,15 +123,6 @@ export function Component() {
     );
   };
 
-  // SDS Check
-  // if (
-  //   query.total === 0 &&
-  //   (sds?.instances.length || 0) > 0 &&
-  //   isSpeciesInList(taxon.classification.scientificName)
-  // ) {
-  //   return <SDS instances={sds?.instances || []} />;
-  // }
-
   return (
     <>
       <Group mb='lg' position='apart'>

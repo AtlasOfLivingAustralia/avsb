@@ -77,7 +77,7 @@ function ConservationStatus({ place, status, initials }: ConservationStatusProps
   const theme = useMantineTheme();
 
   return (
-    <Group spacing='md'>
+    <Group spacing='md' position='center'>
       <ThemeIcon
         opacity={initials ? 1 : 0.6}
         variant={initials ? 'light' : 'gradient'}
