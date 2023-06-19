@@ -1,6 +1,5 @@
 import {
   IconCircle,
-  IconCircleDashed,
   IconCircleDotted,
   IconSeeding,
   IconBox,
@@ -34,6 +33,8 @@ import {
   IconPackage,
   IconAbc,
   IconBuildingBank,
+  IconCircleOff,
+  IconCircleDot,
 } from '@tabler/icons';
 
 export interface SeedbankField {
@@ -207,20 +208,20 @@ const trialFields: SeedbankFieldMap = {
   },
   numberFull: {
     label: 'Number Full',
-    icon: IconCircle,
+    icon: IconCircleDot,
     examples: '8',
     description:
       'The number of seeds that were full and appeared healthy during the post-germination cut test.',
   },
   numberEmpty: {
     label: 'Number Empty',
-    icon: IconCircleDashed,
+    icon: IconCircle,
     examples: '2',
     description: 'The number of seeds that were empty during the post-germination cut test.',
   },
   numberNotViable: {
     label: 'Number Not Viable',
-    icon: IconCircleDotted,
+    icon: IconCircleOff,
     examples: '10',
     description:
       'The number of seeds not viable (i.e. moudly, infested, etc) in a germination test.',

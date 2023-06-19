@@ -2,8 +2,9 @@ import { SelectItem } from '@mantine/core';
 import {
   IconCalendar,
   IconCircle,
-  IconCircleDashed,
+  IconCircleDot,
   IconCircleDotted,
+  IconCircleOff,
   IconClock,
   IconDatabase,
   IconId,
@@ -110,7 +111,7 @@ const filters: Filter[] = [
     label: 'Number Full',
     type: 'numericGreaterLess',
     placeholder: '10',
-    icon: IconCircle,
+    icon: IconCircleDot,
     group: 'Germination',
   },
   {
@@ -118,7 +119,15 @@ const filters: Filter[] = [
     label: 'Number Empty',
     type: 'numericGreaterLess',
     placeholder: '10',
-    icon: IconCircleDashed,
+    icon: IconCircle,
+    group: 'Germination',
+  },
+  {
+    key: 'seedbank_numberNotViable',
+    label: 'Number Not Viable',
+    type: 'numericGreaterLess',
+    placeholder: '10',
+    icon: IconCircleOff,
     group: 'Germination',
   },
   {
