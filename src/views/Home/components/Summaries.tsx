@@ -9,6 +9,7 @@ import {
   createStyles,
   getStylesRef,
   UnstyledButton,
+  SimpleGridProps,
 } from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons';
 import { useNavigate } from 'react-router-dom';
@@ -139,13 +140,13 @@ query list {
 }
 `;
 
-function Summaries() {
+function Summaries({ ...props }: SimpleGridProps) {
   const { data } = useGQLQuery<{ data: { [key: string]: EventSearchResult } }>(
     QUERY_SEEDBANK_SUMMARY_ALL,
   );
 
   return (
-    <Grid gutter='xl'>
+    <Grid gutter='xl' {...props}>
       {gqlQueries.PRED_DATA_RESOURCE.values?.map((dataResource) => (
         <Grid.Col key={dataResource as string} xs={12} sm={6} md={4} lg={4}>
           <SummaryCard

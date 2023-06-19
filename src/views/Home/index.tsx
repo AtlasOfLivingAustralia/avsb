@@ -12,13 +12,15 @@ import {
   useMantineTheme,
   Anchor,
   Button,
+  Alert,
+  Divider,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Blob, TaxonSearchInput } from '#/components';
 import wateringCan from '#/assets/watering-can-and-plant.png';
 import { Wave } from '#/components/Wave';
-import { IconExternalLink, IconQuestionCircle } from '@tabler/icons';
+import { IconExternalLink, IconInfoCircle, IconQuestionCircle } from '@tabler/icons';
 import Summaries from './components/Summaries';
 
 function Home() {
@@ -85,9 +87,21 @@ function Home() {
       >
         <Container size='lg'>
           <Box p='xl'>
-            <Title mb='xl' pb='md' order={2} weight={600}>
+            <Title pb='sm' order={2} weight={600}>
               Our Datasets
             </Title>
+            <Alert title='Data Disclaimer' mt='xl' radius='lg' icon={<IconInfoCircle />}>
+              <Text>
+                The data currently provided is a only subset of what&apos;s available in the legacy
+                ASBP portal,{' '}
+                <b>
+                  new and updated datasets will be available in the system in the coming months.
+                </b>
+              </Text>
+            </Alert>
+            <Box my='sm'>
+              <Divider variant='dashed' my='xl' />
+            </Box>
             <Summaries />
           </Box>
         </Container>
