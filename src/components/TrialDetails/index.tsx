@@ -44,7 +44,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
       {fields
         .map((key) => ({ key, ...trialFields[key] }))
         .map(({ key, label, description, examples, icon: Icon, unit }) => (
-          <Grid.Col key={key} xs={3} sm={3} md={3} lg={3} xl={3}>
+          <Grid.Col key={key} span={2}>
             <FieldTooltip {...{ label, description, examples, Icon }}>
               <Group>
                 <ThemeIcon variant='light' size={28} radius='xl'>

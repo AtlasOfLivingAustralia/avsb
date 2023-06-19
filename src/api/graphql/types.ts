@@ -76,6 +76,7 @@ interface SeedBankTrial {
   numberFull?: number | null;
   numberEmpty?: number | null;
   numberTested?: number | null;
+  numberNotViable?: number | null;
   preTestProcessingNotes?: string | null;
 }
 
