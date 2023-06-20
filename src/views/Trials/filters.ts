@@ -122,14 +122,14 @@ const filters: Filter[] = [
     icon: IconCircle,
     group: 'Germination',
   },
-  {
-    key: 'seedbank_numberNotViable',
-    label: 'Number Not Viable',
-    type: 'numericGreaterLess',
-    placeholder: '10',
-    icon: IconCircleOff,
-    group: 'Germination',
-  },
+  // {
+  //   key: 'seedbank_numberNotViable',
+  //   label: 'Number Not Viable',
+  //   type: 'numericGreaterLess',
+  //   placeholder: '10',
+  //   icon: IconCircleOff,
+  //   group: 'Germination',
+  // },
   {
     key: 'seedbank_numberTested',
     label: 'Number Tested',
