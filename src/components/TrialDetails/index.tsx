@@ -37,14 +37,13 @@ function TrialDetails({ event }: TrialDetailsProps) {
       isValidTreatment((treatment.extensions?.seedbank as SeedBankTreatment) || {}) ||
       treatment.eventRemarks,
   ) as Event[];
-  // const treatments = events.map(({ extensions }) => extensions?.seedbank as SeedBankTreatment);
 
   return (
     <Grid gutter='xs'>
       {fields
         .map((key) => ({ key, ...trialFields[key] }))
         .map(({ key, label, description, examples, icon: Icon, unit }) => (
-          <Grid.Col key={key} xs={3} sm={3} md={3} lg={3} xl={3}>
+          <Grid.Col key={key} span={2}>
             <FieldTooltip {...{ label, description, examples, Icon }}>
               <Group>
                 <ThemeIcon variant='light' size={28} radius='xl'>

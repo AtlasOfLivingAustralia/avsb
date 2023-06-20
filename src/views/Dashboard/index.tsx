@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-// import { useAuth, hasAuthParams } from 'react-oidc-context';
 import { Outlet, useNavigation } from 'react-router-dom';
-import { AppShell /* Center, Stack, Text */ } from '@mantine/core';
+import { AppShell } from '@mantine/core';
 import {
   NavigationProgress,
   startNavigationProgress,
@@ -10,12 +9,10 @@ import {
 } from '@mantine/nprogress';
 
 // Project components & helpers
-// import { LogoLoader } from '#/components';
 import Header from './components/Header';
 import './index.css';
 
 function Dashboard() {
-  // const auth = useAuth();
   const { state } = useNavigation();
 
   useEffect(() => {
@@ -27,24 +24,13 @@ function Dashboard() {
     }
   }, [state]);
 
-  // If the 'code' & 'state' parameter are in the URL, it means that
-  // we've just been redirected from Cognito, and we're retrieving tokens
-  // if (auth.isLoading && hasAuthParams()) {
-  //   return (
-  //     <Center style={{ width: '100vw', height: '100vh' }}>
-  //       <Stack align='center' spacing='lg'>
-  //         <LogoLoader />
-  //         <Text color='dimmed' weight='bold'>
-  //           Signing you in
-  //         </Text>
-  //       </Stack>
-  //     </Center>
-  //   );
-  // }
-
   return (
     <>
-      <NavigationProgress stepInterval={20} />
+      <NavigationProgress
+        stepInterval={20}
+        progressLabel='Navigation progress bar'
+        portalProps={{ 'aria-hidden': true }}
+      />
       <AppShell
         padding={0}
         header={<Header />}

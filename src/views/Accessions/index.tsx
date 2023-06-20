@@ -84,15 +84,6 @@ export function Component() {
   const downloadFetcher = (data: { eventSearch: EventSearchResult }) =>
     data?.eventSearch?.documents?.results || [];
 
-  // // SDS Check
-  // if (
-  //   query.total === 0 &&
-  //   (sds?.instances.length || 0) > 0 &&
-  //   isSpeciesInList(taxon.classification.scientificName)
-  // ) {
-  //   return <SDS instances={sds?.instances || []} />;
-  // }
-
   return (
     <>
       <Group mb='lg' position='apart'>
@@ -115,6 +106,7 @@ export function Component() {
                 label: `${size} results`,
                 value: size.toString(),
               }))}
+              aria-label='Results per page'
             />
           </Tooltip>
           <Filters
@@ -149,6 +141,7 @@ export function Component() {
           value={page}
           total={query ? Math.ceil((query.total as number) / pageSize) : 1}
           onChange={(newPage) => setPage(newPage)}
+          getControlProps={(control) => ({ 'aria-label': `${control} pagination button` })}
         />
       </Center>
     </>

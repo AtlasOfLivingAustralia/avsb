@@ -76,6 +76,7 @@ interface SeedBankTrial {
   numberFull?: number | null;
   numberEmpty?: number | null;
   numberTested?: number | null;
+  numberNotViable?: number | null;
   preTestProcessingNotes?: string | null;
 }
 
@@ -89,7 +90,6 @@ interface SeedBankTreatment {
   lightHours?: number | null;
 }
 
-// type SeedBankExtension = SeedBankAccession | SeedBankTrial | SeedBankTreatment;
 interface SeedBankExtension extends SeedBankAccession, SeedBankTrial, SeedBankTreatment {}
 
 interface EventType {

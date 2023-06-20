@@ -11,37 +11,14 @@ import {
   ActionIcon,
   Badge,
   ScrollArea,
-  UnstyledButton,
-  HoverCard,
-  Stack,
+  Divider,
   useMantineTheme,
 } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
-import { IconCopy, IconDotsVertical, IconExternalLink, IconQuestionCircle } from '@tabler/icons';
+import { IconCopy, IconDotsVertical, IconExternalLink } from '@tabler/icons';
 import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { Taxon } from '#/api/sources/taxon';
-
-const pageDescriptions: { [key: string]: string[] } = {
-  summary: [
-    'Below you can view information about this taxon, including its taxonomy and locations where seed was collected.',
-  ],
-  accessions: [
-    'Below shows seed accession data for your chosen taxon. You can click on a table row to expand it, or click the details button to see all information about the accession.',
-    'Filters are also available to aid in your search.',
-  ],
-  trials: [
-    'Below shows seed trial data for your chosen taxon. You can click on a table row to expand it and see treatment information.',
-    'Filters are also available to aid in your search.',
-  ],
-  media: [
-    'Below shows related media for your chosen taxon. Click on an image to see a larger variant & its associated metadata.',
-    'Filters are also available to aid in your search.',
-  ],
-  sequences: [
-    'Below are sequences for your chosen taxon, retrieved from GenBank. Click on a card to be redirected to GenBank.',
-    "'View all records' redirects to the full list of search results.",
-  ],
-};
+import PageSummary from './components/PageSummary';
 
 const MAX_WIDTH = 1450;
 
@@ -51,9 +28,9 @@ export function Component() {
   const { taxon: data } = useLoaderData() as { taxon: Taxon };
   const navigate = useNavigate();
   const clipboard = useClipboard({ timeout: 500 });
-  const theme = useMantineTheme();
 
   const currentPage = pathname.split('/')[3];
+  const theme = useMantineTheme();
 
   return (
     <>
@@ -66,11 +43,12 @@ export function Component() {
                 withPlaceholder
                 src={
                   data.imageIdentifier &&
-                  `https://images.ala.org.au/image/${data.imageIdentifier}/thumbnail`
+                  `${import.meta.env.VITE_ALA_IMAGES}/image/${data.imageIdentifier}/thumbnail`
                 }
                 width={90}
                 height={90}
                 radius='lg'
+                alt={`Representative image of ${data.classification.scientificName}`}
               />
             </Box>
             <Box>
@@ -83,7 +61,7 @@ export function Component() {
           </Group>
           <Menu shadow='md' position='bottom-end'>
             <Menu.Target>
-              <ActionIcon size='xl' variant='light' radius='xl'>
+              <ActionIcon size='xl' variant='light' radius='xl' aria-label='View taxon action menu'>
                 <IconDotsVertical />
               </ActionIcon>
             </Menu.Target>
@@ -92,7 +70,7 @@ export function Component() {
                 icon={<IconExternalLink size={14} />}
                 component='a'
                 target='_blank'
-                href={`https://bie.ala.org.au/species/${data.taxonConcept.guid}`}
+                href={`${import.meta.env.VITE_ALA_BIE}/species/${data.taxonConcept.guid}`}
               >
                 View on ALA BIE
               </Menu.Item>
@@ -107,16 +85,16 @@ export function Component() {
         </Group>
       </Container>
       <Tabs variant='outline' mt='md' radius='sm' value={currentPage}>
-        <Tabs.List>
-          <Group
-            px='md'
-            style={{
-              width: '100%',
-              maxWidth: MAX_WIDTH,
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
+        <Group spacing={0}>
+          <Box
+            style={{ display: 'flex', alignItems: 'flex-end' }}
+            w={`calc(((100vw - ${MAX_WIDTH}px) / 2) + ${theme.spacing.md})`}
+            miw={theme.spacing.md}
+            h={35}
           >
+            <Divider w='100%' />
+          </Box>
+          <Tabs.List style={{ flexGrow: 1 }}>
             {['Summary', 'Accessions', 'Trials', 'Media', 'Sequences'].map((tabKey) => (
               <Tabs.Tab
                 key={tabKey}
@@ -126,49 +104,26 @@ export function Component() {
                 {tabKey}
               </Tabs.Tab>
             ))}
-            <HoverCard width={350} position='left' withArrow offset={12}>
-              <HoverCard.Target>
-                <UnstyledButton ml='auto' pb={8}>
-                  <Group spacing='xs'>
-                    <IconQuestionCircle
-                      color={
-                        theme.colorScheme === 'dark' ? theme.colors.blue[2] : theme.colors.blue[4]
-                      }
-                    />
-                    <Text
-                      sx={{
-                        color:
-                          theme.colorScheme === 'dark'
-                            ? theme.colors.blue[2]
-                            : theme.colors.blue[4],
-                        textDecoration: 'underline',
-                        textUnderlineOffset: 2,
-                        textDecorationColor:
-                          theme.colorScheme === 'dark'
-                            ? 'rgba(165, 216, 255, 0.25)'
-                            : 'rgba(34, 139, 230, 0.25)',
-                        textTransform: 'capitalize',
-                      }}
-                      size='xs'
-                      weight='bold'
-                    >
-                      {currentPage} Page
-                    </Text>
-                  </Group>
-                </UnstyledButton>
-              </HoverCard.Target>
-              <HoverCard.Dropdown>
-                <Stack spacing='sm'>
-                  {pageDescriptions[currentPage].map((description) => (
-                    <Text key={description} size='sm'>
-                      {description}
-                    </Text>
-                  ))}
-                </Stack>
-              </HoverCard.Dropdown>
-            </HoverCard>
-          </Group>
-        </Tabs.List>
+          </Tabs.List>
+          <Box
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
+              flexGrow: 1,
+            }}
+            h={35}
+          >
+            <PageSummary
+              currentPage={currentPage}
+              pr={`calc((100vw - ${MAX_WIDTH}px) / 2)`}
+              mb={6}
+            />
+            <Divider w='100%' />
+          </Box>
+          {/* <PageSummary currentPage={currentPage} /> */}
+        </Group>
         <ScrollArea type='auto' h='calc(100vh - 250px)'>
           <Container size={MAX_WIDTH} py='xl'>
             <Outlet />

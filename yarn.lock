@@ -15,6 +15,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@axe-core/react@npm:^4.7.3":
+  version: 4.7.3
+  resolution: "@axe-core/react@npm:4.7.3"
+  dependencies:
+    axe-core: ^4.7.0
+    requestidlecallback: ^0.3.0
+  checksum: 3abcedb69f2e9915d23c4e08a13a9578f577460aa7f9d4d29805a5fb75f7b37abda509e2cfa5e5f4e6d488bd9cd1e673ce9e83b0878f91e909c647c309c4476b
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0":
   version: 7.18.6
   resolution: "@babel/code-frame@npm:7.18.6"
@@ -1643,6 +1653,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "avsb@workspace:."
   dependencies:
+    "@axe-core/react": ^4.7.3
     "@emotion/react": ^11.11.1
     "@mantine/carousel": ^6.0.13
     "@mantine/core": ^6.0.13
@@ -1698,6 +1709,13 @@ __metadata:
   version: 4.6.3
   resolution: "axe-core@npm:4.6.3"
   checksum: d0c46be92b9707c48b88a53cd5f471b155a2bfc8bf6beffb514ecd14e30b4863e340b5fc4f496d82a3c562048088c1f3ff5b93b9b3b026cb9c3bfacfd535da10
+  languageName: node
+  linkType: hard
+
+"axe-core@npm:^4.7.0":
+  version: 4.7.2
+  resolution: "axe-core@npm:4.7.2"
+  checksum: 5d86fa0f45213b0e54cbb5d713ce885c4a8fe3a72b92dd915a47aa396d6fd149c4a87fec53aa978511f6d941402256cfeb26f2db35129e370f25a453c688655a
   languageName: node
   linkType: hard
 
@@ -5002,6 +5020,13 @@ __metadata:
     define-properties: ^1.1.3
     functions-have-names: ^1.2.2
   checksum: 51228bae732592adb3ededd5e15426be25f289e9c4ef15212f4da73f4ec3919b6140806374b8894036a86020d054a8d2657d3fee6bb9b4d35d8939c20030b7a6
+  languageName: node
+  linkType: hard
+
+"requestidlecallback@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "requestidlecallback@npm:0.3.0"
+  checksum: 2405aef711b516e326ff18849b24ad2c0e623d2b60397bdc7919fa40d8575fce0a16a563a53f94ec89d255325a99e5deee952e6024584a5179cbbabb4469f0e8
   languageName: node
   linkType: hard
 

@@ -26,7 +26,13 @@ interface DataResourceSummary {
 }
 
 async function dataResource(id: string): Promise<DataResource> {
-  return (await fetch(`${import.meta.env.VITE_API_COLLECTORY}/dataResource/${id}`)).json();
+  const response = await fetch(`${import.meta.env.VITE_API_ALA}/metadata/ws/dataResource/${id}`);
+  const data = await response.text();
+
+  // Catch 200 responses, but no entry found
+  if (response.ok && data.startsWith('no entity with')) throw new Response(data, { status: 404 });
+
+  return JSON.parse(data);
 }
 
 async function dataResourceList(): Promise<DataResourceSummary[]> {
@@ -35,7 +41,9 @@ async function dataResourceList(): Promise<DataResourceSummary[]> {
   if (dataResources) return JSON.parse(dataResources);
 
   // If we don't have any results stored locally, fetch & store them
-  const data = await (await fetch(`${import.meta.env.VITE_API_COLLECTORY}/dataResource`)).json();
+  const data = await (
+    await fetch(`${import.meta.env.VITE_API_ALA}/metadata/ws/dataResource`)
+  ).json();
   sessionStorage.setItem('collectory-resources', JSON.stringify(data));
 
   return data;

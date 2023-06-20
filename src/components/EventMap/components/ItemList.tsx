@@ -55,7 +55,12 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
                   {total} result{total && total > 1 ? 's' : ''}
                 </Text>
               </Skeleton>
-              <ActionIcon variant='light' radius='xl' onClick={onClose}>
+              <ActionIcon
+                variant='light'
+                radius='xl'
+                onClick={onClose}
+                aria-label='Close full screen map'
+              >
                 <IconX size={16} />
               </ActionIcon>
             </Group>

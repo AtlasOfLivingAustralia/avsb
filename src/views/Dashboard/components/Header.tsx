@@ -22,7 +22,6 @@ const slideTransition = {
 };
 
 function Header() {
-  // const auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -31,7 +30,7 @@ function Header() {
     <MantineHeader height={60}>
       <Group sx={{ height: '100%' }} px={20} position='apart'>
         <Group spacing='lg'>
-          <Link to='/' style={{ display: 'flex' }}>
+          <Link to='/' style={{ display: 'flex' }} aria-label='Go to home'>
             <Logo width={50} height={50} />
           </Link>
           <Transition transition={slideTransition} mounted={location.pathname !== '/'}>
@@ -43,6 +42,7 @@ function Header() {
                 leftIcon={<IconHome size='0.8rem' />}
                 size='xs'
                 variant='subtle'
+                aria-label='Home'
               >
                 Home
               </Button>
@@ -67,8 +67,16 @@ function Header() {
             withArrow
             label='Help / FAQ'
             position='right'
+            aria-label=''
           >
-            <ActionIcon component={Link} to='/help' variant='filled' radius='xl' size={38}>
+            <ActionIcon
+              component={Link}
+              to='/help'
+              variant='filled'
+              radius='xl'
+              size={38}
+              aria-label='Help and frequently asked questions'
+            >
               <IconQuestionMark size={20} />
             </ActionIcon>
           </Tooltip>
@@ -79,40 +87,16 @@ function Header() {
             label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
             position='right'
           >
-            <ActionIcon variant='filled' radius='xl' size={38} onClick={() => toggleColorScheme()}>
+            <ActionIcon
+              variant='filled'
+              radius='xl'
+              size={38}
+              onClick={() => toggleColorScheme()}
+              aria-label='Switch interface colour scheme'
+            >
               {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
             </ActionIcon>
           </Tooltip>
-          {/* {auth.isAuthenticated ? (
-            <Menu shadow='md' position='bottom-end'>
-              <Menu.Target>
-                <UnstyledButton>
-                  <Avatar variant='filled' radius='xl'>
-                    {getNameInitials(auth.user?.profile)}
-                  </Avatar>
-                </UnstyledButton>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Label>Account</Menu.Label>
-                <Menu.Item icon={<IconLogout size={14} />} onClick={handleSignOut}>
-                  Sign Out
-                </Menu.Item>
-                {import.meta.env.MODE === 'development' && (
-                  <>
-                    <Menu.Divider />
-                    <Menu.Label>Developer</Menu.Label>
-                    <Menu.Item icon={<IconBug size={14} />} onClick={() => navigate('debug')}>
-                      Debug Information
-                    </Menu.Item>
-                  </>
-                )}
-              </Menu.Dropdown>
-            </Menu>
-          ) : (
-            <Button variant='light' onClick={() => auth.signinRedirect()}>
-              Sign In
-            </Button>
-          )} */}
         </Group>
       </Group>
     </MantineHeader>

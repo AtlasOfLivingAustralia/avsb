@@ -4,6 +4,7 @@ const fields: (keyof SeedBankTrial)[] = [
   'numberGerminated',
   'numberTested',
   'numberFull',
+  'numberNotViable',
   'numberEmpty',
 ];
 
