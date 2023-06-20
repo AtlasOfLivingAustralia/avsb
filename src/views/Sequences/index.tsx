@@ -47,7 +47,7 @@ export function Component() {
     >
       <Await resolve={sequences}>
         {({ total, resultsUrl, results }) =>
-          total > 0 ? (
+          results.length > 0 ? (
             <>
               <Paper p='sm' mb='lg' radius='lg' withBorder>
                 <Group position='apart'>
