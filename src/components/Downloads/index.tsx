@@ -33,11 +33,11 @@ interface DownloadsProps extends GroupProps {
 // given an array of fields
 const eventToCSV = (event: Event, fields: DownloadField[]) =>
   fields
-    .map(({ key, formatter }) =>
-      typeof formatter === 'function'
-        ? formatter(get(event, key, '')) || ''
-        : get(event, key, '') || '',
-    )
+    .map(({ key, formatter }) => {
+      let value = get(event, key, '');
+      if (typeof formatter === 'function') value = formatter(value);
+      return value === null || value === undefined ? '' : value;
+    })
     .map((value) => (value.toString().includes(',') ? `"${value}"` : value))
     .join(',');
 
