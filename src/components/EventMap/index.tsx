@@ -121,6 +121,11 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
               key: 'scoordinates',
               value: getWktFromGeohash(selectedPoint.geohash),
             },
+            {
+              type: 'equals',
+              key: 'eventType',
+              value: 'Accession',
+            },
             ...(params.guid
               ? [
                   {

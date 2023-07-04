@@ -226,9 +226,9 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                       {getIsDefined(trial?.viabilityPercentage) && `${trial?.viabilityPercentage}%`}
                     </td>
                     <td>
-                      {[event.day, event.month, event.year]
-                        .filter((part) => part !== null)
-                        .join('/')}
+                      {trial?.testDateStarted
+                        ? new Date(trial?.testDateStarted).toLocaleDateString()
+                        : ''}
                     </td>
                     <td>
                       {getIsDefined(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
