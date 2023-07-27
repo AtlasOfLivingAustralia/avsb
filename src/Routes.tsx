@@ -45,7 +45,15 @@ const routes = createBrowserRouter([
         lazy: () => import('./views/Taxon'),
         loader: async ({ params }) => {
           const taxon = await taxonAPI.info(params.guid || '');
-          const sds = await sdsAPI.get(taxon.classification.scientificName);
+
+          // Wrap SDS retrieval in try-catch (SDS test is unstable)
+          const sds = await (async () => {
+            try {
+              return await sdsAPI.get(taxon.classification.scientificName);
+            } catch (error) {
+              return { instances: [] };
+            }
+          })();
 
           return { taxon, sds };
         },
