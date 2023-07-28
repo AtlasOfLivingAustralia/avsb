@@ -20,14 +20,22 @@ interface SDSResult {
   status: string[];
 }
 
-async function get(scientificName: string, latitude = 0, longitude = 0): Promise<SDSResult> {
-  return (
-    await fetch(
-      `${
-        import.meta.env.VITE_API_ALA
-      }/sds-webapp/ws/${scientificName}/location/${latitude}/${longitude}/date/0`,
-    )
-  ).json();
+async function get(
+  scientificName: string,
+  latitude?: number,
+  longitude?: number,
+  date?: string,
+): Promise<SDSResult> {
+  let URL = `${import.meta.env.VITE_API_ALA}/sds-webapp/ws/${scientificName}`;
+
+  // Append optional lat/lng parameters
+  if (latitude !== undefined && longitude !== undefined)
+    URL += `/location/${latitude}/${longitude}`;
+
+  // Append optional date parameters
+  if (date !== undefined) URL += `/date/${date}`;
+
+  return (await fetch(URL)).json();
 }
 
 export default {
