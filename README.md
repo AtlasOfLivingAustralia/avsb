@@ -2,6 +2,8 @@
 
 > A [React](https://reactjs.org/)-based single-page application for the Australian Seedbank Partnership, built with [Vite](https://vitejs.dev/)
 
+**Please create new issues in the [avsb-requirements](https://github.com/AtlasOfLivingAustralia/avsb-requirements) repository**
+
 ## Getting Started
 
 ### Prerequisites
