@@ -35,6 +35,7 @@ import {
   IconBuildingBank,
   IconCircleOff,
   IconCircleDot,
+  IconHandGrab,
 } from '@tabler/icons';
 
 export interface SeedbankField {
@@ -82,6 +83,12 @@ const accessionFields: SeedbankFieldMap = {
     unit: 'g',
     examples: '30g',
     description: 'The mass of 1000 pure seeds or fruits.',
+  },
+  numberPlantsSampled: {
+    label: 'Plants Sampled',
+    icon: IconHandGrab,
+    examples: '"27", ">50", "70-90"',
+    description: 'Number of plants that seed was harvested from.',
   },
   storageRelativeHumidityPercentage: {
     label: 'Relative Humidity',

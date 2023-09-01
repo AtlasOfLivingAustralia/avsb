@@ -49,7 +49,9 @@ const routes = createBrowserRouter([
           // Wrap SDS retrieval in try-catch (SDS test is unstable)
           const sds = await (async () => {
             try {
-              return await sdsAPI.get(taxon.classification.scientificName);
+              const data = await sdsAPI.get(taxon.classification.scientificName);
+              if (!data.instances) throw new Error('Invalid request');
+              return data;
             } catch (error) {
               return { instances: [] };
             }
