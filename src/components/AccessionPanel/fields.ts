@@ -8,6 +8,7 @@ const fields: (keyof SeedBankAccession)[] = [
   'storageRelativeHumidityPercentage',
   'purityPercentage',
   'storageTemperatureInCelsius',
+  'numberPlantsSampled',
 ];
 
 const longFields: (keyof SeedBankAccession)[] = [
