@@ -522,6 +522,7 @@ query image($key: String, $size: Int, $from: Int, $specimenParams: JSON, $otherP
     webStatement
     credit
     creator
+    provider
     providerLiteral
     description
     tag

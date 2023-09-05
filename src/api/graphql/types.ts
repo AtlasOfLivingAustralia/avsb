@@ -295,6 +295,7 @@ interface MediaItem {
   webStatement?: string | null;
   credit?: string | null;
   creator?: string | null;
+  provider?: string | null;
   providerLiteral?: string | null;
   description?: string | null;
   tag?: string | null;

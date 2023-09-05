@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import {
+  Anchor,
   Avatar,
+  Box,
   Button,
   Card,
   Center,
@@ -19,6 +21,7 @@ import {
 import {
   IconAffiliate,
   IconAlertCircle,
+  IconBuildingBank,
   IconCalendar,
   IconDimensions,
   IconExternalLink,
@@ -26,6 +29,7 @@ import {
   IconLicense,
   IconQuestionMark,
   IconTypography,
+  IconUser,
   TablerIcon,
 } from '@tabler/icons';
 
@@ -33,7 +37,7 @@ import {
 import { gqlQueries, performGQLQuery } from '#/api';
 import { Filters } from '#/components';
 import { MediaItem, Predicate } from '#/api/graphql/types';
-import { getInitials, useMounted } from '#/helpers';
+import { useMounted } from '#/helpers';
 
 // Component imports
 import MediaCollection from './components/MediaCollection';
@@ -46,6 +50,11 @@ interface ImageProperty {
 }
 
 const imageProperties: ImageProperty[] = [
+  {
+    key: 'creator',
+    name: 'Creator',
+    icon: IconUser,
+  },
   {
     key: 'pixelXDimension',
     name: 'Original Width',
@@ -202,7 +211,7 @@ export function Component() {
         {initialMedia.other?.length > 0 && (
           <MediaCollection
             label='Other'
-            disclaimer='The accuracy/relevance of the following images cannot be verified'
+            disclaimer='The accuracy of the taxa shown in these images may vary'
             media={media?.other || []}
             selected={selectedMedia}
             onSelect={(item) => {
@@ -249,25 +258,47 @@ export function Component() {
             })}
           />
           <Group position='apart' mt='md' mb='xs'>
-            <Group>
-              <Avatar variant='filled' radius='xl'>
-                {getInitials(selectedMedia?.creator || 'Unknown Creator')}
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <Avatar variant='filled' radius='xl' mr='sm'>
+                <IconBuildingBank size='1rem' />
               </Avatar>
-              <Text weight='bold'>{selectedMedia?.creator || 'Unknown Creator'}</Text>
-            </Group>
-            {selectedMedia?.accessOriginalURI && (
-              <Button
-                leftIcon={<IconExternalLink size='1rem' />}
-                component='a'
-                href={selectedMedia.accessOriginalURI}
-                target='_blank'
-                variant='outline'
-                size='xs'
-              >
-                View Original
-              </Button>
-            )}
+              <Stack spacing={0}>
+                <Text>
+                  From{' '}
+                  <Anchor
+                    target='_blank'
+                    href={`${import.meta.env.VITE_ALA_COLLECTORY}/public/show/${
+                      selectedMedia?.provider
+                    }`}
+                  >
+                    {selectedMedia?.providerLiteral}
+                  </Anchor>
+                </Text>
+                <Text size='xs'>
+                  Taken by <b>{selectedMedia?.creator || 'Unknown Creator'}</b>
+                </Text>
+              </Stack>
+            </Box>
           </Group>
+          <Divider
+            my='md'
+            sx={(theme) => ({
+              marginLeft: `calc(${theme.spacing.lg} * -1)`,
+              marginRight: `calc(${theme.spacing.lg} * -1)`,
+            })}
+          />
+          {selectedMedia?.accessOriginalURI && (
+            <Button
+              fullWidth
+              leftIcon={<IconExternalLink size='1rem' />}
+              component='a'
+              href={selectedMedia.accessOriginalURI}
+              target='_blank'
+              size='xs'
+            >
+              View Original
+            </Button>
+          )}
           <Divider
             my='md'
             sx={(theme) => ({
