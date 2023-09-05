@@ -211,11 +211,20 @@ const routes = createBrowserRouter([
             loader: async ({ params }) => {
               const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
                 key: params.guid,
-                size: 20,
-                from: 0,
+                specimenParams: {
+                  filter: {
+                    basis_of_record: 'PreservedSpecimen',
+                  },
+                  size: 8,
+                },
+                otherParams: {
+                  filter: {
+                    '-basis_of_record': 'PreservedSpecimen',
+                  },
+                },
               });
 
-              return data?.taxonMedia || null;
+              return data;
             },
           },
           {

@@ -490,8 +490,29 @@ query list($datasetKey: JSON){
 `;
 
 const QUERY_TAXON_MEDIA = `
-query image($key: String, $size: Int, $from: Int, $params: JSON) {
-  taxonMedia(key: $key, size: $size, from: $from, params: $params) {
+query image($key: String, $size: Int, $from: Int, $specimenParams: JSON, $otherParams: JSON) {
+  specimens: taxonMedia(key: $key, size: 8, from: $from, params: $specimenParams) {
+    identifier
+    type
+    subtypeLiteral
+    title
+    rights
+    owner
+    webStatement
+    credit
+    creator
+    provider
+    providerLiteral
+    description
+    tag
+    createDate
+    accessURI
+    accessOriginalURI
+    format
+    pixelXDimension
+    pixelYDimension
+  }
+  other: taxonMedia(key: $key, size: $size, from: $from, params: $otherParams) {
     identifier
     type
     subtypeLiteral

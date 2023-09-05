@@ -12,7 +12,6 @@ import {
   List,
   Loader,
   Overlay,
-  Paper,
   Stack,
   Text,
   ThemeIcon,
@@ -25,7 +24,6 @@ import {
   IconExternalLink,
   IconFileInfo,
   IconLicense,
-  IconPhoto,
   IconQuestionMark,
   IconTypography,
   TablerIcon,
@@ -38,7 +36,7 @@ import { MediaItem, Predicate } from '#/api/graphql/types';
 import { getInitials, useMounted } from '#/helpers';
 
 // Component imports
-import MediaImage from './components/MediaImage';
+import MediaCollection from './components/MediaCollection';
 import filters, { months } from './filters';
 
 interface ImageProperty {
@@ -111,10 +109,18 @@ const predicateToQuery = ({ type, key, value }: Predicate) => {
   return {};
 };
 
+interface TaxonMedia {
+  specimens: MediaItem[];
+  other: MediaItem[];
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
-  const [media, setMedia] = useState<MediaItem[] | null>(useLoaderData() as MediaItem[]);
-  const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(media?.[0] || null);
+  const initialMedia = useLoaderData() as TaxonMedia;
+  const [media, setMedia] = useState<TaxonMedia | null>(initialMedia);
+  const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(
+    media?.specimens?.[0] || media?.other?.[0] || null,
+  );
   const [selectedLoaded, setSelectedLoaded] = useState<boolean>(false);
   const [predicates, setPredicates] = useState<{ [key: string]: Predicate }>({});
   const params = useParams();
@@ -122,31 +128,44 @@ export function Component() {
 
   useEffect(() => {
     async function runQuery() {
+      const query = {
+        ...(predicates.occurrence_date ? predicateToQuery(predicates.occurrence_date) : {}),
+        ...(predicates.data_resource_uid
+          ? { data_resource_uid: predicates.data_resource_uid.value }
+          : {}),
+      };
+
       const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
         key: params.guid,
-        params: {
-          query: {
-            ...(predicates.occurrence_date ? predicateToQuery(predicates.occurrence_date) : {}),
-            ...(predicates.data_resource_uid
-              ? { data_resource_uid: predicates.data_resource_uid.value }
-              : {}),
-          },
+        specimenParams: {
+          query,
           filter: {
             ...(predicates.month
               ? { month: months.indexOf(predicates.month.value as string) + 1 }
               : {}),
+            basis_of_record: 'PreservedSpecimen',
+          },
+          size: 4,
+        },
+        otherParams: {
+          query,
+          filter: {
+            ...(predicates.month
+              ? { month: months.indexOf(predicates.month.value as string) + 1 }
+              : {}),
+            '-basis_of_record': 'PreservedSpecimen',
           },
         },
         size: 20,
       });
-      setMedia(data?.taxonMedia);
+      setMedia(data);
     }
 
     if (mounted) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [predicates]);
 
-  if (media === null)
+  if (initialMedia === null || initialMedia.specimens.length + initialMedia.other.length === 0)
     return (
       <Center h='calc(100vh - 380px)'>
         <Stack align='center'>
@@ -168,34 +187,30 @@ export function Component() {
         />
       </Grid.Col>
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={7} orderXs={2} orderSm={2} orderMd={1}>
-        {media?.length > 0 ? (
-          <Grid gutter='xs'>
-            {media?.map((item) => (
-              <Grid.Col key={item.identifier} xs={4} sm={4} md={4} lg={3} xl={3}>
-                <MediaImage
-                  item={item}
-                  onClick={() => {
-                    if (item.identifier !== selectedMedia?.identifier) {
-                      setSelectedLoaded(false);
-                      setSelectedMedia(item);
-                    }
-                  }}
-                  selected={selectedMedia?.identifier === item.identifier}
-                  width='100%'
-                  height={150}
-                />
-              </Grid.Col>
-            ))}
-          </Grid>
-        ) : (
-          <Paper h='100%' withBorder>
-            <Center h='100%'>
-              <Stack align='center'>
-                <IconPhoto size='3rem' />
-                <Text color='dimmed'>No matching media found</Text>
-              </Stack>
-            </Center>
-          </Paper>
+        {initialMedia.specimens?.length > 0 && (
+          <MediaCollection
+            label='Specimens'
+            media={media?.specimens || []}
+            selected={selectedMedia}
+            onSelect={(item) => {
+              setSelectedLoaded(false);
+              setSelectedMedia(item);
+            }}
+            mb='xl'
+          />
+        )}
+        {initialMedia.other?.length > 0 && (
+          <MediaCollection
+            label='Other'
+            disclaimer='The accuracy/relevance of the following images cannot be verified'
+            media={media?.other || []}
+            selected={selectedMedia}
+            onSelect={(item) => {
+              setSelectedLoaded(false);
+              setSelectedMedia(item);
+            }}
+            mb='xl'
+          />
         )}
       </Grid.Col>
       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={5} orderXs={1} orderSm={1} orderMd={2}>
@@ -203,13 +218,13 @@ export function Component() {
           <Card.Section pos='relative' h={350}>
             <Image
               pos='absolute'
-              src={selectedMedia?.accessOriginalURI}
+              src={selectedMedia?.accessURI}
               height={350}
               alt={`Background ${selectedMedia?.title || 'image for currently selected image'}`}
             />
             <Overlay blur={8} opacity={0.1} center>
               <Image
-                src={selectedMedia?.accessOriginalURI}
+                src={selectedMedia?.accessURI}
                 height={350}
                 fit='contain'
                 styles={{ image: { margin: 0 } }}
