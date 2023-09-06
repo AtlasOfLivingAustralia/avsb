@@ -1,15 +1,18 @@
 interface NumericTrait {
-  title: string;
-  description: string;
-  furtherDescription: string;
-  link: string;
+  unit: string;
+  min: string;
+  max: string;
+  mean: string;
+  taxon_name: string;
+  definition: string;
+  trait_name: string;
 }
 
 interface CategoricalTrait {
-  title: string;
-  description: string;
-  furtherDescription: string;
-  link: string;
+  taxon_name: string;
+  definition: string;
+  trait_values: string;
+  trait_name: string;
 }
 
 interface AusTraitsSummary {

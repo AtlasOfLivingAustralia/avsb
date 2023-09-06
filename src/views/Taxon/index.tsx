@@ -161,7 +161,7 @@ export function Component() {
             <PageSummary
               currentPage={currentPage}
               pr={`calc((100vw - ${MAX_WIDTH}px) / 2)`}
-              mb={6}
+              mb={10}
             />
             <Divider size={2} w='100%' />
           </Box>
