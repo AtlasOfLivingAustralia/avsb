@@ -29,7 +29,6 @@ import {
   IconLicense,
   IconQuestionMark,
   IconTypography,
-  IconUser,
   TablerIcon,
 } from '@tabler/icons';
 
@@ -50,11 +49,6 @@ interface ImageProperty {
 }
 
 const imageProperties: ImageProperty[] = [
-  {
-    key: 'creator',
-    name: 'Creator',
-    icon: IconUser,
-  },
   {
     key: 'pixelXDimension',
     name: 'Original Width',
@@ -259,10 +253,10 @@ export function Component() {
           />
           <Group position='apart' mt='md' mb='xs'>
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Avatar variant='filled' radius='xl' mr='sm'>
-                <IconBuildingBank size='1rem' />
+              <Avatar variant='filled' radius='xl' mr='lg' size='lg'>
+                <IconBuildingBank size='1.3rem' />
               </Avatar>
-              <Stack spacing={0}>
+              <Stack spacing={0} justify='center'>
                 <Text>
                   From{' '}
                   <Anchor
@@ -274,9 +268,11 @@ export function Component() {
                     {selectedMedia?.providerLiteral}
                   </Anchor>
                 </Text>
-                <Text size='xs'>
-                  Taken by <b>{selectedMedia?.creator || 'Unknown Creator'}</b>
-                </Text>
+                {selectedMedia?.creator && (
+                  <Text size='xs'>
+                    Taken by <b>{selectedMedia?.creator}</b>
+                  </Text>
+                )}
               </Stack>
             </Box>
           </Group>
