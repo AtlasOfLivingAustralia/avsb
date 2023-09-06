@@ -13,21 +13,55 @@ import {
   ScrollArea,
   Divider,
   useMantineTheme,
+  ThemeIcon,
 } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
-import { IconCopy, IconDotsVertical, IconExternalLink } from '@tabler/icons';
+import {
+  IconBrandAsana,
+  IconCopy,
+  IconDna2,
+  IconDotsVertical,
+  IconExternalLink,
+  IconId,
+  IconPhoto,
+  IconTestPipe,
+} from '@tabler/icons';
 import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { Taxon } from '#/api/sources/taxon';
 import PageSummary from './components/PageSummary';
 
 const MAX_WIDTH = 1450;
 
+// 'Summary', 'Accessions', 'Trials', 'Media', 'Sequences'
+const tabs = [
+  {
+    tabKey: 'Summary',
+    icon: IconId,
+  },
+  {
+    tabKey: 'Accessions',
+    icon: IconBrandAsana,
+  },
+  {
+    tabKey: 'Trials',
+    icon: IconTestPipe,
+  },
+  {
+    tabKey: 'Media',
+    icon: IconPhoto,
+  },
+  {
+    tabKey: 'Sequences',
+    icon: IconDna2,
+  },
+];
+
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const { pathname } = useLocation();
   const { taxon: data } = useLoaderData() as { taxon: Taxon };
-  const navigate = useNavigate();
   const clipboard = useClipboard({ timeout: 500 });
+  const navigate = useNavigate();
 
   const currentPage = pathname.split('/')[3];
   const theme = useMantineTheme();
@@ -84,24 +118,33 @@ export function Component() {
           </Menu>
         </Group>
       </Container>
-      <Tabs variant='outline' mt='md' radius='sm' value={currentPage}>
+      <Tabs variant='default' mt='md' radius='sm' value={currentPage}>
         <Group spacing={0}>
           <Box
             style={{ display: 'flex', alignItems: 'flex-end' }}
             w={`calc(((100vw - ${MAX_WIDTH}px) / 2) + ${theme.spacing.md})`}
             miw={theme.spacing.md}
-            h={35}
+            h={48}
           >
-            <Divider w='100%' />
+            <Divider size={2} w='100%' />
           </Box>
           <Tabs.List style={{ flexGrow: 1 }}>
-            {['Summary', 'Accessions', 'Trials', 'Media', 'Sequences'].map((tabKey) => (
+            {tabs.map(({ icon: Icon, tabKey }) => (
               <Tabs.Tab
                 key={tabKey}
                 value={tabKey.toLowerCase()}
                 onClick={() => navigate(tabKey.toLowerCase())}
               >
-                {tabKey}
+                <Group spacing='xs'>
+                  <ThemeIcon
+                    variant='light'
+                    color={currentPage === tabKey.toLowerCase() ? 'blue' : 'gray'}
+                    radius='lg'
+                  >
+                    <Icon size='0.9rem' />
+                  </ThemeIcon>
+                  {tabKey}
+                </Group>
               </Tabs.Tab>
             ))}
           </Tabs.List>
@@ -113,18 +156,17 @@ export function Component() {
               alignItems: 'flex-end',
               flexGrow: 1,
             }}
-            h={35}
+            h={48}
           >
             <PageSummary
               currentPage={currentPage}
               pr={`calc((100vw - ${MAX_WIDTH}px) / 2)`}
               mb={6}
             />
-            <Divider w='100%' />
+            <Divider size={2} w='100%' />
           </Box>
-          {/* <PageSummary currentPage={currentPage} /> */}
         </Group>
-        <ScrollArea type='auto' h='calc(100vh - 250px)'>
+        <ScrollArea type='auto' h='calc(100vh - 263px)'>
           <Container size={MAX_WIDTH} py='xl'>
             <Outlet />
           </Container>
