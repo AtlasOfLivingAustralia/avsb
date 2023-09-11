@@ -223,6 +223,11 @@ const routes = createBrowserRouter([
               }),
           },
           {
+            path: 'traits',
+            errorElement: <ErrorBoundary />,
+            lazy: () => import('./views/Traits'),
+          },
+          {
             path: '*',
             loader: () => redirect('summary'),
           },

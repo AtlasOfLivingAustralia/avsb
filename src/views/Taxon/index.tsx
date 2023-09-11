@@ -23,6 +23,7 @@ import {
   IconDotsVertical,
   IconExternalLink,
   IconId,
+  IconLeaf,
   IconPhoto,
   IconTestPipe,
 } from '@tabler/icons';
@@ -31,8 +32,6 @@ import { Taxon } from '#/api/sources/taxon';
 import PageSummary from './components/PageSummary';
 
 const MAX_WIDTH = 1450;
-
-// 'Summary', 'Accessions', 'Trials', 'Media', 'Sequences'
 const tabs = [
   {
     tabKey: 'Summary',
@@ -53,6 +52,10 @@ const tabs = [
   {
     tabKey: 'Sequences',
     icon: IconDna2,
+  },
+  {
+    tabKey: 'Traits',
+    icon: IconLeaf,
   },
 ];
 
