@@ -537,6 +537,9 @@ query list($predicate: Predicate){
         decimalLatitude
         decimalLongitude
         stateProvince
+        distinctTaxa {
+          scientificName
+        }
         measurementOrFacts {
           measurementID
           measurementType
@@ -599,6 +602,9 @@ query list($predicate: Predicate){
         month
         day
         datasetTitle
+        distinctTaxa {
+          scientificName
+        }
         extensions {
           seedbank {
             accessionNumber

@@ -3,6 +3,7 @@ import { DownloadField } from '#/components/Downloads';
 const downloadFields: DownloadField[] = [
   { label: 'Event ID', key: 'eventID' },
   { label: 'Accession Number', key: 'extensions.seedbank.accessionNumber' },
+  { label: 'Taxon', key: 'distinctTaxa[0].scientificName' },
   { label: 'Institution', key: 'datasetTitle' },
   { label: 'Collect Locality', key: 'locality' },
   { label: 'Collect Lat', key: 'decimalLatitude' },
@@ -23,12 +24,12 @@ const downloadFields: DownloadField[] = [
   {
     label: 'Collection Date',
     key: 'extensions.seedbank.dateCollected',
-    formatter: (field: number) => new Date(field).toLocaleDateString(),
+    formatter: (field: number) => (field ? new Date(field).toLocaleDateString() : ''),
   },
   {
     label: 'Storage Date',
     key: 'extensions.seedbank.dateInStorage',
-    formatter: (field: number) => new Date(field).toLocaleDateString(),
+    formatter: (field: number) => (field ? new Date(field).toLocaleDateString() : ''),
   },
   { label: 'Storage Seed Bank', key: 'extensions.seedbank.primaryStorageSeedBank' },
   { label: 'Collector', key: 'extensions.seedbank.primaryCollector' },
