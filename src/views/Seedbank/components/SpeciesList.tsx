@@ -50,6 +50,7 @@ function Row({ index, style, data }: SpeciesRow) {
               value: params.resource || '',
             },
           ],
+          from: `/seedbank/${params.resource}`,
         },
       });
   };

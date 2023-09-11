@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { IconSun, IconMoon, IconHome, IconQuestionMark } from '@tabler/icons';
+import { IconSun, IconMoon, IconHome, IconQuestionMark, IconArrowBackUp } from '@tabler/icons';
 import {
   Header as MantineHeader,
   ActionIcon,
@@ -13,6 +13,7 @@ import {
 
 // Project components & gelpers
 import { Logo, TaxonSearchInput } from '#/components';
+import { useEffect, useState } from 'react';
 
 const slideTransition = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -22,9 +23,14 @@ const slideTransition = {
 };
 
 function Header() {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [from, setFrom] = useState<string | null>(null);
+  const { state, pathname } = useLocation();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (state?.from) setFrom(state.from);
+  }, [state?.from]);
 
   return (
     <MantineHeader height={60}>
@@ -33,23 +39,43 @@ function Header() {
           <Link to='/' style={{ display: 'flex' }} aria-label='Go to home'>
             <Logo width={50} height={50} />
           </Link>
-          <Transition transition={slideTransition} mounted={location.pathname !== '/'}>
-            {(styles) => (
-              <Button
-                style={styles}
-                component={Link}
-                to='/'
-                leftIcon={<IconHome size='0.8rem' />}
-                size='xs'
-                variant='subtle'
-                aria-label='Home'
-              >
-                Home
-              </Button>
-            )}
-          </Transition>
+          <Group spacing={4}>
+            <Transition transition={slideTransition} mounted={pathname !== '/'}>
+              {(styles) => (
+                <Button
+                  style={styles}
+                  component={Link}
+                  to='/'
+                  leftIcon={<IconHome size='0.8rem' />}
+                  size='xs'
+                  variant='subtle'
+                  aria-label='Home'
+                >
+                  Home
+                </Button>
+              )}
+            </Transition>
+            <Transition
+              transition={slideTransition}
+              mounted={Boolean(from && pathname.includes('/taxon'))}
+            >
+              {(styles) => (
+                <Button
+                  style={styles}
+                  component={Link}
+                  to={from || '/'}
+                  leftIcon={<IconArrowBackUp size='0.8rem' />}
+                  size='xs'
+                  variant='subtle'
+                  aria-label='Go back'
+                >
+                  Back
+                </Button>
+              )}
+            </Transition>
+          </Group>
         </Group>
-        {location.pathname !== '/' && (
+        {pathname !== '/' && (
           <MediaQuery styles={{ display: 'none' }} smallerThan='sm'>
             <TaxonSearchInput
               variant='filled'

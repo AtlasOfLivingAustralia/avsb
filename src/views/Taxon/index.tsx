@@ -26,11 +26,11 @@ const MAX_WIDTH = 1450;
 export function Component() {
   const { pathname } = useLocation();
   const { taxon: data } = useLoaderData() as { taxon: Taxon };
-  const navigate = useNavigate();
-  const clipboard = useClipboard({ timeout: 500 });
 
+  const clipboard = useClipboard({ timeout: 500 });
   const currentPage = pathname.split('/')[3];
   const theme = useMantineTheme();
+  const navigate = useNavigate();
 
   return (
     <>
