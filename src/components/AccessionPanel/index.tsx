@@ -18,6 +18,8 @@ import {
   Skeleton,
   Chip,
   Card,
+  Center,
+  ActionIcon,
 } from '@mantine/core';
 import {
   IconArrowBackUp,
@@ -26,17 +28,33 @@ import {
   IconChevronUp,
   IconHandStop,
   IconInfoCircle,
+  IconLeaf,
   IconLocation,
   IconMap2,
   IconMapPin,
+  IconMapPinOff,
   IconPackage,
   IconTimelineEvent,
 } from '@tabler/icons';
-import { Link, useLoaderData, useNavigate, useRouteLoaderData } from 'react-router-dom';
+import {
+  Await,
+  Link,
+  useAsyncValue,
+  useLoaderData,
+  useNavigate,
+  useRouteLoaderData,
+} from 'react-router-dom';
 
 // Project imports
-import { SDSResult, Event, SeedBankAccession } from '#/api';
-import { getIsDefined, accessionFields } from '#/helpers';
+import {
+  SDSResult,
+  Event,
+  SeedBankAccession,
+  AusTraitsSummary,
+  NumericTrait,
+  CategoricalTrait,
+} from '#/api';
+import { getIsDefined, accessionFields, SeedbankFieldTrait } from '#/helpers';
 
 // Local imports
 import Contact from '../Contact';
@@ -52,15 +70,89 @@ import SDS from '../SDS';
 const Map = lazy(() => import('../Map'));
 
 const missingData = 'Not Available';
+const missingDataField = (
+  <Text size='sm' weight='bold' color='dimmed'>
+    {missingData}
+  </Text>
+);
+
+interface AusTraitsFieldProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  promise: any;
+  trait?: SeedbankFieldTrait;
+}
+
+function AusTraitsFieldInner({ trait }: { trait: SeedbankFieldTrait }) {
+  const { numeric_traits: numericTraits, categorical_traits: categoricalTraits } =
+    useAsyncValue() as AusTraitsSummary;
+
+  let data: NumericTrait | CategoricalTrait | undefined;
+  let value;
+
+  // If the trait is numeric, search the numeric_traits array
+  if (trait.type === 'numeric') {
+    data = numericTraits.find(({ trait_name: traitName }) => traitName === trait.name) as
+      | NumericTrait
+      | undefined;
+    value = data ? `${data.mean}${data.unit} (${data.min}-${data.max})` : null;
+
+    // Otherwise search the categorical_traits array
+  } else if (trait.type === 'categorical') {
+    data = categoricalTraits.find(({ trait_name: traitName }) => traitName === trait.name) as
+      | CategoricalTrait
+      | undefined;
+    value = data ? data.trait_values : null;
+  }
+
+  return value ? (
+    <Group spacing='xs'>
+      <ActionIcon
+        onClick={() => {
+          window.open(data?.definition, '_blank');
+        }}
+        radius='sm'
+        size='sm'
+        color='gray'
+        variant='filled'
+      >
+        <IconLeaf size='0.7rem' />
+      </ActionIcon>
+      <Text size='sm' weight='bold'>
+        {value}
+      </Text>
+    </Group>
+  ) : (
+    missingDataField
+  );
+}
+
+function AusTraitsField({ promise, trait }: AusTraitsFieldProps) {
+  if (trait) {
+    return (
+      <Suspense fallback={<Skeleton width='50%'>{missingDataField}</Skeleton>}>
+        <Await resolve={promise}>
+          <AusTraitsFieldInner trait={trait} />
+        </Await>
+      </Suspense>
+    );
+  }
+
+  return missingDataField;
+}
 
 interface AccessionPanelLoader {
   accessionEvent: Event;
   trialEvents: Event[];
 }
 
+interface RouteLoaderProps {
+  sds: SDSResult;
+  traits: AusTraitsSummary;
+}
+
 function AccessionPanel() {
   const { accessionEvent, trialEvents } = useLoaderData() as AccessionPanelLoader;
-  const { sds } = useRouteLoaderData('taxon') as { sds: SDSResult };
+  const { sds, traits } = useRouteLoaderData('taxon') as RouteLoaderProps;
   const accession = accessionEvent?.extensions?.seedbank as SeedBankAccession;
   const navigate = useNavigate();
 
@@ -140,9 +232,9 @@ function AccessionPanel() {
         <Grid gutter='xs' p='sm' mt='md'>
           {longFields
             .map((key) => ({ key, ...accessionFields[key] }))
-            .map(({ key, label, description, examples, icon: Icon }) => (
+            .map(({ key, label, description, examples, trait, icon: Icon }) => (
               <Grid.Col key={key} xs={12} sm={6} md={4} lg={4} xl={3}>
-                <FieldTooltip {...{ label, description, examples, Icon }}>
+                <FieldTooltip {...{ label, description, examples, trait, Icon }}>
                   <Box>
                     <Text color='dimmed' size='xs'>
                       {label}
@@ -152,9 +244,7 @@ function AccessionPanel() {
                         {accession?.[key]}
                       </Text>
                     ) : (
-                      <Text size='sm' weight='bold' color='dimmed'>
-                        {missingData}
-                      </Text>
+                      <AusTraitsField trait={trait} promise={traits} />
                     )}
                   </Box>
                 </FieldTooltip>
@@ -214,35 +304,54 @@ function AccessionPanel() {
               />
             </Suspense>
           )}
-          {!hasCoordinates && sds.instances.length > 0 && !accessionEvent.locality ? (
-            <Box p='lg'>
-              <SDS instances={sds.instances} />
+          {!hasCoordinates && (
+            <Box
+              p='lg'
+              sx={(theme) => ({
+                backgroundColor:
+                  theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
+              })}
+            >
+              {sds.instances.length > 0 ? (
+                <SDS instances={sds.instances} />
+              ) : (
+                <Center w='100%'>
+                  <Stack w='100%' align='center' spacing='xl'>
+                    <ThemeIcon size={100} variant='light' radius={50}>
+                      <IconMapPinOff size='2.5rem' />
+                    </ThemeIcon>
+                    <Stack spacing='xs' align='center'>
+                      <Title order={3} mb='xs'>
+                        Missing Coordinates
+                      </Title>
+                      <Text size='0.9rem' color='dimmed' align='center' maw={525}>
+                        No coordinate data has been supplied for this record
+                      </Text>
+                    </Stack>
+                  </Stack>
+                </Center>
+              )}
             </Box>
-          ) : (
-            <Stack spacing='xs' p='md'>
-              <Alert mb='xs' icon={<IconInfoCircle />}>
-                {hasCoordinates ? (
-                  <>
-                    This map shows the seed <b>collection</b> location
-                  </>
-                ) : (
-                  'No coordinate data supplied'
-                )}
-              </Alert>
-              <IconText labelWidth={120} title='Locality' icon={IconLocation}>
-                {accessionEvent.locality || missingData}
-              </IconText>
-              <IconText labelWidth={120} title='Decimal Lat' icon={IconMapPin}>
-                {accessionEvent.decimalLatitude || missingData}
-              </IconText>
-              <IconText labelWidth={120} title='Decimal Lng' icon={IconMapPin}>
-                {accessionEvent.decimalLongitude || missingData}
-              </IconText>
-              <IconText labelWidth={120} title='State Province' icon={IconMap2}>
-                {accessionEvent.stateProvince || missingData}
-              </IconText>
-            </Stack>
           )}
+          <Stack spacing='xs' p='md'>
+            {hasCoordinates && (
+              <Alert mb='xs' icon={<IconInfoCircle />}>
+                This map shows the seed <b>collection</b> location
+              </Alert>
+            )}
+            <IconText labelWidth={120} title='Locality' icon={IconLocation}>
+              {accessionEvent.locality || missingData}
+            </IconText>
+            <IconText labelWidth={120} title='Decimal Lat' icon={IconMapPin}>
+              {accessionEvent.decimalLatitude || missingData}
+            </IconText>
+            <IconText labelWidth={120} title='Decimal Lng' icon={IconMapPin}>
+              {accessionEvent.decimalLongitude || missingData}
+            </IconText>
+            <IconText labelWidth={120} title='State Province' icon={IconMap2}>
+              {accessionEvent.stateProvince || missingData}
+            </IconText>
+          </Stack>
         </Card>
       </Grid.Col>
       <Grid.Col sm={4} md={4} lg={4}>

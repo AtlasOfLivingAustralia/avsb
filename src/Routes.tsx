@@ -8,6 +8,7 @@ import {
   collectoryAPI,
   genbankAPI,
   sdsAPI,
+  austraitsAPI,
 } from './api';
 
 import { DashboardView, HomeView } from './views';
@@ -45,19 +46,13 @@ const routes = createBrowserRouter([
         lazy: () => import('./views/Taxon'),
         loader: async ({ params }) => {
           const taxon = await taxonAPI.info(params.guid || '');
+          // const sds = await sdsAPI.get(taxon.classification.scientificName);
 
-          // Wrap SDS retrieval in try-catch (SDS test is unstable)
-          const sds = await (async () => {
-            try {
-              const data = await sdsAPI.get(taxon.classification.scientificName);
-              if (!data.instances) throw new Error('Invalid request');
-              return data;
-            } catch (error) {
-              return { instances: [] };
-            }
-          })();
-
-          return { taxon, sds };
+          return defer({
+            taxon,
+            sds: await sdsAPI.get(taxon.classification.scientificName),
+            traits: austraitsAPI.summary(taxon.classification.scientificName, params.guid || ''),
+          });
         },
         children: [
           {
@@ -226,6 +221,11 @@ const routes = createBrowserRouter([
               defer({
                 sequences: genbankAPI.sequences(params.guid || ''),
               }),
+          },
+          {
+            path: 'traits',
+            errorElement: <ErrorBoundary />,
+            lazy: () => import('./views/Traits'),
           },
           {
             path: '*',

@@ -35,7 +35,14 @@ async function get(
   // Append optional date parameters
   if (date !== undefined) URL += `/date/${date}`;
 
-  return (await fetch(URL)).json();
+  // Wrap in a try-catch to handle
+  try {
+    const data = await (await fetch(URL)).json();
+    if (!data.instances) throw new Error('Invalid request');
+    return data;
+  } catch (error) {
+    return { acceptedName: null, commonName: null, scientificName: '', status: [], instances: [] };
+  }
 }
 
 export default {

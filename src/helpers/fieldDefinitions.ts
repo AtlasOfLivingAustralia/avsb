@@ -38,12 +38,18 @@ import {
   IconHandGrab,
 } from '@tabler/icons';
 
+export interface SeedbankFieldTrait {
+  type: 'numeric' | 'categorical';
+  name: string;
+}
+
 export interface SeedbankField {
   label: string;
   description: string;
   examples: string;
-  unit?: string;
   icon: TablerIcon;
+  unit?: string;
+  trait?: SeedbankFieldTrait;
 }
 
 type SeedbankFieldMap = { [key: string]: SeedbankField };
@@ -138,7 +144,11 @@ const accessionFields: SeedbankFieldMap = {
     icon: IconLeaf,
     examples:
       '"herb", "subshrub", "shrub", "mallee", "tree", "graminoid", "tussock", "hummock", "basal large", "geophyte", "palmoid", "climber", "climber herbaceous", "climber woody", "fern", "lycophyte"',
-    description: 'Description of the form of a plant. Source: Austraits',
+    description: 'Description of the form of a plant.',
+    trait: {
+      name: 'Life form',
+      type: 'categorical',
+    },
   },
   formInStorage: {
     label: 'Form in Storage',

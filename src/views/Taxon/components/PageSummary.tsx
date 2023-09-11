@@ -29,6 +29,7 @@ const summaries: { [key: string]: string[] } = {
     'Below are sequences for your chosen taxon, retrieved from GenBank. Click on a card to be redirected to GenBank.',
     "'View all records' redirects to the full list of search results.",
   ],
+  traits: ['Below is plant trait information that has been supplied by AusTraits'],
 };
 
 interface PageSummaryProps extends BoxProps {
@@ -67,7 +68,7 @@ function PageSummary({ currentPage, ...rest }: PageSummaryProps) {
       </HoverCard.Target>
       <HoverCard.Dropdown>
         <Stack spacing='sm'>
-          {summaries[currentPage].map((summary) => (
+          {summaries[currentPage]?.map((summary) => (
             <Text key={summary} size='sm'>
               {summary}
             </Text>
