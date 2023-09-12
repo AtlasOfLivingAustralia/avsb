@@ -146,6 +146,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
             viabilityPercentage
             numberFull
             numberEmpty
+            numberNotViable
             numberTested
             preTestProcessingNotes
           }
@@ -198,6 +199,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
             viabilityPercentage
             numberFull
             numberEmpty
+            numberNotViable
             numberTested
             preTestProcessingNotes
           }
@@ -637,6 +639,7 @@ query list($predicate: Predicate){
             viabilityPercentage
             numberFull
             numberEmpty
+            numberNotViable
             numberTested
             preTestProcessingNotes
           }
