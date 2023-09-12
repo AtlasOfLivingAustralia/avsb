@@ -406,6 +406,20 @@ function FAQ() {
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
+        <Accordion.Item value='taxon-phrase-names'>
+          <Accordion.Control>
+            How do I find data for a taxon with a phrase name (not formally described)?
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Text size='sm'>
+              Phrase names are temporary names for taxa that haven&apos;t yet been formally
+              described in a taxonomic publication. These names aren&apos;t currently displayed
+              within the species list on seed bank summary pages. The best way to find out if there
+              is any accession or trial data for one of these taxa and who has seed for it in their
+              collection is to do a general search for that taxon.
+            </Text>
+          </Accordion.Panel>
+        </Accordion.Item>
       </Accordion>
       <Space h={80} />
     </Container>

@@ -146,6 +146,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
             viabilityPercentage
             numberFull
             numberEmpty
+            numberNotViable
             numberTested
             preTestProcessingNotes
           }
@@ -198,6 +199,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
             viabilityPercentage
             numberFull
             numberEmpty
+            numberNotViable
             numberTested
             preTestProcessingNotes
           }
@@ -490,8 +492,8 @@ query list($datasetKey: JSON){
 `;
 
 const QUERY_TAXON_MEDIA = `
-query image($key: String, $size: Int, $from: Int, $params: JSON) {
-  taxonMedia(key: $key, size: $size, from: $from, params: $params) {
+query image($key: String, $size: Int, $from: Int, $specimenParams: JSON, $otherParams: JSON) {
+  specimens: taxonMedia(key: $key, size: 8, from: $from, params: $specimenParams) {
     identifier
     type
     subtypeLiteral
@@ -501,6 +503,28 @@ query image($key: String, $size: Int, $from: Int, $params: JSON) {
     webStatement
     credit
     creator
+    provider
+    providerLiteral
+    description
+    tag
+    createDate
+    accessURI
+    accessOriginalURI
+    format
+    pixelXDimension
+    pixelYDimension
+  }
+  other: taxonMedia(key: $key, size: $size, from: $from, params: $otherParams) {
+    identifier
+    type
+    subtypeLiteral
+    title
+    rights
+    owner
+    webStatement
+    credit
+    creator
+    provider
     providerLiteral
     description
     tag
@@ -537,6 +561,9 @@ query list($predicate: Predicate){
         decimalLatitude
         decimalLongitude
         stateProvince
+        distinctTaxa {
+          scientificName
+        }
         measurementOrFacts {
           measurementID
           measurementType
@@ -599,6 +626,9 @@ query list($predicate: Predicate){
         month
         day
         datasetTitle
+        distinctTaxa {
+          scientificName
+        }
         extensions {
           seedbank {
             accessionNumber
@@ -609,6 +639,7 @@ query list($predicate: Predicate){
             viabilityPercentage
             numberFull
             numberEmpty
+            numberNotViable
             numberTested
             preTestProcessingNotes
           }

@@ -3,11 +3,12 @@ import { DownloadField } from '#/components/Downloads';
 const downloadFields: DownloadField[] = [
   { label: 'Event ID', key: 'eventID' },
   { label: 'Accession Number', key: 'extensions.seedbank.accessionNumber' },
+  { label: 'Taxon', key: 'distinctTaxa[0].scientificName' },
   { label: 'Institution', key: 'datasetTitle' },
   {
     label: 'Date Tested',
     key: 'extensions.seedbank.testDateStarted',
-    formatter: (field: number) => new Date(field).toLocaleDateString(),
+    formatter: (field: number) => (field ? new Date(field).toLocaleDateString() : ''),
   },
   {
     label: 'Test Length',

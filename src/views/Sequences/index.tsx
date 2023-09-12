@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Button, Center, Grid, Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
-import { IconDna, IconExternalLink } from '@tabler/icons';
+import { IconDnaOff, IconExternalLink } from '@tabler/icons';
 import range from 'lodash/range';
 
 // Project components / helpers
@@ -77,7 +77,7 @@ export function Component() {
           ) : (
             <Center h='calc(100vh - 350px)'>
               <Stack align='center'>
-                <IconDna size='3rem' />
+                <IconDnaOff size='3rem' />
                 <Text color='dimmed'>No matching sequences found</Text>
               </Stack>
             </Center>
