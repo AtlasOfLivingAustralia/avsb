@@ -203,7 +203,7 @@ function AccessionTable({ events }: AccessionTableProps) {
                     </td>
                     <td>
                       {getIsDefined(accession?.purityPercentage) &&
-                        `${accession.purityPercentage}%`}
+                        `${accession.purityPercentage?.toFixed(2)}%`}
                     </td>
                     <td>
                       {getIsDefined(accession?.storageTemperatureInCelsius) &&
