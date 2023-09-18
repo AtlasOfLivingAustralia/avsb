@@ -12,15 +12,14 @@ import {
   useMantineTheme,
   Anchor,
   Button,
-  Alert,
-  Divider,
+  Chip,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Blob, TaxonSearchInput } from '#/components';
 import wateringCan from '#/assets/watering-can-and-plant.png';
 import { Wave } from '#/components/Wave';
-import { IconExternalLink, IconInfoCircle, IconQuestionCircle } from '@tabler/icons';
+import { IconExternalLink, IconQuestionCircle } from '@tabler/icons';
 import Summaries from './components/Summaries';
 
 function Home() {
@@ -87,25 +86,18 @@ function Home() {
       >
         <Container size='lg'>
           <Box p='xl'>
-            <Title pb='sm' order={2} weight={600}>
-              Our Datasets
-            </Title>
-            <Alert title='Data Disclaimer' mt='xl' radius='lg' icon={<IconInfoCircle />}>
-              <Text>
-                The data currently provided is a only subset of what&apos;s available in the{' '}
-                <Anchor target='_blank' href='https://asbp.ala.org.au'>
-                  legacy ASBP portal
-                </Anchor>
-                ,{' '}
-                <b>
-                  new and updated datasets will be available in the system in the coming months.
-                </b>
-              </Text>
-            </Alert>
-            <Box my='sm'>
-              <Divider variant='dashed' my='xl' />
-            </Box>
-            <Summaries />
+            <Group position='apart' mb='xl'>
+              <Title order={2} weight={600}>
+                Our Datasets
+              </Title>
+              {/* <Text size='sm' color='dimmed'>
+                Last Updated September, 2023
+              </Text> */}
+              <Chip size='xs' checked={false}>
+                Last Updated September, 2023
+              </Chip>
+            </Group>
+            <Summaries mt='md' />
           </Box>
         </Container>
         <Space h={25} />
