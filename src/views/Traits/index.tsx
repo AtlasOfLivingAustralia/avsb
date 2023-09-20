@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-import { Center, Grid, Stack, Text } from '@mantine/core';
-import { IconSeedingOff } from '@tabler/icons';
+import { Alert, Center, Grid, Skeleton, Stack, Text } from '@mantine/core';
+import { IconAsterisk, IconSeedingOff } from '@tabler/icons';
 import range from 'lodash/range';
 
 // Project components / helpers
@@ -21,13 +21,21 @@ export function Component() {
   return (
     <Suspense
       fallback={
-        <Grid>
-          {range(0, 20).map((num) => (
-            <Grid.Col key={num} xs={12} sm={12} md={6} lg={4}>
-              <CategoricalTraitCard trait={null} />
-            </Grid.Col>
-          ))}
-        </Grid>
+        <>
+          <Skeleton mb='xl'>
+            <Alert icon={<IconAsterisk />} variant='light'>
+              Data sources in AusTraits report multiple values for this trait, suggesting variation
+              across the taxon&apos;s range and life stages.
+            </Alert>
+          </Skeleton>
+          <Grid>
+            {range(0, 20).map((num) => (
+              <Grid.Col key={num} xs={12} sm={12} md={6} lg={4}>
+                <CategoricalTraitCard trait={null} />
+              </Grid.Col>
+            ))}
+          </Grid>
+        </>
       }
     >
       <Await resolve={traits}>
@@ -36,18 +44,24 @@ export function Component() {
           numeric_traits: numericTraits,
         }: AusTraitsSummary) =>
           categoricalTraits.length > 0 || numericTraits.length > 0 ? (
-            <Grid>
-              {categoricalTraits.map((trait) => (
-                <Grid.Col key={trait.trait_name} xs={12} sm={12} md={6} lg={4}>
-                  <CategoricalTraitCard trait={trait} />
-                </Grid.Col>
-              ))}
-              {numericTraits.map((trait) => (
-                <Grid.Col key={trait.trait_name} xs={12} sm={12} md={6} lg={4}>
-                  <NumericTraitCard trait={trait} />
-                </Grid.Col>
-              ))}
-            </Grid>
+            <>
+              <Alert icon={<IconAsterisk />} variant='light' mb='xl'>
+                Data sources in AusTraits report multiple values for this trait, suggesting
+                variation across the taxon&apos;s range and life stages.
+              </Alert>
+              <Grid>
+                {categoricalTraits.map((trait) => (
+                  <Grid.Col key={trait.trait_name} xs={12} sm={12} md={6} lg={4}>
+                    <CategoricalTraitCard trait={trait} />
+                  </Grid.Col>
+                ))}
+                {numericTraits.map((trait) => (
+                  <Grid.Col key={trait.trait_name} xs={12} sm={12} md={6} lg={4}>
+                    <NumericTraitCard trait={trait} />
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </>
           ) : (
             <Center h='calc(100vh - 350px)'>
               <Stack align='center'>

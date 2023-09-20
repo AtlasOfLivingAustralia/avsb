@@ -25,13 +25,21 @@ function NumericTraitCard({ trait }: NumericTraitCardProps) {
       </Skeleton>
       <Skeleton visible={visible}>
         <Group spacing='xs'>
-          <Chip checked={false} size='xs'>
-            <b>Mean</b>&nbsp;{trait?.mean}
-            {trait?.unit}
-          </Chip>
-          {trait?.min !== '' && trait?.max !== '' && (
+          {trait?.mean !== '' && (
             <Chip checked={false} size='xs'>
-              <b>Range</b>&nbsp;{trait?.min}-{trait?.max}
+              <b>Mean</b>&nbsp;{trait?.mean}
+              {trait?.unit}
+            </Chip>
+          )}
+          {trait?.min !== '' && (
+            <Chip checked={false} size='xs'>
+              <b>Min</b>&nbsp;{trait?.min}
+              {trait?.unit}
+            </Chip>
+          )}
+          {trait?.max !== '' && (
+            <Chip checked={false} size='xs'>
+              <b>Max</b>&nbsp;{trait?.max}
               {trait?.unit}
             </Chip>
           )}

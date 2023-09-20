@@ -214,7 +214,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     </td>
                     <td>
                       {getIsDefined(trial?.adjustedGerminationPercentage) &&
-                        `${trial?.adjustedGerminationPercentage}%`}
+                        `${trial?.adjustedGerminationPercentage?.toFixed(2)}%`}
                     </td>
                     <td>{getIsDefined(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}</td>
                     <td>
@@ -223,7 +223,8 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                       </Box>
                     </td>
                     <td>
-                      {getIsDefined(trial?.viabilityPercentage) && `${trial?.viabilityPercentage}%`}
+                      {getIsDefined(trial?.viabilityPercentage) &&
+                        `${trial?.viabilityPercentage?.toFixed(2)}%`}
                     </td>
                     <td>
                       {trial?.testDateStarted

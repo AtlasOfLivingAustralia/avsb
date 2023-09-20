@@ -28,11 +28,24 @@ interface AusTraitsCount {
 }
 
 async function summary(search: string, guid: string): Promise<AusTraitsSummary> {
-  return (
-    await fetch(
-      `${import.meta.env.VITE_API_BIE}/externalSite/ausTraitsSummary?s=${search}&guid=${guid}`,
-    )
-  ).json();
+  try {
+    const data = await (
+      await fetch(
+        `${import.meta.env.VITE_API_BIE}/externalSite/ausTraitsSummary?s=${search}&guid=${guid}`,
+      )
+    ).json();
+
+    // Ensure we've successfully recieved the data back
+    if (Array.isArray(data)) throw new Error(data[0]);
+
+    // Return the data
+    return data;
+  } catch (error) {
+    return {
+      numeric_traits: [],
+      categorical_traits: [],
+    };
+  }
 }
 
 async function count(search: string, guid: string): Promise<AusTraitsCount[]> {
