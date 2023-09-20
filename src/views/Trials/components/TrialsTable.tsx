@@ -79,9 +79,20 @@ function TrialsTable({ events, height }: TrialsTableProps) {
     const sortDirection = skipReverse ? reverseSortDirection : !reverseSortDirection;
     const reversed = field === sortBy ? sortDirection : false;
 
+    // Merge treatment seed bank extension with data
+    const mergedEvents = events.map((event) => ({
+      ...event,
+      extensions: {
+        seedbank: {
+          ...(event.treatments?.[0]?.extensions?.seedbank || {}),
+          ...(event.extensions?.seedbank || {}),
+        },
+      },
+    }));
+
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(orderBy(events || [], [field], [reversed ? 'desc' : 'asc']));
+    setSortedData(orderBy(mergedEvents || [], [field], [reversed ? 'desc' : 'asc']));
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
