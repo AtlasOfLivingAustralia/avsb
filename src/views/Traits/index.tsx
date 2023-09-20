@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Alert, Center, Grid, Skeleton, Stack, Text } from '@mantine/core';
-import { IconAsterisk, IconInfoCircle, IconSeedingOff } from '@tabler/icons';
+import { IconAsterisk, IconSeedingOff } from '@tabler/icons';
 import range from 'lodash/range';
 
 // Project components / helpers
