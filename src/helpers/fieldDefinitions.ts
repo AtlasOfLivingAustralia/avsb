@@ -36,6 +36,7 @@ import {
   IconCircleOff,
   IconCircleDot,
   IconHandGrab,
+  IconTag,
 } from '@tabler/icons';
 
 export interface SeedbankFieldTrait {
@@ -58,8 +59,14 @@ const accessionFields: SeedbankFieldMap = {
   accessionNumber: {
     label: 'Accession',
     icon: IconId,
-    examples: '"CANB 770480", "20061691"',
-    description: 'The unique identification number given to a accession of seed. ',
+    examples: '"000123", "20061691"',
+    description: 'The unique identification number given to a accession of seed.',
+  },
+  herbariumVoucher: {
+    label: 'Herbarium Voucher',
+    icon: IconTag,
+    examples: '"CANB 770480", "PERTH 1441175"',
+    description: 'The associated herbarium voucher for an accession of seed.',
   },
   seedPerGram: {
     label: 'Seed/gm',
@@ -208,8 +215,14 @@ const trialFields: SeedbankFieldMap = {
   accessionNumber: {
     label: 'Accession',
     icon: IconId,
-    examples: '"CANB 770480", "20061691"',
+    examples: '"000123", "20061691"',
     description: 'The unique identification number given to a accession of seed.',
+  },
+  herbariumVoucher: {
+    label: 'Herbarium Voucher',
+    icon: IconTag,
+    examples: '"CANB 770480", "PERTH 1441175"',
+    description: 'The associated herbarium voucher for an accession of seed.',
   },
   numberGerminated: {
     label: 'Number Germinated',

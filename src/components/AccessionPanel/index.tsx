@@ -381,7 +381,7 @@ function AccessionPanel() {
                 </Text>
               </Timeline.Item>
             </Timeline>
-            {accession?.accessionNumber && <HerbariumLink accession={accession.accessionNumber} />}
+            {accession?.herbariumVoucher && <HerbariumLink voucher={accession.herbariumVoucher} />}
           </Stack>
         </Card>
       </Grid.Col>

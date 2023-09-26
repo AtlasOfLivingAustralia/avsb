@@ -26,6 +26,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             seedPerGram
             formInStorage
             quantityInGrams
@@ -88,6 +89,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             seedPerGram
             formInStorage
             quantityInGrams
@@ -139,6 +141,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             testDateStarted
             testLengthInDays
             numberGerminated
@@ -192,6 +195,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             testDateStarted
             testLengthInDays
             numberGerminated
@@ -280,6 +284,7 @@ query point($predicate: Predicate){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             seedPerGram
             formInStorage
             quantityInGrams
@@ -332,6 +337,7 @@ query point($predicate: Predicate){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             seedPerGram
             formInStorage
             quantityInGrams
@@ -577,6 +583,7 @@ query list($predicate: Predicate){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             seedPerGram
             formInStorage
             quantityInGrams
@@ -632,6 +639,7 @@ query list($predicate: Predicate){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             testDateStarted
             testLengthInDays
             numberGerminated

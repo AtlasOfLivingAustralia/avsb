@@ -8,6 +8,7 @@ const fields: (keyof SeedBankAccession)[] = [
   'storageRelativeHumidityPercentage',
   'primaryCollector',
   'duplicatesReplicates',
+  'herbariumVoucher',
 ];
 
 export default fields;
