@@ -69,7 +69,7 @@ function Header() {
                   variant='subtle'
                   aria-label='Go back'
                 >
-                  Back
+                  Seed Bank
                 </Button>
               )}
             </Transition>
