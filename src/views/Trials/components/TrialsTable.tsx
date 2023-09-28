@@ -17,19 +17,16 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 
-import {
-  IconArrowUpRight,
-  IconArrowsMaximize,
-  IconArrowsMinimize,
-  IconChevronDown,
-} from '@tabler/icons';
+import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
 
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
 
 // Project components / helpers
 import { TrialDetails, ThField } from '#/components';
 import { getIsDefined } from '#/helpers';
+
+import AccessionPopover from './AccessionPopover';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -248,27 +245,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     <td align='right' style={{ paddingLeft: 0 }}>
                       <Group spacing='xs' position='right' miw={145}>
                         {location.pathname.endsWith('trials') && (
-                          <Button
-                            styles={{
-                              label: {
-                                textDecoration: 'underline',
-                                textUnderlineOffset: 2,
-                                textDecorationColor:
-                                  theme.colorScheme === 'dark'
-                                    ? 'rgba(165, 216, 255, 0.25)'
-                                    : 'rgba(34, 139, 230, 0.25)',
-                              },
-                            }}
-                            rightIcon={<IconArrowUpRight size='1rem' />}
-                            disabled={!event.parentEventID}
-                            component={Link}
-                            to={`../accessions/${event.parentEventID}`}
-                            variant='subtle'
-                            size='xs'
-                            px='xs'
-                          >
-                            View Accession
-                          </Button>
+                          <AccessionPopover parentEvent={event.parentEvent} />
                         )}
                         <Divider orientation='vertical' />
                         <IconChevronDown

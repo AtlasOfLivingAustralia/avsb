@@ -14,9 +14,6 @@ query list($predicate: Predicate, $size: Int, $from: Int){
       results {
         eventID
         parentEventID
-        year
-        month
-        day
         datasetTitle
         datasetKey
         locality
@@ -62,9 +59,6 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         eventID
         parentEventID
         locality
-        year
-        month
-        day
         datasetTitle
         datasetKey
         country
@@ -129,9 +123,6 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         eventID
         parentEventID
         locality
-        year
-        month
-        day
         datasetTitle
         distinctTaxa {
           scientificName
@@ -174,23 +165,24 @@ query list($predicate: Predicate, $size: Int, $from: Int){
       results {
         eventID
         parentEventID
-        locality
-        year
-        month
-        day
         datasetTitle
         distinctTaxa {
           scientificName
         }
-        measurementOrFacts {
-          measurementID
-          measurementType
-          measurementUnit
-          measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
+        parentEvent {
+          eventID
+          locality
+          country
+          decimalLatitude
+          decimalLongitude
+          stateProvince
+          extensions {
+            seedbank {
+              dateCollected
+              dateInStorage
+              quantityCount
+            }
+          }
         }
         extensions {
           seedbank {
@@ -223,9 +215,6 @@ query list($predicate: Predicate){
       results {
         eventID
         parentEventID
-        year
-        month
-        day
         datasetTitle
         eventRemarks
         measurementOrFacts {
@@ -280,7 +269,6 @@ query point($predicate: Predicate){
           concept
         }
         measurementOrFactTypes
-        year
         extensions {
           seedbank {
             accessionNumber
@@ -329,7 +317,6 @@ query point($predicate: Predicate){
           concept
         }
         measurementOrFactTypes
-        year
         distinctTaxa {
           key
           scientificName
@@ -558,9 +545,6 @@ query list($predicate: Predicate){
         eventID
         parentEventID
         locality
-        year
-        month
-        day
         datasetTitle
         datasetKey
         country
@@ -629,9 +613,6 @@ query list($predicate: Predicate){
         eventID
         parentEventID
         locality
-        year
-        month
-        day
         datasetTitle
         distinctTaxa {
           scientificName
@@ -650,6 +631,20 @@ query list($predicate: Predicate){
             numberNotViable
             numberTested
             preTestProcessingNotes
+          }
+        }
+        parentEvent {
+          eventID
+          locality
+          country
+          decimalLatitude
+          decimalLongitude
+          stateProvince
+          extensions {
+            seedbank {
+              dateCollected
+              dateInStorage
+            }
           }
         }
       }

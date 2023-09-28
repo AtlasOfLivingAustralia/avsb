@@ -171,7 +171,7 @@ function AccessionPanel() {
                     Accessions
                   </Anchor>
                   <Text weight='bold' size='sm'>
-                    {accession?.accessionNumber || 'Unknown'}
+                    {accession?.accessionNumber || accessionEvent.eventID}
                   </Text>
                 </Breadcrumbs>
                 <Chip
