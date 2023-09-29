@@ -22,6 +22,7 @@ const longFields: (keyof SeedBankAccession)[] = [
   'collectionPermitNumber',
   'collectionFill',
   'publicationDOI',
+  'herbariumVoucher',
 ];
 
 export { fields, longFields };

@@ -14,30 +14,30 @@ import { useParams } from 'react-router-dom';
 // AVH logo
 import avhLogo from '#/assets/avh-logo-white.png';
 
-interface ContactProps extends UnstyledButtonProps {
-  accession: string;
+interface HerbariumLinkProps extends UnstyledButtonProps {
+  voucher: string;
 }
 
-function HerbariumLink({ accession, ...rest }: ContactProps) {
+function HerbariumLink({ voucher, ...rest }: HerbariumLinkProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const [uuid, setUuid] = useState<string | null>(null);
   const { guid } = useParams();
 
   useEffect(() => {
-    async function getAccession(taxonID: string) {
-      // Split the accession number into parts
-      const catalogCode = accession.substring(0, accession.indexOf(' ')).toUpperCase();
-      const catalogNumber = accession.substring(
-        accession.indexOf(' ') + 1,
-        accession.lastIndexOf('.') > 0 ? accession.lastIndexOf('.') : undefined,
+    async function getAccession() {
+      // Split the voucher into parts
+      const catalogCode = voucher.substring(0, voucher.indexOf(' ')).toUpperCase();
+      const catalogNumber = voucher.substring(
+        voucher.indexOf(' ') + 1,
+        voucher.lastIndexOf('.') > 0 ? voucher.lastIndexOf('.') : undefined,
       );
 
       // Construct API request params
       const params = new URLSearchParams({
         q: `catalogue_number:${catalogCode} "${catalogNumber}"`,
         qc: 'data_hub_uid:dh9',
-        fq: `lsid:${taxonID}`,
+        fq: `lsid:${guid}`,
         disableAllQualityFilters: 'true',
       });
 
@@ -55,9 +55,8 @@ function HerbariumLink({ accession, ...rest }: ContactProps) {
       setLoading(false);
     }
 
-    const taxonID = guid;
-    if (taxonID) getAccession(taxonID);
-  }, [accession, guid]);
+    if (guid) getAccession();
+  }, [voucher, guid]);
 
   // Don't render anything if no taxon ID is supplied
   if (!guid) return null;

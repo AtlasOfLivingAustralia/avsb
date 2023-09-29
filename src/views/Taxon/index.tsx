@@ -61,7 +61,7 @@ const tabs = [
 
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
   const { taxon: data } = useLoaderData() as { taxon: Taxon };
   const clipboard = useClipboard({ timeout: 500 });
   const currentPage = pathname.split('/')[3];
@@ -135,7 +135,7 @@ export function Component() {
               <Tabs.Tab
                 key={tabKey}
                 value={tabKey.toLowerCase()}
-                onClick={() => navigate(tabKey.toLowerCase())}
+                onClick={() => navigate(tabKey.toLowerCase(), { state })}
               >
                 <Group spacing='xs'>
                   <ThemeIcon

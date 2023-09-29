@@ -5,6 +5,19 @@ const downloadFields: DownloadField[] = [
   { label: 'Accession Number', key: 'extensions.seedbank.accessionNumber' },
   { label: 'Taxon', key: 'distinctTaxa[0].scientificName' },
   { label: 'Institution', key: 'datasetTitle' },
+  { label: 'Collect Locality', key: 'parentEvent.locality' },
+  { label: 'Collect Lat', key: 'parentEvent.decimalLatitude' },
+  { label: 'Collect Lng', key: 'parentEvent.decimalLongitude' },
+  {
+    label: 'Collection Date',
+    key: 'parentEvent.extensions.seedbank.dateCollected',
+    formatter: (field: number) => (field ? new Date(field).toLocaleDateString() : ''),
+  },
+  {
+    label: 'Storage Date',
+    key: 'parentEvent.extensions.seedbank.dateInStorage',
+    formatter: (field: number) => (field ? new Date(field).toLocaleDateString() : ''),
+  },
   {
     label: 'Date Tested',
     key: 'extensions.seedbank.testDateStarted',

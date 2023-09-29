@@ -171,7 +171,7 @@ function AccessionPanel() {
                     Accessions
                   </Anchor>
                   <Text weight='bold' size='sm'>
-                    {accession?.accessionNumber || 'Unknown'}
+                    {accession?.accessionNumber || accessionEvent.eventID}
                   </Text>
                 </Breadcrumbs>
                 <Chip
@@ -381,7 +381,7 @@ function AccessionPanel() {
                 </Text>
               </Timeline.Item>
             </Timeline>
-            {accession?.accessionNumber && <HerbariumLink accession={accession.accessionNumber} />}
+            {accession?.herbariumVoucher && <HerbariumLink voucher={accession.herbariumVoucher} />}
           </Stack>
         </Card>
       </Grid.Col>

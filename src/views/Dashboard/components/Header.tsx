@@ -13,7 +13,6 @@ import {
 
 // Project components & gelpers
 import { Logo, TaxonSearchInput } from '#/components';
-import { useEffect, useState } from 'react';
 
 const slideTransition = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -23,14 +22,9 @@ const slideTransition = {
 };
 
 function Header() {
-  const [from, setFrom] = useState<string | null>(null);
   const { state, pathname } = useLocation();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (state?.from) setFrom(state.from);
-  }, [state?.from]);
 
   return (
     <MantineHeader height={60}>
@@ -57,19 +51,20 @@ function Header() {
             </Transition>
             <Transition
               transition={slideTransition}
-              mounted={Boolean(from && pathname.includes('/taxon'))}
+              mounted={Boolean(state?.from && pathname.includes('/taxon'))}
             >
               {(styles) => (
                 <Button
                   style={styles}
                   component={Link}
-                  to={from || '/'}
+                  to={state?.from || '/'}
+                  state={null}
                   leftIcon={<IconArrowBackUp size='0.8rem' />}
                   size='xs'
                   variant='subtle'
                   aria-label='Go back'
                 >
-                  Back
+                  Seed Bank
                 </Button>
               )}
             </Transition>

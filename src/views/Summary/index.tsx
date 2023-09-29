@@ -37,8 +37,6 @@ export function Component() {
   const mdOrLarger = useMediaQuery(`(min-width: ${theme.breakpoints.md})`, true);
   const navigate = useNavigate();
 
-  console.log(taxon);
-
   return (
     <>
       <Modal

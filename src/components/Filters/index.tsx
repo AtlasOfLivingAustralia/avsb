@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import { Text, Drawer, Group, ThemeIcon, SegmentedControl, GroupProps } from '@mantine/core';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDisclosure } from '@mantine/hooks';
 import { IconFilter } from '@tabler/icons';
 import { Predicate } from '#/api/graphql/types';
@@ -23,8 +24,24 @@ function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
   const [sort, setSort] = useState<FiltersSort>('groups');
   const [resetKey, setResetKey] = useState<string>('');
   const [opened, { open, close }] = useDisclosure(false);
+  const { pathname, state } = useLocation();
+  const navigate = useNavigate();
 
   const onRemovePredicate = (predicate: Predicate) => {
+    // Also filter the location state
+    if (state.predicates) {
+      navigate(pathname, {
+        state: {
+          ...state,
+          predicates: ((state?.predicates as Predicate[]) || []).filter(
+            ({ key }) => predicate.key !== key,
+          ),
+        },
+        replace: true,
+      });
+    }
+
+    // Update the reset key & fire the onPredicates event
     setResetKey(`${predicate.key}-${Date.now()}`);
     onPredicates(predicates.filter(({ key }) => predicate.key !== key));
   };
@@ -68,7 +85,7 @@ function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
               predicates={predicates}
               filters={filters}
               resetKey={resetKey}
-              onPredicates={(newPredicates) => onPredicates(newPredicates)}
+              onPredicates={onPredicates}
               mb='xl'
             />
           </Drawer.Body>
