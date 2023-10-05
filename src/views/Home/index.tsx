@@ -90,9 +90,6 @@ function Home() {
               <Title order={2} weight={600}>
                 Our Datasets
               </Title>
-              {/* <Text size='sm' color='dimmed'>
-                Last Updated September, 2023
-              </Text> */}
               <Chip size='xs' checked={false}>
                 Last Updated September, 2023
               </Chip>
