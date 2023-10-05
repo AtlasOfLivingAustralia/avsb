@@ -46,7 +46,6 @@ const routes = createBrowserRouter([
         lazy: () => import('./views/Taxon'),
         loader: async ({ params }) => {
           const taxon = await taxonAPI.info(params.guid || '');
-          // const sds = await sdsAPI.get(taxon.classification.scientificName);
 
           return defer({
             taxon,
