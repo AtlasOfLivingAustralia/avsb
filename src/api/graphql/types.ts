@@ -39,6 +39,7 @@ interface Measurement {
 interface SeedBankAccession {
   id?: string;
   accessionNumber?: string | null;
+  herbariumVoucher?: string | null;
   seedPerGram?: number | null;
   formInStorage?: string | null;
   quantityInGrams?: number | null;
@@ -67,6 +68,7 @@ interface SeedBankAccession {
 interface SeedBankTrial {
   id?: string;
   accessionNumber?: string | null;
+  herbariumVoucher?: string | null;
   testDateStarted?: string | null;
   testLengthInDays?: string | null;
   numberGerminated?: number | null;
@@ -295,6 +297,7 @@ interface MediaItem {
   webStatement?: string | null;
   credit?: string | null;
   creator?: string | null;
+  provider?: string | null;
   providerLiteral?: string | null;
   description?: string | null;
   tag?: string | null;

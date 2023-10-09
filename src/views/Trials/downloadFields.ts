@@ -3,11 +3,25 @@ import { DownloadField } from '#/components/Downloads';
 const downloadFields: DownloadField[] = [
   { label: 'Event ID', key: 'eventID' },
   { label: 'Accession Number', key: 'extensions.seedbank.accessionNumber' },
-  { label: 'Institution', key: 'datasetTitle' },
+  { label: 'Scientific Name', key: 'distinctTaxa[0].scientificName' },
+  { label: 'Dataset Title', key: 'datasetTitle' },
+  { label: 'Locality', key: 'parentEvent.locality' },
+  { label: 'Decimal Latitude', key: 'parentEvent.decimalLatitude' },
+  { label: 'Decimal Longitude', key: 'parentEvent.decimalLongitude' },
+  {
+    label: 'Collection Date',
+    key: 'parentEvent.extensions.seedbank.dateCollected',
+    formatter: (field: number) => (field ? new Date(field).toLocaleDateString() : ''),
+  },
+  {
+    label: 'Storage Date',
+    key: 'parentEvent.extensions.seedbank.dateInStorage',
+    formatter: (field: number) => (field ? new Date(field).toLocaleDateString() : ''),
+  },
   {
     label: 'Date Tested',
     key: 'extensions.seedbank.testDateStarted',
-    formatter: (field: number) => new Date(field).toLocaleDateString(),
+    formatter: (field: number) => (field ? new Date(field).toLocaleDateString() : ''),
   },
   {
     label: 'Test Length',

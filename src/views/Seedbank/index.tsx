@@ -245,5 +245,4 @@ export function Component() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Component as any).displayName = 'Seedbank';
+Object.assign(Component, { displayName: 'Seedbank' });

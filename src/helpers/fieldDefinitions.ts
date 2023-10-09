@@ -35,14 +35,22 @@ import {
   IconBuildingBank,
   IconCircleOff,
   IconCircleDot,
+  IconHandGrab,
+  IconTag,
 } from '@tabler/icons';
+
+export interface SeedbankFieldTrait {
+  type: 'numeric' | 'categorical';
+  name: string;
+}
 
 export interface SeedbankField {
   label: string;
   description: string;
   examples: string;
-  unit?: string;
   icon: TablerIcon;
+  unit?: string;
+  trait?: SeedbankFieldTrait;
 }
 
 type SeedbankFieldMap = { [key: string]: SeedbankField };
@@ -51,8 +59,14 @@ const accessionFields: SeedbankFieldMap = {
   accessionNumber: {
     label: 'Accession',
     icon: IconId,
-    examples: '"CANB 770480", "20061691"',
-    description: 'The unique identification number given to a accession of seed. ',
+    examples: '"000123", "20061691"',
+    description: 'The unique identification number given to a accession of seed.',
+  },
+  herbariumVoucher: {
+    label: 'Herbarium Voucher',
+    icon: IconTag,
+    examples: '"CANB 770480", "PERTH 1441175"',
+    description: 'The associated herbarium voucher for an accession of seed.',
   },
   seedPerGram: {
     label: 'Seed/gm',
@@ -82,6 +96,12 @@ const accessionFields: SeedbankFieldMap = {
     unit: 'g',
     examples: '30g',
     description: 'The mass of 1000 pure seeds or fruits.',
+  },
+  numberPlantsSampled: {
+    label: 'Plants Sampled',
+    icon: IconHandGrab,
+    examples: '"27", ">50", "70-90"',
+    description: 'Number of plants that seed was harvested from.',
   },
   storageRelativeHumidityPercentage: {
     label: 'Relative Humidity',
@@ -131,7 +151,11 @@ const accessionFields: SeedbankFieldMap = {
     icon: IconLeaf,
     examples:
       '"herb", "subshrub", "shrub", "mallee", "tree", "graminoid", "tussock", "hummock", "basal large", "geophyte", "palmoid", "climber", "climber herbaceous", "climber woody", "fern", "lycophyte"',
-    description: 'Description of the form of a plant. Source: Austraits',
+    description: 'Description of the form of a plant.',
+    trait: {
+      name: 'Life form',
+      type: 'categorical',
+    },
   },
   formInStorage: {
     label: 'Form in Storage',
@@ -191,8 +215,14 @@ const trialFields: SeedbankFieldMap = {
   accessionNumber: {
     label: 'Accession',
     icon: IconId,
-    examples: '"CANB 770480", "20061691"',
+    examples: '"000123", "20061691"',
     description: 'The unique identification number given to a accession of seed.',
+  },
+  herbariumVoucher: {
+    label: 'Herbarium Voucher',
+    icon: IconTag,
+    examples: '"CANB 770480", "PERTH 1441175"',
+    description: 'The associated herbarium voucher for an accession of seed.',
   },
   numberGerminated: {
     label: 'Number Germinated',

@@ -54,24 +54,25 @@ export function Component() {
         </Suspense>
       </Modal>
       <Grid>
-        {Object.keys(taxon.conservationStatuses).length > 0 && (
-          <Grid.Col span={12} pb='lg'>
-            <Group align='center'>
-              <Group>
-                <IconAlertTriangle size='1.4rem' />
-                <Text size='sm' weight='bold'>
-                  Conservation Status
-                </Text>
+        {taxon.taxonConcept.rankString === 'species' &&
+          Object.keys(taxon.conservationStatuses).length > 0 && (
+            <Grid.Col span={12} pb='lg'>
+              <Group align='center'>
+                <Group>
+                  <IconAlertTriangle size='1.4rem' />
+                  <Text size='sm' weight='bold'>
+                    Conservation Status
+                  </Text>
+                </Group>
+                {mdOrLarger && <Divider orientation='vertical' mx='xs' />}
+                <Group>
+                  {Object.entries(taxon.conservationStatuses).map(([key, { status }]) => (
+                    <ConservationStatus key={key} place={key} initials={key} status={status} />
+                  ))}
+                </Group>
               </Group>
-              {mdOrLarger && <Divider orientation='vertical' mx='xs' />}
-              <Group>
-                {Object.entries(taxon.conservationStatuses).map(([key, { status }]) => (
-                  <ConservationStatus key={key} place={key} initials={key} status={status} />
-                ))}
-              </Group>
-            </Group>
-          </Grid.Col>
-        )}
+            </Grid.Col>
+          )}
         <Grid.Col sm={12} md={7} lg={8}>
           {sds.instances.length > 0 ? (
             <Card

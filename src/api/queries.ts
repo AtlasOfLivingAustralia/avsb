@@ -14,9 +14,6 @@ query list($predicate: Predicate, $size: Int, $from: Int){
       results {
         eventID
         parentEventID
-        year
-        month
-        day
         datasetTitle
         datasetKey
         locality
@@ -26,6 +23,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             seedPerGram
             formInStorage
             quantityInGrams
@@ -61,9 +59,6 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         eventID
         parentEventID
         locality
-        year
-        month
-        day
         datasetTitle
         datasetKey
         country
@@ -88,6 +83,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             seedPerGram
             formInStorage
             quantityInGrams
@@ -127,9 +123,6 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         eventID
         parentEventID
         locality
-        year
-        month
-        day
         datasetTitle
         distinctTaxa {
           scientificName
@@ -139,6 +132,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             testDateStarted
             testLengthInDays
             numberGerminated
@@ -146,6 +140,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
             viabilityPercentage
             numberFull
             numberEmpty
+            numberNotViable
             numberTested
             preTestProcessingNotes
           }
@@ -170,27 +165,29 @@ query list($predicate: Predicate, $size: Int, $from: Int){
       results {
         eventID
         parentEventID
-        locality
-        year
-        month
-        day
         datasetTitle
         distinctTaxa {
           scientificName
         }
-        measurementOrFacts {
-          measurementID
-          measurementType
-          measurementUnit
-          measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
+        parentEvent {
+          eventID
+          locality
+          country
+          decimalLatitude
+          decimalLongitude
+          stateProvince
+          extensions {
+            seedbank {
+              dateCollected
+              dateInStorage
+              quantityCount
+            }
+          }
         }
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             testDateStarted
             testLengthInDays
             numberGerminated
@@ -198,6 +195,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
             viabilityPercentage
             numberFull
             numberEmpty
+            numberNotViable
             numberTested
             preTestProcessingNotes
           }
@@ -217,9 +215,6 @@ query list($predicate: Predicate){
       results {
         eventID
         parentEventID
-        year
-        month
-        day
         datasetTitle
         eventRemarks
         measurementOrFacts {
@@ -274,10 +269,10 @@ query point($predicate: Predicate){
           concept
         }
         measurementOrFactTypes
-        year
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             seedPerGram
             formInStorage
             quantityInGrams
@@ -322,7 +317,6 @@ query point($predicate: Predicate){
           concept
         }
         measurementOrFactTypes
-        year
         distinctTaxa {
           key
           scientificName
@@ -330,6 +324,7 @@ query point($predicate: Predicate){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             seedPerGram
             formInStorage
             quantityInGrams
@@ -490,8 +485,8 @@ query list($datasetKey: JSON){
 `;
 
 const QUERY_TAXON_MEDIA = `
-query image($key: String, $size: Int, $from: Int, $params: JSON) {
-  taxonMedia(key: $key, size: $size, from: $from, params: $params) {
+query image($key: String, $size: Int, $from: Int, $specimenParams: JSON, $otherParams: JSON) {
+  specimens: taxonMedia(key: $key, size: 8, from: $from, params: $specimenParams) {
     identifier
     type
     subtypeLiteral
@@ -501,6 +496,28 @@ query image($key: String, $size: Int, $from: Int, $params: JSON) {
     webStatement
     credit
     creator
+    provider
+    providerLiteral
+    description
+    tag
+    createDate
+    accessURI
+    accessOriginalURI
+    format
+    pixelXDimension
+    pixelYDimension
+  }
+  other: taxonMedia(key: $key, size: $size, from: $from, params: $otherParams) {
+    identifier
+    type
+    subtypeLiteral
+    title
+    rights
+    owner
+    webStatement
+    credit
+    creator
+    provider
     providerLiteral
     description
     tag
@@ -528,15 +545,15 @@ query list($predicate: Predicate){
         eventID
         parentEventID
         locality
-        year
-        month
-        day
         datasetTitle
         datasetKey
         country
         decimalLatitude
         decimalLongitude
         stateProvince
+        distinctTaxa {
+          scientificName
+        }
         measurementOrFacts {
           measurementID
           measurementType
@@ -550,6 +567,7 @@ query list($predicate: Predicate){
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             seedPerGram
             formInStorage
             quantityInGrams
@@ -595,13 +613,14 @@ query list($predicate: Predicate){
         eventID
         parentEventID
         locality
-        year
-        month
-        day
         datasetTitle
+        distinctTaxa {
+          scientificName
+        }
         extensions {
           seedbank {
             accessionNumber
+            herbariumVoucher
             testDateStarted
             testLengthInDays
             numberGerminated
@@ -609,8 +628,23 @@ query list($predicate: Predicate){
             viabilityPercentage
             numberFull
             numberEmpty
+            numberNotViable
             numberTested
             preTestProcessingNotes
+          }
+        }
+        parentEvent {
+          eventID
+          locality
+          country
+          decimalLatitude
+          decimalLongitude
+          stateProvince
+          extensions {
+            seedbank {
+              dateCollected
+              dateInStorage
+            }
           }
         }
       }

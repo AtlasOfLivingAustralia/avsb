@@ -5,6 +5,7 @@ import { IconSearch } from '@tabler/icons';
 
 import uniqBy from 'lodash/uniqBy';
 import orderBy from 'lodash/orderBy';
+import { useMounted } from '#/helpers';
 
 export interface SearchSelectProps
   extends Omit<
@@ -22,6 +23,7 @@ function SelectSearch({ customTypes = [], fetchItems, onChange, ...props }: Sear
   const [error, setError] = useState<Error | null>(null);
   const [search, setSearch] = useState<string>('');
   const [searchDebounced] = useDebouncedValue(search, 300);
+  const mounted = useMounted();
 
   useEffect(() => {
     async function performFetch() {
@@ -36,8 +38,8 @@ function SelectSearch({ customTypes = [], fetchItems, onChange, ...props }: Sear
     }
 
     // Only perform a search if the user has provided an input
-    if (searchDebounced?.length > 0) performFetch();
-  }, [searchDebounced, fetchItems]);
+    if (searchDebounced?.length > 0 || !mounted) performFetch();
+  }, [searchDebounced, mounted, fetchItems]);
 
   // Sort the menu items alphabetically by label
   const dataSorted = orderBy(data, [(filter) => filter.label?.toLowerCase()], ['asc']);

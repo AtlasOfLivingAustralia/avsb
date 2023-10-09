@@ -148,5 +148,4 @@ export function Component() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Component as any).displayName = 'Accessions';
+Object.assign(Component, { displayName: 'Accessions' });

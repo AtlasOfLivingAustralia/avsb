@@ -1,11 +1,13 @@
-import { Box, Divider, Group, Text, Tooltip } from '@mantine/core';
-import { TablerIcon } from '@tabler/icons';
+import { SeedbankFieldTrait } from '#/helpers';
+import { Box, Divider, Group, Text, ThemeIcon, Tooltip } from '@mantine/core';
+import { IconLeaf, TablerIcon } from '@tabler/icons';
 import { PropsWithChildren } from 'react';
 
 interface FieldTooltipProps {
   label: string;
   description: string;
   examples: string;
+  trait?: SeedbankFieldTrait;
   Icon: TablerIcon;
 }
 
@@ -14,6 +16,7 @@ function FieldTooltip({
   description,
   examples,
   children,
+  trait,
   Icon,
 }: PropsWithChildren<FieldTooltipProps>) {
   return (
@@ -43,6 +46,21 @@ function FieldTooltip({
           >
             {description}
           </Text>
+          {trait && (
+            <Group spacing='xs' mt='sm'>
+              <ThemeIcon radius='sm' size='sm' color='gray' opacity={0.6}>
+                <IconLeaf size='0.7rem' />
+              </ThemeIcon>
+              <Text
+                size='xs'
+                sx={(theme) => ({
+                  color: theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
+                })}
+              >
+                Supplied by <b>AusTraits</b>, click for definition
+              </Text>
+            </Group>
+          )}
           <Divider opacity={0.15} my='xs' />
           <Text
             weight='normal'
