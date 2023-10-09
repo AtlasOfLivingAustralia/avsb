@@ -135,7 +135,17 @@ export function Component() {
               <Tabs.Tab
                 key={tabKey}
                 value={tabKey.toLowerCase()}
-                onClick={() => navigate(tabKey.toLowerCase(), { state })}
+                onClick={() => {
+                  if (tabKey !== 'Sequences') {
+                    navigate(tabKey.toLowerCase(), { state });
+                  } else {
+                    window.open(
+                      `https://www.ncbi.nlm.nih.gov/nuccore/?term=${encodeURIComponent(
+                        data.taxonConcept.nameString,
+                      )}`,
+                    );
+                  }
+                }}
               >
                 <Group spacing='xs'>
                   <ThemeIcon
