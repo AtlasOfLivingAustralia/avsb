@@ -15,7 +15,13 @@ async function suggest(query: string): Promise<SuggestedTaxon[]> {
   params.append('idxType', 'TAXON');
 
   const { autoCompleteList } = await (
-    await fetch(`${import.meta.env.VITE_API_ALA}/species/search/auto?${params}`)
+    await fetch(
+      // Use production ALA API for autocomplete in all environments
+      `${import.meta.env.VITE_API_ALA.replace(
+        'api.test.ala.org.au',
+        'api.ala.org.au',
+      )}/species/search/auto?${params}`,
+    )
   ).json();
   return (autoCompleteList as SuggestedTaxon[]).filter(
     ({ rankString }) => rankString !== 'unranked',
