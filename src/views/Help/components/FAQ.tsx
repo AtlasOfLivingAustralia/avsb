@@ -2,6 +2,7 @@ import { ReactNode, useState } from 'react';
 
 import {
   Accordion,
+  Alert,
   Anchor,
   Center,
   Container,
@@ -15,7 +16,7 @@ import {
   rem,
 } from '@mantine/core';
 
-import { TablerIcon } from '@tabler/icons';
+import { IconAlertTriangle, TablerIcon } from '@tabler/icons';
 import { trialFields } from '#/helpers';
 
 // Custom styles for Accordion component
@@ -107,6 +108,11 @@ function FAQ() {
                 <List.Item>Advise when you need the material;</List.Item>
                 <List.Item>Your contact details.</List.Item>
               </List>
+              <Alert color='yellow' icon={<IconAlertTriangle size='1rem' />}>
+                Requests for species that are listed under State or Commonwealth environmental
+                legislation (threatened species) will be considered on a case-by-case basis.
+                Additional information may be required and seed cannot be guaranteed.
+              </Alert>
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
