@@ -10,8 +10,10 @@ import axe from '@axe-core/react';
 import Providers from './Providers';
 import Routes from './Routes';
 import './index.css';
+import { PageMessage } from './components';
 
-const { VITE_APP_LOGROCKET_ENABLED, VITE_APP_LOGROCKET_ID } = import.meta.env;
+const { VITE_APP_LOGROCKET_ENABLED, VITE_APP_LOGROCKET_ID, VITE_APP_MAINTENANCE_MODE } = import.meta
+  .env;
 
 // Initialize LogRocket
 if (VITE_APP_LOGROCKET_ENABLED === 'true' && VITE_APP_LOGROCKET_ID)
@@ -23,7 +25,15 @@ if (import.meta.env.DEV) setTimeout(() => axe(React, ReactDOM, 1000), 2000);
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Providers>
-      <Routes />
+      {VITE_APP_MAINTENANCE_MODE === 'true' ? (
+        <PageMessage
+          title='Maintenance'
+          subtitle='Please stand by!'
+          message='The AVSB is currently undergoing maintenance'
+        />
+      ) : (
+        <Routes />
+      )}
     </Providers>
   </React.StrictMode>,
 );
