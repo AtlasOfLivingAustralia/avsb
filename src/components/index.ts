@@ -19,5 +19,6 @@ export { default as Downloads } from './Downloads';
 export { default as ThField } from './ThField';
 export { default as ConservationStatus } from './ConservationStatus';
 export { default as SDS } from './SDS';
+export { default as PageMessage } from './PageMessage';
 
 export type { Filter } from './Filters/types';
