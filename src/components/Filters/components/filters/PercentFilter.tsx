@@ -6,7 +6,7 @@ import { FilterItemProps } from '../../types';
 
 function PercentFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<[number, number]>([0, 100]);
-  const { key, label, placeholder, icon } = filter;
+  const { key, label, icon } = filter;
 
   // Callback handler for range slider update
   const onUpdate = ([lower, upper]: [number, number]) => {
@@ -37,7 +37,6 @@ function PercentFilter({ filter, resetKey, onChange }: FilterItemProps) {
       <IconText icon={icon} title={label} />
       <Box px='sm' py='md'>
         <RangeSlider
-          placeholder={placeholder}
           minRange={0}
           value={value}
           onChange={setValue}
