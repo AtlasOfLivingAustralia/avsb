@@ -358,9 +358,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete 
     Properties:
-      LogGroupName: !Sub
-                       - /aws/codebuild/${ProjectName}
-                       - ProjectName: !Ref ExportConfig
+      LogGroupName: !Sub /aws/codebuild/${ExportConfig}
       RetentionInDays: 30
       Tags:
         - Key: Name
@@ -370,9 +368,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      LogGroupName: !Sub
-                       - /aws/codebuild/${ProjectName}
-                       - ProjectName: !Ref BuildCode
+      LogGroupName: !Sub /aws/codebuild/${BuildCode}
       RetentionInDays: 30
       Tags:
         - Key: Name
@@ -382,9 +378,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      LogGroupName: !Sub
-                       - /aws/codebuild/${ProjectName}
-                       - ProjectName: !Ref EmptyBucket
+      LogGroupName: !Sub /aws/codebuild/${EmptyBucket}
       RetentionInDays: 30
       Tags:
         - Key: Name
