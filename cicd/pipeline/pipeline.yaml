@@ -301,10 +301,11 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref EmptyBucket
-                EnvironmentVariables: '[
-                  { "name":"SOURCE_BUCKET", "value":"#{ExportConfigNS.SOURCE_BUCKET}" },
-                  { "name":"BUCKET_PATH", "value":"#{ExportConfigNS.BUCKET_PATH}" }
-                  ]'
+                EnvironmentVariables: |
+                  [
+                    { "name":"SOURCE_BUCKET", "value":"#{ExportConfigNS.SOURCE_BUCKET}" },
+                    { "name":"BUCKET_PATH", "value":"#{ExportConfigNS.BUCKET_PATH}" }
+                  ]
               Namespace: EmptyBucketPreDeleteNS
               InputArtifacts:
                 - Name: 'AvsbSourceArtifact'
