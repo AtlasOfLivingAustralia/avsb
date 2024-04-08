@@ -10,11 +10,17 @@ env:
   variables:
     DEBIAN_FRONTEND: 'noninteractive'
   exported-variables:
-    - CODEBUILD_BUILD_NUMBER
-    - SOURCE_BUCKET
     - BUCKET_PATH
-    - MAX_AGE
+    - CODEBUILD_BUILD_NUMBER
     - ENVIRONMENT
+    - HOSTED_ZONE
+    - MAX_AGE
+    - PRODUCT_COMPONENT
+    - PRODUCT_NAME
+    - SLACK_ALERT_CHANNEL
+    - SLACK_DEPLOY_NOTIFICATION
+    - SOURCE_BUCKET
+    - SUB_DOMAIN
 
 phases:
   install:

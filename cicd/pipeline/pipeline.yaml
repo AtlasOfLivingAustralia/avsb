@@ -72,7 +72,7 @@ Resources:
     Type: AWS::CodeBuild::Project
     Properties:
       Name: !Sub
-              - "${pProductName}-${pProductComponent}-export-config-${ResourceName}"
+              - ${pProductName}-${pProductComponent}-export-config-${ResourceName}
               - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Load the environment and build the CloudFormation template config file
       ServiceRole: !Ref pCodeBuildServiceRole
@@ -96,7 +96,7 @@ Resources:
     Type: AWS::CodeBuild::Project
     Properties:
       Name: !Sub
-              - "${pProductName}-${pProductComponent}-build-site-${ResourceName}"
+              - ${pProductName}-${pProductComponent}-build-site-${ResourceName}
               - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Build the AVSB site
       ServiceRole: !Ref pCodeBuildServiceRole
@@ -118,7 +118,7 @@ Resources:
     Type: AWS::CodeBuild::Project
     Properties:
       Name: !Sub
-              - "${pProductName}-${pProductComponent}-empty-bucket-${ResourceName}"
+              - ${pProductName}-${pProductComponent}-empty-bucket-${ResourceName}
               - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Empty the source s3 bucket so it can be deleted
       ServiceRole: !Ref pCodeBuildServiceRole
@@ -129,18 +129,40 @@ Resources:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: aws/codebuild/standard:7.0
         EnvironmentVariables:
-          - Name: 'AWS_ARTIFACTS_BUCKET'
+          - Name: AWS_ARTIFACTS_BUCKET
             Value: !Ref pApSe2ArtifactsBucket
       Source:
         Type: CODEPIPELINE
         BuildSpec: cicd/pipeline/empty_bucket_buildspec.yaml
       TimeoutInMinutes: 5
 
+  DeployNotification:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub 
+              - ${pProductName}-${pProductComponent}-deploy-notification-${ResourceName}
+              - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+      Description: Send out the deploy notifications
+      ServiceRole: !Ref pCodeBuildServiceRole
+      Artifacts:                           
+        Type: CODEPIPELINE                 
+      Environment:                         
+        Type: LINUX_CONTAINER              
+        ComputeType: BUILD_GENERAL1_SMALL  
+        Image: aws/codebuild/standard:7.0 
+        EnvironmentVariables:              
+          - Name: CLEAN_BRANCH             
+            Value: !Ref pCleanBranch       
+      Source:                             
+        Type: CODEPIPELINE
+        BuildSpec: cicd/pipeline/deploy_notification_buildspec.yaml
+      TimeoutInMinutes: 5
+
   Pipeline:
     Type: 'AWS::CodePipeline::Pipeline'
     Properties:
       Name: !Sub
-              - "${pProductName}-${pProductComponent}-${ResourceName}"
+              - ${pProductName}-${pProductComponent}-${ResourceName}
               - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       PipelineType: V2
       RoleArn: !Ref pCodePipelineServiceRole
@@ -181,7 +203,7 @@ Resources:
                 DetectChanges: !Ref pAutoDeploy
               Namespace: CheckoutSrcNS
               OutputArtifacts:
-                - Name: 'AvsbSourceArtifact'
+                - Name: AvsbSourceArtifact
         - Name: Deploy_Infrastructure
           Actions:
             - Name: ExportConfig
@@ -201,7 +223,7 @@ Resources:
                   ]
               Namespace: ExportConfigNS
               InputArtifacts:
-                - Name: 'AvsbSourceArtifact'
+                - Name: AvsbSourceArtifact
               OutputArtifacts:
                 - Name: ExportConfigArtifact
               RunOrder: 1
@@ -212,14 +234,14 @@ Resources:
                 Version: 1
                 Provider: CloudFormation
               Configuration:
-                TemplatePath: 'ExportConfigArtifact::cicd/app/waf.yaml'
+                TemplatePath: ExportConfigArtifact::cicd/app/waf.yaml
                 TemplateConfiguration: 'ExportConfigArtifact::cicd/pipeline/waf_template_config.json'
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn: !Ref pCloudFormationServiceRole
                 StackName: !Ref pWafStackName
               InputArtifacts:
-                - Name: 'ExportConfigArtifact'
+                - Name: ExportConfigArtifact
               Namespace: WafCloudFormationOutNS
               OutputArtifacts: []
               Region: us-east-1
@@ -242,7 +264,7 @@ Resources:
                 RoleArn: !Ref pCloudFormationServiceRole
                 StackName: !Ref pAppStackName
               InputArtifacts:
-                - Name: 'ExportConfigArtifact'
+                - Name: ExportConfigArtifact
               Namespace: AppCloudFormationOutNS
               OutputArtifacts: []
               RunOrder: 3
@@ -264,7 +286,7 @@ Resources:
                   ]
               Namespace: BuildAvsbNS
               InputArtifacts:
-                - Name: 'AvsbSourceArtifact'
+                - Name: AvsbSourceArtifact
               OutputArtifacts:
                 - Name: BuildAvsbArtifact
               RunOrder: 1
@@ -283,7 +305,7 @@ Resources:
                   ]
               Namespace: EmptyBucketPreDeployNS
               InputArtifacts:
-                - Name: 'AvsbSourceArtifact'
+                - Name: AvsbSourceArtifact
               RunOrder: 2
             - Name: UploadFilesToS3
               ActionTypeId:
@@ -300,6 +322,32 @@ Resources:
               InputArtifacts:
                 - Name: BuildAvsbArtifact
               RunOrder: 3
+            - Name: DeployNotification
+              ActionTypeId:
+                Owner: AWS
+                Category: Build
+                Version: 1
+                Provider: CodeBuild
+              Configuration:
+                ProjectName: !Ref DeployNotification
+                EnvironmentVariables: !Sub |
+                  [
+                    { "name":"AUTHOR", "value":"#{CheckoutSrcNS.AuthorDisplayName}" },
+                    { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
+                    { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
+                    { "name":"PRODUCT_COMPONENT", "value":"#{ExportConfigNS.PRODUCT_COMPONENT}" },
+                    { "name":"HOSTED_ZONE", "value":"#{ExportConfigNS.HOSTED_ZONE}" },
+                    { "name":"SUB_DOMAIN", "value":"#{ExportConfigNS.SUB_DOMAIN}" },
+                    { "name":"PRODUCT_NAME", "value":"#{ExportConfigNS.PRODUCT_NAME}" },
+                    { "name":"REPO", "value":"#{CheckoutSrcNS.FullRepositoryName}" },
+                    { "name":"SLACK_ALERT_CHANNEL", "value":"#{ExportConfigNS.SLACK_ALERT_CHANNEL}" },
+                    { "name":"SLACK_DEPLOY_NOTIFICATION", "value":"#{ExportConfigNS.SLACK_DEPLOY_NOTIFICATION}" },
+                    { "name":"SRC_BRANCH", "value":"${pGitHubBranch}" }
+                  ]
+              Namespace: DeployNotificationNS
+              InputArtifacts:
+                - Name: AvsbSourceArtifact
+              RunOrder: 5
         - Name: Teardown
           Actions:
             - Name: Approval
@@ -326,7 +374,7 @@ Resources:
                   ]
               Namespace: EmptyBucketPreDeleteNS
               InputArtifacts:
-                - Name: 'AvsbSourceArtifact'
+                - Name: AvsbSourceArtifact
               RunOrder: 2
             - Name: TeardownAvsbSite
               ActionTypeId:
@@ -398,6 +446,16 @@ Resources:
     DeletionPolicy: Delete
     Properties:
       LogGroupName: !Sub /aws/codebuild/${EmptyBucket}
+      RetentionInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  DeployNotificationCodeBuildLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub /aws/codebuild/${DeployNotification}
       RetentionInDays: 30
       Tags:
         - Key: Name
