@@ -351,7 +351,7 @@ Resources:
                 ActionMode: DELETE_ONLY
                 StackName: !Ref AWS::StackName
                 RoleArn: !Ref pCloudFormationServiceRole
-              RunOrder: 5
+              RunOrder: 6
 
 
   ExportConfigLogGroup:
