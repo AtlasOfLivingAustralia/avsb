@@ -16,7 +16,7 @@ phases:
 
   install:
     runtime-versions:
-      python: 3.9
+      python: 3.11
     commands:
       - echo Running on $(lsb_release -d | cut -f2)
       - echo aws-cli version $(aws --version)
