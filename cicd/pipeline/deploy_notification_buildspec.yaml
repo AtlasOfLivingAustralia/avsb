@@ -45,11 +45,11 @@ phases:
   build:
     commands:
       - echo Datadog deploy notification
-      - cicd/ala/pipeline/dd_notification.sh
+      - cicd/pipeline/dd_notification.sh
       - echo Slack Deploy notification
       - |
         if [ "$SLACK_DEPLOY_NOTIFICATION" == "true" ] ; then
-          cicd/ala/pipeline/slack_notification.sh
+          cicd/pipeline/slack_notification.sh
         fi
 
     finally:
