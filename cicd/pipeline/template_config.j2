@@ -1,6 +1,6 @@
 {
   "Parameters" : {
-    "pBucketName"     : "{{ bucket_name }}",
+    "pSourceBucket"   : "{{ source_bucket }}",
     "pBucketPath"     : "{{ bucket_path }}",
     "pCleanBranch"    : "{{ clean_branch }}",
     "pEnvironment"    : "{{ environment }}",
@@ -12,9 +12,9 @@
     "product"     : "{{ product_name }}",
     "component"   : "{{ product_component }}",
     "environment" : "{{ environment }}",
-    "branch"      : "{{ branch }}",
+    "branch"      : "{{ src_branch }}",
     "version"     : "{{ commit_id }}",
-    "build"       : "{{ build }}"
+    "build"       : "{{ codebuild_build_number }}"
   },
   "StackPolicy" : {
     "Statement" : [
