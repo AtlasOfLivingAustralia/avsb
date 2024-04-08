@@ -39,12 +39,21 @@ Parameters:
   pGitHubBranch:
     Type: String
     Description: GitHub branch we're deploying from
+  pPipelineFingerprint:
+    Type: String
+    Description: The fingerprint of the pipeline, used to determine if it's been modified
   pProductComponent:
     Type: String
     Description: The name of the product component
   pProductName:
     Type: String
     Description: The name of the product
+  pRestartExecutionOnUpdate:
+    Type: String
+    Description: Restart that pipeline if it's been updated
+    AllowedValues:
+         - true 
+         - false
   pUsE1ArtifactsBucket:
     Type: String
     Description: Common us-east-1 artifacts bucket used by CodePipeline and CodeBuild
@@ -78,8 +87,6 @@ Resources:
             Value: !Ref pApSe2ArtifactsBucket
           - Name: CLEAN_BRANCH
             Value: !Ref pCleanBranch
-          - Name: ENVIRONMENT
-            Value: !Ref pEnvironment
       Source:
         Type: CODEPIPELINE
         BuildSpec: cicd/pipeline/export_config_buildspec.yaml
@@ -135,6 +142,7 @@ Resources:
       Name: !Sub
               - "${pProductName}-${pProductComponent}-${ResourceName}"
               - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+      PipelineType: V2
       RoleArn: !Ref pCodePipelineServiceRole
       ArtifactStores:
         - ArtifactStore:
@@ -148,6 +156,14 @@ Resources:
       DisableInboundStageTransitions:
         - Reason: To prevent accidental teardown
           StageName: Teardown
+      RestartExecutionOnUpdate: !Ref pRestartExecutionOnUpdate
+      Variables:
+        - Name: SRC_BRANCH
+          DefaultValue: !Ref pGitHubBranch
+          Description: The branch this pipeline is deploying from
+        - Name: PIPELINE_FINGERPRINT
+          DefaultValue: !Ref pPipelineFingerprint
+          Description: The fingerprint of the pipeline, used to determine if it's been modified
       Stages:
         - Name: Checkout_Source
           Actions:
@@ -161,7 +177,7 @@ Resources:
                 ConnectionArn: !Ref pCodestarConnection
                 FullRepositoryId: !Sub ${pGitHubOwner}/${pGitHubRepositoryName}
                 BranchName: !Ref pGitHubBranch
-                OutputArtifactFormat: CODE_ZIP
+                OutputArtifactFormat: CODEBUILD_CLONE_REF
                 DetectChanges: !Ref pAutoDeploy
               Namespace: CheckoutSrcNS
               OutputArtifacts:
@@ -176,10 +192,12 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref ExportConfig
-                EnvironmentVariables: |
+                EnvironmentVariables: !Sub |
                   [
                     { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
-                    { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" }
+                    { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
+                    { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
+                    { "name":"PIPELINE_FINGERPRINT", "value":"#{variables.PIPELINE_FINGERPRINT}" }
                   ]
               Namespace: ExportConfigNS
               InputArtifacts:
