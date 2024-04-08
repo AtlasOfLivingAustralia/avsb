@@ -134,7 +134,7 @@ echo "Deploying the pipeline template"
 aws cloudformation deploy \
     --template-file pipeline.yaml \
     --stack-name $PIPELINE_STACK_NAME \
-    --tags product=$PRODUCT_NAME component=cicd environment=$environment branch=$branch version=$commit_id \
+    --tags product=$PRODUCT_NAME component=cicd environment=$environment branch=$branch version=$COMMIT_ID \
     --region $REGION \
     --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
     --parameter-overrides \
