@@ -178,7 +178,7 @@ interface Taxon {
 }
 
 async function info(guid: string): Promise<Taxon> {
-  const response = await fetch(`${import.meta.env.VITE_API_ALA}/species/taxon/${guid}`);
+  const response = await fetch(`${import.meta.env.VITE_API_ALA}/species/species/${guid}`);
   const data = await response.json();
 
   // Catch 200 responses, but an error status has been returned
