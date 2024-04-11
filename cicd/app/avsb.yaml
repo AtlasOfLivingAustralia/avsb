@@ -5,7 +5,7 @@ Parameters:
   pAvsbWafWebAclArn:
     Type: String
     Description: The WAF Web ACL to attach the CloudFront distribution to
-  pBucketName:
+  pSourceBucket:
     Type: String
     Description: The bucket name for the site
   pBucketPath:
@@ -39,7 +39,7 @@ Resources:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Delete
     Properties:
-      BucketName: !Sub ${pBucketName}
+      BucketName: !Sub ${pSourceBucket}
       PublicAccessBlockConfiguration:
         BlockPublicAcls: TRUE
         BlockPublicPolicy: TRUE
@@ -48,7 +48,7 @@ Resources:
         - Key: component
           Value: website
         - Key: Name
-          Value: !Sub ${pBucketName}
+          Value: !Sub ${pSourceBucket}
 
   AvsbBucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -104,7 +104,7 @@ Resources:
         HttpVersion: http2
         IPV6Enabled: false
         Origins:
-          - DomainName: !Sub '${pBucketName}.s3.${AWS::Region}.amazonaws.com'
+          - DomainName: !Sub '${pSourceBucket}.s3.${AWS::Region}.amazonaws.com'
             Id: avsb-s3
             S3OriginConfig:
               OriginAccessIdentity:
