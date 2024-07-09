@@ -24,14 +24,14 @@ import { IconAlertTriangle, IconExternalLink, IconMap } from '@tabler/icons';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Taxon } from '#/api/sources/taxon';
 import { ConservationStatus, SDS } from '#/components';
-import { SDSResult } from '#/api';
+import { SDSInstance } from '#/api';
 
 const EventMap = lazy(() => import('#/components/EventMap'));
 
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const [mapOpen, { open, close }] = useDisclosure(false);
-  const { taxon, sds } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult };
+  const { taxon, sds } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSInstance[] };
   const token = useLoaderData() as string;
   const theme = useMantineTheme();
   const mdOrLarger = useMediaQuery(`(min-width: ${theme.breakpoints.md})`, true);
@@ -74,7 +74,7 @@ export function Component() {
             </Grid.Col>
           )}
         <Grid.Col sm={12} md={7} lg={8}>
-          {sds.instances.length > 0 ? (
+          {sds.length > 0 ? (
             <Card
               style={{ display: 'flex', alignItems: 'center' }}
               shadow='lg'
@@ -82,7 +82,7 @@ export function Component() {
               miw={345}
               withBorder
             >
-              <SDS instances={sds.instances} />
+              <SDS instances={sds} />
             </Card>
           ) : (
             <>

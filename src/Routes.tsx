@@ -49,7 +49,7 @@ const routes = createBrowserRouter([
 
           return defer({
             taxon,
-            sds: await sdsAPI.get(taxon.classification.scientificName),
+            sds: await sdsAPI.get(params.guid),
             traits: austraitsAPI.summary(taxon.classification.scientificName, params.guid || ''),
           });
         },

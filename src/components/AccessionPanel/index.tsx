@@ -47,12 +47,12 @@ import {
 
 // Project imports
 import {
-  SDSResult,
   Event,
   SeedBankAccession,
   AusTraitsSummary,
   NumericTrait,
   CategoricalTrait,
+  SDSInstance,
 } from '#/api';
 import { getIsDefined, accessionFields, SeedbankFieldTrait } from '#/helpers';
 
@@ -146,7 +146,7 @@ interface AccessionPanelLoader {
 }
 
 interface RouteLoaderProps {
-  sds: SDSResult;
+  sds: SDSInstance[];
   traits: AusTraitsSummary;
 }
 
