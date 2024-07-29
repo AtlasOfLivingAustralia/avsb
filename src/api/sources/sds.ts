@@ -30,7 +30,9 @@ async function get(guid?: string): Promise<SDSInstance[]> {
   try {
     return (
       await Promise.all(
-        ['QLD', 'NT', 'NSW', 'WA', 'SA', 'ACT'].map((state) => getInstances(guid, state)),
+        ['QLD', 'NT', 'NSW', 'WA', 'SA', 'ACT', 'VIC', 'TAS'].map((state) =>
+          getInstances(guid, state),
+        ),
       )
     ).flat();
   } catch (error) {
