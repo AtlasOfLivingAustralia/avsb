@@ -312,8 +312,8 @@ function AccessionPanel() {
                   theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
               })}
             >
-              {sds.instances.length > 0 ? (
-                <SDS instances={sds.instances} />
+              {sds.length > 0 ? (
+                <SDS instances={sds} />
               ) : (
                 <Center w='100%'>
                   <Stack w='100%' align='center' spacing='xl'>
