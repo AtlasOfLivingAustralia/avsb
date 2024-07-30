@@ -6,6 +6,7 @@
 
 import argparse
 import configparser
+import os
 
 parser = argparse.ArgumentParser()
 
@@ -17,7 +18,8 @@ args = parser.parse_args()
 
 config_defaults = {
                      'CLEAN_BRANCH' : args.clean_branch,
-                     'ENVIRONMENT'  : args.env
+                     'ENVIRONMENT'  : args.env,
+                     'AWS_ACCOUNT_ID' : os.popen('aws sts get-caller-identity --query Account --output text').read().strip()[:6],
                   }
 
 # read the config file
