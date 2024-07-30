@@ -10,7 +10,6 @@ import {
 
 // Project components / helpers
 import {
-  SDSResult,
   gqlQueries,
   performGQLQuery,
   Taxon,
@@ -41,7 +40,7 @@ export function Component() {
   const [pageSize, setPageSize] = useState<number>(10);
   const [query, setQuery] = useState<EventDocuments>(useLoaderData() as EventDocuments);
 
-  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult | null };
+  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon };
   const params = useParams();
   const mounted = useMounted();
   const events = query?.results;

@@ -1,5 +1,7 @@
 interface SDSInstance {
-  locationGeneralisation: string;
+  generalisation: {
+    generalisation: string;
+  };
   zone: {
     name: string;
     type: string;
@@ -12,36 +14,29 @@ interface SDSInstance {
   };
 }
 
-interface SDSResult {
-  acceptedName: string | null;
-  commonName: string | null;
-  instances: SDSInstance[];
-  scientificName: string;
-  status: string[];
+async function getInstances(guid: string, state: string) {
+  const URL = `${
+    import.meta.env.VITE_API_ALA
+  }/sensitive/api/report?taxonId=${guid}&stateProvince=${state}&country=AUS`;
+  const { sensitive, valid, report } = await (await fetch(URL)).json();
+
+  return valid && sensitive ? report.taxon.instances : [];
 }
 
-async function get(
-  scientificName: string,
-  latitude?: number,
-  longitude?: number,
-  date?: string,
-): Promise<SDSResult> {
-  let URL = `${import.meta.env.VITE_API_ALA}/sds-webapp/ws/${scientificName}`;
-
-  // Append optional lat/lng parameters
-  if (latitude !== undefined && longitude !== undefined)
-    URL += `/location/${latitude}/${longitude}`;
-
-  // Append optional date parameters
-  if (date !== undefined) URL += `/date/${date}`;
+async function get(guid?: string): Promise<SDSInstance[]> {
+  if (!guid) return [];
 
   // Wrap in a try-catch to handle
   try {
-    const data = await (await fetch(URL)).json();
-    if (!data.instances) throw new Error('Invalid request');
-    return data;
+    return (
+      await Promise.all(
+        ['QLD', 'NT', 'NSW', 'WA', 'SA', 'ACT', 'VIC', 'TAS'].map((state) =>
+          getInstances(guid, state),
+        ),
+      )
+    ).flat();
   } catch (error) {
-    return { acceptedName: null, commonName: null, scientificName: '', status: [], instances: [] };
+    return [];
   }
 }
 
@@ -49,4 +44,4 @@ export default {
   get,
 };
 
-export type { SDSInstance, SDSResult };
+export type { SDSInstance };
