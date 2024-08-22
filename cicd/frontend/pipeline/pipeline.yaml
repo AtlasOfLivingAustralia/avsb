@@ -298,6 +298,7 @@ Resources:
                   [
                     { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
                     { "name":"ENVIRONMENT", "value":"#{ExportConfigNS.ENVIRONMENT}" },
+                    { "name":"NODE_VERSION", "value":"#{ExportConfigNS.NODE_VERSION}" },
                     { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" }
                   ]
               Namespace: BuildAvsbNS
