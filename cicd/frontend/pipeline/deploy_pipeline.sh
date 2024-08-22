@@ -36,7 +36,6 @@ done
 # get the branch
 branch=$(git branch --show-current)
 
-
 # confirm which environment we're deploying to if it wasnt explicitly set
 if [ "$branch" = "main" ] && [ "$ENV" = "nonprod" ]; then
   echo "Deploy to production or staging?"
@@ -98,15 +97,15 @@ if [[ $real_branch -eq 1 && -n "$(git diff $branch origin/$branch)" ]] ; then
 fi
 
 # get the clean version of the branch
-clean_branch=$(./clean_branch.sh $branch)
+clean_branch=$($SCRIPT_DIR/../../clean_branch.sh $branch)
 echo clean branch: $clean_branch
 
 # get the environment based on the branch
-environment=$(./branch_2_env.py --branch $branch --env $ENV)
+environment=$($SCRIPT_DIR/../../branch_2_env.py --branch $branch --env $ENV)
 echo environment: $environment
 
 # load environment vars
-./gen_env_vars.py --env $environment --clean-branch $clean_branch --conf ../config.ini > env.txt
+$SCRIPT_DIR/../../gen_env_vars.py --env $environment --clean-branch $clean_branch --conf $SCRIPT_DIR/../config.ini > env.txt
 source env.txt
 rm env.txt
 
@@ -138,13 +137,9 @@ aws cloudformation deploy \
     --region $REGION \
     --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
     --parameter-overrides \
-        pAppStackName=$APP_STACK_NAME \
-        pApSe2ArtifactsBucket=$AP_SE_2_ARTIFACTS_BUCKET \
         pAutoDeploy=$AUTO_DEPLOY \
-        pCloudFormationServiceRole=$CLOUDFORMATION_SERVICE_ROLE \
-        pCodeBuildServiceRole=$CODEBUILD_SERVICE_ROLE \
-        pCodePipelineServiceRole=$CODEPIPELINE_SERVICE_ROLE \
-        pCodestarConnection=$CODESTAR_CONNECTION \
+        pBootstrapStackName=$BOOTSTRAP_STACK_NAME \
+        pBucketsStackName=$BUCKETS_STACK_NAME \
         pCleanBranch=$clean_branch \
         pEnvironment=$environment \
         pGitHubBranch=$branch \
@@ -154,7 +149,6 @@ aws cloudformation deploy \
         pProductComponent=$PRODUCT_COMPONENT \
         pProductName=$PRODUCT_NAME \
         pRestartExecutionOnUpdate=$RESTART_PIPELINE_ON_UPDATE \
-        pUsE1ArtifactsBucket=$US_E_1_ARTIFACTS_BUCKET \
-        pWafStackName=$WAF_STACK_NAME
+        pUsEast1CodePipelineArtifactBucketName=$US_EAST_ARTIFACT_BUCKET \
 
 
