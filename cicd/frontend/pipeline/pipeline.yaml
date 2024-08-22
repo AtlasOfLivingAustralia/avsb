@@ -246,9 +246,9 @@ Resources:
                 Version: 1
                 Provider: CloudFormation
               Configuration:
-                TemplatePath: ExportConfigArtifact::cicd/app/waf.yaml
-                TemplateConfiguration: 'ExportConfigArtifact::cicd/pipeline/waf_template_config.json'
-                ActionMode: REPLACE_ON_FAILURE
+                TemplatePath: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.WAF_STACK_FILE_PFIX}.yaml'
+                TemplateConfiguration: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.WAF_STACK_FILE_PFIX}_template_config.json'
+                ActionMode: !If [ IsDev, REPLACE_ON_FAILURE, CREATE_UPDATE]
                 Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn:
                   Fn::ImportValue:
@@ -267,9 +267,9 @@ Resources:
                 Version: 1
                 Provider: CloudFormation
               Configuration:
-                TemplatePath: 'ExportConfigArtifact::cicd/app/avsb.yaml'
-                TemplateConfiguration: 'ExportConfigArtifact::cicd/pipeline/template_config.json'
-                ActionMode: REPLACE_ON_FAILURE
+                TemplatePath: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_FILE_PFIX}.yaml'
+                TemplateConfiguration: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_FILE_PFIX}_template_config.json'
+                ActionMode: !If [ IsDev, REPLACE_ON_FAILURE, CREATE_UPDATE]
                 Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
                 ParameterOverrides: |
                   { 
