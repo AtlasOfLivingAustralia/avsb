@@ -60,9 +60,9 @@ Resources:
           - Action:
               - 's3:GetObject'
             Effect: Allow
-            Resource: !Join ['', ['arn:aws:s3:::', !Ref AvsbBucket, '/*']]
+            Resource: !Sub 'arn:aws:s3:::${AvsbBucket}/*'
             Principal:
-              AWS: !Join [ '', [ 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ', !Ref AvsbCloudFrontOai, ], ]
+              AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${AvsbCloudFrontOai}'
 
   AvsbDnsRecord:
     Type: AWS::Route53::RecordSet
@@ -107,8 +107,7 @@ Resources:
           - DomainName: !Sub '${pSourceBucket}.s3.${AWS::Region}.amazonaws.com'
             Id: avsb-s3
             S3OriginConfig:
-              OriginAccessIdentity:
-                !Join ['', ['origin-access-identity/cloudfront/', !Ref AvsbCloudFrontOai]]
+              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${AvsbCloudFrontOai}'
             OriginPath: !Sub '/${pBucketPath}'
         ViewerCertificate:
           AcmCertificateArn: !Ref pSslCertificate

@@ -39,7 +39,7 @@ curl -X POST "https://slack.com/api/chat.postMessage" \
         "type": "header",
         "text": {
           "type": "plain_text",
-          "text": "$PRODUCT_COMPONENT $PRODUCT_NAME $ENVIRONMENT release",
+          "text": "$PRODUCT_NAME $PRODUCT_COMPONENT $ENVIRONMENT release",
           "emoji": true
         }
       },
