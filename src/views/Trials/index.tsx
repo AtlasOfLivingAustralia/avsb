@@ -5,7 +5,7 @@ import { useLoaderData, useLocation, useParams, useRouteLoaderData } from 'react
 // Project components / helpers
 import { Downloads, Filters } from '#/components';
 import { Taxon } from '#/api/sources/taxon';
-import { SDSResult, gqlQueries, performGQLQuery } from '#/api';
+import { gqlQueries, performGQLQuery } from '#/api';
 import { Event, EventDocuments, EventSearchResult, Predicate } from '#/api/graphql/types';
 import queries from '#/api/queries';
 import { useMounted, mapTrialTreatments } from '#/helpers';
@@ -26,7 +26,7 @@ export function Component() {
   const [pageSize, setPageSize] = useState<number>(10);
   const [query, setQuery] = useState<EventDocuments>(useLoaderData() as EventDocuments);
 
-  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon; sds: SDSResult };
+  const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon };
   const params = useParams();
   const mounted = useMounted();
   const events = query?.results;
