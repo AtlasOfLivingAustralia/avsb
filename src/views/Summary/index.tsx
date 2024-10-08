@@ -74,7 +74,7 @@ export function Component() {
             </Grid.Col>
           )}
         <Grid.Col sm={12} md={7} lg={8}>
-          {sds.length > 0 ? (
+          {taxon.taxonConcept.rankString === 'species' && sds.length > 0 ? (
             <Card
               style={{ display: 'flex', alignItems: 'center' }}
               shadow='lg'
