@@ -41,6 +41,10 @@ const routes = createBrowserRouter([
         },
       },
       {
+        path: 'dashboard',
+        lazy: () => import('./views/Statistics'),
+      },
+      {
         id: 'taxon',
         path: 'taxon/:guid',
         lazy: () => import('./views/Taxon'),
