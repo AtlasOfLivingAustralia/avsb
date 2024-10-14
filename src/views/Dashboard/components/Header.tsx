@@ -1,5 +1,12 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { IconSun, IconMoon, IconHome, IconQuestionMark, IconArrowBackUp } from '@tabler/icons';
+import {
+  IconSun,
+  IconMoon,
+  IconHome,
+  IconQuestionMark,
+  IconArrowBackUp,
+  IconChartLine,
+} from '@tabler/icons';
 import {
   Header as MantineHeader,
   ActionIcon,
@@ -82,6 +89,25 @@ function Header() {
           </MediaQuery>
         )}
         <Group style={{ flexGrow: 1, maxWidth: 140 }} position='right' spacing='xs'>
+          <Tooltip
+            transitionProps={{ transition: 'pop' }}
+            offset={10}
+            withArrow
+            label='Portal statistics'
+            position='right'
+            aria-label=''
+          >
+            <ActionIcon
+              component={Link}
+              to='/dashboard'
+              variant='filled'
+              radius='xl'
+              size={38}
+              aria-label='Portal statistics'
+            >
+              <IconChartLine size={20} />
+            </ActionIcon>
+          </Tooltip>
           <Tooltip
             transitionProps={{ transition: 'pop' }}
             offset={10}
