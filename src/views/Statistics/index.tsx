@@ -12,7 +12,7 @@ import {
   Image,
   Paper,
   ScrollArea,
-  Space,
+  // Space,
   Stack,
   Text,
   Title,
@@ -22,9 +22,9 @@ import { useMediaQuery } from '@mantine/hooks';
 import {
   IconBuilding,
   IconColorPicker,
-  IconDownload,
+  // IconDownload,
   IconExternalLink,
-  IconEye,
+  // IconEye,
   IconFileFunction,
   IconPlant,
   IconSeeding,
@@ -95,7 +95,7 @@ export function Component() {
 
   return (
     <>
-      <Container size='lg' p='lg'>
+      {/* <Container size='lg' p='lg'>
         <Space h={45} />
         <Grid gutter='xl'>
           <Grid.Col xl={6} lg={6} md={6} sm={12} xs={12}>
@@ -121,7 +121,7 @@ export function Component() {
             </Group>
           </Grid.Col>
         </Grid>
-      </Container>
+      </Container> */}
       <Wave
         width='100%'
         height={mdOrLarger ? 250 : 125}
