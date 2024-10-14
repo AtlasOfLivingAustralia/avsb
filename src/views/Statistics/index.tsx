@@ -1,13 +1,17 @@
+import { Fragment } from 'react';
 import {
   Anchor,
+  Badge,
   Box,
   Center,
   Container,
   Divider,
+  Flex,
   Grid,
   Group,
   Image,
   Paper,
+  ScrollArea,
   Space,
   Stack,
   Text,
@@ -16,14 +20,18 @@ import {
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import {
+  IconBuilding,
   IconColorPicker,
   IconDownload,
+  IconExternalLink,
   IconEye,
   IconFileFunction,
   IconPlant,
   IconSeeding,
   IconTestPipe,
 } from '@tabler/icons';
+import { useLoaderData } from 'react-router-dom';
+import queries from '#/api/queries';
 
 import { Wave } from '#/components/Wave';
 import { Blob } from '#/components';
@@ -63,25 +71,54 @@ const speciesStats = [
   },
 ];
 
+interface Dataset {
+  datasetTitle: string;
+  datasetKey: string;
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const theme = useMantineTheme();
   const mdOrLarger = useMediaQuery(`(min-width: ${theme.breakpoints.md})`, true);
+
+  const datasets = useLoaderData() as { [key: string]: Dataset };
+
+  // EPBC Calculations
+  const epbcDatasets = Object.entries(stats.epbcSpecies)
+    .sort(([, a], [, b]) => b - a)
+    .filter(([key]) => queries.DATA_RESOURCES.includes(key));
+
+  const epbcCount = Object.values(epbcDatasets)
+    .reduce((prev, [, count]) => prev + count, 0)
+    .toLocaleString(undefined, { minimumFractionDigits: 2 })
+    .replace('.00', '');
 
   return (
     <>
       <Container size='lg' p='lg'>
         <Space h={45} />
         <Grid gutter='xl'>
-          <Grid.Col md={6} sm={12}>
-            <Paper px='lg' radius='lg' withBorder>
-              <StatCard id='accessions' icon={IconEye} name='Site views' />
-            </Paper>
+          <Grid.Col xl={6} lg={6} md={6} sm={12} xs={12}>
+            <Group spacing='xl'>
+              <IconEye size='4rem' />
+              <Stack spacing={0}>
+                <Title>1, 234</Title>
+                <Text c='dimmed' size='lg'>
+                  Site views
+                </Text>
+              </Stack>
+            </Group>
           </Grid.Col>
-          <Grid.Col md={6} sm={12}>
-            <Paper px='lg' radius='lg' withBorder>
-              <StatCard id='accessions' icon={IconDownload} name='Data downloads' />
-            </Paper>
+          <Grid.Col xl={6} lg={6} md={6} sm={12} xs={12}>
+            <Group spacing='xl'>
+              <IconDownload size='4rem' />
+              <Stack spacing={0}>
+                <Title>1, 234</Title>
+                <Text c='dimmed' size='lg'>
+                  Data downloads
+                </Text>
+              </Stack>
+            </Group>
           </Grid.Col>
         </Grid>
       </Container>
@@ -120,7 +157,23 @@ export function Component() {
                 )}
               </>
             ))}
-            <Grid.Col span={12} mt='xl'>
+            <Grid.Col span={12}>
+              <Divider variant='dashed' my='sm' />
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <Title>Datasets</Title>
+            </Grid.Col>
+            <Grid.Col xl={3} lg={3} md={3} sm={12} xs={12}>
+              <StatCard
+                id={epbcDatasets.length.toString()}
+                name='Organisations'
+                icon={IconBuilding}
+              />
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <Divider variant='dashed' my='sm' />
+            </Grid.Col>
+            <Grid.Col span={12}>
               <Title>Species</Title>
             </Grid.Col>
             {speciesStats.map((stat, index) => (
@@ -150,7 +203,7 @@ export function Component() {
       />
       <Container size='lg' p='lg' mt={mdOrLarger ? -120 : -30} mb='xl'>
         <Group position='apart'>
-          <Stack w={mdOrLarger ? 500 : '100%'} mb='xl'>
+          <Stack w={mdOrLarger ? 500 : '100%'} mb='xl' spacing='xl'>
             <Title weight='bold' size={42}>
               <Text
                 component='span'
@@ -158,29 +211,37 @@ export function Component() {
                 variant='gradient'
                 gradient={{ from: '#A6CE39', to: '#487759' }}
               >
-                {stats.epbcSpecies
-                  .toLocaleString(undefined, { minimumFractionDigits: 2 })
-                  .replace('.00', '')}
+                {epbcCount}
               </Text>{' '}
               EPBC Species
             </Title>
             <Text>
-              The Australian Virtual Seedbank contains records of{' '}
-              <b>
-                {stats.epbcSpecies
-                  .toLocaleString(undefined, { minimumFractionDigits: 2 })
-                  .replace('.00', '')}
-              </b>{' '}
-              records listed under the The Environment Protection and Biodiversity Conservation
-              (EPBC) Act.
-            </Text>
-            <Text>
-              The act stablishes comprehensive measures for protecting and managing plants, animals,
-              habitats, and locations that hold national and international significance.
+              The Environment Protection and Biodiversity Conservation (EPBC) establishes
+              comprehensive measures for protecting and managing plants, animals, habitats, and
+              locations that hold national and international significance. The portal contains{' '}
+              <b>{epbcCount}</b> species listed under this act.
             </Text>
             <Anchor href='https://www.dcceew.gov.au/environment/epbc' target='_blank'>
-              Read more about the EPBC act here
+              Read more about the EPBC act here{' '}
+              <IconExternalLink size='1rem' style={{ marginLeft: 4 }} />
             </Anchor>
+            <Paper withBorder>
+              <ScrollArea h={200}>
+                <Stack spacing='xs' py='xs'>
+                  {epbcDatasets.map(([key, count], index) => (
+                    <Fragment key={key}>
+                      <Flex justify='space-between' align='center' key={key} px='sm'>
+                        <Text>{datasets[key].datasetTitle}</Text>
+                        <Badge ml='sm' miw={50}>
+                          {count}
+                        </Badge>
+                      </Flex>
+                      {index !== epbcDatasets.length - 1 && <Divider />}
+                    </Fragment>
+                  ))}
+                </Stack>
+              </ScrollArea>
+            </Paper>
           </Stack>
           {mdOrLarger && (
             <div style={{ width: 450, height: 450 }}>
