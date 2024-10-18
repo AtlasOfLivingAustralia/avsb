@@ -91,7 +91,7 @@ function Home() {
                 Our Datasets
               </Title>
               <Chip size='xs' checked={false}>
-                Last Updated September, 2024
+                Last Updated October, 2024
               </Chip>
             </Group>
             <Summaries mt='md' />
