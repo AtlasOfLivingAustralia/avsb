@@ -12,7 +12,7 @@ import {
   Image,
   Paper,
   ScrollArea,
-  // Space,
+  Space,
   Stack,
   Text,
   Title,
@@ -88,11 +88,6 @@ export function Component() {
     .sort(([, a], [, b]) => b - a)
     .filter(([key]) => queries.DATA_RESOURCES.includes(key));
 
-  const epbcCount = Object.values(epbcDatasets)
-    .reduce((prev, [, count]) => prev + count, 0)
-    .toLocaleString(undefined, { minimumFractionDigits: 2 })
-    .replace('.00', '');
-
   return (
     <>
       {/* <Container size='lg' p='lg'>
@@ -122,6 +117,14 @@ export function Component() {
           </Grid.Col>
         </Grid>
       </Container> */}
+      <Container size='lg' p='lg'>
+        <Space h={45} />
+        <Center>
+          <Text c='dimmed' size='lg' fw='bold'>
+            The following statistics are current as at October, 2024
+          </Text>
+        </Center>
+      </Container>
       <Wave
         width='100%'
         height={mdOrLarger ? 250 : 125}
@@ -211,7 +214,7 @@ export function Component() {
                 variant='gradient'
                 gradient={{ from: '#A6CE39', to: '#487759' }}
               >
-                {epbcCount}
+                {stats.epbcSpecies.total}
               </Text>{' '}
               EPBC Species
             </Title>
@@ -219,10 +222,10 @@ export function Component() {
               The Environment Protection and Biodiversity Conservation (EPBC) establishes
               comprehensive measures for protecting and managing plants, animals, habitats, and
               locations that hold national and international significance. The portal contains{' '}
-              <b>{epbcCount}</b> species listed under this act.
+              <b>{stats.epbcSpecies.total}</b> species listed under this act.
             </Text>
             <Anchor href='https://www.dcceew.gov.au/environment/epbc' target='_blank'>
-              Read more about the EPBC act here{' '}
+              Read more about the EPBC Act here{' '}
               <IconExternalLink size='1rem' style={{ marginLeft: 4 }} />
             </Anchor>
             <Paper withBorder>

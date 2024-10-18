@@ -2,8 +2,8 @@
   "accessions": 59419,
   "trials": 16289,
   "treatments": 14030,
-  "speciesWithAccession": 20981,
-  "speciesWithTrial": 6133,
+  "speciesWithAccession": 13024,
+  "speciesWithTrial": 4789,
   "epbcSpecies": {
     "dr21985": 186,
     "dr21622": 186,
@@ -26,6 +26,7 @@
     "dr23109": 97,
     "dr21980": 97,
     "dr28420": 1,
-    "dr22870": 1
+    "dr22870": 1,
+    "total": 931
   }
 }
