@@ -29,7 +29,7 @@ function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
 
   const onRemovePredicate = (predicate: Predicate) => {
     // Also filter the location state
-    if (state.predicates) {
+    if (state?.predicates) {
       navigate(pathname, {
         state: {
           ...state,

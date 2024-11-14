@@ -90,33 +90,6 @@ export function Component() {
 
   return (
     <>
-      {/* <Container size='lg' p='lg'>
-        <Space h={45} />
-        <Grid gutter='xl'>
-          <Grid.Col xl={6} lg={6} md={6} sm={12} xs={12}>
-            <Group spacing='xl'>
-              <IconEye size='4rem' />
-              <Stack spacing={0}>
-                <Title>1, 234</Title>
-                <Text c='dimmed' size='lg'>
-                  Site views
-                </Text>
-              </Stack>
-            </Group>
-          </Grid.Col>
-          <Grid.Col xl={6} lg={6} md={6} sm={12} xs={12}>
-            <Group spacing='xl'>
-              <IconDownload size='4rem' />
-              <Stack spacing={0}>
-                <Title>1, 234</Title>
-                <Text c='dimmed' size='lg'>
-                  Data downloads
-                </Text>
-              </Stack>
-            </Group>
-          </Grid.Col>
-        </Grid>
-      </Container> */}
       <Container size='lg' p='lg'>
         <Space h={45} />
         <Center>
@@ -218,10 +191,14 @@ export function Component() {
               </Text>{' '}
               EPBC Species
             </Title>
-            <Text>
-              The Environment Protection and Biodiversity Conservation (EPBC) establishes
-              comprehensive measures for protecting and managing plants, animals, habitats, and
-              locations that hold national and international significance. The portal contains{' '}
+            <Text size='sm'>
+              The Environment Protection and Biodiversity Conservation Act (EPBC Act) is
+              Australia&apos;s national legislation for protecting threatened species and
+              ecosystems. It recognises species at risk of extinction and prioritises their
+              conservation. By storing seeds from EPBC-listed plants, seed banks provide an
+              insurance policy against extinction, enabling restoration and recovery efforts in the
+              wild. While collections are held for these species, they may be small and not be
+              representative of the entire species. The portal contains{' '}
               <b>{stats.epbcSpecies.total}</b> species listed under this act.
             </Text>
             <Anchor href='https://www.dcceew.gov.au/environment/epbc' target='_blank'>
@@ -234,7 +211,7 @@ export function Component() {
                   {epbcDatasets.map(([key, count], index) => (
                     <Fragment key={key}>
                       <Flex justify='space-between' align='center' key={key} px='sm'>
-                        <Text>{datasets[key].datasetTitle}</Text>
+                        <Text>{datasets[key]?.datasetTitle || 'Unknown Dataset'}</Text>
                         <Badge ml='sm' miw={50}>
                           {count}
                         </Badge>
