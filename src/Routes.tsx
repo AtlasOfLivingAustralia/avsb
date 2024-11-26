@@ -14,6 +14,7 @@ import {
 import { DashboardView, HomeView } from './views';
 
 import { mapTrialTreatments } from './helpers';
+import queries from './api/queries';
 
 const routes = createBrowserRouter([
   {
@@ -38,6 +39,29 @@ const routes = createBrowserRouter([
           ]);
 
           return { gql: gql.data, collectory };
+        },
+      },
+      {
+        path: 'dashboard',
+        lazy: () => import('./views/Statistics'),
+        loader: async () => {
+          // Construct a query that fetches a summary all data resources
+          const QUERY_SEEDBANK_SUMMARY_ALL = `
+            query list {
+              ${queries.DATA_RESOURCES.map((dataResource: string) =>
+                queries.QUERY_DATASET_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
+              ).join('')}
+            }
+          `;
+
+          const { data } = await performGQLQuery(QUERY_SEEDBANK_SUMMARY_ALL);
+          return Object.entries(data).reduce(
+            (prev, [key, value]) => ({
+              ...prev,
+              [key]: (value as { documents: { results: object[] } }).documents.results[0],
+            }),
+            {},
+          );
         },
       },
       {

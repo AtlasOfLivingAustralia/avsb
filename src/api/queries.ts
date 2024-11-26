@@ -368,6 +368,17 @@ query dataset($key: JSON!){
 }
 `;
 
+const QUERY_DATASET_TEMPLATE = `
+{{datasetKey}}: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: "{{datasetKey}}"}, {type: equals, key: "eventType", value: "Accession"}]}) {
+  documents(size: 1) {
+    results {
+      datasetTitle
+      datasetKey
+    }
+  }
+}
+`;
+
 const QUERY_DATASET_SUGGEST = `
 query keywordSearch($predicate: Predicate, $size: Int){
   eventSearch(predicate: $predicate) {
@@ -674,6 +685,7 @@ export default {
   QUERY_TAXON_MEDIA,
   QUERY_DATASET,
   QUERY_DATASET_SUGGEST,
+  QUERY_DATASET_TEMPLATE,
   DOWNLOAD_EVENT_ACCESSIONS,
   DOWNLOAD_EVENT_TRIALS,
   QUERY_SEEDBANK_SUMMARY,

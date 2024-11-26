@@ -18,7 +18,7 @@ import {
   IconAdjustmentsHorizontal,
   IconAffiliate,
   IconBuildingBank,
-  IconDna2,
+  IconChartLine,
   IconFileDownload,
   IconFlask,
   IconMoon,
@@ -35,10 +35,10 @@ import {
   downloadRecordsItems,
   filterAccessionsTrialsItems,
   switchThemeItems,
+  viewPortalStatisticsItem,
   viewSeedbankItems,
   viewTaxonAccessionItems,
   viewTaxonMediaItems,
-  viewTaxonSequencesItems,
   viewTaxonSummaryItems,
   viewTaxonTrialItems,
 } from './topics';
@@ -102,11 +102,11 @@ const helpTopics: { [key: string]: HelpTopic } = {
     icon: IconPhoto,
     instructions: viewTaxonMediaItems,
   },
-  viewTaxonSequences: {
-    topic: 'Taxon Sequences',
-    description: 'View sequences for a plant taxon',
-    icon: IconDna2,
-    instructions: viewTaxonSequencesItems,
+  viewPortalStats: {
+    topic: 'View Statistics',
+    description: 'View portal data statistics',
+    icon: IconChartLine,
+    instructions: viewPortalStatisticsItem,
   },
   switchTheme: {
     topic: 'Switch Theme',

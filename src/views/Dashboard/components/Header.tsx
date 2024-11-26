@@ -1,5 +1,12 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { IconSun, IconMoon, IconHome, IconQuestionMark, IconArrowBackUp } from '@tabler/icons';
+import {
+  IconSun,
+  IconMoon,
+  IconHome,
+  IconQuestionMark,
+  IconArrowBackUp,
+  IconChartLine,
+} from '@tabler/icons';
 import {
   Header as MantineHeader,
   ActionIcon,
@@ -9,10 +16,12 @@ import {
   MediaQuery,
   Transition,
   Tooltip,
+  Image,
 } from '@mantine/core';
 
 // Project components & gelpers
-import { Logo, TaxonSearchInput } from '#/components';
+import { TaxonSearchInput } from '#/components';
+import logo from '#/assets/avsb-logo-square.png';
 
 const slideTransition = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -31,9 +40,19 @@ function Header() {
       <Group sx={{ height: '100%' }} px={20} position='apart'>
         <Group spacing='lg'>
           <Link to='/' style={{ display: 'flex' }} aria-label='Go to home'>
-            <Logo width={50} height={50} />
+            <Image src={logo} />
           </Link>
           <Group spacing={4}>
+            <Button
+              component={Link}
+              to='/dashboard'
+              leftIcon={<IconChartLine size='0.8rem' />}
+              size='xs'
+              variant='subtle'
+              aria-label='Portal Statistics'
+            >
+              Portal Statistics
+            </Button>
             <Transition transition={slideTransition} mounted={pathname !== '/'}>
               {(styles) => (
                 <Button
