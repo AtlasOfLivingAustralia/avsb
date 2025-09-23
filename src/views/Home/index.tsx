@@ -1,31 +1,31 @@
-import {
-  Group,
-  Container,
-  Text,
-  Stack,
-  Title,
-  Center,
-  Image,
-  Box,
-  Space,
-  Paper,
-  useMantineTheme,
-  Anchor,
-  Button,
-  Chip,
-  Alert,
-  Divider,
-} from '@mantine/core';
-import { IconChartLine, IconExternalLink, IconQuestionCircle } from '@tabler/icons';
-import { useMediaQuery } from '@mantine/hooks';
-import { Link, useNavigate } from 'react-router-dom';
+import wateringCan from '#/assets/watering-can-and-plant.png';
 import { Blob, TaxonSearchInput } from '#/components';
 import { Wave } from '#/components/Wave';
-import wateringCan from '#/assets/watering-can-and-plant.png';
+import {
+  Alert,
+  Anchor,
+  Box,
+  Button,
+  Center,
+  Chip,
+  Container,
+  Divider,
+  Group,
+  Image,
+  Paper,
+  Space,
+  Stack,
+  Text,
+  Title,
+  useMantineTheme,
+} from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import { IconChartLine, IconExternalLink, IconQuestionCircle } from '@tabler/icons';
+import { Link, useNavigate } from 'react-router-dom';
 
 // AVSB logos
-import logoWhite from '#/assets/avsb-logo-white.png';
 import logoGrey from '#/assets/avsb-logo-grey.png';
+import logoWhite from '#/assets/avsb-logo-white.png';
 
 import Summaries from './components/Summaries';
 
@@ -117,7 +117,7 @@ function Home() {
                 Our Datasets
               </Title>
               <Chip size='xs' checked={false}>
-                Last Updated October, 2024
+                Last Updated September, 2025
               </Chip>
             </Group>
             <Summaries mt='md' />
