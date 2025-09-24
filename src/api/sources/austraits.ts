@@ -36,7 +36,7 @@ async function summary(search: string, guid: string): Promise<AusTraitsSummary> 
     ).json();
 
     // Ensure we've successfully recieved the data back
-    if (Array.isArray(data)) throw new Error(data[0]);
+    if (data.error) return { numeric_traits: [], categorical_traits: [] };
 
     // Return the data
     return data;

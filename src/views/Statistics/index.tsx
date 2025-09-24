@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import queries from '#/api/queries';
 import {
   Anchor,
   Badge,
@@ -30,15 +30,15 @@ import {
   IconSeeding,
   IconTestPipe,
 } from '@tabler/icons';
+import { Fragment } from 'react';
 import { useLoaderData } from 'react-router-dom';
-import queries from '#/api/queries';
 
-import { Wave } from '#/components/Wave';
 import { Blob } from '#/components';
+import { Wave } from '#/components/Wave';
 
-import StatCard from './components/StatCard';
-import stats from '../../assets/stats.json';
 import ecologyEarth from '../../assets/ecology-earth.png';
+import stats from '../../assets/stats.json';
+import StatCard from './components/StatCard';
 
 const recordStats = [
   {
@@ -94,7 +94,7 @@ export function Component() {
         <Space h={45} />
         <Center>
           <Text c='dimmed' size='lg' fw='bold'>
-            The following statistics are current as at October, 2024
+            The following statistics are current as at September, 2025
           </Text>
         </Center>
       </Container>
