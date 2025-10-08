@@ -37,7 +37,6 @@
     "react-window": "^1.8.9"
   },
   "devDependencies": {
-    "@axe-core/react": "^4.7.3",
     "@biomejs/biome": "2.2.5",
     "@types/file-saver": "^2.0.5",
     "@types/lodash": "^4.14.195",
