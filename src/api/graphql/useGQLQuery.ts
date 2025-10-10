@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import useMounted from '#/helpers/useMounted';
+import { useEffect, useState } from 'react';
 
 import performGQLQuery, { Variables } from './performGQLQuery';
 
@@ -26,7 +26,6 @@ function useGQLQuery<T>(query: string, initialVariables = {}, options: QueryHook
     }
 
     if (!(options.lazy && !mounted)) runQuery();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [variables, options.lazy]);
 
   const update = (newVariables: Variables) => setVariables(newVariables);

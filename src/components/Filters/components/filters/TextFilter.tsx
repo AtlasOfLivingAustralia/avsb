@@ -22,7 +22,6 @@ function TextFilter({ filter, resetKey, onChange }: FilterItemProps) {
       key,
       value: debounced,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced]);
 
   useEffect(() => {
@@ -30,7 +29,7 @@ function TextFilter({ filter, resetKey, onChange }: FilterItemProps) {
   }, [key, resetKey, setValue]);
 
   return (
-    <Stack spacing='sm'>
+    <Stack gap='sm'>
       <IconText icon={icon} title={label} />
       <TextInput
         value={value}

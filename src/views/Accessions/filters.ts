@@ -11,12 +11,12 @@ import {
   IconTemperature,
 } from '@tabler/icons';
 
-import { SelectItem } from '@mantine/core';
+import { ComboboxItem } from '@mantine/core';
 import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';
 import { Filter } from '#/components';
 
 // Define a data fetcher for the dataset select search
-const fetchItems = async (query: string): Promise<SelectItem[]> => {
+const fetchItems = async (query: string): Promise<ComboboxItem[]> => {
   const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
     gqlQueries.QUERY_DATASET_SUGGEST,
     {

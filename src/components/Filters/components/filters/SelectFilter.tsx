@@ -22,7 +22,7 @@ function SelectFilter({ filter, resetKey, onChange }: FilterItemProps) {
   }, [key, resetKey, setValue]);
 
   return (
-    <Stack spacing='sm'>
+    <Stack gap='sm'>
       <IconText icon={icon} title={label} />
       <Select
         value={value}

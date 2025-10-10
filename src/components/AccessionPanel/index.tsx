@@ -1,26 +1,26 @@
-import { Suspense, lazy } from 'react';
 import {
+  ActionIcon,
+  Alert,
+  Anchor,
   Box,
-  Paper,
+  Breadcrumbs,
+  Button,
+  Card,
+  Center,
+  Chip,
+  Divider,
   Grid,
   Group,
+  Paper,
+  Skeleton,
+  Spoiler,
+  Stack,
   Text,
   ThemeIcon,
   Timeline,
-  Stack,
-  Breadcrumbs,
-  Anchor,
-  Button,
   Title,
-  Spoiler,
-  Divider,
-  Alert,
-  Skeleton,
-  Chip,
-  Card,
-  Center,
-  ActionIcon,
 } from '@mantine/core';
+// Local imports
 import {
   IconArrowBackUp,
   IconArrowUpRight,
@@ -36,6 +36,7 @@ import {
   IconPackage,
   IconTimelineEvent,
 } from '@tabler/icons';
+import { lazy, Suspense } from 'react';
 import {
   Await,
   Link,
@@ -44,41 +45,36 @@ import {
   useNavigate,
   useRouteLoaderData,
 } from 'react-router-dom';
-
 // Project imports
 import {
-  Event,
-  SeedBankAccession,
   AusTraitsSummary,
-  NumericTrait,
   CategoricalTrait,
+  Event,
+  NumericTrait,
   SDSInstance,
+  SeedBankAccession,
 } from '#/api';
-import { getIsDefined, accessionFields, SeedbankFieldTrait } from '#/helpers';
-
-// Local imports
+import { accessionFields, getIsDefined, SeedbankFieldTrait } from '#/helpers';
 import Contact from '../Contact';
-import HerbariumLink from './components/HerbariumLink';
+import FieldTooltip from '../FieldTooltip';
 import IconText from '../IconText';
 import MeasurementCard from '../MeasurementCard';
-import TrialSummary from './components/TrialSummary';
-
-import { fields, longFields } from './fields';
-import FieldTooltip from '../FieldTooltip';
 import SDS from '../SDS';
+import HerbariumLink from './components/HerbariumLink';
+import TrialSummary from './components/TrialSummary';
+import { fields, longFields } from './fields';
 
-const Map = lazy(() => import('../Map'));
+const MapComponent = lazy(() => import('../Map'));
 
 const missingData = 'Not Available';
 const missingDataField = (
-  <Text size='sm' weight='bold' color='dimmed'>
+  <Text size='sm' fw='bold' c='dimmed'>
     {missingData}
   </Text>
 );
 
 interface AusTraitsFieldProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  promise: any;
+  promise: unknown;
   trait?: SeedbankFieldTrait;
 }
 
@@ -105,7 +101,7 @@ function AusTraitsFieldInner({ trait }: { trait: SeedbankFieldTrait }) {
   }
 
   return value ? (
-    <Group spacing='xs'>
+    <Group gap='xs'>
       <ActionIcon
         onClick={() => {
           window.open(data?.definition, '_blank');
@@ -117,7 +113,7 @@ function AusTraitsFieldInner({ trait }: { trait: SeedbankFieldTrait }) {
       >
         <IconLeaf size='0.7rem' />
       </ActionIcon>
-      <Text size='sm' weight='bold'>
+      <Text size='sm' fw='bold'>
         {value}
       </Text>
     </Group>
@@ -164,13 +160,13 @@ function AccessionPanel() {
       {accessionEvent && (
         <Grid.Col span={12}>
           <Paper p='sm' mb='lg' withBorder>
-            <Group position='apart'>
-              <Group spacing='md'>
+            <Group justify='space-between'>
+              <Group gap='md'>
                 <Breadcrumbs>
-                  <Anchor weight='bold' size='sm' component={Link} to='..'>
+                  <Anchor fw='bold' size='sm' component={Link} to='..'>
                     Accessions
                   </Anchor>
-                  <Text weight='bold' size='sm'>
+                  <Text fw='bold' size='sm'>
                     {accession?.accessionNumber || accessionEvent.eventID}
                   </Text>
                 </Breadcrumbs>
@@ -190,7 +186,7 @@ function AccessionPanel() {
                 variant='subtle'
                 size='xs'
                 onClick={() => navigate(-1)}
-                leftIcon={<IconArrowBackUp size={16} />}
+                leftSection={<IconArrowBackUp size={16} />}
               >
                 Go Back
               </Button>
@@ -203,23 +199,23 @@ function AccessionPanel() {
           {fields
             .map((key) => ({ key, ...accessionFields[key] }))
             .map(({ key, label, description, examples, unit, icon: Icon }) => (
-              <Grid.Col key={key} xs={6} sm={4} md={3} lg={3} xl={2}>
+              <Grid.Col key={key} span={{ xs: 6, sm: 4, md: 3, lg: 3, xl: 2 }}>
                 <FieldTooltip {...{ label, description, examples, Icon }}>
                   <Group>
                     <ThemeIcon variant='light' size='xl' radius='xl'>
                       <Icon />
                     </ThemeIcon>
                     <Box>
-                      <Text color='dimmed' size='xs'>
+                      <Text c='dimmed' size='xs'>
                         {label}
                       </Text>
                       {getIsDefined(accession?.[key]) ? (
-                        <Text size='xl' weight='bold'>
+                        <Text size='xl' fw='bold'>
                           {accession?.[key]}
                           {unit && unit}
                         </Text>
                       ) : (
-                        <Text size='xl' weight='bold' color='dimmed'>
+                        <Text size='xl' fw='bold' c='dimmed'>
                           {missingData}
                         </Text>
                       )}
@@ -233,14 +229,14 @@ function AccessionPanel() {
           {longFields
             .map((key) => ({ key, ...accessionFields[key] }))
             .map(({ key, label, description, examples, trait, icon: Icon }) => (
-              <Grid.Col key={key} xs={12} sm={6} md={4} lg={4} xl={3}>
+              <Grid.Col key={key} span={{ xs: 12, sm: 6, md: 4, lg: 4, xl: 3 }}>
                 <FieldTooltip {...{ label, description, examples, trait, Icon }}>
                   <Box>
-                    <Text color='dimmed' size='xs'>
+                    <Text c='dimmed' size='xs'>
                       {label}
                     </Text>
                     {getIsDefined(accession?.[key]) ? (
-                      <Text size='sm' weight='bold'>
+                      <Text size='sm' fw='bold'>
                         {accession?.[key]}
                       </Text>
                     ) : (
@@ -293,11 +289,11 @@ function AccessionPanel() {
           </Spoiler>
         </Grid.Col>
       )}
-      <Grid.Col sm={8} md={8} lg={8}>
+      <Grid.Col span={{ sm: 8, md: 8, lg: 8 }}>
         <Card h='100%' p={0} shadow='lg' withBorder>
           {accessionEvent.decimalLatitude && accessionEvent.decimalLongitude && (
             <Suspense fallback={<Skeleton w='100%' h={350} />}>
-              <Map
+              <MapComponent
                 width='100%'
                 height={350}
                 center={[accessionEvent.decimalLongitude, accessionEvent.decimalLatitude]}
@@ -307,24 +303,24 @@ function AccessionPanel() {
           {!hasCoordinates && (
             <Box
               p='lg'
-              sx={(theme) => ({
+              style={{
                 backgroundColor:
-                  theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
-              })}
+                  'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5))',
+              }}
             >
               {sds.length > 0 ? (
                 <SDS instances={sds} />
               ) : (
                 <Center w='100%'>
-                  <Stack w='100%' align='center' spacing='xl'>
+                  <Stack w='100%' justify='center' gap='xl'>
                     <ThemeIcon size={100} variant='light' radius={50}>
                       <IconMapPinOff size='2.5rem' />
                     </ThemeIcon>
-                    <Stack spacing='xs' align='center'>
+                    <Stack gap='xs' justify='center'>
                       <Title order={3} mb='xs'>
                         Missing Coordinates
                       </Title>
-                      <Text size='0.9rem' color='dimmed' align='center' maw={525}>
+                      <Text size='0.9rem' c='dimmed' ta='center' maw={525}>
                         No coordinate data has been supplied for this record
                       </Text>
                     </Stack>
@@ -333,7 +329,7 @@ function AccessionPanel() {
               )}
             </Box>
           )}
-          <Stack spacing='xs' p='md'>
+          <Stack gap='xs' p='md'>
             {hasCoordinates && (
               <Alert mb='xs' icon={<IconInfoCircle />}>
                 This map shows the seed <b>collection</b> location
@@ -354,11 +350,11 @@ function AccessionPanel() {
           </Stack>
         </Card>
       </Grid.Col>
-      <Grid.Col sm={4} md={4} lg={4}>
+      <Grid.Col span={{ sm: 4, md: 4, lg: 4 }}>
         <Card shadow='lg' style={{ display: 'flex', flexDirection: 'column' }} h='100%' withBorder>
-          <Group spacing='md' mb='xl'>
+          <Group gap='md' mb='xl'>
             <IconTimelineEvent size='1.5rem' />
-            <Text size='xl' sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}>
+            <Text size='xl' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
               Collection Timeline
             </Text>
           </Group>
@@ -366,7 +362,7 @@ function AccessionPanel() {
             <Timeline bulletSize={28}>
               <Timeline.Item bullet={<IconHandStop size={18} />}>
                 <Text>Seed Collected</Text>
-                <Text color='dimmed' size='xs'>
+                <Text c='dimmed' size='xs'>
                   {accession?.dateCollected
                     ? new Date(accession.dateCollected).toLocaleDateString()
                     : missingData}
@@ -374,7 +370,7 @@ function AccessionPanel() {
               </Timeline.Item>
               <Timeline.Item bullet={<IconPackage size={18} />}>
                 <Text>Seed In Storage</Text>
-                <Text color='dimmed' size='xs'>
+                <Text c='dimmed' size='xs'>
                   {accession?.dateInStorage
                     ? new Date(accession.dateInStorage).toLocaleDateString()
                     : missingData}
@@ -392,7 +388,7 @@ function AccessionPanel() {
       )}
       {accessionEvent.eventID && (
         <Grid.Col span={12}>
-          <Text size='lg' mb='md' sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}>
+          <Text size='lg' mb='md' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
             Related Trials
           </Text>
           <TrialSummary trials={trialEvents} />

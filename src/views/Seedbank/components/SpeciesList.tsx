@@ -21,6 +21,8 @@ import { saveAs } from 'file-saver';
 import { taxonAPI } from '#/api';
 import { orderBy } from 'lodash';
 
+import classes from './SpeciesList.module.css';
+
 type SpeciesFacet = { key: string; count: number };
 
 interface SpeciesListProps {
@@ -56,22 +58,12 @@ function Row({ index, style, data }: SpeciesRow) {
   };
 
   return (
-    <UnstyledButton
-      onClick={handleRowClick}
-      key={index}
-      style={style}
-      sx={{
-        transition: 'opacity cubic-bezier(0, 0, 0, 1) 200ms',
-        ':hover': {
-          opacity: 0.4,
-        },
-      }}
-    >
-      <Group position='apart'>
+    <UnstyledButton onClick={handleRowClick} key={index} className={classes.button} style={style}>
+      <Group justify='space-between'>
         <Text size='sm' maw={205} truncate>
           {data[index].key}
         </Text>
-        <Group spacing='xs' mr='sm'>
+        <Group gap='xs' mr='sm'>
           <Badge>
             {data[index].count} Record{data[index].count > 1 && 's'}
           </Badge>
@@ -101,7 +93,6 @@ function SpeciesList({ name, species }: SpeciesListProps) {
     setFiltered(
       species.filter(({ key }) => key.toLowerCase().includes(searchDebounced.toLowerCase())),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDebounced]);
 
   const onDownloadClick = () => {
@@ -120,11 +111,11 @@ function SpeciesList({ name, species }: SpeciesListProps) {
 
   return (
     <Paper p='md' h='100%' withBorder>
-      <Group mb='xs' position='apart'>
-        <Text size='xl' sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}>
+      <Group mb='xs' justify='space-between'>
+        <Text size='xl' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
           {species.length} Species
         </Text>
-        <Group spacing='xs'>
+        <Group gap='xs'>
           <SegmentedControl
             size='xs'
             value={sort}
@@ -146,7 +137,7 @@ function SpeciesList({ name, species }: SpeciesListProps) {
         </Group>
       </Group>
       <TextInput
-        icon={<IconSearch size='1rem' />}
+        leftSection={<IconSearch size='1rem' />}
         w='100%'
         variant='filled'
         mb='xs'

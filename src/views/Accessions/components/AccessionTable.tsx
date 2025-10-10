@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Fragment, useEffect, useState } from 'react';
 import { Event, SeedBankAccession } from '#/api/graphql/types';
 import {
   Box,
@@ -13,55 +11,26 @@ import {
   Table,
   Text,
   Tooltip,
-  createStyles,
-  rem,
-  useMantineTheme,
 } from '@mantine/core';
 import {
-  IconArrowUpRight,
   IconArrowsMaximize,
   IconArrowsMinimize,
+  IconArrowUpRight,
   IconChevronDown,
 } from '@tabler/icons';
-import { Link } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
-
+import { Fragment, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 // Project components / helpers
 import { AccessionDetails, ThField } from '#/components';
 import { getIsDefined } from '#/helpers';
-
-const useStyles = createStyles((theme) => ({
-  header: {
-    position: 'sticky',
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-    transition: 'box-shadow 150ms ease',
-    zIndex: 100,
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
-      }`,
-    },
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.md,
-  },
-}));
+import classes from './AccessionTable.module.css';
 
 interface AccessionTableProps {
   events: Event[];
 }
 
 function AccessionTable({ events }: AccessionTableProps) {
-  const theme = useMantineTheme();
-  const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -80,7 +49,6 @@ function AccessionTable({ events }: AccessionTableProps) {
     setSortedData(orderBy(events || [], [field], [reversed ? 'desc' : 'asc']));
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setSorting(sortBy || '', true), [events]);
 
   return (
@@ -91,7 +59,7 @@ function AccessionTable({ events }: AccessionTableProps) {
         onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
       >
         <Table highlightOnHover>
-          <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
+          <thead className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
             <tr>
               <ThField
                 sorted={sortBy === 'extensions.seedbank.accessionNumber'}
@@ -172,6 +140,7 @@ function AccessionTable({ events }: AccessionTableProps) {
                   <tr
                     style={{ cursor: 'pointer' }}
                     onClick={(e) => {
+                      // biome-ignore lint: suspicious/noExplicitAny
                       const className = (e.target as any)?.className;
                       if (!(typeof className === 'string' && className.includes('Button'))) {
                         setSelected(
@@ -210,19 +179,17 @@ function AccessionTable({ events }: AccessionTableProps) {
                         `${accession?.storageTemperatureInCelsius}°C`}
                     </td>
                     <td align='right'>
-                      <Group spacing='xs' position='right' miw={150}>
+                      <Group gap='xs' justify='right' miw={150}>
                         <Button
                           styles={{
                             label: {
                               textDecoration: 'underline',
                               textUnderlineOffset: 2,
                               textDecorationColor:
-                                theme.colorScheme === 'dark'
-                                  ? 'rgba(165, 216, 255, 0.25)'
-                                  : 'rgba(34, 139, 230, 0.25)',
+                                'light-dark(rgba(34, 139, 230, 0.25), rgba(165, 216, 255, 0.25))',
                             },
                           }}
-                          rightIcon={<IconArrowUpRight size='1rem' />}
+                          rightSection={<IconArrowUpRight size='1rem' />}
                           component={Link}
                           to={event.eventID || '/'}
                           variant='subtle'
@@ -248,22 +215,15 @@ function AccessionTable({ events }: AccessionTableProps) {
                       style={{
                         padding: 0,
                         border: 'none',
-                        backgroundColor:
-                          theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
+                        backgroundColor: 'light-dark(white, var(--mantine-color-dark-6))',
                       }}
                     >
                       <Collapse in={isSelected}>
                         <Box
-                          sx={{
+                          style={{
                             backgroundColor:
-                              theme.colorScheme === 'dark'
-                                ? theme.colors.dark[7]
-                                : theme.colors.gray[1],
-                            borderTop: `1px solid ${
-                              theme.colorScheme === 'dark'
-                                ? theme.colors.dark[4]
-                                : theme.colors.gray[3]
-                            }`,
+                              'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))',
+                            borderTop: `1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4))`,
                           }}
                           p='md'
                         >

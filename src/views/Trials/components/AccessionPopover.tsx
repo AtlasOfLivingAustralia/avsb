@@ -1,3 +1,4 @@
+import { Event, SeedBankAccession } from '#/api';
 import {
   Box,
   Button,
@@ -8,10 +9,8 @@ import {
   Text,
   ThemeIcon,
   Timeline,
-  useMantineTheme,
 } from '@mantine/core';
 import { IconExternalLink, IconHandStop, IconMapPin, IconPackage } from '@tabler/icons';
-import { Event, SeedBankAccession } from '#/api';
 import { Link } from 'react-router-dom';
 
 import { allFields } from '#/helpers';
@@ -35,7 +34,6 @@ interface AccessionPopoverProps {
 }
 
 function AccessionPopover({ parentEvent }: AccessionPopoverProps) {
-  const theme = useMantineTheme();
   const accession = parentEvent?.extensions?.seedbank;
 
   return (
@@ -53,9 +51,7 @@ function AccessionPopover({ parentEvent }: AccessionPopoverProps) {
               textDecoration: 'underline',
               textUnderlineOffset: 2,
               textDecorationColor:
-                theme.colorScheme === 'dark'
-                  ? 'rgba(165, 216, 255, 0.25)'
-                  : 'rgba(34, 139, 230, 0.25)',
+                'light-dark(rgba(34, 139, 230, 0.25), rgba(165, 216, 255, 0.25))',
             },
           }}
           disabled={!parentEvent}
@@ -67,7 +63,7 @@ function AccessionPopover({ parentEvent }: AccessionPopoverProps) {
         </Button>
       </Popover.Target>
       <Popover.Dropdown p={0}>
-        <Stack spacing={6} pt='sm'>
+        <Stack gap={6} pt='sm'>
           {fields
             .map((key) => ({ key, ...allFields[key] }))
             .map(({ key, label, unit, icon: Icon }) => (
@@ -94,25 +90,24 @@ function AccessionPopover({ parentEvent }: AccessionPopoverProps) {
                     flexWrap: 'wrap',
                   }}
                 >
-                  <Text size='xs' weight='bold' mr='xs'>
+                  <Text size='xs' fw='bold' mr='xs'>
                     {label}
                   </Text>
-                  <Text size='xs' color={accession?.[key] ? undefined : 'dimmed'}>
-                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  <Text size='xs' c={accession?.[key] ? undefined : 'dimmed'}>
                     {accession?.[key] ? `${accession[key]}${unit || ''}` : 'Not Supplied'}
                   </Text>
                 </Box>
               </Box>
             ))}
           <Divider my={6} />
-          <Stack px='sm' style={{ textAlign: 'left' }} spacing={6}>
-            <Group spacing='xs'>
+          <Stack px='sm' style={{ textAlign: 'left' }} gap={6}>
+            <Group gap='xs'>
               <IconMapPin size='0.8rem' />
-              <Text size='xs' weight='bold'>
+              <Text size='xs' fw='bold'>
                 Locality
               </Text>
             </Group>
-            <Text size='xs' color='dimmed'>
+            <Text size='xs' c='dimmed'>
               {parentEvent?.locality || 'No locality data'}
             </Text>
           </Stack>
@@ -120,20 +115,20 @@ function AccessionPopover({ parentEvent }: AccessionPopoverProps) {
           <Box px='sm' pb='sm'>
             <Timeline bulletSize={28}>
               <Timeline.Item bullet={<IconHandStop size={18} />}>
-                <Text size='xs' weight='bold'>
+                <Text size='xs' fw='bold'>
                   Seed Collected
                 </Text>
-                <Text color='dimmed' size='xs'>
+                <Text c='dimmed' size='xs'>
                   {accession?.dateCollected
                     ? new Date(accession.dateCollected).toLocaleDateString()
                     : 'No collection date'}
                 </Text>
               </Timeline.Item>
               <Timeline.Item bullet={<IconPackage size={18} />}>
-                <Text size='xs' weight='bold'>
+                <Text size='xs' fw='bold'>
                   Seed In Storage
                 </Text>
-                <Text color='dimmed' size='xs'>
+                <Text c='dimmed' size='xs'>
                   {accession?.dateInStorage
                     ? new Date(accession.dateInStorage).toLocaleDateString()
                     : 'No storage date'}
@@ -149,7 +144,7 @@ function AccessionPopover({ parentEvent }: AccessionPopoverProps) {
           component={Link}
           to={`../accessions/${parentEvent?.eventID}`}
           style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-          rightIcon={<IconExternalLink size='1rem' />}
+          rightSection={<IconExternalLink size='1rem' />}
         >
           Go to {accession?.accessionNumber || parentEvent?.eventID || 'accession'}
         </Button>

@@ -40,7 +40,7 @@ async function summary(search: string, guid: string): Promise<AusTraitsSummary> 
 
     // Return the data
     return data;
-  } catch (error) {
+  } catch (_error) {
     return {
       numeric_traits: [],
       categorical_traits: [],

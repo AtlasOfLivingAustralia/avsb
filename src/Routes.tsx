@@ -1,20 +1,19 @@
-import { createBrowserRouter, RouterProvider, redirect, defer } from 'react-router-dom';
 import { AccessionPanel, ErrorBoundary } from '#/components';
+import { createBrowserRouter, defer, redirect, RouterProvider } from 'react-router-dom';
 import {
-  Event,
-  performGQLQuery,
-  gqlQueries,
-  taxonAPI,
-  collectoryAPI,
-  genbankAPI,
-  sdsAPI,
   austraitsAPI,
+  collectoryAPI,
+  Event,
+  EventSearchResult,
+  gqlQueries,
+  performGQLQuery,
+  sdsAPI,
+  taxonAPI,
 } from './api';
-
-import { DashboardView, HomeView } from './views';
+import queries from './api/queries';
 
 import { mapTrialTreatments } from './helpers';
-import queries from './api/queries';
+import { DashboardView, HomeView } from './views';
 
 const routes = createBrowserRouter([
   {
@@ -32,10 +31,13 @@ const routes = createBrowserRouter([
         loader: async ({ params }) => {
           const [collectory, gql] = await Promise.all([
             collectoryAPI.dataResource(params.resource || ''),
-            performGQLQuery(gqlQueries.QUERY_SEEDBANK_SUMMARY_FULL, {
-              datasetKey: params.resource,
-              size: 50,
-            }),
+            performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+              gqlQueries.QUERY_SEEDBANK_SUMMARY_FULL,
+              {
+                datasetKey: params.resource,
+                size: 50,
+              },
+            ),
           ]);
 
           return { gql: gql.data, collectory };
@@ -54,7 +56,9 @@ const routes = createBrowserRouter([
             }
           `;
 
-          const { data } = await performGQLQuery(QUERY_SEEDBANK_SUMMARY_ALL);
+          const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+            QUERY_SEEDBANK_SUMMARY_ALL,
+          );
           return Object.entries(data).reduce(
             (prev, [key, value]) => ({
               ...prev,
@@ -82,25 +86,28 @@ const routes = createBrowserRouter([
             path: 'summary',
             lazy: () => import('./views/Summary'),
             loader: async ({ params }) => {
-              const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_MAP, {
-                predicate: {
-                  type: 'and',
-                  predicates: [
-                    gqlQueries.PRED_DATA_RESOURCE,
-                    {
-                      type: 'in',
-                      key: 'taxonKey',
-                      values: [params.guid],
-                    },
-                    {
-                      type: 'equals',
-                      key: 'eventType',
-                      value: 'Accession',
-                    },
-                  ],
+              const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+                gqlQueries.QUERY_EVENT_MAP,
+                {
+                  predicate: {
+                    type: 'and',
+                    predicates: [
+                      gqlQueries.PRED_DATA_RESOURCE,
+                      {
+                        type: 'in',
+                        key: 'taxonKey',
+                        values: [params.guid],
+                      },
+                      {
+                        type: 'equals',
+                        key: 'eventType',
+                        value: 'Accession',
+                      },
+                    ],
+                  },
+                  size: 50,
                 },
-                size: 50,
-              });
+              );
 
               return data.eventSearch._tileServerToken;
             },
@@ -111,25 +118,28 @@ const routes = createBrowserRouter([
             errorElement: <ErrorBoundary />,
             lazy: () => import('./views/Accessions'),
             loader: async ({ params }) => {
-              const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_ACCESSIONS, {
-                predicate: {
-                  type: 'and',
-                  predicates: [
-                    gqlQueries.PRED_DATA_RESOURCE,
-                    {
-                      type: 'in',
-                      key: 'taxonKey',
-                      values: [params.guid],
-                    },
-                    {
-                      type: 'equals',
-                      key: 'eventType',
-                      value: 'Accession',
-                    },
-                  ],
+              const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+                gqlQueries.QUERY_EVENT_ACCESSIONS,
+                {
+                  predicate: {
+                    type: 'and',
+                    predicates: [
+                      gqlQueries.PRED_DATA_RESOURCE,
+                      {
+                        type: 'in',
+                        key: 'taxonKey',
+                        values: [params.guid],
+                      },
+                      {
+                        type: 'equals',
+                        key: 'eventType',
+                        value: 'Accession',
+                      },
+                    ],
+                  },
+                  size: 10,
                 },
-                size: 10,
-              });
+              );
               return data.eventSearch.documents;
             },
             children: [
@@ -137,7 +147,9 @@ const routes = createBrowserRouter([
                 path: ':accession',
                 element: <AccessionPanel />,
                 loader: async ({ params }) => {
-                  const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_ACCESSION_FULL, {
+                  const { data } = await performGQLQuery<{
+                    data: { accession: EventSearchResult; trials: EventSearchResult };
+                  }>(gqlQueries.QUERY_EVENT_ACCESSION_FULL, {
                     predicate: {
                       type: 'equals',
                       key: 'eventID',
@@ -151,8 +163,8 @@ const routes = createBrowserRouter([
                   });
 
                   return {
-                    accessionEvent: data.accession.documents.results[0],
-                    trialEvents: data.trials.documents.results,
+                    accessionEvent: data.accession?.documents?.results?.[0],
+                    trialEvents: data.trials?.documents?.results,
                   };
                 },
               },
@@ -164,33 +176,8 @@ const routes = createBrowserRouter([
             lazy: () => import('./views/Trials'),
             loader: async ({ params }) => {
               // Perform the first query to retireve the trial data
-              const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_TRIALS, {
-                predicate: {
-                  type: 'and',
-                  predicates: [
-                    gqlQueries.PRED_DATA_RESOURCE,
-                    {
-                      type: 'equals',
-                      key: 'eventType',
-                      value: 'Trial',
-                    },
-                    {
-                      type: 'equals',
-                      key: 'taxonKey',
-                      value: params.guid,
-                    },
-                  ],
-                },
-                size: 10,
-              });
-
-              // Extract the event IDs from all of the return trials, then retrieve their associated
-              // treatment events
-              const eventIDs = (data.eventSearch.documents.results as Event[]).map(
-                ({ eventID }) => eventID,
-              );
-              const { data: treatments } = await performGQLQuery(
-                gqlQueries.QUERY_EVENT_TREATMENTS,
+              const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+                gqlQueries.QUERY_EVENT_TRIALS,
                 {
                   predicate: {
                     type: 'and',
@@ -199,12 +186,12 @@ const routes = createBrowserRouter([
                       {
                         type: 'equals',
                         key: 'eventType',
-                        value: 'Treatment',
+                        value: 'Trial',
                       },
                       {
-                        type: 'in',
-                        key: 'eventHierarchy',
-                        values: eventIDs,
+                        type: 'equals',
+                        key: 'taxonKey',
+                        value: params.guid,
                       },
                     ],
                   },
@@ -212,12 +199,39 @@ const routes = createBrowserRouter([
                 },
               );
 
+              // Extract the event IDs from all of the return trials, then retrieve their associated
+              // treatment events
+              const eventIDs = (data.eventSearch.documents?.results as Event[]).map(
+                ({ eventID }) => eventID,
+              );
+              const { data: treatments } = await performGQLQuery<{
+                data: { eventSearch: EventSearchResult };
+              }>(gqlQueries.QUERY_EVENT_TREATMENTS, {
+                predicate: {
+                  type: 'and',
+                  predicates: [
+                    gqlQueries.PRED_DATA_RESOURCE,
+                    {
+                      type: 'equals',
+                      key: 'eventType',
+                      value: 'Treatment',
+                    },
+                    {
+                      type: 'in',
+                      key: 'eventHierarchy',
+                      values: eventIDs,
+                    },
+                  ],
+                },
+                size: 10,
+              });
+
               // Return both trial & treatment data
               return {
                 ...(data.eventSearch?.documents || {}),
                 results: mapTrialTreatments(
-                  data.eventSearch?.documents.results || [],
-                  treatments.eventSearch?.documents.results || [],
+                  data.eventSearch?.documents?.results || [],
+                  treatments.eventSearch?.documents?.results || [],
                 ),
               };
             },
@@ -227,32 +241,26 @@ const routes = createBrowserRouter([
             errorElement: <ErrorBoundary />,
             lazy: () => import('./views/Media'),
             loader: async ({ params }) => {
-              const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
-                key: params.guid,
-                specimenParams: {
-                  filter: {
-                    basis_of_record: 'PreservedSpecimen',
+              const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+                gqlQueries.QUERY_TAXON_MEDIA,
+                {
+                  key: params.guid,
+                  specimenParams: {
+                    filter: {
+                      basis_of_record: 'PreservedSpecimen',
+                    },
+                    size: 8,
                   },
-                  size: 8,
-                },
-                otherParams: {
-                  filter: {
-                    '-basis_of_record': 'PreservedSpecimen',
+                  otherParams: {
+                    filter: {
+                      '-basis_of_record': 'PreservedSpecimen',
+                    },
                   },
                 },
-              });
+              );
 
               return data;
             },
-          },
-          {
-            path: 'sequences',
-            errorElement: <ErrorBoundary />,
-            lazy: () => import('./views/Sequences'),
-            loader: async ({ params }) =>
-              defer({
-                sequences: genbankAPI.sequences(params.guid || ''),
-              }),
           },
           {
             path: 'traits',

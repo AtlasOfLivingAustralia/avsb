@@ -1,23 +1,21 @@
-import { useEffect, useState } from 'react';
 import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import { useLoaderData, useLocation, useParams, useRouteLoaderData } from 'react-router-dom';
-
-// Project components / helpers
-import { Downloads, Filters } from '#/components';
-import { Taxon } from '#/api/sources/taxon';
 import { gqlQueries, performGQLQuery } from '#/api';
 import { Event, EventDocuments, EventSearchResult, Predicate } from '#/api/graphql/types';
 import queries from '#/api/queries';
+import { Taxon } from '#/api/sources/taxon';
+// Project components / helpers
+import { Downloads, Filters } from '#/components';
 import { useMounted, mapTrialTreatments } from '#/helpers';
 import TrialsTable from './components/TrialsTable';
-import filters from './filters';
 import downloadFields from './downloadFields';
+import filters from './filters';
 
 interface LocationState {
   predicates?: Predicate[];
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function Component() {
   // State hooks
   const { state } = useLocation() as { state: LocationState };
@@ -49,21 +47,26 @@ export function Component() {
   useEffect(() => {
     async function runQuery() {
       // Perform the first query to retireve the trial data
-      const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_TRIALS, {
-        predicate: {
-          type: 'and',
-          predicates,
+      const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+        gqlQueries.QUERY_EVENT_TRIALS,
+        {
+          predicate: {
+            type: 'and',
+            predicates,
+          },
+          size: pageSize,
+          from: (page - 1) * pageSize,
         },
-        size: pageSize,
-        from: (page - 1) * pageSize,
-      });
+      );
 
       // Extract the event IDs from all of the return trials, then retrieve their associated
       // treatment events
-      const eventIDs = (data.eventSearch.documents.results as Event[]).map(
+      const eventIDs = (data.eventSearch?.documents?.results as Event[]).map(
         ({ eventID }) => eventID,
       );
-      const { data: treatmentData } = await performGQLQuery(gqlQueries.QUERY_EVENT_TREATMENTS, {
+      const { data: treatmentData } = await performGQLQuery<{
+        data: { eventSearch: EventSearchResult };
+      }>(gqlQueries.QUERY_EVENT_TREATMENTS, {
         predicate: {
           type: 'and',
           predicates: [
@@ -86,19 +89,20 @@ export function Component() {
       setQuery({
         ...(data.eventSearch?.documents || {}),
         results: mapTrialTreatments(
-          data.eventSearch?.documents.results || [],
-          treatmentData.eventSearch?.documents.results || [],
-        ),
+          data.eventSearch?.documents?.results || [],
+          treatmentData.eventSearch?.documents?.results || [],
+        ) as [Event],
       });
     }
 
     if (mounted) runQuery();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pageSize, filterPredicates]);
 
   const downloadFetcher = async (data: { eventSearch: EventSearchResult }) => {
     const eventIDs = data.eventSearch.documents?.results?.map(({ eventID }) => eventID);
-    const { data: treatmentData } = await performGQLQuery(gqlQueries.QUERY_EVENT_TREATMENTS, {
+    const { data: treatmentData } = await performGQLQuery<{
+      data: { eventSearch: EventSearchResult };
+    }>(gqlQueries.QUERY_EVENT_TREATMENTS, {
       predicate: {
         type: 'and',
         predicates: [
@@ -119,13 +123,13 @@ export function Component() {
     });
     return mapTrialTreatments(
       data.eventSearch.documents?.results || [],
-      treatmentData.eventSearch?.documents.results || [],
+      treatmentData.eventSearch?.documents?.results || [],
     );
   };
 
   return (
     <>
-      <Group mb='lg' position='apart'>
+      <Group mb='lg' justify='space-between'>
         <Group>
           <Tooltip
             transitionProps={{ transition: 'pop' }}
@@ -158,7 +162,7 @@ export function Component() {
           />
         </Group>
         <Group>
-          <Text color='dimmed' align='right' size='sm'>
+          <Text c='dimmed' ta='right' size='sm'>
             {(page - 1) * pageSize + 1}-
             {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {query.total} total
             records

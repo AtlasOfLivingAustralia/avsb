@@ -1,0 +1,22 @@
+.th {
+  padding: 0 !important;
+}
+
+.control {
+  width: 100%;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+
+  &:hover {
+    background-color: light-dark(
+      var(--mantine-color-dark-6),
+      var(--mantine-color-gray-0)
+    );
+  }
+}
+
+.icon {
+  width: 21rem;
+  height: 21rem;
+  border-radius: 21rem;
+  margin-left: auto;
+}

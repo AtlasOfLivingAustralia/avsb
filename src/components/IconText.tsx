@@ -1,6 +1,6 @@
-import { CSSProperties, PropsWithChildren } from 'react';
 import { Box, BoxProps, Text } from '@mantine/core';
 import { TablerIcon } from '@tabler/icons';
+import { CSSProperties, PropsWithChildren } from 'react';
 
 interface IconTextProps extends BoxProps {
   icon?: TablerIcon;
@@ -26,11 +26,11 @@ function IconText({
       {Icon && <Icon size={22} style={iconStyle} />}
       <Box style={{ display: 'flex', flexDirection: 'row' }}>
         {title && (
-          <Text weight='bold' miw={labelWidth || 125} size='sm'>
+          <Text fw='bold' miw={labelWidth || 125} size='sm'>
             {title}
           </Text>
         )}
-        <Text size='sm' color='dimmed'>
+        <Text size='sm' c='dimmed'>
           {children}
         </Text>
       </Box>

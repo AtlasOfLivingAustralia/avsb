@@ -1,11 +1,11 @@
 import { IconCalendar, IconCalendarEvent, IconDatabase } from '@tabler/icons';
 
-import { SelectItem } from '@mantine/core';
+import { ComboboxItem } from '@mantine/core';
 import { collectoryAPI } from '#/api';
 import { Filter } from '#/components';
 
 // Define a data fetcher for the dataset select search
-const fetchItems = async (query: string): Promise<SelectItem[]> => {
+const fetchItems = async (query: string): Promise<ComboboxItem[]> => {
   const dataResources = await collectoryAPI.dataResourceList();
 
   return dataResources

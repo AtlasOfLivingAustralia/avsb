@@ -10,12 +10,13 @@ import {
   Text,
   Transition,
   UnstyledButton,
-  useMantineTheme,
 } from '@mantine/core';
 
-import { IconX } from '@tabler/icons';
 import { Event, EventDocuments, SeedBankAccession } from '#/api/graphql/types';
+import { IconX } from '@tabler/icons';
 import { Link } from 'react-router-dom';
+
+import classes from './ItemList.module.css';
 
 const slideX = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -32,7 +33,6 @@ interface ItemListProps {
 }
 
 function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
-  const theme = useMantineTheme();
   const { results, total } = documents;
 
   return (
@@ -44,14 +44,14 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
             position: 'absolute',
             color: 'white',
             zIndex: 10,
-            top: theme.spacing.md,
-            left: theme.spacing.md,
+            top: 'var(--mantine-spacing-md)',
+            left: 'var(--mantine-spacing-md)',
           }}
         >
           <Paper w={260} shadow='md' withBorder>
-            <Group p='xs' position='apart'>
+            <Group p='xs' justify='space-between'>
               <Skeleton visible={!results} w={160}>
-                <Text color='dimmed' weight='bold' size='sm' transform='uppercase'>
+                <Text c='dimmed' fw='bold' size='sm' tt='uppercase'>
                   {total} result{total && total > 1 ? 's' : ''}
                 </Text>
               </Skeleton>
@@ -66,7 +66,7 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
             </Group>
             <Divider />
             <ScrollArea type='auto' h={contentHeight || 300} offsetScrollbars>
-              <Stack spacing={0}>
+              <Stack gap={0}>
                 {!results &&
                   [0, 1, 2, 3, 4].map((key) => (
                     <Box key={key} px='xs' pt='xs' mb='xs'>
@@ -91,22 +91,17 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
                         }
                         p='xs'
                         key={result.eventID}
-                        sx={{
-                          '&:hover': {
-                            backgroundColor:
-                              theme.colorScheme === 'dark' ? theme.colors.dark[4] : 'white',
-                          },
-                        }}
+                        className={classes.item}
                       >
                         <Text size='sm'>
                           {accession?.accessionNumber || `Event ${result.eventID}`}
                         </Text>
                         {result.distinctTaxa?.[0]?.key && (
-                          <Text weight='bold' size='xs'>
+                          <Text fw='bold' size='xs'>
                             {result.distinctTaxa?.[0]?.scientificName}
                           </Text>
                         )}
-                        <Text size='xs' color='dimmed'>
+                        <Text size='xs' c='dimmed'>
                           {result.datasetTitle}
                         </Text>
                       </UnstyledButton>

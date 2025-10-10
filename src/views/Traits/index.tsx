@@ -1,10 +1,9 @@
-import { Suspense } from 'react';
 import { Alert, Center, Grid, Skeleton, Stack, Text } from '@mantine/core';
 import { IconAsterisk, IconSeedingOff } from '@tabler/icons';
 import range from 'lodash/range';
-
-// Project components / helpers
+import { Suspense } from 'react';
 import { Await, useRouteLoaderData } from 'react-router-dom';
+// Project components / helpers
 import { AusTraitsSummary } from '#/api';
 
 import CategoricalTraitCard from './components/CategoricalTraitCard';
@@ -14,7 +13,6 @@ interface RouteLoaderProps {
   traits: Promise<AusTraitsSummary>;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const { traits } = useRouteLoaderData('taxon') as RouteLoaderProps;
 
@@ -30,7 +28,7 @@ export function Component() {
           </Skeleton>
           <Grid>
             {range(0, 20).map((num) => (
-              <Grid.Col key={num} xs={12} sm={12} md={6} lg={4}>
+              <Grid.Col key={num} span={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
                 <CategoricalTraitCard trait={null} />
               </Grid.Col>
             ))}
@@ -51,12 +49,12 @@ export function Component() {
               </Alert>
               <Grid>
                 {categoricalTraits.map((trait) => (
-                  <Grid.Col key={trait.trait_name} xs={12} sm={12} md={6} lg={4}>
+                  <Grid.Col key={trait.trait_name} span={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
                     <CategoricalTraitCard trait={trait} />
                   </Grid.Col>
                 ))}
                 {numericTraits.map((trait) => (
-                  <Grid.Col key={trait.trait_name} xs={12} sm={12} md={6} lg={4}>
+                  <Grid.Col key={trait.trait_name} span={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
                     <NumericTraitCard trait={trait} />
                   </Grid.Col>
                 ))}
@@ -64,9 +62,9 @@ export function Component() {
             </>
           ) : (
             <Center h='calc(100vh - 350px)'>
-              <Stack align='center'>
+              <Stack justify='center'>
                 <IconSeedingOff size='3rem' />
-                <Text color='dimmed'>No matching traits found</Text>
+                <Text c='dimmed'>No matching traits found</Text>
               </Stack>
             </Center>
           )

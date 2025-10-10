@@ -1,14 +1,13 @@
 import { Box, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
-import { useLoaderData } from 'react-router-dom';
 import { IconMapPin } from '@tabler/icons';
+import { useLoaderData } from 'react-router-dom';
 
 // Project imports
 import { Event, SeedBankAccession } from '#/api';
-import { getIsDefined, accessionFields } from '#/helpers';
-
-import fields from './fields';
+import { accessionFields, getIsDefined } from '#/helpers';
 import FieldTooltip from '../FieldTooltip';
 import IconText from '../IconText';
+import fields from './fields';
 
 interface AccessionDetailsProps {
   event: Event;
@@ -25,23 +24,23 @@ function AccessionDetails({ event: eventProp }: AccessionDetailsProps) {
         {fields
           .map((key) => ({ key, ...accessionFields[key] }))
           .map(({ key, label, description, examples, unit, icon: Icon }) => (
-            <Grid.Col key={key} xs={12} sm={6} md={4} lg={4} xl={3}>
+            <Grid.Col key={key} span={{ xs: 12, sm: 6, md: 4, lg: 4, xl: 3 }}>
               <FieldTooltip {...{ label, description, examples, Icon }}>
                 <Group>
                   <ThemeIcon variant='light' size={28} radius='xl'>
                     <Icon size='1rem' />
                   </ThemeIcon>
                   <Box>
-                    <Text color='dimmed' size='xs'>
+                    <Text c='dimmed' size='xs'>
                       {label}
                     </Text>
                     {getIsDefined(accession?.[key]) ? (
-                      <Text size='sm' weight='bold'>
+                      <Text size='sm' fw='bold'>
                         {accession?.[key]}
                         {unit && unit}
                       </Text>
                     ) : (
-                      <Text size='sm' weight='bold' color='dimmed'>
+                      <Text size='sm' fw='bold' c='dimmed'>
                         Not Available
                       </Text>
                     )}

@@ -1,15 +1,13 @@
-import { useEffect } from 'react';
-import { Button, Modal, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Button, Modal, Stack, Text, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-
+import { useDisclosure } from '@mantine/hooks';
 import LogRocket from 'logrocket';
+import { useEffect } from 'react';
 
 // Project components & helpers
 import { Logo } from '#/components';
 
 function FeedbackModal() {
-  const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
   const logrocketEnabled = import.meta.env.VITE_APP_LOGROCKET_ENABLED === 'true';
 
@@ -27,8 +25,6 @@ function FeedbackModal() {
         open();
       }
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const form = useForm({
@@ -51,12 +47,12 @@ function FeedbackModal() {
       opened={opened}
       onClose={close}
       overlayProps={{
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2],
+        color: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         opacity: 0.55,
         blur: 3,
       }}
     >
-      <Stack align='center' spacing={8} mb='lg'>
+      <Stack justify='center' gap={8} mb='lg'>
         <Logo width={60} height={60} />
         <Title order={2} mb='sm'>
           Hey there!

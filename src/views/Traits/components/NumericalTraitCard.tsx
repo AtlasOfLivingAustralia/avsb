@@ -12,8 +12,8 @@ function NumericTraitCard({ trait }: NumericTraitCardProps) {
   return (
     <Card h='100%'>
       <Skeleton visible={visible} mb='xs'>
-        <Group position='apart'>
-          <Text size='xs' transform='uppercase' color='dimmed' weight='bold'>
+        <Group justify='space-between'>
+          <Text size='xs' tt='uppercase' c='dimmed' fw='bold'>
             {trait?.trait_name || 'Trait Name'}
           </Text>
           <Tooltip label='View definition' position='left' withArrow>
@@ -24,7 +24,7 @@ function NumericTraitCard({ trait }: NumericTraitCardProps) {
         </Group>
       </Skeleton>
       <Skeleton visible={visible}>
-        <Group spacing='xs'>
+        <Group gap='xs'>
           {trait?.mean !== '' && (
             <Chip checked={false} size='xs'>
               <b>Mean</b>&nbsp;{trait?.mean}

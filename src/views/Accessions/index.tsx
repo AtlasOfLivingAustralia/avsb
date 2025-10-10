@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import {
   Outlet,
   useLoaderData,
@@ -10,28 +10,26 @@ import {
 
 // Project components / helpers
 import {
+  EventDocuments,
+  EventSearchResult,
   gqlQueries,
   performGQLQuery,
-  Taxon,
-  EventDocuments,
   Predicate,
-  EventSearchResult,
+  Taxon,
 } from '#/api';
 import { Downloads, Filters } from '#/components';
 import { useMounted } from '#/helpers';
 
 // Accession components
 import AccessionTable from './components/AccessionTable';
-
+import downloadFields from './downloadFields';
 // Config
 import filters from './filters';
-import downloadFields from './downloadFields';
 
 interface LocationState {
   predicates?: Predicate[];
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function Component() {
   // State hooks
   const { state } = useLocation() as { state: LocationState };
@@ -63,19 +61,21 @@ export function Component() {
 
   useEffect(() => {
     async function runQuery() {
-      const { data } = await performGQLQuery(gqlQueries.QUERY_EVENT_ACCESSIONS, {
-        predicate: {
-          type: 'and',
-          predicates,
+      const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+        gqlQueries.QUERY_EVENT_ACCESSIONS,
+        {
+          predicate: {
+            type: 'and',
+            predicates,
+          },
+          size: pageSize,
+          from: (page - 1) * pageSize,
         },
-        size: pageSize,
-        from: (page - 1) * pageSize,
-      });
-      setQuery(data.eventSearch.documents);
+      );
+      setQuery(data.eventSearch?.documents as EventDocuments);
     }
 
     if (mounted) runQuery();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pageSize, filterPredicates]);
 
   if (params.accession) return <Outlet />;
@@ -85,7 +85,7 @@ export function Component() {
 
   return (
     <>
-      <Group mb='lg' position='apart'>
+      <Group mb='lg' justify='space-between'>
         <Group>
           <Tooltip
             transitionProps={{ transition: 'pop' }}
@@ -118,7 +118,7 @@ export function Component() {
           />
         </Group>
         <Group>
-          <Text color='dimmed' align='right' size='sm'>
+          <Text c='dimmed' ta='center' size='sm'>
             {(page - 1) * pageSize + 1}-
             {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {query.total} total
             records
@@ -140,7 +140,9 @@ export function Component() {
           value={page}
           total={query ? Math.ceil((query.total as number) / pageSize) : 1}
           onChange={(newPage) => setPage(newPage)}
-          getControlProps={(control) => ({ 'aria-label': `${control} pagination button` })}
+          getControlProps={(control) => ({
+            'aria-label': `${control} pagination button`,
+          })}
         />
       </Center>
     </>

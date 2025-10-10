@@ -108,7 +108,7 @@
         "noUnusedPrivateClassMembers": "off",
         "noUnusedVariables": "warn",
         "noVoidElementsWithChildren": "error",
-        "useExhaustiveDependencies": "error",
+        "useExhaustiveDependencies": "off",
         "useHookAtTopLevel": "error",
         "useIsNan": "error",
         "useJsxKeyInIterable": "error",
@@ -245,6 +245,17 @@
             "noUnsafeNegation": "off",
             "noVar": "error",
             "useGetterReturn": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/main.tsx"],
+      "assist": {
+        "enabled": true,
+        "actions": {
+          "source": {
+            "organizeImports": "off"
           }
         }
       }

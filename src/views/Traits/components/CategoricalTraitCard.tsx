@@ -12,8 +12,8 @@ function CategoricalTraitCard({ trait }: CategoricalTraitProps) {
   return (
     <Card h='100%'>
       <Skeleton visible={visible} mb='xs'>
-        <Group position='apart'>
-          <Text size='xs' transform='uppercase' color='dimmed' weight='bold'>
+        <Group justify='space-between'>
+          <Text size='xs' tt='uppercase' c='dimmed' fw='bold'>
             {trait?.trait_name || 'Trait Name'}
           </Text>
           <Tooltip label='View definition' position='left' withArrow>

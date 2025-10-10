@@ -1,7 +1,7 @@
-import { MouseEventHandler } from 'react';
-import { ActionIcon, Badge, Button, Divider, Group, GroupProps, Text, rem } from '@mantine/core';
-import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons';
 import { Predicate } from '#/api/graphql/types';
+import { ActionIcon, Badge, Button, Divider, Group, GroupProps, rem, Text } from '@mantine/core';
+import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons';
+import { MouseEventHandler } from 'react';
 
 import { Filter } from '../types';
 
@@ -48,12 +48,12 @@ function FilterBar({ filters, predicates, onFiltersOpen, onRemove, ...rest }: Fi
       <Button
         variant='outline'
         onClick={onFiltersOpen}
-        leftIcon={<IconAdjustmentsHorizontal size='1rem' />}
+        leftSection={<IconAdjustmentsHorizontal size='1rem' />}
       >
         Filters
       </Button>
       <Divider ml={4} orientation='vertical' />
-      <Group maw={500} spacing={4}>
+      <Group maw={500} gap={4}>
         {predicates.length > 0 ? (
           predicates.map((predicate) => (
             <Badge
@@ -80,7 +80,7 @@ function FilterBar({ filters, predicates, onFiltersOpen, onRemove, ...rest }: Fi
             </Badge>
           ))
         ) : (
-          <Text size='sm' color='dimmed'>
+          <Text size='sm' c='dimmed'>
             No filters selected
           </Text>
         )}

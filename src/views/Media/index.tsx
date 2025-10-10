@@ -117,7 +117,6 @@ interface TaxonMedia {
   other: MediaItem[];
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const initialMedia = useLoaderData() as TaxonMedia;
   const [media, setMedia] = useState<TaxonMedia | null>(initialMedia);
@@ -138,7 +137,8 @@ export function Component() {
           : {}),
       };
 
-      const { data } = await performGQLQuery(gqlQueries.QUERY_TAXON_MEDIA, {
+      // biome-ignore lint/suspicious/noExplicitAny: Can't be bov'ad to type this
+      const { data } = await performGQLQuery<any>(gqlQueries.QUERY_TAXON_MEDIA, {
         key: params.guid,
         specimenParams: {
           query,
@@ -165,15 +165,14 @@ export function Component() {
     }
 
     if (mounted) runQuery();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [predicates]);
 
   if (initialMedia === null || initialMedia.specimens.length + initialMedia.other.length === 0)
     return (
       <Center h='calc(100vh - 380px)'>
-        <Stack align='center'>
+        <Stack justify='center'>
           <IconAlertCircle size='3rem' />
-          <Text color='dimmed'>No media found for this taxon</Text>
+          <Text c='dimmed'>No media found for this taxon</Text>
         </Stack>
       </Center>
     );
@@ -189,7 +188,7 @@ export function Component() {
           }}
         />
       </Grid.Col>
-      <Grid.Col xs={12} sm={12} md={6} lg={6} xl={7} orderXs={2} orderSm={2} orderMd={1}>
+      <Grid.Col order={{ xs: 2, sm: 2, md: 1 }} span={{ xs: 12, sm: 12, md: 6, lg: 6, xl: 7 }}>
         {initialMedia.specimens?.length > 0 && (
           <MediaCollection
             label='Specimens'
@@ -216,21 +215,20 @@ export function Component() {
           />
         )}
       </Grid.Col>
-      <Grid.Col xs={12} sm={12} md={6} lg={6} xl={5} orderXs={1} orderSm={1} orderMd={2}>
+      <Grid.Col span={{ xs: 12, sm: 12, md: 6, lg: 6, xl: 5 }} order={{ xs: 1, sm: 1, md: 2 }}>
         <Card shadow='lg' padding='lg' radius='md' withBorder>
           <Card.Section pos='relative' h={350}>
             <Image
               pos='absolute'
               src={selectedMedia?.accessURI}
-              height={350}
+              h={350}
               alt={`Background ${selectedMedia?.title || 'image for currently selected image'}`}
             />
             <Overlay blur={8} opacity={0.1} center>
               <Image
                 src={selectedMedia?.accessURI}
-                height={350}
+                h={350}
                 fit='contain'
-                styles={{ image: { margin: 0 } }}
                 onLoad={() => setSelectedLoaded(true)}
                 alt={selectedMedia?.title || 'Currently selected image'}
               />
@@ -246,17 +244,17 @@ export function Component() {
           </Center>
           <Divider
             my='sm'
-            sx={(theme) => ({
-              marginLeft: `calc(${theme.spacing.lg} * -1)`,
-              marginRight: `calc(${theme.spacing.lg} * -1)`,
-            })}
+            style={{
+              marginLeft: `calc(var(--mantine-spacing-lg) * -1)`,
+              marginRight: `calc(var(--mantine-spacing-lg) * -1)`,
+            }}
           />
-          <Group position='apart' mt='md' mb='xs'>
-            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <Group justify='space-between' mt='md' mb='xs'>
+            <Box style={{ display: 'flex', flexDirection: 'row' }}>
               <Avatar variant='filled' radius='xl' mr='lg' size='lg'>
                 <IconBuildingBank size='1.3rem' />
               </Avatar>
-              <Stack spacing={0} justify='center'>
+              <Stack gap={0} justify='center'>
                 <Text>
                   From{' '}
                   <Anchor
@@ -278,15 +276,15 @@ export function Component() {
           </Group>
           <Divider
             my='md'
-            sx={(theme) => ({
-              marginLeft: `calc(${theme.spacing.lg} * -1)`,
-              marginRight: `calc(${theme.spacing.lg} * -1)`,
-            })}
+            style={{
+              marginLeft: `calc(var(--mantine-spacing-lg) * -1)`,
+              marginRight: `calc(var(--mantine-spacing-lg)  * -1)`,
+            }}
           />
           {selectedMedia?.accessOriginalURI && (
             <Button
               fullWidth
-              leftIcon={<IconExternalLink size='1rem' />}
+              leftSection={<IconExternalLink size='1rem' />}
               component='a'
               href={selectedMedia.accessOriginalURI}
               target='_blank'
@@ -297,10 +295,10 @@ export function Component() {
           )}
           <Divider
             my='md'
-            sx={(theme) => ({
-              marginLeft: `calc(${theme.spacing.lg} * -1)`,
-              marginRight: `calc(${theme.spacing.lg} * -1)`,
-            })}
+            style={{
+              marginLeft: `calc(var(--mantine-spacing-lg) * -1)`,
+              marginRight: `calc(var(--mantine-spacing-lg)  * -1)`,
+            }}
           />
           <List spacing='xs'>
             {imageProperties
@@ -314,10 +312,10 @@ export function Component() {
                     </ThemeIcon>
                   }
                 >
-                  <Text size='sm' weight='bold'>
+                  <Text size='sm' fw='bold'>
                     {name}
                   </Text>
-                  <Text size='sm' color='dimmed'>
+                  <Text size='sm' c='dimmed'>
                     {selectedMedia?.[key]}
                   </Text>
                 </List.Item>

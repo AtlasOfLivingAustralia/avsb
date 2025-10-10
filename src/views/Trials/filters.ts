@@ -1,4 +1,4 @@
-import { SelectItem } from '@mantine/core';
+import { ComboboxItem } from '@mantine/core';
 import {
   IconCalendar,
   IconCircle,
@@ -18,7 +18,7 @@ import { Filter } from '#/components';
 import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';
 
 // Define a data fetcher for the dataset select search
-const fetchItems = async (query: string): Promise<SelectItem[]> => {
+const fetchItems = async (query: string): Promise<ComboboxItem[]> => {
   const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
     gqlQueries.QUERY_DATASET_SUGGEST,
     {

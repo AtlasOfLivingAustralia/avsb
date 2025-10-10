@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/** biome-ignore-all lint/suspicious/noExplicitAny: Lots of no-typing here */
 import { useState } from 'react';
 import {
   Text,
@@ -94,15 +94,15 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
         </Tooltip>
       </Popover.Target>
       <Popover.Dropdown>
-        <Group spacing='sm'>
+        <Group gap='sm'>
           <ThemeIcon variant='light' size='lg' radius='lg'>
             <IconFileDownload size='1rem' />
           </ThemeIcon>
           <Text
-            sx={(theme) => ({
-              fontFamily: theme.headings.fontFamily,
+            style={{
+              fontFamily: 'var(--mantine-font-family-headings)',
               fontWeight: 'bold',
-            })}
+            }}
           >
             {total} Records
           </Text>

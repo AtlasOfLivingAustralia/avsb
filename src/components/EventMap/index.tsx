@@ -1,7 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from 'react';
-import { ActionIcon, ColorScheme, Tooltip, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconMaximize } from '@tabler/icons';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 // Mapbox
@@ -9,9 +8,10 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Project-imports
-import { getMapLayer, getWktFromGeohash } from '#/helpers';
 import { EventSearchResult, useGQLQuery } from '#/api';
 import queries from '#/api/queries';
+import { getMapLayer, getWktFromGeohash } from '#/helpers';
+import { useComputedColorScheme } from '@mantine/core';
 import ItemList from './components/ItemList';
 
 // Initialize MapBox
@@ -30,7 +30,7 @@ interface MapProps {
   onFullscreen?: () => void;
 }
 
-function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
+function MapComponent({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   // Map refs
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -55,9 +55,8 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   );
 
   // Theme variables
-  const theme = useMantineTheme();
-  const [currentScheme, setCurrentScheme] = useState<ColorScheme>(theme.colorScheme);
-  const borderRadius = theme.radius.md;
+  const colorScheme = useComputedColorScheme('dark');
+  const [currentScheme, setCurrentScheme] = useState<'light' | 'dark'>(colorScheme);
 
   // Helper function to add the events layer to the map
   const addLayer = () => {
@@ -147,21 +146,21 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   }, [token, styleLoaded]);
 
   useEffect(() => {
-    if (currentScheme !== theme.colorScheme && styleLoaded) {
-      setCurrentScheme(theme.colorScheme);
+    if (currentScheme !== colorScheme && styleLoaded) {
+      setCurrentScheme(colorScheme);
       setStyleLoaded(false);
       map.current?.setStyle(
-        `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
+        `mapbox://styles/mapbox/${colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
       );
     }
-  }, [theme.colorScheme, styleLoaded]);
+  }, [colorScheme, styleLoaded]);
 
   // Add the map to the DOM when the component loads
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
+      style: `mapbox://styles/mapbox/${colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
       center: [137.591797, -26.000092],
       zoom: 2.5,
     });
@@ -170,7 +169,15 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   }, []);
 
   return (
-    <div style={{ position: 'relative', width, height, borderRadius, boxShadow: theme.shadows.md }}>
+    <div
+      style={{
+        position: 'relative',
+        width,
+        height,
+        borderRadius: 'var(--mantine-radius-md)',
+        boxShadow: 'var(--mantine-shadow-md)',
+      }}
+    >
       <ItemList
         onClose={() => setSelectedPoint(null)}
         documents={selectedEvents?.data.eventSearch.documents || {}}
@@ -190,8 +197,8 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
             variant='filled'
             size='lg'
             pos='absolute'
-            top={theme.spacing.md}
-            right={theme.spacing.md}
+            top='var(--mantine-spacing-md)'
+            right='var(--mantine-spacing-md)'
             style={{ zIndex: 20 }}
             aria-label='View full screen map'
           >
@@ -199,9 +206,9 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
           </ActionIcon>
         </Tooltip>
       )}
-      <div ref={mapContainer} style={{ width, height, borderRadius }} />
+      <div ref={mapContainer} style={{ width, height, borderRadius: 'var(--mantine-radius-md)' }} />
     </div>
   );
 }
 
-export default Map;
+export default MapComponent;

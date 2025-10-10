@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-type Variables = { [key: string]: any };
+type Variables = { [key: string]: unknown };
 
-async function performGQLQuery<T = any>(query: string, variables?: Variables) {
+async function performGQLQuery<T = unknown>(query: string, variables?: Variables) {
   const response = await fetch(import.meta.env.VITE_API_GRAPHQL, {
     method: 'POST',
     headers: {

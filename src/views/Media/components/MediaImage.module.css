@@ -1,0 +1,9 @@
+.root {
+	border-radius: 22px;
+	transition: opacity ease-in-out 0.2s;
+	
+	&:hover {
+		opacity: 1;
+		cursor: 'pointer';
+	}
+}

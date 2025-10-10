@@ -1,59 +1,20 @@
+import { gqlQueries, useGQLQuery } from '#/api';
+import { EventSearchResult } from '#/api/graphql/types';
+import queries from '#/api/queries';
+import { getAbbreviatedNumber } from '#/helpers';
 import {
-  Text,
-  useMantineTheme,
-  Grid,
-  Skeleton,
   Box,
+  Grid,
+  GridProps,
   Group,
+  Skeleton,
+  Text,
   ThemeIcon,
-  createStyles,
-  getStylesRef,
   UnstyledButton,
-  SimpleGridProps,
 } from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons';
 import { useNavigate } from 'react-router-dom';
-
-import { gqlQueries, useGQLQuery } from '#/api';
-import { EventSearchResult } from '#/api/graphql/types';
-import { getAbbreviatedNumber } from '#/helpers';
-import queries from '#/api/queries';
-
-const useStyles = createStyles((theme) => ({
-  root: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[4] : 'white',
-    transition: 'opacity 200ms cubic-bezier(0, 0, 0, 1)',
-    width: '100%',
-    height: '100%',
-    borderRadius: theme.radius.lg,
-    padding: theme.spacing.md,
-    boxShadow: theme.shadows.md,
-    ':hover': {
-      opacity: 0.4,
-    },
-    [`&:hover .${getStylesRef('arrow')}`]: {
-      transform: 'translate(6px, -6px)',
-    },
-    [`&:hover .${getStylesRef('arrowIcon')}`]: {
-      opacity: 1,
-    },
-  },
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    height: '100%',
-  },
-  arrow: {
-    ref: getStylesRef('arrow'),
-    transition: 'transform 200ms cubic-bezier(0, 0, 0, 1)',
-  },
-  arrowIcon: {
-    ref: getStylesRef('arrowIcon'),
-    transition: 'opacity 200ms cubic-bezier(0, 0, 0, 1)',
-    opacity: 0.2,
-  },
-}));
+import classes from './Summaries.module.css';
 
 interface SummaryCardProps {
   accessions?: EventSearchResult;
@@ -61,8 +22,6 @@ interface SummaryCardProps {
 }
 
 function SummaryCard({ accessions, trials }: SummaryCardProps) {
-  const { classes } = useStyles();
-  const theme = useMantineTheme();
   const navigate = useNavigate();
 
   // Hoist the data from the response
@@ -84,9 +43,9 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
             <Text
               lineClamp={2}
               mah={48}
-              sx={{
-                fontFamily: theme.headings.fontFamily,
-                color: theme.colorScheme === 'dark' ? theme.colors.gray[3] : theme.colors.dark[3],
+              style={{
+                fontFamily: 'var(--mantine-font-family-headings)',
+                color: 'light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-3))',
               }}
             >
               {event?.datasetTitle || 'Seed Bank Name Placeholder Value Here'}
@@ -98,10 +57,10 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
         </Skeleton>
         <Grid mt='md'>
           <Grid.Col span={6}>
-            <Group spacing='xs'>
+            <Group gap='xs'>
               <Skeleton width={34} height={34} circle visible={loading}>
                 <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
-                  <Text color={theme.primaryColor[0]} weight='bold' size='xs'>
+                  <Text c='var(--mantine-primary-color-filled)' fw='bold' size='xs'>
                     {getAbbreviatedNumber(totalAccessions || 0)}
                   </Text>
                 </ThemeIcon>
@@ -112,10 +71,10 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
             </Group>
           </Grid.Col>
           <Grid.Col span={6}>
-            <Group spacing='xs'>
+            <Group gap='xs'>
               <Skeleton width={34} height={34} circle visible={loading}>
                 <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
-                  <Text color={theme.primaryColor[0]} weight='bold' size='xs'>
+                  <Text c='var(--mantine-primary-color-filled)' fw='bold' size='xs'>
                     {getAbbreviatedNumber(totalTrials || 0)}
                   </Text>
                 </ThemeIcon>
@@ -140,7 +99,7 @@ query list {
 }
 `;
 
-function Summaries({ ...props }: SimpleGridProps) {
+function Summaries({ ...props }: GridProps) {
   const { data } = useGQLQuery<{ data: { [key: string]: EventSearchResult } }>(
     QUERY_SEEDBANK_SUMMARY_ALL,
   );
@@ -148,7 +107,7 @@ function Summaries({ ...props }: SimpleGridProps) {
   return (
     <Grid gutter='xl' {...props}>
       {gqlQueries.PRED_DATA_RESOURCE.values?.map((dataResource) => (
-        <Grid.Col key={dataResource as string} xs={12} sm={6} md={4} lg={4}>
+        <Grid.Col key={dataResource as string} span={{ xs: 12, sm: 6, md: 4, lg: 4 }}>
           <SummaryCard
             accessions={data?.data[`${dataResource}Accessions`]}
             trials={data?.data[`${dataResource}Trials`]}

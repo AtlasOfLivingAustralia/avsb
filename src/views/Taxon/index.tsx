@@ -1,19 +1,18 @@
 import {
-  Title,
-  Text,
-  Container,
-  Tabs,
-  Box,
-  Image,
-  Group,
-  Skeleton,
-  Menu,
   ActionIcon,
   Badge,
-  ScrollArea,
+  Box,
+  Container,
   Divider,
-  useMantineTheme,
+  Group,
+  Image,
+  Menu,
+  ScrollArea,
+  Skeleton,
+  Tabs,
+  Text,
   ThemeIcon,
+  Title,
 } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import {
@@ -59,38 +58,35 @@ const tabs = [
   },
 ];
 
-// eslint-disable-next-line import/prefer-default-export
 export function Component() {
   const { pathname, state } = useLocation();
   const { taxon: data } = useLoaderData() as { taxon: Taxon };
   const clipboard = useClipboard({ timeout: 500 });
   const currentPage = pathname.split('/')[3];
-  const theme = useMantineTheme();
   const navigate = useNavigate();
 
   return (
     <>
       <Container size={MAX_WIDTH} py='xl'>
-        <Group position='apart' align='start'>
+        <Group justify='space-between' align='start'>
           <Group align='start'>
             <Box mr='md'>
               <Skeleton pos='absolute' width={90} height={90} radius='lg' />
               <Image
-                withPlaceholder
                 src={
                   data.imageIdentifier &&
                   `${import.meta.env.VITE_ALA_IMAGES}/image/${data.imageIdentifier}/thumbnail`
                 }
-                width={90}
-                height={90}
+                w={90}
+                h={90}
                 radius='lg'
                 alt={`Representative image of ${data.classification.scientificName}`}
               />
             </Box>
             <Box>
               <Title>{data.taxonConcept.nameString}</Title>
-              <Group spacing='sm'>
-                <Text color='dimmed'>{data.commonNames[0]?.nameString || 'No common name'}</Text>
+              <Group gap='sm'>
+                <Text c='dimmed'>{data.commonNames[0]?.nameString || 'No common name'}</Text>
                 <Badge radius='sm'>{data.taxonConcept.rankString}</Badge>
               </Group>
             </Box>
@@ -103,7 +99,7 @@ export function Component() {
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Item
-                icon={<IconExternalLink size={14} />}
+                leftSection={<IconExternalLink size={14} />}
                 component='a'
                 target='_blank'
                 href={`${import.meta.env.VITE_ALA_BIE}/species/${data.taxonConcept.guid}`}
@@ -111,7 +107,7 @@ export function Component() {
                 View on ALA BIE
               </Menu.Item>
               <Menu.Item
-                icon={<IconCopy size={14} />}
+                leftSection={<IconCopy size={14} />}
                 onClick={() => clipboard.copy(data.taxonConcept.guid)}
               >
                 Copy Taxon ID
@@ -121,11 +117,11 @@ export function Component() {
         </Group>
       </Container>
       <Tabs variant='default' mt='md' radius='sm' value={currentPage}>
-        <Group spacing={0}>
+        <Group gap={0}>
           <Box
             style={{ display: 'flex', alignItems: 'flex-end' }}
-            w={`calc(((100vw - ${MAX_WIDTH}px) / 2) + ${theme.spacing.md})`}
-            miw={theme.spacing.md}
+            w={`calc(((100vw - ${MAX_WIDTH}px) / 2) + var(--mantine-spacing-md))`}
+            miw='var(--mantine-spacing-md)'
             h={48}
           >
             <Divider size={2} w='100%' />
@@ -147,7 +143,7 @@ export function Component() {
                   }
                 }}
               >
-                <Group spacing='xs'>
+                <Group gap='xs'>
                   <ThemeIcon
                     variant='light'
                     color={currentPage === tabKey.toLowerCase() ? 'blue' : 'gray'}

@@ -35,7 +35,7 @@ async function get(guid?: string): Promise<SDSInstance[]> {
         ),
       )
     ).flat();
-  } catch (error) {
+  } catch (_error) {
     return [];
   }
 }
