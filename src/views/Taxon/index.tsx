@@ -101,7 +101,7 @@ export function Component() {
               <Title>{data.taxonConcept.nameString}</Title>
               <Group gap='sm'>
                 <Text c='dimmed'>{data.commonNames[0]?.nameString || 'No common name'}</Text>
-                <Badge variant='light' radius='sm'>
+                <Badge variant='light' radius='md'>
                   {data.taxonConcept.rankString}
                 </Badge>
               </Group>

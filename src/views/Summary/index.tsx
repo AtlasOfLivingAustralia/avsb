@@ -60,7 +60,7 @@ export function Component() {
         {taxon.taxonConcept.rankString === 'species' &&
           Object.keys(taxon.conservationStatuses).length > 0 && (
             <Grid.Col span={12} pb='lg'>
-              <Group justify='center'>
+              <Group>
                 <Group>
                   <IconAlertTriangle size='1.4rem' />
                   <Text size='sm' fw='bold'>

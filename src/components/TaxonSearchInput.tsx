@@ -38,7 +38,11 @@ function TaxonSearchInput(props: Omit<SearchSelectProps, 'fetchItems' | 'renderO
           <>
             <Group justify='space-between'>
               <Text size='sm'>{taxonItem.label?.substring(0, 40)}</Text>
-              {taxonItem.rankString && <Badge variant='light'>{taxonItem.rankString}</Badge>}
+              {taxonItem.rankString && (
+                <Badge variant='light' radius='md'>
+                  {taxonItem.rankString}
+                </Badge>
+              )}
             </Group>
             {taxonItem.commonName && (
               <Text size='xs' opacity={0.65}>

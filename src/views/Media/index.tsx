@@ -216,7 +216,7 @@ export function Component() {
         )}
       </Grid.Col>
       <Grid.Col span={{ xs: 12, sm: 12, md: 6, lg: 6, xl: 5 }} order={{ xs: 1, sm: 1, md: 2 }}>
-        <Card shadow='lg' padding='lg' radius='md' withBorder>
+        <Card shadow='lg' padding='lg' radius='lg' withBorder>
           <Card.Section pos='relative' h={350}>
             <Image
               pos='absolute'

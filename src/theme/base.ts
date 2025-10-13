@@ -1,10 +1,22 @@
-import { createTheme } from '@mantine/core';
+import { createTheme, DrawerRoot, Modal } from '@mantine/core';
 
 const base = createTheme({
   defaultRadius: 'lg',
   fontFamily: 'Inter, sans-serif',
   headings: {
     fontFamily: 'Lexend Deca, sans-serif',
+  },
+  components: {
+    Modal: Modal.extend({
+      defaultProps: {
+        zIndex: 600,
+      },
+    }),
+    DrawerRoot: DrawerRoot.extend({
+      defaultProps: {
+        zIndex: 600,
+      },
+    }),
   },
   colors: {
     dark: [

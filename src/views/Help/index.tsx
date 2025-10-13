@@ -138,7 +138,6 @@ export function Component() {
           opacity: 0.55,
           blur: 3,
         }}
-        zIndex={600}
       >
         <ActionIcon
           style={{ zIndex: 100 }}

@@ -47,7 +47,7 @@ function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
 
   return (
     <>
-      <Drawer.Root opened={opened} onClose={close} keepMounted zIndex={600}>
+      <Drawer.Root opened={opened} onClose={close} keepMounted>
         <Drawer.Overlay />
         <Drawer.Content aria-label='Filters drawer'>
           <Drawer.Header style={{ zIndex: 300 }}>
