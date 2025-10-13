@@ -12,7 +12,7 @@ import {
   Text,
   Tooltip,
 } from '@mantine/core';
-import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
+import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons-react';
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';

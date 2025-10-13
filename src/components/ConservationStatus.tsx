@@ -7,7 +7,7 @@ import {
   IconQuestionMark,
   IconX,
   TablerIcon,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 
 const getConservationDetails = (
   status: string,

@@ -1,4 +1,4 @@
-import { IconClick, IconEye, IconMouse } from '@tabler/icons';
+import { IconClick, IconEye, IconMouse } from '@tabler/icons-react';
 
 import imageHomeStatsHover from '#/assets/help/home-stats-hover-min.png';
 import imageStats from '#/assets/help/stats-min.png';

@@ -2,7 +2,7 @@ import { SeedBankExtension } from '#/api';
 import { FieldTooltip } from '#/components';
 import { allFields } from '#/helpers';
 import { Box, Center, Table, Text, UnstyledButton } from '@mantine/core';
-import { IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons';
+import { IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons-react';
 import { CSSProperties, PropsWithChildren } from 'react';
 import classes from './ThField.module.css';
 

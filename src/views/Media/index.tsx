@@ -30,7 +30,7 @@ import {
   IconQuestionMark,
   IconTypography,
   TablerIcon,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 
 // Project / local components
 import { gqlQueries, performGQLQuery } from '#/api';

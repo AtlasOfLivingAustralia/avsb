@@ -13,7 +13,7 @@ import {
 } from '@mantine/core';
 
 import { Event, EventDocuments, SeedBankAccession } from '#/api/graphql/types';
-import { IconX } from '@tabler/icons';
+import { IconX } from '@tabler/icons-react';
 import { Link } from 'react-router';
 
 import classes from './ItemList.module.css';

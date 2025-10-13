@@ -1,5 +1,5 @@
 import { Box, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
-import { IconNotes } from '@tabler/icons';
+import { IconNotes } from '@tabler/icons-react';
 
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import { getIsDefined, trialFields } from '#/helpers';

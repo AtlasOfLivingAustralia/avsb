@@ -1,5 +1,5 @@
 import { BoxProps, Group, HoverCard, Stack, Text, UnstyledButton } from '@mantine/core';
-import { IconQuestionCircle } from '@tabler/icons';
+import { IconEyeQuestion } from '@tabler/icons-react';
 
 const summaries: { [key: string]: string[] } = {
   summary: [
@@ -37,7 +37,7 @@ function PageSummary({ currentPage, ...rest }: PageSummaryProps) {
           {...rest}
         >
           <Group gap='xs' pr='md'>
-            <IconQuestionCircle color='light-dark(var(--mantine-color-blue-4), var(--mantine-color-blue-2))' />
+            <IconEyeQuestion color='light-dark(var(--mantine-color-blue-4), var(--mantine-color-blue-2))' />
             <Text
               style={{
                 color: 'light-dark(var(--mantine-color-blue-4), var(--mantine-color-blue-2))',

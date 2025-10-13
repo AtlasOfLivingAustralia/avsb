@@ -12,7 +12,7 @@ import {
   IconReceiptTax,
   IconRotateClockwise2,
   IconSeeding,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 
 import { Filter } from '#/components';
 import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';

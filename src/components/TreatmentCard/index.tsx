@@ -1,7 +1,7 @@
 import { Event, SeedBankTreatment } from '#/api/graphql/types';
 import { getIsDefined, treatmentFields } from '#/helpers';
 import { Box, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
-import { IconFileDescription } from '@tabler/icons';
+import { IconFileDescription } from '@tabler/icons-react';
 import FieldTooltip from '../FieldTooltip';
 import IconText from '../IconText';
 import fields from './fields';

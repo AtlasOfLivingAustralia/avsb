@@ -28,7 +28,7 @@ import {
   IconInfoCircle,
   IconLicense,
   IconMap,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 import { lazy, Suspense, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router';
 
@@ -69,7 +69,7 @@ export function Component() {
         style={{
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
           paddingTop: 90,
-          marginTop: -110,
+          marginTop: -130,
         }}
       >
         <Container size='xl' pt='xl'>

@@ -1,7 +1,7 @@
 import { Predicate } from '#/api/graphql/types';
 import { Drawer, Group, GroupProps, SegmentedControl, Text, ThemeIcon } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconFilter } from '@tabler/icons';
+import { IconFilter } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
@@ -47,7 +47,7 @@ function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
 
   return (
     <>
-      <Drawer.Root opened={opened} onClose={close} keepMounted>
+      <Drawer.Root opened={opened} onClose={close} keepMounted zIndex={600}>
         <Drawer.Overlay />
         <Drawer.Content aria-label='Filters drawer'>
           <Drawer.Header style={{ zIndex: 300 }}>

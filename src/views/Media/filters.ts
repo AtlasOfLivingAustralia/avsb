@@ -1,4 +1,4 @@
-import { IconCalendar, IconCalendarEvent, IconDatabase } from '@tabler/icons';
+import { IconCalendar, IconCalendarEvent, IconDatabase } from '@tabler/icons-react';
 
 import { ComboboxItem } from '@mantine/core';
 import { collectoryAPI } from '#/api';

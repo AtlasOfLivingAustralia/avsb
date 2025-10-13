@@ -28,7 +28,7 @@ import {
   IconPlant,
   IconSeeding,
   IconTestPipe,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 import { Fragment } from 'react';
 import { useLoaderData } from 'react-router';
 

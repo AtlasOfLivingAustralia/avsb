@@ -12,7 +12,7 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { FixedSizeList } from 'react-window';
-import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons';
+import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons-react';
 import { useDebouncedValue } from '@mantine/hooks';
 import { useNavigate, useParams } from 'react-router';
 import { saveAs } from 'file-saver';

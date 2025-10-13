@@ -35,7 +35,7 @@ import {
   IconMapPinOff,
   IconPackage,
   IconTimelineEvent,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 import { lazy, Suspense } from 'react';
 import {
   Await,

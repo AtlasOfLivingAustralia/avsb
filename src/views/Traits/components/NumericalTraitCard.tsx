@@ -1,6 +1,6 @@
 import { NumericTrait } from '#/api';
 import { ActionIcon, Flex, Group, Paper, Skeleton, Text, Tooltip } from '@mantine/core';
-import { IconQuestionCircle } from '@tabler/icons';
+import { IconBook } from '@tabler/icons-react';
 
 interface NumericTraitCardProps {
   trait: NumericTrait | null;
@@ -26,9 +26,9 @@ function NumericTraitCard({ trait }: NumericTraitCardProps) {
               component='a'
               href={trait?.definition}
               target='_blank'
-              size='sm'
+              size='md'
             >
-              <IconQuestionCircle size='1rem' />
+              <IconBook size='1rem' />
             </ActionIcon>
           </Tooltip>
         </Flex>

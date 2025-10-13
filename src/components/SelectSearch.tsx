@@ -9,7 +9,7 @@ import {
   useCombobox,
 } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
-import { IconSearch } from '@tabler/icons';
+import { IconSearch } from '@tabler/icons-react';
 import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
 import React, { CSSProperties, KeyboardEvent, useEffect, useState } from 'react';

@@ -10,7 +10,7 @@ import {
   Popover,
   Button,
 } from '@mantine/core';
-import { IconDownload, IconFileDownload } from '@tabler/icons';
+import { IconDownload, IconFileDownload } from '@tabler/icons-react';
 import { Event, EventSearchResult, Predicate } from '#/api/graphql/types';
 import { saveAs } from 'file-saver';
 import get from 'lodash/get';

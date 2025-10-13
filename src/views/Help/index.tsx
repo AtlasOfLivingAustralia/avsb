@@ -25,7 +25,7 @@ import {
   IconPhoto,
   IconX,
   TablerIcon,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 
 import { Wave } from '#/components/Wave';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';

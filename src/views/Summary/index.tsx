@@ -15,7 +15,7 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { IconAlertTriangle, IconExternalLink, IconMap } from '@tabler/icons';
+import { IconAlertTriangle, IconExternalLink, IconMap } from '@tabler/icons-react';
 import { Fragment, lazy, Suspense } from 'react';
 import { useLoaderData, useNavigate, useRouteLoaderData } from 'react-router';
 // Project imports

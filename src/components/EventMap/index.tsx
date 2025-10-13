@@ -1,5 +1,5 @@
 import { ActionIcon, Tooltip } from '@mantine/core';
-import { IconMaximize } from '@tabler/icons';
+import { IconMaximize } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 

@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@mantine/core';
-import { IconMail, IconMapPin, IconPhone } from '@tabler/icons';
+import { IconMail, IconMapPin, IconPhone } from '@tabler/icons-react';
 import { CSSProperties } from 'react';
 import { Link, useLocation } from 'react-router';
 

@@ -10,7 +10,7 @@ import {
   ThemeIcon,
   Timeline,
 } from '@mantine/core';
-import { IconExternalLink, IconHandStop, IconMapPin, IconPackage } from '@tabler/icons';
+import { IconExternalLink, IconHandStop, IconMapPin, IconPackage } from '@tabler/icons-react';
 import { Link } from 'react-router';
 
 import { allFields } from '#/helpers';

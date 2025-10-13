@@ -12,7 +12,7 @@ import {
   ThemeIcon,
   UnstyledButton,
 } from '@mantine/core';
-import { IconArrowUpRight } from '@tabler/icons';
+import { IconArrowUpRight } from '@tabler/icons-react';
 import { useNavigate } from 'react-router';
 import classes from './Summaries.module.css';
 

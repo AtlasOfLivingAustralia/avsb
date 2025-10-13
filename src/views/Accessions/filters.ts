@@ -9,7 +9,7 @@ import {
   IconScale,
   IconSeeding,
   IconTemperature,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 
 import { ComboboxItem } from '@mantine/core';
 import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';

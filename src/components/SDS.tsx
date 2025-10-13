@@ -1,6 +1,6 @@
 import { SDSInstance } from '#/api';
 import { Anchor, Center, Divider, Stack, Text, ThemeIcon, Title } from '@mantine/core';
-import { IconAlertTriangle, IconExternalLink } from '@tabler/icons';
+import { IconAlertTriangle, IconExternalLink } from '@tabler/icons-react';
 import { Link } from 'react-router';
 
 // Project imports

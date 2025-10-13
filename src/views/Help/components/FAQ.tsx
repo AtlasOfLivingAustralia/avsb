@@ -12,7 +12,7 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { IconAlertTriangle, TablerIcon } from '@tabler/icons';
+import { IconAlertTriangle, TablerIcon } from '@tabler/icons-react';
 import { ReactNode, useState } from 'react';
 
 import classes from './FAQ.module.css';

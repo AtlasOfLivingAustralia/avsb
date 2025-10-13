@@ -1,6 +1,6 @@
 import { SeedbankFieldTrait } from '#/helpers';
 import { Box, Divider, Group, Text, ThemeIcon, Tooltip } from '@mantine/core';
-import { IconLeaf, TablerIcon } from '@tabler/icons';
+import { IconLeaf, TablerIcon } from '@tabler/icons-react';
 import { PropsWithChildren } from 'react';
 
 interface FieldTooltipProps {

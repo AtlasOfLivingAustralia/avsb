@@ -10,7 +10,7 @@ import {
   Transition,
   UnstyledButton,
 } from '@mantine/core';
-import { IconCalendar, IconCheck } from '@tabler/icons';
+import { IconCalendar, IconCheck } from '@tabler/icons-react';
 import classes from './MediaImage.module.css';
 import { useState } from 'react';
 

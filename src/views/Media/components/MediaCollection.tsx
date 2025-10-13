@@ -1,5 +1,5 @@
 import { Alert, Button, Center, Divider, Grid, GridProps, Group, Stack, Text } from '@mantine/core';
-import { IconAlertCircle, IconAlertTriangle, IconExternalLink } from '@tabler/icons';
+import { IconAlertCircle, IconAlertTriangle, IconExternalLink } from '@tabler/icons-react';
 import { useParams } from 'react-router';
 
 // Project / local components

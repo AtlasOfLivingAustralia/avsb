@@ -1,4 +1,4 @@
-import { IconEye } from '@tabler/icons';
+import { IconEye } from '@tabler/icons-react';
 
 import imageTaxonSummary from '#/assets/help/taxon-summary-min.png';
 

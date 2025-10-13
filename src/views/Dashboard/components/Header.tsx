@@ -18,7 +18,7 @@ import {
   IconMoon,
   IconQuestionMark,
   IconSun,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 

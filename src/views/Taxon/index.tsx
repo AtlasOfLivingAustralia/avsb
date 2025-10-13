@@ -4,6 +4,7 @@ import {
   Box,
   Container,
   Divider,
+  Flex,
   FloatingIndicator,
   Group,
   Image,
@@ -24,7 +25,7 @@ import {
   IconLeaf,
   IconPhoto,
   IconTestPipe,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router';
 import { Taxon } from '#/api/sources/taxon';
 import PageSummary from './components/PageSummary';
@@ -136,35 +137,38 @@ export function Component() {
       </Container>
       <Tabs variant='none' value={currentPage}>
         <Container size={MAX_WIDTH} pb='sm'>
-          <Tabs.List ref={setRootRef} className={classes.list}>
-            {tabs.map(({ tabKey, icon: Icon }) => (
-              <Tabs.Tab
-                key={tabKey}
-                value={tabKey.toLowerCase()}
-                ref={setControlRef(tabKey.toLowerCase())}
-                className={classes.tab}
-                leftSection={<Icon size='0.8rem' />}
-                onClick={() => {
-                  if (tabKey !== 'Sequences') {
-                    navigate(tabKey.toLowerCase(), { state });
-                  } else {
-                    window.open(
-                      `https://www.ncbi.nlm.nih.gov/nuccore/?term=${encodeURIComponent(
-                        data.taxonConcept.nameString,
-                      )}`,
-                    );
-                  }
-                }}
-              >
-                {tabKey}
-              </Tabs.Tab>
-            ))}
-            <FloatingIndicator
-              target={controlsRefs[currentPage]}
-              parent={rootRef}
-              className={classes.indicator}
-            />
-          </Tabs.List>
+          <Flex justify='space-between'>
+            <Tabs.List ref={setRootRef} className={classes.list}>
+              {tabs.map(({ tabKey, icon: Icon }) => (
+                <Tabs.Tab
+                  key={tabKey}
+                  value={tabKey.toLowerCase()}
+                  ref={setControlRef(tabKey.toLowerCase())}
+                  className={classes.tab}
+                  leftSection={<Icon size='0.8rem' />}
+                  onClick={() => {
+                    if (tabKey !== 'Sequences') {
+                      navigate(tabKey.toLowerCase(), { state });
+                    } else {
+                      window.open(
+                        `https://www.ncbi.nlm.nih.gov/nuccore/?term=${encodeURIComponent(
+                          data.taxonConcept.nameString,
+                        )}`,
+                      );
+                    }
+                  }}
+                >
+                  {tabKey}
+                </Tabs.Tab>
+              ))}
+              <FloatingIndicator
+                target={controlsRefs[currentPage]}
+                parent={rootRef}
+                className={classes.indicator}
+              />
+            </Tabs.List>
+            <PageSummary currentPage={currentPage} />
+          </Flex>
         </Container>
         <Container size={MAX_WIDTH} pt='lg' pb='xl'>
           <Outlet />

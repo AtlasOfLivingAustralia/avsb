@@ -1,5 +1,5 @@
 import { Box, Divider, Grid, Group, Text, ThemeIcon } from '@mantine/core';
-import { IconMapPin } from '@tabler/icons';
+import { IconMapPin } from '@tabler/icons-react';
 import { useLoaderData } from 'react-router';
 
 // Project imports

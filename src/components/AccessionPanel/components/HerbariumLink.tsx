@@ -7,7 +7,7 @@ import {
   UnstyledButton,
   UnstyledButtonProps,
 } from '@mantine/core';
-import { IconExternalLink } from '@tabler/icons';
+import { IconExternalLink } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 

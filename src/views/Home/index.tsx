@@ -1,13 +1,11 @@
 import {
   Alert,
   Anchor,
-  Badge,
   Box,
   Button,
   Center,
   Container,
   Divider,
-  em,
   Group,
   Image,
   Paper,
@@ -17,7 +15,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconChartLine, IconExternalLink, IconQuestionCircle } from '@tabler/icons';
+import { IconChartLine, IconExternalLink, IconMessageCircleQuestion } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router';
 // AVSB logos
 import logoGrey from '#/assets/avsb-logo-grey.png';
@@ -169,7 +167,7 @@ function Home() {
             <Stack justify='center' mt={mdOrLarger ? 0 : 'xl'}>
               <Paper p='xl' pl='md' radius='lg' withBorder>
                 <Group gap='xl'>
-                  <IconQuestionCircle size='2rem' />
+                  <IconMessageCircleQuestion size='2rem' />
                   <Stack>
                     <Text size='lg' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
                       Have a query?

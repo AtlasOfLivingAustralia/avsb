@@ -17,7 +17,7 @@ import {
   IconArrowsMinimize,
   IconArrowUpRight,
   IconChevronDown,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
