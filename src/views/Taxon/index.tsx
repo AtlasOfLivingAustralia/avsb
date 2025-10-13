@@ -13,6 +13,7 @@ import {
   Text,
   ThemeIcon,
   Title,
+  Tooltip,
 } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import {
@@ -87,42 +88,47 @@ export function Component() {
               <Title>{data.taxonConcept.nameString}</Title>
               <Group gap='sm'>
                 <Text c='dimmed'>{data.commonNames[0]?.nameString || 'No common name'}</Text>
-                <Badge radius='sm'>{data.taxonConcept.rankString}</Badge>
+                <Badge variant='light' radius='sm'>
+                  {data.taxonConcept.rankString}
+                </Badge>
               </Group>
             </Box>
           </Group>
-          <Menu shadow='md' position='bottom-end'>
-            <Menu.Target>
-              <ActionIcon size='xl' variant='light' radius='xl' aria-label='View taxon action menu'>
-                <IconDotsVertical />
+          <Group gap='sm'>
+            <Tooltip label={<Text size='xs'>Copy taxon ID</Text>}>
+              <ActionIcon
+                onClick={() => clipboard.copy(data.taxonConcept.guid)}
+                size='xl'
+                variant='light'
+                radius='xl'
+                aria-label='Copy taxon ID'
+              >
+                <IconCopy />
               </ActionIcon>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item
-                leftSection={<IconExternalLink size={14} />}
+            </Tooltip>
+            <Tooltip label={<Text size='xs'>View taxon on ALA</Text>}>
+              <ActionIcon
                 component='a'
                 target='_blank'
                 href={`${import.meta.env.VITE_ALA_BIE}/species/${data.taxonConcept.guid}`}
+                size='xl'
+                variant='light'
+                radius='xl'
+                aria-label='View taxon on ALA'
               >
-                View on ALA BIE
-              </Menu.Item>
-              <Menu.Item
-                leftSection={<IconCopy size={14} />}
-                onClick={() => clipboard.copy(data.taxonConcept.guid)}
-              >
-                Copy Taxon ID
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
+                <IconExternalLink />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
         </Group>
       </Container>
-      <Tabs variant='default' mt='md' radius='sm' value={currentPage}>
+      <Tabs variant='default' mt='md' radius='md' value={currentPage}>
         <Group gap={0}>
           <Box
             style={{ display: 'flex', alignItems: 'flex-end' }}
             w={`calc(((100vw - ${MAX_WIDTH}px) / 2) + var(--mantine-spacing-md))`}
             miw='var(--mantine-spacing-md)'
-            h={48}
+            h={50}
           >
             <Divider size={2} w='100%' />
           </Box>
@@ -164,7 +170,7 @@ export function Component() {
               alignItems: 'flex-end',
               flexGrow: 1,
             }}
-            h={48}
+            h={50}
           >
             <PageSummary
               currentPage={currentPage}

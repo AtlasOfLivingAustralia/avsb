@@ -5,12 +5,12 @@
 	}
 }
 .indicator {
-	width: 12rem;
-	height: 4rem;
+	width: 12px;
+	height: 4px;
 	transition: width 250ms ease;
 	background-color: light-dark(var(--mantine-color-dark-3), white);
 
 	&[data-active] {
-		width: 40rem,
+		width: 40px,
 	}
 }

@@ -1,7 +1,7 @@
 import { SeedBankExtension } from '#/api';
 import { FieldTooltip } from '#/components';
 import { allFields } from '#/helpers';
-import { Box, Center, Text, UnstyledButton } from '@mantine/core';
+import { Box, Center, Table, Text, UnstyledButton } from '@mantine/core';
 import { IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons';
 import { CSSProperties, PropsWithChildren } from 'react';
 import classes from './ThField.module.css';
@@ -12,19 +12,14 @@ interface ThBaseProps {
   onSort(): void;
 }
 
-function ThBase({
-  children,
-  sorted,
-  reversed,
-  onSort,
-}: PropsWithChildren<ThBaseProps>) {
+function ThBase({ children, sorted, reversed, onSort }: PropsWithChildren<ThBaseProps>) {
   // Select the correct
   let Icon = reversed ? IconChevronUp : IconChevronDown;
   if (!sorted) Icon = IconSelector;
 
   return (
     <UnstyledButton onClick={onSort} className={classes.control}>
-      <Box style={{ display: 'flex', alignItems: 'center' }}>
+      <Box style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
         <Text fw={500} fz='sm'>
           {children}
         </Text>
@@ -45,7 +40,7 @@ function ThField({ fieldKey, style, ...rest }: ThFieldProps) {
   const field = allFields[fieldKey];
 
   return (
-    <th className={classes.th} style={style}>
+    <Table.Th className={classes.th} style={style}>
       {field ? (
         <FieldTooltip
           label={field.label}
@@ -60,7 +55,7 @@ function ThField({ fieldKey, style, ...rest }: ThFieldProps) {
       ) : (
         <ThBase {...rest}>{fieldKey}</ThBase>
       )}
-    </th>
+    </Table.Th>
   );
 }
 

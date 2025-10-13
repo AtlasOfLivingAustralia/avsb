@@ -5,7 +5,6 @@ import {
   Box,
   Center,
   Container,
-  em,
   Grid,
   Group,
   Modal,
@@ -30,6 +29,9 @@ import {
 
 import { Wave } from '#/components/Wave';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { breakpoints } from '#/theme/constants';
+
+import classes from './index.module.css';
 
 import {
   downloadRecordsItems,
@@ -121,7 +123,7 @@ export function Component() {
   const [opened, { open, close }] = useDisclosure(false);
 
   // Theme hooks
-  const mdOrLarger = useMediaQuery('(min-width: var(--mantine-breakpoint-md))', true);
+  const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
 
   return (
     <>
@@ -168,22 +170,10 @@ export function Component() {
             {Object.entries(helpTopics).map(([key, { description, icon: Icon }]) => (
               <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 6, xs: 12 }} key={key}>
                 <UnstyledButton
+                  className={classes.topic}
                   onClick={() => {
                     setTopic(key);
                     open();
-                  }}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: 'var(--mantine-spacing-md)',
-                    borderRadius: 'var(--mantine-radius-md)',
-                    border: `1px solid light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))`,
-                    width: '100%',
-                    height: '100%',
-                    transition: 'opacity cubic-bezier(0, 0, 0, 1) 200ms',
-                    ':hover': {
-                      opacity: 0.4,
-                    },
                   }}
                 >
                   <Center w='100%'>

@@ -120,7 +120,7 @@ function Header() {
           aria-label='Help / FAP'
         >
           <ActionIcon
-            color='grey'
+            color='gray'
             component={Link}
             to='/help'
             variant='filled'
@@ -139,7 +139,7 @@ function Header() {
           position='right'
         >
           <ActionIcon
-            color='grey'
+            color='gray'
             variant='filled'
             radius='xl'
             size={38}

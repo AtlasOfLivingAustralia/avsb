@@ -22,6 +22,7 @@ import { useLoaderData, useNavigate, useRouteLoaderData } from 'react-router-dom
 import { SDSInstance } from '#/api';
 import { Taxon } from '#/api/sources/taxon';
 import { ConservationStatus, SDS } from '#/components';
+import { breakpoints } from '#/theme/constants';
 
 import classes from './index.module.css';
 
@@ -34,7 +35,7 @@ export function Component() {
     sds: SDSInstance[];
   };
   const token = useLoaderData() as string;
-  const mdOrLarger = useMediaQuery(`(min-width: var(--mantine-breakpoint-md))`, true);
+  const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
   const navigate = useNavigate();
 
   return (
@@ -149,7 +150,7 @@ export function Component() {
                           <Text maw={200} truncate size='sm'>
                             {(taxon.classification as any)[rank]}
                           </Text>
-                          <Badge>{rank}</Badge>
+                          <Badge variant='light'>{rank}</Badge>
                         </Group>
                       </UnstyledButton>
                       <ActionIcon

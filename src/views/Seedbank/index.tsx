@@ -36,6 +36,7 @@ import { useLoaderData, useParams } from 'react-router-dom';
 import { DataResource, EventSearchResult } from '#/api';
 import { Contact } from '#/components';
 import { Wave } from '#/components/Wave';
+import { breakpoints } from '#/theme/constants';
 
 // Component imports
 import SpeciesList from './components/SpeciesList';
@@ -60,7 +61,7 @@ export function Component() {
   const [event] = documents?.results || [];
   const params = useParams();
 
-  const smOrLarger = useMediaQuery(`(min-width: ${em(576)})`, true);
+  const smOrLarger = useMediaQuery(`(min-width: ${breakpoints.sm})`, true);
 
   return (
     <>

@@ -53,14 +53,14 @@ function AccessionTable({ events }: AccessionTableProps) {
 
   return (
     <Card shadow='lg' p={0} withBorder>
-      <ScrollArea
-        type='auto'
+      <Table.ScrollContainer
+        minWidth={500}
         h='calc(100vh - 425px)'
-        onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+        scrollAreaProps={{ onScrollPositionChange: ({ y }) => setScrolled(y !== 0) }}
       >
-        <Table highlightOnHover>
-          <thead className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
-            <tr>
+        <Table stickyHeader>
+          <Table.Thead className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
+            <Table.Tr>
               <ThField
                 sorted={sortBy === 'extensions.seedbank.accessionNumber'}
                 reversed={reverseSortDirection}
@@ -103,11 +103,10 @@ function AccessionTable({ events }: AccessionTableProps) {
                 onSort={() => setSorting('extensions.seedbank.storageTemperatureInCelsius')}
                 fieldKey='storageTemperatureInCelsius'
               />
-              <th>
-                <Button.Group style={{ justifyContent: 'flex-end' }}>
+              <Table.Th>
+                <Button.Group style={{ justifyContent: 'flex-end' }} p='sm'>
                   <Button
                     variant='light'
-                    p={8}
                     size='xs'
                     onClick={() => setSelected(events.map(({ eventID }) => eventID || ''))}
                   >
@@ -119,25 +118,25 @@ function AccessionTable({ events }: AccessionTableProps) {
                     Collapse
                   </Button>
                 </Button.Group>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+              </Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
             {(!events || events?.length === 0) && (
-              <tr>
-                <td colSpan={8}>
+              <Table.Tr>
+                <Table.Td colSpan={8}>
                   <Center>
-                    <Text>No accession data found</Text>
+                    <Text size='sm'>No accession data found</Text>
                   </Center>
-                </td>
-              </tr>
+                </Table.Td>
+              </Table.Tr>
             )}
             {sortedData.map((event) => {
               const accession = event.extensions?.seedbank as SeedBankAccession;
               const isSelected = selected.includes(event.eventID || '');
               return (
                 <Fragment key={event.eventID}>
-                  <tr
+                  <Table.Tr
                     style={{ cursor: 'pointer' }}
                     onClick={(e) => {
                       // biome-ignore lint: suspicious/noExplicitAny
@@ -151,34 +150,36 @@ function AccessionTable({ events }: AccessionTableProps) {
                       }
                     }}
                   >
-                    <td style={{ paddingLeft: 25 }}>
+                    <Table.Td style={{ paddingLeft: 14 }}>
                       {accession?.accessionNumber || event.eventID}
-                    </td>
-                    <td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Table.Td>
+                    <Table.Td>
                       <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
                         <Box maw={250}>
-                          <Text lineClamp={2}>{event?.datasetTitle}</Text>
+                          <Text size='sm' lineClamp={2}>
+                            {event?.datasetTitle}
+                          </Text>
                         </Box>
                       </Tooltip.Floating>
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(accession?.dateCollected) &&
                         new Date(accession?.dateCollected || 0).toLocaleDateString()}
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(accession?.quantityCount) &&
                         `${accession?.quantityCount} seeds`}
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(accession?.purityPercentage) &&
                         `${accession.purityPercentage?.toFixed(2)}%`}
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(accession?.storageTemperatureInCelsius) &&
                         `${accession?.storageTemperatureInCelsius}°C`}
-                    </td>
-                    <td align='right'>
+                    </Table.Td>
+                    <Table.Td align='right'>
                       <Group gap='xs' justify='right' miw={150}>
                         <Button
                           styles={{
@@ -207,14 +208,13 @@ function AccessionTable({ events }: AccessionTableProps) {
                           size={16}
                         />
                       </Group>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
+                    </Table.Td>
+                  </Table.Tr>
+                  <Table.Tr style={{ border: 'none' }}>
+                    <Table.Td
                       colSpan={8}
                       style={{
                         padding: 0,
-                        border: 'none',
                         backgroundColor: 'light-dark(white, var(--mantine-color-dark-6))',
                       }}
                     >
@@ -223,21 +223,21 @@ function AccessionTable({ events }: AccessionTableProps) {
                           style={{
                             backgroundColor:
                               'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))',
-                            borderTop: `1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4))`,
+                            borderBottom: `1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4))`,
                           }}
                           p='md'
                         >
                           <AccessionDetails event={event} />
                         </Box>
                       </Collapse>
-                    </td>
-                  </tr>
+                    </Table.Td>
+                  </Table.Tr>
                 </Fragment>
               );
             })}
-          </tbody>
+          </Table.Tbody>
         </Table>
-      </ScrollArea>
+      </Table.ScrollContainer>
     </Card>
   );
 }

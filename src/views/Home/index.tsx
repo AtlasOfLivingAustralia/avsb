@@ -26,13 +26,14 @@ import wateringCan from '#/assets/watering-can-and-plant.png';
 
 import { Blob, TaxonSearchInput } from '#/components';
 import { Wave } from '#/components/Wave';
+import { breakpoints } from '#/theme/constants';
 
 import Summaries from './components/Summaries';
 
 function Home() {
   const navigate = useNavigate();
 
-  const mdOrLarger = useMediaQuery(`(min-width: var(--mantine-breakpoint-md))`, true);
+  const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
 
   return (
     <>

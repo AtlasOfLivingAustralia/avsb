@@ -1,0 +1,14 @@
+.topic {
+	display: flex;
+	flex-direction: column;
+	padding: var(--mantine-spacing-md);
+	border-radius: var(--mantine-radius-lg);
+	border: 1px solid light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4));
+	width: 100%;
+	height: 100%;
+	transition: opacity cubic-bezier(0, 0, 0, 1) 200ms;
+	
+	&:hover {
+		opacity: 0.4;
+	}
+}

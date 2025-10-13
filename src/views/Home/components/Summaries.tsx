@@ -60,7 +60,7 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
             <Group gap='xs'>
               <Skeleton width={34} height={34} circle visible={loading}>
                 <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
-                  <Text c='var(--mantine-primary-color-filled)' fw='bold' size='xs'>
+                  <Text fw='bold' size='xs'>
                     {getAbbreviatedNumber(totalAccessions || 0)}
                   </Text>
                 </ThemeIcon>
@@ -74,7 +74,7 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
             <Group gap='xs'>
               <Skeleton width={34} height={34} circle visible={loading}>
                 <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
-                  <Text c='var(--mantine-primary-color-filled)' fw='bold' size='xs'>
+                  <Text fw='bold' size='xs'>
                     {getAbbreviatedNumber(totalTrials || 0)}
                   </Text>
                 </ThemeIcon>

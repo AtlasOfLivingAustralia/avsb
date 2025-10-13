@@ -9,9 +9,7 @@ interface TaxonItem extends ComboboxItem {
   type?: string;
 }
 
-function TaxonSearchInput(
-  props: Omit<SearchSelectProps, 'fetchItems' | 'renderOption'>
-) {
+function TaxonSearchInput(props: Omit<SearchSelectProps, 'fetchItems' | 'renderOption'>) {
   const api = useAPI();
 
   // Define select items fetcher for select search
@@ -40,7 +38,7 @@ function TaxonSearchInput(
           <>
             <Group justify='space-between'>
               <Text size='sm'>{taxonItem.label?.substring(0, 40)}</Text>
-              {taxonItem.rankString && <Badge>{taxonItem.rankString}</Badge>}
+              {taxonItem.rankString && <Badge variant='light'>{taxonItem.rankString}</Badge>}
             </Group>
             {taxonItem.commonName && (
               <Text size='xs' opacity={0.65}>

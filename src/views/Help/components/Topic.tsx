@@ -21,7 +21,7 @@ function Topic({ instructions }: TopicProps) {
         classNames={classes}
         mx='auto'
         withIndicators
-        height={700}
+        height={600}
       >
         {instructions.map(({ image }, index) => (
           <Carousel.Slide key={`${index * 2}`}>
@@ -35,7 +35,7 @@ function Topic({ instructions }: TopicProps) {
                 pt='md'
                 fit='contain'
                 w='100%'
-                h={650}
+                h={550}
                 src={image}
                 alt={`Slide ${index + 1} of help images`}
               />

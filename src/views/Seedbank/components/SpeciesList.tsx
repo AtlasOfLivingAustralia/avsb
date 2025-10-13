@@ -59,12 +59,12 @@ function Row({ index, style, data }: SpeciesRow) {
 
   return (
     <UnstyledButton onClick={handleRowClick} key={index} className={classes.button} style={style}>
-      <Group justify='space-between'>
+      <Group justify='space-between' pl='md'>
         <Text size='sm' maw={205} truncate>
           {data[index].key}
         </Text>
         <Group gap='xs' mr='sm'>
-          <Badge>
+          <Badge variant='light'>
             {data[index].count} Record{data[index].count > 1 && 's'}
           </Badge>
           <IconArrowUpRight size='1rem' />
@@ -147,9 +147,12 @@ function SpeciesList({ name, species }: SpeciesListProps) {
       />
       <Divider mt='md' mb='xs' />
       <FixedSizeList
-        height={395}
-        width='calc(100% + 16px)'
-        style={{ marginRight: -16 }}
+        height={430}
+        width='calc(100% + (2 * var(--mantine-spacing-md)))'
+        style={{
+          marginRight: 'calc(var(--mantine-spacing-md) * -1)',
+          marginLeft: 'calc(var(--mantine-spacing-md) * -1)',
+        }}
         itemData={sorted}
         itemCount={sorted.length}
         itemSize={45}

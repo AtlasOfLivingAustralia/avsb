@@ -63,14 +63,14 @@ function TrialsTable({ events, height }: TrialsTableProps) {
 
   return (
     <Card shadow='lg' p={0} withBorder>
-      <ScrollArea
-        type='auto'
-        h={height || 'calc(100vh - 425px)'}
-        onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+      <Table.ScrollContainer
+        minWidth={500}
+        h='calc(100vh - 425px)'
+        scrollAreaProps={{ onScrollPositionChange: ({ y }) => setScrolled(y !== 0) }}
       >
-        <Table highlightOnHover>
-          <thead className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
-            <tr>
+        <Table stickyHeader highlightOnHover>
+          <Table.Thead className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
+            <Table.Tr>
               <ThField
                 sorted={sortBy === 'extensions.seedbank.accessionNumber'}
                 reversed={reverseSortDirection}
@@ -125,11 +125,10 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 onSort={() => setSorting('extensions.seedbank.testLengthInDays')}
                 fieldKey='testLengthInDays'
               />
-              <th>
-                <Button.Group style={{ justifyContent: 'flex-end' }}>
+              <Table.Th>
+                <Button.Group style={{ justifyContent: 'flex-end' }} p='sm'>
                   <Button
                     variant='light'
-                    p={8}
                     size='xs'
                     onClick={() => setSelected(events.map(({ eventID }) => eventID || ''))}
                   >
@@ -141,18 +140,18 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     Collapse
                   </Button>
                 </Button.Group>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+              </Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
             {(!events || events?.length === 0) && (
-              <tr>
-                <td colSpan={100}>
+              <Table.Tr>
+                <Table.Td colSpan={100}>
                   <Center>
-                    <Text>No trial data found</Text>
+                    <Text size='sm'>No trial data found</Text>
                   </Center>
-                </td>
-              </tr>
+                </Table.Td>
+              </Table.Tr>
             )}
             {sortedData.map((event) => {
               const trial = event.extensions?.seedbank as SeedBankTrial;
@@ -164,7 +163,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
 
               return (
                 <Fragment key={event.eventID}>
-                  <tr
+                  <Table.Tr
                     style={{ cursor: 'pointer' }}
                     onClick={(e) => {
                       const className = (e.target as HTMLElement)?.className;
@@ -177,38 +176,46 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                       }
                     }}
                   >
-                    <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber || event.eventID}</td>
-                    <td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</td>
-                    <td>
+                    <Table.Td style={{ paddingLeft: 14 }}>
+                      {trial?.accessionNumber || event.eventID}
+                    </Table.Td>
+                    <Table.Td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Table.Td>
+                    <Table.Td>
                       <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
                         <Box maw={250}>
-                          <Text lineClamp={2}>{event?.datasetTitle}</Text>
+                          <Text size='sm' lineClamp={2}>
+                            {event?.datasetTitle}
+                          </Text>
                         </Box>
                       </Tooltip.Floating>
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(trial?.adjustedGerminationPercentage) &&
                         `${trial?.adjustedGerminationPercentage?.toFixed(2)}%`}
-                    </td>
-                    <td>{getIsDefined(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}</td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
+                      {getIsDefined(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}
+                    </Table.Td>
+                    <Table.Td>
                       <Box maw={250}>
-                        <Text lineClamp={2}>{treatment?.pretreatment}</Text>
+                        <Text size='sm' lineClamp={2}>
+                          {treatment?.pretreatment}
+                        </Text>
                       </Box>
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(trial?.viabilityPercentage) &&
                         `${trial?.viabilityPercentage?.toFixed(2)}%`}
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {trial?.testDateStarted
                         ? new Date(trial?.testDateStarted).toLocaleDateString()
                         : ''}
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
-                    </td>
-                    <td align='right' style={{ paddingLeft: 0 }}>
+                    </Table.Td>
+                    <Table.Td align='right' style={{ paddingLeft: 0 }}>
                       <Group gap='xs' justify='right' miw={145}>
                         {location.pathname.endsWith('trials') && (
                           <AccessionPopover parentEvent={event.parentEvent} />
@@ -222,10 +229,10 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                           size={16}
                         />
                       </Group>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
+                    </Table.Td>
+                  </Table.Tr>
+                  <Table.Tr style={{ border: 'none' }}>
+                    <Table.Td
                       colSpan={100}
                       style={{
                         padding: 0,
@@ -238,21 +245,21 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                           style={{
                             backgroundColor:
                               'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))',
-                            borderTop: `1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4))`,
+                            borderBottom: `1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4))`,
                           }}
                           p='md'
                         >
                           <TrialDetails event={event} />
                         </Box>
                       </Collapse>
-                    </td>
-                  </tr>
+                    </Table.Td>
+                  </Table.Tr>
                 </Fragment>
               );
             })}
-          </tbody>
+          </Table.Tbody>
         </Table>
-      </ScrollArea>
+      </Table.ScrollContainer>
     </Card>
   );
 }

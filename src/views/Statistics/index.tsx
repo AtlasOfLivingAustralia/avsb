@@ -34,6 +34,7 @@ import { useLoaderData } from 'react-router-dom';
 
 import { Blob } from '#/components';
 import { Wave } from '#/components/Wave';
+import { breakpoints } from '#/theme/constants';
 
 import ecologyEarth from '../../assets/ecology-earth.png';
 import stats from '../../assets/stats.json';
@@ -76,7 +77,7 @@ interface Dataset {
 }
 
 export function Component() {
-  const mdOrLarger = useMediaQuery(`(min-width: --mantine-breakpoint-md)`, true);
+  const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
 
   const datasets = useLoaderData() as { [key: string]: Dataset };
 
@@ -208,7 +209,7 @@ export function Component() {
                     <Fragment key={key}>
                       <Flex justify='space-between' px='sm'>
                         <Text>{datasets[key]?.datasetTitle || 'Unknown Dataset'}</Text>
-                        <Badge ml='sm' miw={50}>
+                        <Badge variant='light' ml='sm' miw={50}>
                           {count}
                         </Badge>
                       </Flex>
@@ -222,8 +223,14 @@ export function Component() {
           {mdOrLarger && (
             <div style={{ width: 450, height: 450 }}>
               <Blob style={{ position: 'absolute' }} width={450} height={450} />
-              <Center h='100%' style={{ zIndex: 10 }}>
-                <Image w={200} h={330} src={ecologyEarth} alt='Watering can with plant' />
+              <Center h='100%'>
+                <Image
+                  style={{ zIndex: 10 }}
+                  w={200}
+                  h={330}
+                  src={ecologyEarth}
+                  alt='Watering can with plant'
+                />
               </Center>
             </div>
           )}
