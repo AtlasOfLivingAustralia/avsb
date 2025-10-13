@@ -7,6 +7,7 @@ import {
   Container,
   Divider,
   em,
+  Flex,
   Grid,
   Group,
   Image,
@@ -78,6 +79,7 @@ export function Component() {
             pt='md'
             align='flex-start'
             justify={smOrLarger ? 'flex-start' : 'center'}
+            style={{ textAlign: smOrLarger ? 'left' : 'center' }}
             gap='xl'
           >
             <Skeleton circle width={120} height={120} visible={!logoLoaded} mr='xl'>
@@ -92,7 +94,7 @@ export function Component() {
                 onLoad={() => setLogoLoaded(true)}
               />
             </Skeleton>
-            <Box>
+            <Flex direction='column' miw={0}>
               <Title maw={550}>{event?.datasetTitle}</Title>
               {collectory.institution?.name && (
                 <Title order={2} size={22} c='dimmed' maw={550} mb='md'>
@@ -103,15 +105,14 @@ export function Component() {
                 <Anchor
                   size='sm'
                   maw={550}
-                  lineClamp={2}
                   href={collectory.websiteUrl}
                   target='_blank'
+                  style={{ overflowWrap: 'break-word' }}
                 >
-                  <IconExternalLink size='1rem' style={{ marginRight: 8 }} />
                   {collectory.websiteUrl}
                 </Anchor>
               )}
-              <Group mt='xl' pt='md'>
+              <Group mt='xl' pt='md' justify={smOrLarger ? 'flex-start' : 'center'}>
                 <Chip checked={false}>
                   <b>{accessions.documents?.total?.toLocaleString()}</b>
                   &nbsp;Accessions
@@ -120,7 +121,7 @@ export function Component() {
                   <b>{trials.documents?.total?.toLocaleString()}</b>&nbsp;Trials
                 </Chip>
               </Group>
-            </Box>
+            </Flex>
           </Group>
         </Container>
       </Box>

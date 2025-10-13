@@ -42,7 +42,6 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
           style={{
             ...styles,
             position: 'absolute',
-            color: 'white',
             zIndex: 10,
             top: 'var(--mantine-spacing-md)',
             left: 'var(--mantine-spacing-md)',
