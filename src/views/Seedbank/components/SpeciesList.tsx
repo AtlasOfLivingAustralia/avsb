@@ -11,7 +11,7 @@ import {
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
-import { FixedSizeList } from 'react-window';
+import { List, RowComponentProps } from 'react-window';
 import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons-react';
 import { useDebouncedValue } from '@mantine/hooks';
 import { useNavigate, useParams } from 'react-router';
@@ -30,13 +30,7 @@ interface SpeciesListProps {
   species: SpeciesFacet[];
 }
 
-interface SpeciesRow {
-  index: number;
-  style: CSSProperties;
-  data: SpeciesFacet[];
-}
-
-function Row({ index, style, data }: SpeciesRow) {
+function Row({ index, style, data }: RowComponentProps<{ data: SpeciesFacet[] }>) {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -146,19 +140,18 @@ function SpeciesList({ name, species }: SpeciesListProps) {
         onChange={(event) => setSearch(event.currentTarget.value)}
       />
       <Divider mt='md' mb='xs' />
-      <FixedSizeList
-        height={430}
-        width='calc(100% + (2 * var(--mantine-spacing-md)))'
+      <List
         style={{
           marginRight: 'calc(var(--mantine-spacing-md) * -1)',
           marginLeft: 'calc(var(--mantine-spacing-md) * -1)',
+          height: 430,
+          width: 'calc(100% + (2 * var(--mantine-spacing-md)))',
         }}
-        itemData={sorted}
-        itemCount={sorted.length}
-        itemSize={45}
-      >
-        {Row}
-      </FixedSizeList>
+        rowHeight={45}
+        rowProps={{ data: sorted }}
+        rowCount={sorted.length}
+        rowComponent={Row}
+      />
     </Paper>
   );
 }
