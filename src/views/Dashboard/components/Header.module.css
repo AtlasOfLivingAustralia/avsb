@@ -4,7 +4,7 @@
 	border-radius: 0 !important;
 
 	&[data-scrolled="true"] {
-		background-color: light-dark(rgba(235,235,235,0.7), rgba(44, 46, 51, 0.7)) !important;
+		background-color: light-dark(rgba(235,235,235,0.6), rgba(44, 46, 51, 0.6)) !important;
 		backdrop-filter: blur(12px);
 		margin: 15px;
 		border: 1px solid var(--mantine-color-default-border);
