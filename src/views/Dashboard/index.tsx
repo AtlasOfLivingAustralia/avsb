@@ -29,14 +29,19 @@ function Dashboard() {
       <NavigationProgress stepInterval={20} portalProps={{ 'aria-hidden': true }} />
       <AppShell
         padding={0}
-        header={{ height: 60 }}
+        header={{ height: 90 }}
         styles={{
           main: {
             paddingBottom: 0,
           },
         }}
       >
-        <AppShell.Header>
+        <AppShell.Header
+          style={{
+            backgroundColor: 'transparent',
+            border: 'none',
+          }}
+        >
           <Header />
         </AppShell.Header>
         <AppShell.Main>

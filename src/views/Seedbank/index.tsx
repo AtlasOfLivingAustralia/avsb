@@ -68,6 +68,8 @@ export function Component() {
       <Box
         style={{
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
+          paddingTop: 90,
+          marginTop: -110,
         }}
       >
         <Container size='xl' pt='xl'>

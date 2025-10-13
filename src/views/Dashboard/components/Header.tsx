@@ -5,6 +5,7 @@ import {
   Button,
   Group,
   Image,
+  Paper,
   Tooltip,
   Transition,
   useMantineColorScheme,
@@ -19,8 +20,10 @@ import {
 } from '@tabler/icons';
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-// Project components & gelpers
+
+// Project components & helpers
 import { TaxonSearchInput } from '#/components';
+import classes from './Header.module.css';
 
 const slideTransition = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -36,6 +39,7 @@ function Header() {
   const [colorScheme, setColorScheme] = useState<'light' | 'dark'>(
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
   );
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -46,111 +50,131 @@ function Header() {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <Group h={60} px={20} justify='space-between'>
-      <Group gap='lg'>
-        <Link to='/' style={{ display: 'flex' }} aria-label='Go to home'>
-          <Image src={logo} />
-        </Link>
-        <Group gap={4}>
-          <Button
-            component={Link}
-            to='/dashboard'
-            leftSection={<IconChartLine size='0.8rem' />}
-            size='xs'
-            variant='subtle'
-            aria-label='Portal Statistics'
-          >
-            Portal Statistics
-          </Button>
-          <Transition transition={slideTransition} mounted={pathname !== '/'}>
-            {(styles) => (
-              <Button
-                style={styles}
+    <Paper
+      className={classes.header}
+      data-scrolled={isScrolled}
+      shadow={isScrolled ? 'xl' : 'none'}
+    >
+      <Group h={60} px={20} justify='space-between'>
+        <Group gap='lg'>
+          <Link to='/' style={{ display: 'flex' }} aria-label='Go to home'>
+            <Image src={logo} />
+          </Link>
+          <Group gap={2}>
+            <Button
+              visibleFrom='md'
+              component={Link}
+              to='/dashboard'
+              leftSection={<IconChartLine size='0.8rem' />}
+              size='xs'
+              variant='subtle'
+              color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-1))'
+              aria-label='Portal Statistics'
+            >
+              Portal Statistics
+            </Button>
+            <Transition transition={slideTransition} mounted={pathname !== '/'}>
+              {(styles) => (
+                <Button
+                  style={styles}
+                  component={Link}
+                  to='/'
+                  leftSection={<IconHome size='0.8rem' />}
+                  size='xs'
+                  variant='subtle'
+                  color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-1))'
+                  aria-label='Home'
+                >
+                  Home
+                </Button>
+              )}
+            </Transition>
+            <Transition
+              transition={slideTransition}
+              mounted={Boolean(state?.from && pathname.includes('/taxon'))}
+            >
+              {(styles) => (
+                <Button
+                  style={styles}
+                  component={Link}
+                  to={state?.from || '/'}
+                  state={null}
+                  leftSection={<IconArrowBackUp size='0.8rem' />}
+                  size='xs'
+                  variant='subtle'
+                  color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-1))'
+                  aria-label='Go back'
+                >
+                  Seed Bank
+                </Button>
+              )}
+            </Transition>
+          </Group>
+        </Group>
+        <Group>
+          {pathname !== '/' && (
+            <Box visibleFrom='md'>
+              <TaxonSearchInput
+                radius='lg'
+                style={{ width: 250 }}
+                onChange={(guid) => {
+                  if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
+                }}
+              />
+            </Box>
+          )}
+          <Group style={{ flexGrow: 1, maxWidth: 140 }} justify='right' gap='xs'>
+            <Tooltip
+              transitionProps={{ transition: 'pop' }}
+              offset={10}
+              withArrow
+              label='Help / FAQ'
+              position='right'
+              aria-label='Help / FAP'
+            >
+              <ActionIcon
+                color='gray'
                 component={Link}
-                to='/'
-                leftSection={<IconHome size='0.8rem' />}
-                size='xs'
-                variant='subtle'
-                aria-label='Home'
+                to='/help'
+                variant='light'
+                radius='xl'
+                size={38}
+                aria-label='Help and frequently asked questions'
               >
-                Home
-              </Button>
-            )}
-          </Transition>
-          <Transition
-            transition={slideTransition}
-            mounted={Boolean(state?.from && pathname.includes('/taxon'))}
-          >
-            {(styles) => (
-              <Button
-                style={styles}
-                component={Link}
-                to={state?.from || '/'}
-                state={null}
-                leftSection={<IconArrowBackUp size='0.8rem' />}
-                size='xs'
-                variant='subtle'
-                aria-label='Go back'
+                <IconQuestionMark size={20} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip
+              transitionProps={{ transition: 'pop' }}
+              offset={10}
+              withArrow
+              label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
+              position='right'
+            >
+              <ActionIcon
+                color='gray'
+                variant='light'
+                radius='xl'
+                size={38}
+                onClick={() => toggleColorScheme()}
+                aria-label='Switch interface colour scheme'
               >
-                Seed Bank
-              </Button>
-            )}
-          </Transition>
+                {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
+              </ActionIcon>
+            </Tooltip>
+          </Group>
         </Group>
       </Group>
-      {pathname !== '/' && (
-        <Box visibleFrom='md' style={{ flexGrow: 1, maxWidth: 400 }}>
-          <TaxonSearchInput
-            variant='filled'
-            style={{ width: '100%' }}
-            onChange={(guid) => {
-              if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
-            }}
-          />
-        </Box>
-      )}
-      <Group style={{ flexGrow: 1, maxWidth: 140 }} justify='right' gap='xs'>
-        <Tooltip
-          transitionProps={{ transition: 'pop' }}
-          offset={10}
-          withArrow
-          label='Help / FAQ'
-          position='right'
-          aria-label='Help / FAP'
-        >
-          <ActionIcon
-            color='gray'
-            component={Link}
-            to='/help'
-            variant='filled'
-            radius='xl'
-            size={38}
-            aria-label='Help and frequently asked questions'
-          >
-            <IconQuestionMark size={20} />
-          </ActionIcon>
-        </Tooltip>
-        <Tooltip
-          transitionProps={{ transition: 'pop' }}
-          offset={10}
-          withArrow
-          label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
-          position='right'
-        >
-          <ActionIcon
-            color='gray'
-            variant='filled'
-            radius='xl'
-            size={38}
-            onClick={() => toggleColorScheme()}
-            aria-label='Switch interface colour scheme'
-          >
-            {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
-          </ActionIcon>
-        </Tooltip>
-      </Group>
-    </Group>
+    </Paper>
   );
 }
 

@@ -182,11 +182,9 @@ export function Component() {
             <Divider size={2} w='100%' />
           </Box>
         </Group>
-        <ScrollArea type='auto' h='calc(100vh - 263px)'>
-          <Container size={MAX_WIDTH} py='xl'>
-            <Outlet />
-          </Container>
-        </ScrollArea>
+        <Container size={MAX_WIDTH} py='xl'>
+          <Outlet />
+        </Container>
       </Tabs>
     </>
   );

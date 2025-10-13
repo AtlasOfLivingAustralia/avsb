@@ -88,7 +88,7 @@ export function Component() {
 
   return (
     <>
-      <Container size='lg' p='lg'>
+      <Container size='lg' p='lg' mt={-30}>
         <Space h={45} />
         <Center>
           <Text c='dimmed' size='lg' fw='bold'>

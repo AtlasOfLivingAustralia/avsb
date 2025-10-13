@@ -5,18 +5,14 @@ import {
   InputBase,
   InputBaseProps,
   Loader,
+  MantineRadius,
   useCombobox,
 } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons';
 import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
-import React, {
-  CSSProperties,
-  KeyboardEvent,
-  useEffect,
-  useState,
-} from 'react';
+import React, { CSSProperties, KeyboardEvent, useEffect, useState } from 'react';
 
 export interface SearchSelectProps {
   customTypes?: string[];
@@ -29,6 +25,7 @@ export interface SearchSelectProps {
   disabled?: boolean;
   renderOption?: (item: ComboboxItem) => React.ReactNode;
   variant?: InputBaseProps['variant'];
+  radius?: MantineRadius;
   style?: CSSProperties;
   className?: string;
 }
@@ -44,6 +41,7 @@ function SelectSearch({
   disabled,
   renderOption,
   variant,
+  radius,
   style,
   className,
 }: SearchSelectProps) {
@@ -76,11 +74,7 @@ function SelectSearch({
   }, [searchDebounced, mounted, fetchItems]);
 
   // Sort the menu items alphabetically by label
-  const dataSorted = orderBy(
-    data,
-    [(filter) => filter.label?.toLowerCase()],
-    ['asc']
-  );
+  const dataSorted = orderBy(data, [(filter) => filter.label?.toLowerCase()], ['asc']);
 
   // Combine unique data with custom types
   const allData = [
@@ -97,11 +91,7 @@ function SelectSearch({
   const handleChange = (newValue: string | null) => {
     setValue(newValue);
     if (onChange) onChange(newValue);
-    setSearch(
-      newValue
-        ? allData.find((item) => item.value === newValue)?.label || ''
-        : ''
-    );
+    setSearch(newValue ? allData.find((item) => item.value === newValue)?.label || '' : '');
     combobox.closeDropdown();
   };
 
@@ -127,17 +117,14 @@ function SelectSearch({
     : search;
 
   return (
-    <Combobox
-      store={combobox}
-      onOptionSubmit={handleChange}
-      withinPortal={false}
-    >
+    <Combobox store={combobox} onOptionSubmit={handleChange} withinPortal={false}>
       <Combobox.Target>
         <InputBase
           label={label}
           placeholder={placeholder}
           value={displayValue}
           variant={variant}
+          radius={radius}
           style={style}
           className={className}
           onChange={(event) => {
@@ -158,9 +145,7 @@ function SelectSearch({
             combobox.closeDropdown();
             // Reset search to the selected value's label if a value is selected
             if (value) {
-              setSearch(
-                allData.find((item) => item.value === value)?.label || ''
-              );
+              setSearch(allData.find((item) => item.value === value)?.label || '');
             }
           }}
           rightSection={loading ? <Loader size='xs' /> : null}
