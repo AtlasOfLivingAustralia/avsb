@@ -15,8 +15,15 @@ function ErrorBoundary() {
         <Stack gap='xs' justify='center' pb={125} p='xl'>
           <div style={{ position: 'relative', width: 250, height: 250 }}>
             <Blob style={{ position: 'absolute' }} width={250} height={250} />
-            <Center h='100%' style={{ zIndex: 10 }}>
-              <Image fit='contain' w={125} h={125} src={spottedPlant} alt='Spotted plant' />
+            <Center h='100%'>
+              <Image
+                style={{ zIndex: 10 }}
+                fit='contain'
+                w={125}
+                h={125}
+                src={spottedPlant}
+                alt='Spotted plant'
+              />
             </Center>
           </div>
           <Text
@@ -51,8 +58,15 @@ function ErrorBoundary() {
         <Group gap='xl' mr={50}>
           <div style={{ position: 'relative', width: 150, height: 150 }}>
             <Blob style={{ position: 'absolute' }} width={150} height={150} />
-            <Center h='100%' style={{ zIndex: 10 }}>
-              <Image fit='contain' w={100} h={100} src={waterTap} alt='Leaky water tap' />
+            <Center h='100%'>
+              <Image
+                style={{ zIndex: 10 }}
+                fit='contain'
+                w={100}
+                h={100}
+                src={waterTap}
+                alt='Leaky water tap'
+              />
             </Center>
           </div>
           <Stack gap={0}>

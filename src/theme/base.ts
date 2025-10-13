@@ -1,4 +1,4 @@
-import { Card, createTheme, Paper } from '@mantine/core';
+import { Alert, Card, createTheme, Paper } from '@mantine/core';
 
 const base = createTheme({
   defaultRadius: 'md',
@@ -9,6 +9,11 @@ const base = createTheme({
       },
     }),
     Paper: Paper.extend({
+      defaultProps: {
+        radius: 'lg',
+      },
+    }),
+    Alert: Alert.extend({
       defaultProps: {
         radius: 'lg',
       },

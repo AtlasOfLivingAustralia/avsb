@@ -62,9 +62,11 @@ export function Component() {
             </>
           ) : (
             <Center h='calc(100vh - 350px)'>
-              <Stack justify='center'>
+              <Stack align='center'>
                 <IconSeedingOff size='3rem' />
-                <Text c='dimmed'>No matching traits found</Text>
+                <Text c='dimmed' ta='center'>
+                  No matching traits found
+                </Text>
               </Stack>
             </Center>
           )

@@ -32,7 +32,10 @@ function PageSummary({ currentPage, ...rest }: PageSummaryProps) {
   return (
     <HoverCard width={350} position='left' withArrow offset={12}>
       <HoverCard.Target>
-        <UnstyledButton style={{ display: 'flex', justifyContent: 'flex-end' }} {...rest}>
+        <UnstyledButton
+          style={{ display: 'flex', justifyContent: 'flex-end', cursor: 'help' }}
+          {...rest}
+        >
           <Group gap='xs' pr='md'>
             <IconQuestionCircle color='light-dark(var(--mantine-color-blue-4), var(--mantine-color-blue-2))' />
             <Text

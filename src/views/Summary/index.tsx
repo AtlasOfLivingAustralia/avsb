@@ -41,17 +41,19 @@ export function Component() {
   return (
     <>
       <Modal
+        classNames={classes}
+        title={
+          <Text ff='var(--mantine-font-family-headings)' size='lg'>
+            Fullscreen Map
+          </Text>
+        }
         transitionProps={{ transition: 'fade' }}
-        size='100%'
         opened={mapOpen}
         onClose={close}
-        centered
-        overlayProps={{
-          color: 'light-dark(var(--mantine-color-dark-8), var(--mantine-color-gray-7))',
-        }}
+        fullScreen
       >
         <Suspense fallback={<Skeleton w='100%' h={650} />}>
-          <EventMap width='100%' height={650} token={token} itemListHeight={180} />
+          <EventMap width='100%' height={650} token={token} itemListHeight={180} radius={'0'} />
         </Suspense>
       </Modal>
       <Grid>

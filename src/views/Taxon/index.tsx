@@ -6,7 +6,6 @@ import {
   Divider,
   Group,
   Image,
-  Menu,
   ScrollArea,
   Skeleton,
   Tabs,
@@ -20,7 +19,6 @@ import {
   IconBrandAsana,
   IconCopy,
   IconDna2,
-  IconDotsVertical,
   IconExternalLink,
   IconId,
   IconLeaf,
@@ -30,6 +28,7 @@ import {
 import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { Taxon } from '#/api/sources/taxon';
 import PageSummary from './components/PageSummary';
+import { useState } from 'react';
 
 const MAX_WIDTH = 1450;
 const tabs = [
@@ -60,6 +59,7 @@ const tabs = [
 ];
 
 export function Component() {
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const { pathname, state } = useLocation();
   const { taxon: data } = useLoaderData() as { taxon: Taxon };
   const clipboard = useClipboard({ timeout: 500 });
@@ -72,17 +72,19 @@ export function Component() {
         <Group justify='space-between' align='start'>
           <Group align='start'>
             <Box mr='md'>
-              <Skeleton pos='absolute' width={90} height={90} radius='lg' />
-              <Image
-                src={
-                  data.imageIdentifier &&
-                  `${import.meta.env.VITE_ALA_IMAGES}/image/${data.imageIdentifier}/thumbnail`
-                }
-                w={90}
-                h={90}
-                radius='lg'
-                alt={`Representative image of ${data.classification.scientificName}`}
-              />
+              <Skeleton w={90} h={90} radius='lg' visible={!data || !imageLoaded}>
+                <Image
+                  src={
+                    data.imageIdentifier &&
+                    `${import.meta.env.VITE_ALA_IMAGES}/image/${data.imageIdentifier}/thumbnail`
+                  }
+                  w={90}
+                  h={90}
+                  radius='lg'
+                  alt={`Representative image of ${data.classification.scientificName}`}
+                  onLoad={() => setImageLoaded(true)}
+                />
+              </Skeleton>
             </Box>
             <Box>
               <Title>{data.taxonConcept.nameString}</Title>

@@ -40,7 +40,13 @@ function Home() {
       <Container size='lg' pt={mdOrLarger ? 'xl' : 0}>
         <Group justify='space-between' pt={mdOrLarger ? 'xl' : 0}>
           <Stack p='xl' w={mdOrLarger ? 470 : '100%'}>
-            <Title fw='bold' size={42}>
+            <Title
+              fw='bold'
+              size={42}
+              style={{
+                color: 'light-dark(var(--mantine-color-dark-6), white)',
+              }}
+            >
               <Text
                 component='span'
                 inherit
@@ -122,9 +128,12 @@ function Home() {
               <Title order={2} fw={600}>
                 Our Datasets
               </Title>
-              <Badge variant='outline' style={{ textTransform: 'none' }} color='dimmed' fw='normal'>
+              <Text
+                c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-6))'
+                size='xs'
+              >
                 Last Updated September, 2025
-              </Badge>
+              </Text>
             </Group>
             <Summaries mt='md' />
           </Box>

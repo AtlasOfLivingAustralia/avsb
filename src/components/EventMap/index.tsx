@@ -27,10 +27,11 @@ interface MapProps {
   height?: string | number;
   token?: string;
   itemListHeight?: string | number;
+  radius?: string;
   onFullscreen?: () => void;
 }
 
-function MapComponent({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
+function MapComponent({ width, height, token, itemListHeight, radius, onFullscreen }: MapProps) {
   // Map refs
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -174,7 +175,7 @@ function MapComponent({ width, height, token, itemListHeight, onFullscreen }: Ma
         position: 'relative',
         width,
         height,
-        borderRadius: 'var(--mantine-radius-md)',
+        borderRadius: radius || 'var(--mantine-radius-lg)',
         boxShadow: 'var(--mantine-shadow-md)',
       }}
     >
@@ -188,11 +189,12 @@ function MapComponent({ width, height, token, itemListHeight, onFullscreen }: Ma
         <Tooltip
           transitionProps={{ transition: 'pop' }}
           label='Toggle Fullscreen'
-          color='blue'
+          color='gray'
           position='left'
           withArrow
         >
           <ActionIcon
+            color='gray'
             onClick={onFullscreen}
             variant='filled'
             size='lg'
@@ -206,7 +208,10 @@ function MapComponent({ width, height, token, itemListHeight, onFullscreen }: Ma
           </ActionIcon>
         </Tooltip>
       )}
-      <div ref={mapContainer} style={{ width, height, borderRadius: 'var(--mantine-radius-md)' }} />
+      <div
+        ref={mapContainer}
+        style={{ width, height, borderRadius: radius || 'var(--mantine-radius-lg)' }}
+      />
     </div>
   );
 }

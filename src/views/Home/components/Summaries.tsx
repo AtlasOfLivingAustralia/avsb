@@ -45,7 +45,7 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
               mah={48}
               style={{
                 fontFamily: 'var(--mantine-font-family-headings)',
-                color: 'light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-3))',
+                color: 'light-dark(var(--mantine-color-dark-4), var(--mantine-color-gray-3))',
               }}
             >
               {event?.datasetTitle || 'Seed Bank Name Placeholder Value Here'}
@@ -66,7 +66,12 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
                 </ThemeIcon>
               </Skeleton>
               <Skeleton visible={loading} maw={50}>
-                <Text size='sm'>Accessions</Text>
+                <Text
+                  size='sm'
+                  c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-4))'
+                >
+                  Accessions
+                </Text>
               </Skeleton>
             </Group>
           </Grid.Col>
@@ -80,7 +85,12 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
                 </ThemeIcon>
               </Skeleton>
               <Skeleton visible={loading} maw={50}>
-                <Text size='sm'>Trials</Text>
+                <Text
+                  size='sm'
+                  c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-4))'
+                >
+                  Trials
+                </Text>
               </Skeleton>
             </Group>
           </Grid.Col>

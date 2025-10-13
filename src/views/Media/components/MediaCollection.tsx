@@ -36,6 +36,7 @@ export default function MediaCollection({
                 {label}
               </Text>
             }
+            labelPosition='left'
             variant='dashed'
           />
           <Button

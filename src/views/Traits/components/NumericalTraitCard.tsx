@@ -1,5 +1,5 @@
 import { NumericTrait } from '#/api';
-import { ActionIcon, Card, Chip, Group, Skeleton, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Flex, Group, Paper, Skeleton, Text, Tooltip } from '@mantine/core';
 import { IconQuestionCircle } from '@tabler/icons';
 
 interface NumericTraitCardProps {
@@ -10,42 +10,58 @@ function NumericTraitCard({ trait }: NumericTraitCardProps) {
   const visible = !trait;
 
   return (
-    <Card h='100%'>
+    <Paper
+      p='md'
+      h='100%'
+      bg='light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5))'
+    >
       <Skeleton visible={visible} mb='xs'>
-        <Group justify='space-between'>
+        <Flex justify='space-between' gap='sm'>
           <Text size='xs' tt='uppercase' c='dimmed' fw='bold'>
             {trait?.trait_name || 'Trait Name'}
           </Text>
-          <Tooltip label='View definition' position='left' withArrow>
-            <ActionIcon component='a' href={trait?.definition} target='_blank' size='sm'>
+          <Tooltip label={<Text size='xs'>View definition</Text>} position='left' withArrow>
+            <ActionIcon
+              variant='light'
+              component='a'
+              href={trait?.definition}
+              target='_blank'
+              size='sm'
+            >
               <IconQuestionCircle size='1rem' />
             </ActionIcon>
           </Tooltip>
-        </Group>
+        </Flex>
       </Skeleton>
-      <Skeleton visible={visible}>
+      <Skeleton visible={visible} mt='sm'>
         <Group gap='xs'>
           {trait?.mean !== '' && (
-            <Chip checked={false} size='xs'>
-              <b>Mean</b>&nbsp;{trait?.mean}
-              {trait?.unit}
-            </Chip>
+            <Paper px={8} py={4} withBorder>
+              <Text size='xs'>
+                <b>Mean</b>&nbsp;{trait?.mean}
+                {trait?.unit ? ` ${trait.unit}` : ''}
+              </Text>
+            </Paper>
           )}
           {trait?.min !== '' && (
-            <Chip checked={false} size='xs'>
-              <b>Min</b>&nbsp;{trait?.min}
-              {trait?.unit}
-            </Chip>
+            <Paper px={8} py={4} withBorder>
+              <Text size='xs'>
+                <b>Min</b>&nbsp;{trait?.min}
+                {trait?.unit ? ` ${trait.unit}` : ''}
+              </Text>
+            </Paper>
           )}
           {trait?.max !== '' && (
-            <Chip checked={false} size='xs'>
-              <b>Max</b>&nbsp;{trait?.max}
-              {trait?.unit}
-            </Chip>
+            <Paper px={8} py={4} withBorder>
+              <Text size='xs'>
+                <b>Max</b>&nbsp;{trait?.max}
+                {trait?.unit ? ` ${trait.unit}` : ''}
+              </Text>
+            </Paper>
           )}
         </Group>
       </Skeleton>
-    </Card>
+    </Paper>
   );
 }
 

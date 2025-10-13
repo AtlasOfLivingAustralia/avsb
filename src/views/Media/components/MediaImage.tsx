@@ -1,7 +1,18 @@
 import { MediaItem } from '#/api/graphql/types';
-import { Box, Group, Image, Overlay, Skeleton, Text, ThemeIcon, Transition } from '@mantine/core';
+import {
+  Box,
+  Group,
+  Image,
+  Overlay,
+  Skeleton,
+  Text,
+  ThemeIcon,
+  Transition,
+  UnstyledButton,
+} from '@mantine/core';
 import { IconCalendar, IconCheck } from '@tabler/icons';
 import classes from './MediaImage.module.css';
+import { useState } from 'react';
 
 interface MediaImageProps {
   onClick?: () => void;
@@ -12,26 +23,29 @@ interface MediaImageProps {
 }
 
 function MediaImage({ onClick, selected, width, height, item }: MediaImageProps) {
+  const [loaded, setLoaded] = useState<boolean>(false);
+
   return (
-    <Box
+    <UnstyledButton
       onClick={() => {
         if (onClick) onClick();
       }}
-      pos='relative'
       className={classes.root}
       style={{
         opacity: selected ? 1 : 0.65,
         border: `6px solid ${selected ? 'var(--mantine-color-blue-6)' : 'transparent'}`,
       }}
     >
-      <Skeleton pos='absolute' radius='lg' width={width} height={height} />
-      <Image
-        radius='lg'
-        width={width}
-        height={height}
-        src={item.accessURI}
-        alt={item.title || 'Preview image from taxon'}
-      />
+      <Skeleton visible={!loaded} radius='lg' width={width} height={height}>
+        <Image
+          radius='lg'
+          width={width}
+          height={height}
+          src={item.accessURI}
+          alt={item.title || 'Preview image from taxon'}
+          onLoad={() => setLoaded(true)}
+        />
+      </Skeleton>
       {item.createDate && (
         <Box pos='absolute' bottom={0} left={0} right={0} h={64}>
           <Overlay
@@ -41,7 +55,7 @@ function MediaImage({ onClick, selected, width, height, item }: MediaImageProps)
           >
             <Group gap='xs' mt='lg'>
               <IconCalendar color='white' size='1rem' />
-              <Text mr='sm' size='xs' fw='bold' color='white' opacity={0.85}>
+              <Text mr='sm' size='xs' fw='bold' c='white' opacity={0.85}>
                 {new Date(item.createDate).toLocaleDateString()}
               </Text>
             </Group>
@@ -57,7 +71,7 @@ function MediaImage({ onClick, selected, width, height, item }: MediaImageProps)
           </Box>
         )}
       </Transition>
-    </Box>
+    </UnstyledButton>
   );
 }
 
