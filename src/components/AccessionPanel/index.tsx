@@ -44,7 +44,7 @@ import {
   useLoaderData,
   useNavigate,
   useRouteLoaderData,
-} from 'react-router-dom';
+} from 'react-router';
 // Project imports
 import {
   AusTraitsSummary,

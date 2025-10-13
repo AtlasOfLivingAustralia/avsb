@@ -1,12 +1,6 @@
 import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import {
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useParams,
-  useRouteLoaderData,
-} from 'react-router-dom';
+import { Outlet, useLoaderData, useLocation, useParams, useRouteLoaderData } from 'react-router';
 
 // Project components / helpers
 import {

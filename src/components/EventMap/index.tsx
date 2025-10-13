@@ -1,7 +1,7 @@
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconMaximize } from '@tabler/icons';
 import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 // Mapbox
 import mapboxgl from 'mapbox-gl';

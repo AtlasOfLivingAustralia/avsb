@@ -1,6 +1,6 @@
 import { Alert, Button, Center, Divider, Grid, GridProps, Group, Stack, Text } from '@mantine/core';
 import { IconAlertCircle, IconAlertTriangle, IconExternalLink } from '@tabler/icons';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 // Project / local components
 import { MediaItem } from '#/api/graphql/types';

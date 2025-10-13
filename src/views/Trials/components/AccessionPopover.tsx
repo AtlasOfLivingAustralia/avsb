@@ -11,7 +11,7 @@ import {
   Timeline,
 } from '@mantine/core';
 import { IconExternalLink, IconHandStop, IconMapPin, IconPackage } from '@tabler/icons';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { allFields } from '#/helpers';
 

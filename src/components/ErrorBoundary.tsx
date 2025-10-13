@@ -2,7 +2,7 @@ import waterTap from '#/assets/ecology-water-tap.png';
 import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
 import { getErrorMessage } from '#/helpers';
 import { Anchor, Center, Code, Group, Image, Stack, Text, Title } from '@mantine/core';
-import { Link, useRouteError } from 'react-router-dom';
+import { Link, useRouteError } from 'react-router';
 
 import { Blob } from '.';
 

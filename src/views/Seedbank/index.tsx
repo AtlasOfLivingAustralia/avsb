@@ -30,7 +30,7 @@ import {
   IconMap,
 } from '@tabler/icons';
 import { lazy, Suspense, useState } from 'react';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router';
 
 // Project imports
 import { DataResource, EventSearchResult } from '#/api';
@@ -221,11 +221,9 @@ export function Component() {
               mt='sm'
               styles={{ title: { marginBottom: 4 } }}
             >
-              <Text>
-                Accessions were collected from the locations shown above. Click a dot to be shown a
-                list of accessions at that location, then click an accession entry to see full
-                accession details.
-              </Text>
+              Accessions were collected from the locations shown above. Click a dot to be shown a
+              list of accessions at that location, then click an accession entry to see full
+              accession details.
             </Alert>
           </Grid.Col>
           <Grid.Col span={{ xl: 4, lg: 4, md: 12, sm: 12, xs: 12 }}>

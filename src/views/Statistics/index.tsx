@@ -30,7 +30,7 @@ import {
   IconTestPipe,
 } from '@tabler/icons';
 import { Fragment } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router';
 
 import { Blob } from '#/components';
 import { Wave } from '#/components/Wave';
@@ -208,7 +208,7 @@ export function Component() {
                   {epbcDatasets.map(([key, count], index) => (
                     <Fragment key={key}>
                       <Flex justify='space-between' px='sm'>
-                        <Text>{datasets[key]?.datasetTitle || 'Unknown Dataset'}</Text>
+                        <Text size='sm'>{datasets[key]?.datasetTitle || 'Unknown Dataset'}</Text>
                         <Badge variant='light' ml='sm' miw={50}>
                           {count}
                         </Badge>

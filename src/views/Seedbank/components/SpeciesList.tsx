@@ -14,7 +14,7 @@ import {
 import { FixedSizeList } from 'react-window';
 import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons';
 import { useDebouncedValue } from '@mantine/hooks';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { saveAs } from 'file-saver';
 
 // Project helpers

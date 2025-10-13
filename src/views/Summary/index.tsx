@@ -17,7 +17,7 @@ import {
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { IconAlertTriangle, IconExternalLink, IconMap } from '@tabler/icons';
 import { Fragment, lazy, Suspense } from 'react';
-import { useLoaderData, useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate, useRouteLoaderData } from 'react-router';
 // Project imports
 import { SDSInstance } from '#/api';
 import { Taxon } from '#/api/sources/taxon';

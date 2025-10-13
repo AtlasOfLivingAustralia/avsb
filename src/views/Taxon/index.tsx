@@ -6,7 +6,6 @@ import {
   Divider,
   Group,
   Image,
-  ScrollArea,
   Skeleton,
   Tabs,
   Text,
@@ -25,7 +24,7 @@ import {
   IconPhoto,
   IconTestPipe,
 } from '@tabler/icons';
-import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router';
 import { Taxon } from '#/api/sources/taxon';
 import PageSummary from './components/PageSummary';
 import { useState } from 'react';

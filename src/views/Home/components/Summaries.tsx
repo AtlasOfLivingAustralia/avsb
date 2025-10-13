@@ -13,7 +13,7 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import classes from './Summaries.module.css';
 
 interface SummaryCardProps {

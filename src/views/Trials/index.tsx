@@ -1,6 +1,6 @@
 import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { useLoaderData, useLocation, useParams, useRouteLoaderData } from 'react-router-dom';
+import { useLoaderData, useLocation, useParams, useRouteLoaderData } from 'react-router';
 import { gqlQueries, performGQLQuery } from '#/api';
 import { Event, EventDocuments, EventSearchResult, Predicate } from '#/api/graphql/types';
 import queries from '#/api/queries';

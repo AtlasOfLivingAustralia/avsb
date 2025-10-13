@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { IconMail, IconMapPin, IconPhone } from '@tabler/icons';
 import { CSSProperties } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 
 import { useGQLQuery } from '#/api';
 import { Contact as ContactType } from '#/api/graphql/types';

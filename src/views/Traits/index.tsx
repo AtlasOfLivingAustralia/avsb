@@ -2,7 +2,7 @@ import { Alert, Center, Grid, Skeleton, Stack, Text } from '@mantine/core';
 import { IconAsterisk, IconSeedingOff } from '@tabler/icons';
 import range from 'lodash/range';
 import { Suspense } from 'react';
-import { Await, useRouteLoaderData } from 'react-router-dom';
+import { Await, useRouteLoaderData } from 'react-router';
 // Project components / helpers
 import { AusTraitsSummary } from '#/api';
 

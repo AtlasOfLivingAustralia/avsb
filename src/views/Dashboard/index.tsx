@@ -6,7 +6,7 @@ import {
   startNavigationProgress,
 } from '@mantine/nprogress';
 import { useEffect } from 'react';
-import { Outlet, useNavigation } from 'react-router-dom';
+import { Outlet, useNavigation } from 'react-router';
 
 // Project components & helpers
 import Header from './components/Header';

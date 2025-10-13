@@ -19,7 +19,7 @@ import {
   IconSun,
 } from '@tabler/icons';
 import { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router';
 
 // Project components & helpers
 import { TaxonSearchInput } from '#/components';

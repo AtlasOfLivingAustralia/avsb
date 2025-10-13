@@ -20,7 +20,7 @@ import {
 } from '@tabler/icons';
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 // Project components / helpers
 import { AccessionDetails, ThField } from '#/components';
 import { getIsDefined } from '#/helpers';

@@ -18,7 +18,7 @@ import {
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconChartLine, IconExternalLink, IconQuestionCircle } from '@tabler/icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 // AVSB logos
 import logoGrey from '#/assets/avsb-logo-grey.png';
 import logoWhite from '#/assets/avsb-logo-white.png';
@@ -37,7 +37,7 @@ function Home() {
 
   return (
     <>
-      <Container size='lg' pt={mdOrLarger ? 'xl' : 0}>
+      <Container size='lg' pt={mdOrLarger ? 'xl' : 0} mt={-30}>
         <Group justify='space-between' pt={mdOrLarger ? 'xl' : 0}>
           <Stack p='xl' w={mdOrLarger ? 470 : '100%'}>
             <Title

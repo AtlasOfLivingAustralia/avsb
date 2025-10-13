@@ -9,7 +9,7 @@ import {
 } from '@mantine/core';
 import { IconExternalLink } from '@tabler/icons';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 // AVH logo
 import avhLogo from '#/assets/avh-logo-white.png';

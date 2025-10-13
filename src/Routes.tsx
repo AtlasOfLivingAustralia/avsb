@@ -1,5 +1,5 @@
 import { AccessionPanel, ErrorBoundary } from '#/components';
-import { createBrowserRouter, defer, redirect, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, redirect, RouterProvider } from 'react-router';
 import {
   austraitsAPI,
   collectoryAPI,
@@ -75,11 +75,11 @@ const routes = createBrowserRouter([
         loader: async ({ params }) => {
           const taxon = await taxonAPI.info(params.guid || '');
 
-          return defer({
+          return {
             taxon,
             sds: await sdsAPI.get(params.guid),
             traits: austraitsAPI.summary(taxon.classification.scientificName, params.guid || ''),
-          });
+          };
         },
         children: [
           {

@@ -3,7 +3,7 @@ import { Drawer, Group, GroupProps, SegmentedControl, Text, ThemeIcon } from '@m
 import { useDisclosure } from '@mantine/hooks';
 import { IconFilter } from '@tabler/icons';
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 
 // Project components / helpers
 import FilterBar from './components/Bar';

@@ -14,7 +14,7 @@ import {
 
 import { Event, EventDocuments, SeedBankAccession } from '#/api/graphql/types';
 import { IconX } from '@tabler/icons';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import classes from './ItemList.module.css';
 

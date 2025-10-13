@@ -15,7 +15,7 @@ import {
 import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 // Project components / helpers
 import { ThField, TrialDetails } from '#/components';
 import { getIsDefined } from '#/helpers';
