@@ -1,24 +1,7 @@
-import { Alert, Card, createTheme, Paper } from '@mantine/core';
+import { createTheme } from '@mantine/core';
 
 const base = createTheme({
-  defaultRadius: 'md',
-  components: {
-    Card: Card.extend({
-      defaultProps: {
-        radius: 'lg',
-      },
-    }),
-    Paper: Paper.extend({
-      defaultProps: {
-        radius: 'lg',
-      },
-    }),
-    Alert: Alert.extend({
-      defaultProps: {
-        radius: 'lg',
-      },
-    }),
-  },
+  defaultRadius: 'lg',
   fontFamily: 'Inter, sans-serif',
   headings: {
     fontFamily: 'Lexend Deca, sans-serif',

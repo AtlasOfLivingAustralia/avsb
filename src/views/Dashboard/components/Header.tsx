@@ -8,6 +8,7 @@ import {
   Paper,
   Tooltip,
   Transition,
+  useComputedColorScheme,
   useMantineColorScheme,
 } from '@mantine/core';
 import {
@@ -34,12 +35,15 @@ const slideTransition = {
 
 function Header() {
   const { state, pathname } = useLocation();
-  const { toggleColorScheme } = useMantineColorScheme();
   const navigate = useNavigate();
-  const [colorScheme, setColorScheme] = useState<'light' | 'dark'>(
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Color scheme toggle
+  const { toggleColorScheme } = useMantineColorScheme();
+  const colorScheme = useComputedColorScheme();
+  const [, setColorScheme] = useState<'light' | 'dark'>(
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
   );
-  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -77,7 +81,7 @@ function Header() {
               leftSection={<IconChartLine size='0.8rem' />}
               size='xs'
               variant='subtle'
-              color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-1))'
+              color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-2))'
               aria-label='Portal Statistics'
             >
               Portal Statistics
@@ -91,7 +95,7 @@ function Header() {
                   leftSection={<IconHome size='0.8rem' />}
                   size='xs'
                   variant='subtle'
-                  color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-1))'
+                  color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-2))'
                   aria-label='Home'
                 >
                   Home
@@ -111,7 +115,7 @@ function Header() {
                   leftSection={<IconArrowBackUp size='0.8rem' />}
                   size='xs'
                   variant='subtle'
-                  color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-1))'
+                  color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-2))'
                   aria-label='Go back'
                 >
                   Seed Bank
@@ -139,13 +143,13 @@ function Header() {
               withArrow
               label='Help / FAQ'
               position='right'
-              aria-label='Help / FAP'
+              aria-label='Help / FAQ'
+              zIndex={600}
             >
               <ActionIcon
                 color='gray'
                 component={Link}
                 to='/help'
-                variant='light'
                 radius='xl'
                 size={38}
                 aria-label='Help and frequently asked questions'
@@ -159,10 +163,10 @@ function Header() {
               withArrow
               label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
               position='right'
+              zIndex={600}
             >
               <ActionIcon
                 color='gray'
-                variant='light'
                 radius='xl'
                 size={38}
                 onClick={() => toggleColorScheme()}

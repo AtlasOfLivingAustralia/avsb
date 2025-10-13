@@ -138,6 +138,7 @@ export function Component() {
           opacity: 0.55,
           blur: 3,
         }}
+        zIndex={600}
       >
         <ActionIcon
           style={{ zIndex: 100 }}
@@ -159,6 +160,8 @@ export function Component() {
         style={{
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
+        pt={60}
+        mt={-90}
       >
         <Container size='lg' pt='xl'>
           <Center pt='lg' mb='xl' pb='xl'>

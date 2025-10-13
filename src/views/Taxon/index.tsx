@@ -4,6 +4,7 @@ import {
   Box,
   Container,
   Divider,
+  FloatingIndicator,
   Group,
   Image,
   Skeleton,
@@ -28,6 +29,8 @@ import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router';
 import { Taxon } from '#/api/sources/taxon';
 import PageSummary from './components/PageSummary';
 import { useState } from 'react';
+
+import classes from './index.module.css';
 
 const MAX_WIDTH = 1450;
 const tabs = [
@@ -65,9 +68,17 @@ export function Component() {
   const currentPage = pathname.split('/')[3];
   const navigate = useNavigate();
 
+  // Tabs state
+  const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
+  const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
+  const setControlRef = (val: string) => (node: HTMLButtonElement) => {
+    controlsRefs[val] = node;
+    setControlsRefs(controlsRefs);
+  };
+
   return (
     <>
-      <Container size={MAX_WIDTH} py='xl'>
+      <Container size={MAX_WIDTH} py='xl' mt={-30}>
         <Group justify='space-between' align='start'>
           <Group align='start'>
             <Box mr='md'>
@@ -123,21 +134,16 @@ export function Component() {
           </Group>
         </Group>
       </Container>
-      <Tabs variant='default' mt='md' radius='md' value={currentPage}>
-        <Group gap={0}>
-          <Box
-            style={{ display: 'flex', alignItems: 'flex-end' }}
-            w={`calc(((100vw - ${MAX_WIDTH}px) / 2) + var(--mantine-spacing-md))`}
-            miw='var(--mantine-spacing-md)'
-            h={50}
-          >
-            <Divider size={2} w='100%' />
-          </Box>
-          <Tabs.List style={{ flexGrow: 1 }}>
-            {tabs.map(({ icon: Icon, tabKey }) => (
+      <Tabs variant='none' value={currentPage}>
+        <Container size={MAX_WIDTH} pb='sm'>
+          <Tabs.List ref={setRootRef} className={classes.list}>
+            {tabs.map(({ tabKey, icon: Icon }) => (
               <Tabs.Tab
                 key={tabKey}
                 value={tabKey.toLowerCase()}
+                ref={setControlRef(tabKey.toLowerCase())}
+                className={classes.tab}
+                leftSection={<Icon size='0.8rem' />}
                 onClick={() => {
                   if (tabKey !== 'Sequences') {
                     navigate(tabKey.toLowerCase(), { state });
@@ -150,38 +156,17 @@ export function Component() {
                   }
                 }}
               >
-                <Group gap='xs'>
-                  <ThemeIcon
-                    variant='light'
-                    color={currentPage === tabKey.toLowerCase() ? 'blue' : 'gray'}
-                    radius='lg'
-                  >
-                    <Icon size='0.9rem' />
-                  </ThemeIcon>
-                  {tabKey}
-                </Group>
+                {tabKey}
               </Tabs.Tab>
             ))}
-          </Tabs.List>
-          <Box
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-end',
-              alignItems: 'flex-end',
-              flexGrow: 1,
-            }}
-            h={50}
-          >
-            <PageSummary
-              currentPage={currentPage}
-              pr={`calc((100vw - ${MAX_WIDTH}px) / 2)`}
-              mb={10}
+            <FloatingIndicator
+              target={controlsRefs[currentPage]}
+              parent={rootRef}
+              className={classes.indicator}
             />
-            <Divider size={2} w='100%' />
-          </Box>
-        </Group>
-        <Container size={MAX_WIDTH} py='xl'>
+          </Tabs.List>
+        </Container>
+        <Container size={MAX_WIDTH} pt='lg' pb='xl'>
           <Outlet />
         </Container>
       </Tabs>

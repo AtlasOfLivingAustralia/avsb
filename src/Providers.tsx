@@ -8,7 +8,7 @@ import { base } from './theme';
 function Providers({ children }: PropsWithChildren) {
   return (
     <APIProvider>
-      <MantineProvider theme={base} defaultColorScheme='auto'>
+      <MantineProvider theme={base} defaultColorScheme='dark'>
         {children}
       </MantineProvider>
     </APIProvider>

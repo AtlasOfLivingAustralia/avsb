@@ -45,7 +45,7 @@ export default function MediaCollection({
             href={`${import.meta.env.VITE_ALA_BIE}/species/${guid}#gallery`}
             leftSection={<IconExternalLink size='0.8rem' />}
             size='xs'
-            variant='light'
+            variant='subtle'
           >
             View more on ALA BIE
           </Button>

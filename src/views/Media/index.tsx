@@ -221,17 +221,17 @@ export function Component() {
             <Image
               pos='absolute'
               src={selectedMedia?.accessURI}
-              h={350}
+              height={350}
               alt={`Background ${selectedMedia?.title || 'image for currently selected image'}`}
             />
-            <Overlay blur={8} opacity={0.1} center>
-              <Image
-                src={selectedMedia?.accessURI}
-                h={350}
-                fit='contain'
+            <Overlay blur={8} backgroundOpacity={0.3} color='#ffffff' center zIndex={100}>
+              {/** biome-ignore lint/a11y/noNoninteractiveElementInteractions: Needed for the onLoad handler */}
+              <img
+                style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+                src={selectedMedia?.accessURI || ''}
                 onLoad={() => setSelectedLoaded(true)}
                 alt={selectedMedia?.title || 'Currently selected image'}
-              />
+              ></img>
             </Overlay>
             {!selectedLoaded && (
               <Overlay opacity={0.4} center>
