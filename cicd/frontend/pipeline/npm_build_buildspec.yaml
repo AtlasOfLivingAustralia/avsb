@@ -11,23 +11,21 @@ phases:
     runtime-versions:
       nodejs: $NODE_VERSION
     commands:
-      - echo installing yarn...
-      - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-      - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-      - apt-get update && apt-get install -y yarn
-      - yarn --version
-      - echo running yarn...
-      - yarn
+      - echo installing pnpm...
+      - curl -fsSL https://get.pnpm.io/install.sh | sh -
+      - pnpm --version
+      - echo installing dependencies with pnpm...
+      - pnpm install
   pre_build:
     commands:
       - echo running tests...
-      - yarn test
+      - pnpm test
   build:
     commands:
       - echo building...
-      - yarn build:$ENVIRONMENT
+      - pnpm build:$ENVIRONMENT
 
 artifacts:
   base-directory: ./dist
   files:
-    - '**/*'
+    - "**/*"
