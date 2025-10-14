@@ -11,8 +11,10 @@ phases:
     runtime-versions:
       nodejs: $NODE_VERSION
     commands:
+      - echo updating corepack...
+      - npm install --global corepack@latest
       - echo installing pnpm...
-      - curl -fsSL https://get.pnpm.io/install.sh | sh -
+      - corepack enable pnpm
       - pnpm --version
       - echo installing dependencies with pnpm...
       - pnpm install
