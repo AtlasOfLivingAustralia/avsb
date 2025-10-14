@@ -15,7 +15,7 @@ import {
   Title,
   Tooltip,
 } from '@mantine/core';
-import { useClipboard } from '@mantine/hooks';
+import { useClipboard, useMediaQuery } from '@mantine/hooks';
 import {
   IconBrandAsana,
   IconCopy,
@@ -32,6 +32,7 @@ import PageSummary from './components/PageSummary';
 import { useState } from 'react';
 
 import classes from './index.module.css';
+import { breakpoints } from '#/theme';
 
 const MAX_WIDTH = 1450;
 const tabs = [
@@ -68,6 +69,8 @@ export function Component() {
   const clipboard = useClipboard({ timeout: 500 });
   const currentPage = pathname.split('/')[3];
   const navigate = useNavigate();
+
+  const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
 
   // Tabs state
   const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
@@ -137,7 +140,7 @@ export function Component() {
       </Container>
       <Tabs variant='none' value={currentPage}>
         <Container size={MAX_WIDTH} pb='sm'>
-          <Flex justify='space-between'>
+          <Flex justify={'space-between'}>
             <Tabs.List ref={setRootRef} className={classes.list}>
               {tabs.map(({ tabKey, icon: Icon }) => (
                 <Tabs.Tab
@@ -167,7 +170,7 @@ export function Component() {
                 className={classes.indicator}
               />
             </Tabs.List>
-            <PageSummary currentPage={currentPage} />
+            {mdOrLarger && <PageSummary currentPage={currentPage} />}
           </Flex>
         </Container>
         <Container size={MAX_WIDTH} pt='lg' pb='xl'>

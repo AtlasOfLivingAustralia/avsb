@@ -1,4 +1,4 @@
-import { BoxProps, Group, HoverCard, Stack, Text, UnstyledButton } from '@mantine/core';
+import { BoxProps, Flex, HoverCard, Stack, Text, UnstyledButton } from '@mantine/core';
 import { IconEyeQuestion } from '@tabler/icons-react';
 
 const summaries: { [key: string]: string[] } = {
@@ -32,11 +32,8 @@ function PageSummary({ currentPage, ...rest }: PageSummaryProps) {
   return (
     <HoverCard width={350} position='left' withArrow offset={12}>
       <HoverCard.Target>
-        <UnstyledButton
-          style={{ display: 'flex', justifyContent: 'flex-end', cursor: 'help' }}
-          {...rest}
-        >
-          <Group gap='xs' pr='md'>
+        <UnstyledButton style={{ display: 'flex', cursor: 'help' }} {...rest}>
+          <Flex gap='xs' align='center'>
             <IconEyeQuestion color='light-dark(var(--mantine-color-blue-4), var(--mantine-color-blue-2))' />
             <Text
               style={{
@@ -52,7 +49,7 @@ function PageSummary({ currentPage, ...rest }: PageSummaryProps) {
             >
               {currentPage} Page
             </Text>
-          </Group>
+          </Flex>
         </UnstyledButton>
       </HoverCard.Target>
       <HoverCard.Dropdown>
