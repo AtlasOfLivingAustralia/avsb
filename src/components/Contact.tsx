@@ -1,22 +1,22 @@
-import { CSSProperties } from 'react';
 import {
   Anchor,
   Avatar,
   Button,
   Card,
+  CardProps,
   Group,
-  PaperProps,
   Skeleton,
   Stack,
   Text,
 } from '@mantine/core';
-import { IconMail, IconPhone, IconMapPin } from '@tabler/icons';
-import { Link, useLocation } from 'react-router-dom';
+import { IconMail, IconMapPin, IconPhone } from '@tabler/icons-react';
+import { CSSProperties } from 'react';
+import { Link, useLocation } from 'react-router';
 
 import { useGQLQuery } from '#/api';
 import { Contact as ContactType } from '#/api/graphql/types';
-import { getInitials } from '#/helpers';
 import queries from '#/api/queries';
+import { getInitials } from '#/helpers';
 
 import IconText from './IconText';
 
@@ -45,7 +45,7 @@ const contactItemStyle: CSSProperties = {
   minHeight: 24,
 };
 
-interface ContactProps extends PaperProps {
+interface ContactProps extends CardProps {
   dataResource: string;
 }
 
@@ -59,7 +59,7 @@ function Contact({ dataResource, ...rest }: ContactProps) {
 
   return (
     <Card {...rest} shadow='lg' withBorder>
-      <Group position='apart'>
+      <Group justify='space-between'>
         <Group>
           <Skeleton height={50} circle visible={!contact}>
             <Avatar size={50} radius='xl'>
@@ -70,17 +70,17 @@ function Contact({ dataResource, ...rest }: ContactProps) {
                 : getInitials(contact?.organizationName?.[0] || '', 3)}
             </Avatar>
           </Skeleton>
-          <Stack spacing={6}>
+          <Stack gap={6}>
             <Skeleton visible={!contact}>
-              <Group spacing='xs'>
-                <Text weight='bold' size='md'>
+              <Group gap='xs'>
+                <Text fw='bold' size='md'>
                   {(contact?.individualName
                     ? `${contact?.individualName?.[0]?.givenName?.[0]} ${contact.individualName[0].surName?.[0]}`
                     : contact?.organizationName?.[0]) || 'Name Here'}
                 </Text>
               </Group>
             </Skeleton>
-            <Stack spacing={8}>
+            <Stack gap={8}>
               {contact?.electronicMailAddress && (
                 <Anchor
                   style={{ display: 'flex', alignItems: 'center' }}

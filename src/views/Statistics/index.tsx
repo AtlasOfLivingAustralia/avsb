@@ -16,7 +16,6 @@ import {
   Stack,
   Text,
   Title,
-  useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import {
@@ -29,12 +28,13 @@ import {
   IconPlant,
   IconSeeding,
   IconTestPipe,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 import { Fragment } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router';
 
 import { Blob } from '#/components';
 import { Wave } from '#/components/Wave';
+import { breakpoints } from '#/theme/constants';
 
 import ecologyEarth from '../../assets/ecology-earth.png';
 import stats from '../../assets/stats.json';
@@ -76,10 +76,8 @@ interface Dataset {
   datasetKey: string;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function Component() {
-  const theme = useMantineTheme();
-  const mdOrLarger = useMediaQuery(`(min-width: ${theme.breakpoints.md})`, true);
+  const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
 
   const datasets = useLoaderData() as { [key: string]: Dataset };
 
@@ -90,7 +88,7 @@ export function Component() {
 
   return (
     <>
-      <Container size='lg' p='lg'>
+      <Container size='lg' p='lg' mt={-30}>
         <Space h={45} />
         <Center>
           <Text c='dimmed' size='lg' fw='bold'>
@@ -107,9 +105,8 @@ export function Component() {
       <Box
         mt={mdOrLarger ? -125 : -25}
         mb={-5}
-        sx={{
-          backgroundColor:
-            theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2],
+        style={{
+          backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
       >
         <Container size='lg' p='lg'>
@@ -119,7 +116,7 @@ export function Component() {
             </Grid.Col>
             {recordStats.map((stat, index) => (
               <>
-                <Grid.Col key={stat.id} xl={3} lg={3} md={3} sm={12} xs={12}>
+                <Grid.Col key={stat.id} span={{ xl: 3, lg: 3, md: 3, sm: 12, xs: 12 }}>
                   <StatCard {...stat} />
                 </Grid.Col>
                 {index !== recordStats.length - 1 && (
@@ -139,7 +136,7 @@ export function Component() {
             <Grid.Col span={12}>
               <Title>Datasets</Title>
             </Grid.Col>
-            <Grid.Col xl={3} lg={3} md={3} sm={12} xs={12}>
+            <Grid.Col span={{ xl: 3, lg: 3, md: 3, sm: 12, xs: 12 }}>
               <StatCard
                 id={epbcDatasets.length.toString()}
                 name='Organisations'
@@ -154,7 +151,7 @@ export function Component() {
             </Grid.Col>
             {speciesStats.map((stat, index) => (
               <>
-                <Grid.Col key={stat.id} xl={3} lg={3} md={4} sm={12} xs={12}>
+                <Grid.Col key={stat.id} span={{ xl: 3, lg: 3, md: 4, sm: 12, xs: 12 }}>
                   <StatCard {...stat} />
                 </Grid.Col>
                 {index !== speciesStats.length - 1 && (
@@ -178,9 +175,9 @@ export function Component() {
         waveType='bodyBottom'
       />
       <Container size='lg' p='lg' mt={mdOrLarger ? -120 : -30} mb='xl'>
-        <Group position='apart'>
-          <Stack w={mdOrLarger ? 500 : '100%'} mb='xl' spacing='xl'>
-            <Title weight='bold' size={42}>
+        <Group justify='space-between'>
+          <Stack w={mdOrLarger ? 500 : '100%'} mb='xl' gap='xl'>
+            <Title fw='bold' size={42}>
               <Text
                 component='span'
                 inherit
@@ -207,12 +204,12 @@ export function Component() {
             </Anchor>
             <Paper withBorder>
               <ScrollArea h={200}>
-                <Stack spacing='xs' py='xs'>
+                <Stack gap='xs' py='xs'>
                   {epbcDatasets.map(([key, count], index) => (
                     <Fragment key={key}>
-                      <Flex justify='space-between' align='center' key={key} px='sm'>
-                        <Text>{datasets[key]?.datasetTitle || 'Unknown Dataset'}</Text>
-                        <Badge ml='sm' miw={50}>
+                      <Flex justify='space-between' px='sm'>
+                        <Text size='sm'>{datasets[key]?.datasetTitle || 'Unknown Dataset'}</Text>
+                        <Badge variant='light' ml='sm' miw={50}>
                           {count}
                         </Badge>
                       </Flex>
@@ -226,8 +223,14 @@ export function Component() {
           {mdOrLarger && (
             <div style={{ width: 450, height: 450 }}>
               <Blob style={{ position: 'absolute' }} width={450} height={450} />
-              <Center h='100%' style={{ zIndex: 10 }}>
-                <Image width={200} height={330} src={ecologyEarth} alt='Watering can with plant' />
+              <Center h='100%'>
+                <Image
+                  style={{ zIndex: 10 }}
+                  w={200}
+                  h={330}
+                  src={ecologyEarth}
+                  alt='Watering can with plant'
+                />
               </Center>
             </div>
           )}

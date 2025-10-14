@@ -36,11 +36,15 @@ async function summary(search: string, guid: string): Promise<AusTraitsSummary> 
     ).json();
 
     // Ensure we've successfully recieved the data back
-    if (data.error) return { numeric_traits: [], categorical_traits: [] };
+    if (
+      data.error ||
+      (Array.isArray(data) && data[0] === 'No summary data can be found for this taxon.')
+    )
+      return { numeric_traits: [], categorical_traits: [] };
 
     // Return the data
     return data;
-  } catch (error) {
+  } catch (_error) {
     return {
       numeric_traits: [],
       categorical_traits: [],

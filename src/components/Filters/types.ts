@@ -1,5 +1,5 @@
-import { SelectItem } from '@mantine/core';
-import { TablerIcon } from '@tabler/icons';
+import { ComboboxItem } from '@mantine/core';
+import { TablerIcon } from '@tabler/icons-react';
 import { Predicate } from '#/api/graphql/types';
 
 export type FiltersSort = 'alphabetical' | 'groups';
@@ -20,8 +20,8 @@ export interface Filter {
   type: FilterType;
   placeholder?: string;
   group?: string;
-  items?: (string | SelectItem)[];
-  fetchItems?: (query: string) => Promise<SelectItem[]>;
+  items?: (string | ComboboxItem)[];
+  fetchItems?: (query: string) => Promise<ComboboxItem[]>;
   icon?: TablerIcon;
 }
 

@@ -1,4 +1,3 @@
-import { Fragment, useEffect, useState } from 'react';
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import {
   Box,
@@ -12,46 +11,16 @@ import {
   Table,
   Text,
   Tooltip,
-  createStyles,
-  rem,
-  useMantineTheme,
 } from '@mantine/core';
-
-import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons';
-
-import { useLocation } from 'react-router-dom';
+import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler/icons-react';
 import orderBy from 'lodash/orderBy';
-
+import { Fragment, useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 // Project components / helpers
-import { TrialDetails, ThField } from '#/components';
+import { ThField, TrialDetails } from '#/components';
 import { getIsDefined } from '#/helpers';
-
 import AccessionPopover from './AccessionPopover';
-
-const useStyles = createStyles((theme) => ({
-  header: {
-    position: 'sticky',
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-    transition: 'box-shadow 150ms ease',
-    zIndex: 100,
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
-      }`,
-    },
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.md,
-  },
-}));
+import classes from './TrialsTable.module.css';
 
 interface TrialsTableProps {
   events: Event[];
@@ -60,9 +29,7 @@ interface TrialsTableProps {
 
 function TrialsTable({ events, height }: TrialsTableProps) {
   // const api = useAPI();
-  const theme = useMantineTheme();
   const location = useLocation();
-  const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -92,19 +59,18 @@ function TrialsTable({ events, height }: TrialsTableProps) {
     setSortedData(orderBy(mergedEvents || [], [field], [reversed ? 'desc' : 'asc']));
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setSorting(sortBy || '', true), [events]);
 
   return (
     <Card shadow='lg' p={0} withBorder>
-      <ScrollArea
-        type='auto'
-        h={height || 'calc(100vh - 425px)'}
-        onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+      <Table.ScrollContainer
+        minWidth={500}
+        h='calc(100vh - 425px)'
+        scrollAreaProps={{ onScrollPositionChange: ({ y }) => setScrolled(y !== 0) }}
       >
-        <Table highlightOnHover>
-          <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-            <tr>
+        <Table stickyHeader highlightOnHover>
+          <Table.Thead className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
+            <Table.Tr>
               <ThField
                 sorted={sortBy === 'extensions.seedbank.accessionNumber'}
                 reversed={reverseSortDirection}
@@ -159,11 +125,10 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 onSort={() => setSorting('extensions.seedbank.testLengthInDays')}
                 fieldKey='testLengthInDays'
               />
-              <th>
-                <Button.Group style={{ justifyContent: 'flex-end' }}>
+              <Table.Th>
+                <Button.Group style={{ justifyContent: 'flex-end' }} p='sm'>
                   <Button
                     variant='light'
-                    p={8}
                     size='xs'
                     onClick={() => setSelected(events.map(({ eventID }) => eventID || ''))}
                   >
@@ -175,18 +140,18 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     Collapse
                   </Button>
                 </Button.Group>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+              </Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
             {(!events || events?.length === 0) && (
-              <tr>
-                <td colSpan={100}>
+              <Table.Tr>
+                <Table.Td colSpan={100}>
                   <Center>
-                    <Text>No trial data found</Text>
+                    <Text size='sm'>No trial data found</Text>
                   </Center>
-                </td>
-              </tr>
+                </Table.Td>
+              </Table.Tr>
             )}
             {sortedData.map((event) => {
               const trial = event.extensions?.seedbank as SeedBankTrial;
@@ -198,7 +163,7 @@ function TrialsTable({ events, height }: TrialsTableProps) {
 
               return (
                 <Fragment key={event.eventID}>
-                  <tr
+                  <Table.Tr
                     style={{ cursor: 'pointer' }}
                     onClick={(e) => {
                       const className = (e.target as HTMLElement)?.className;
@@ -211,39 +176,47 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                       }
                     }}
                   >
-                    <td style={{ paddingLeft: 25 }}>{trial?.accessionNumber || event.eventID}</td>
-                    <td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</td>
-                    <td>
+                    <Table.Td style={{ paddingLeft: 14 }}>
+                      {trial?.accessionNumber || event.eventID}
+                    </Table.Td>
+                    <Table.Td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Table.Td>
+                    <Table.Td>
                       <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
                         <Box maw={250}>
-                          <Text lineClamp={2}>{event?.datasetTitle}</Text>
+                          <Text size='sm' lineClamp={2}>
+                            {event?.datasetTitle}
+                          </Text>
                         </Box>
                       </Tooltip.Floating>
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(trial?.adjustedGerminationPercentage) &&
                         `${trial?.adjustedGerminationPercentage?.toFixed(2)}%`}
-                    </td>
-                    <td>{getIsDefined(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}</td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
+                      {getIsDefined(treatment?.mediaSubstrate) && treatment?.mediaSubstrate}
+                    </Table.Td>
+                    <Table.Td>
                       <Box maw={250}>
-                        <Text lineClamp={2}>{treatment?.pretreatment}</Text>
+                        <Text size='sm' lineClamp={2}>
+                          {treatment?.pretreatment}
+                        </Text>
                       </Box>
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(trial?.viabilityPercentage) &&
                         `${trial?.viabilityPercentage?.toFixed(2)}%`}
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {trial?.testDateStarted
                         ? new Date(trial?.testDateStarted).toLocaleDateString()
                         : ''}
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(trial?.testLengthInDays) && `${trial?.testLengthInDays} days`}
-                    </td>
-                    <td align='right' style={{ paddingLeft: 0 }}>
-                      <Group spacing='xs' position='right' miw={145}>
+                    </Table.Td>
+                    <Table.Td align='right' style={{ paddingLeft: 0 }}>
+                      <Group gap='xs' justify='right' miw={145}>
                         {location.pathname.endsWith('trials') && (
                           <AccessionPopover parentEvent={event.parentEvent} />
                         )}
@@ -256,44 +229,37 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                           size={16}
                         />
                       </Group>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
+                    </Table.Td>
+                  </Table.Tr>
+                  <Table.Tr style={{ border: 'none' }}>
+                    <Table.Td
                       colSpan={100}
                       style={{
                         padding: 0,
                         border: 'none',
-                        backgroundColor:
-                          theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
+                        backgroundColor: 'light-dark(white, var(--mantine-color-dark-6))',
                       }}
                     >
                       <Collapse in={isSelected}>
                         <Box
-                          sx={{
+                          style={{
                             backgroundColor:
-                              theme.colorScheme === 'dark'
-                                ? theme.colors.dark[7]
-                                : theme.colors.gray[1],
-                            borderTop: `1px solid ${
-                              theme.colorScheme === 'dark'
-                                ? theme.colors.dark[4]
-                                : theme.colors.gray[3]
-                            }`,
+                              'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))',
+                            borderBottom: `1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4))`,
                           }}
                           p='md'
                         >
                           <TrialDetails event={event} />
                         </Box>
                       </Collapse>
-                    </td>
-                  </tr>
+                    </Table.Td>
+                  </Table.Tr>
                 </Fragment>
               );
             })}
-          </tbody>
+          </Table.Tbody>
         </Table>
-      </ScrollArea>
+      </Table.ScrollContainer>
     </Card>
   );
 }

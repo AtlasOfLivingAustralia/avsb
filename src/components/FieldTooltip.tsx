@@ -1,6 +1,6 @@
 import { SeedbankFieldTrait } from '#/helpers';
 import { Box, Divider, Group, Text, ThemeIcon, Tooltip } from '@mantine/core';
-import { IconLeaf, TablerIcon } from '@tabler/icons';
+import { IconLeaf, TablerIcon } from '@tabler/icons-react';
 import { PropsWithChildren } from 'react';
 
 interface FieldTooltipProps {
@@ -26,36 +26,36 @@ function FieldTooltip({
       multiline
       label={
         <Box>
-          <Group spacing='xs' mb={4}>
+          <Group gap='xs' mb={4}>
             <Icon size='1rem' />
             <Text
-              weight='bold'
-              sx={(theme) => ({
-                color: theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
-              })}
+              fw='bold'
+              style={{
+                color: 'light-dark(white, var(--mantine-color-dark-6))',
+              }}
             >
               {label}
             </Text>
           </Group>
           <Text
-            weight='normal'
+            fw='normal'
             size='xs'
-            sx={(theme) => ({
-              color: theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
-            })}
+            style={{
+              color: 'light-dark(white, var(--mantine-color-dark-6))',
+            }}
           >
             {description}
           </Text>
           {trait && (
-            <Group spacing='xs' mt='sm'>
+            <Group gap='xs' mt='sm'>
               <ThemeIcon radius='sm' size='sm' color='gray' opacity={0.6}>
                 <IconLeaf size='0.7rem' />
               </ThemeIcon>
               <Text
                 size='xs'
-                sx={(theme) => ({
-                  color: theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
-                })}
+                style={{
+                  color: 'light-dark(white, var(--mantine-color-dark-6))',
+                }}
               >
                 Supplied by <b>AusTraits</b>, click for definition
               </Text>
@@ -63,11 +63,11 @@ function FieldTooltip({
           )}
           <Divider opacity={0.15} my='xs' />
           <Text
-            weight='normal'
+            fw='normal'
             size='xs'
-            sx={(theme) => ({
-              color: theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[5],
-            })}
+            style={{
+              color: 'light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-3))',
+            }}
           >
             <b>Example(s):</b> {examples}
           </Text>

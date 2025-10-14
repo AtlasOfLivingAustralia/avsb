@@ -1,27 +1,30 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import logo from '#/assets/avsb-logo-square.png';
 import {
-  IconSun,
-  IconMoon,
-  IconHome,
-  IconQuestionMark,
-  IconArrowBackUp,
-  IconChartLine,
-} from '@tabler/icons';
-import {
-  Header as MantineHeader,
   ActionIcon,
+  Box,
   Button,
   Group,
-  useMantineColorScheme,
-  MediaQuery,
-  Transition,
-  Tooltip,
   Image,
+  Paper,
+  Tooltip,
+  Transition,
+  useComputedColorScheme,
+  useMantineColorScheme,
 } from '@mantine/core';
+import {
+  IconArrowBackUp,
+  IconChartLine,
+  IconHome,
+  IconMoon,
+  IconQuestionMark,
+  IconSun,
+} from '@tabler/icons-react';
+import { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router';
 
-// Project components & gelpers
+// Project components & helpers
 import { TaxonSearchInput } from '#/components';
-import logo from '#/assets/avsb-logo-square.png';
+import classes from './Header.module.css';
 
 const slideTransition = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -32,23 +35,53 @@ const slideTransition = {
 
 function Header() {
   const { state, pathname } = useLocation();
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Color scheme toggle
+  const { toggleColorScheme } = useMantineColorScheme();
+  const colorScheme = useComputedColorScheme();
+  const [, setColorScheme] = useState<'light' | 'dark'>(
+    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      setColorScheme(e.matches ? 'dark' : 'light');
+    };
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <MantineHeader height={60}>
-      <Group sx={{ height: '100%' }} px={20} position='apart'>
-        <Group spacing='lg'>
+    <Paper
+      className={classes.header}
+      data-scrolled={isScrolled}
+      shadow={isScrolled ? 'xl' : 'none'}
+    >
+      <Group h={60} px={20} justify='space-between'>
+        <Group gap='lg'>
           <Link to='/' style={{ display: 'flex' }} aria-label='Go to home'>
             <Image src={logo} />
           </Link>
-          <Group spacing={4}>
+          <Group gap={2}>
             <Button
+              visibleFrom='md'
               component={Link}
               to='/dashboard'
-              leftIcon={<IconChartLine size='0.8rem' />}
+              leftSection={<IconChartLine size='0.8rem' />}
               size='xs'
               variant='subtle'
+              color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-2))'
               aria-label='Portal Statistics'
             >
               Portal Statistics
@@ -59,9 +92,10 @@ function Header() {
                   style={styles}
                   component={Link}
                   to='/'
-                  leftIcon={<IconHome size='0.8rem' />}
+                  leftSection={<IconHome size='0.8rem' />}
                   size='xs'
                   variant='subtle'
+                  color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-2))'
                   aria-label='Home'
                 >
                   Home
@@ -78,9 +112,10 @@ function Header() {
                   component={Link}
                   to={state?.from || '/'}
                   state={null}
-                  leftIcon={<IconArrowBackUp size='0.8rem' />}
+                  leftSection={<IconArrowBackUp size='0.8rem' />}
                   size='xs'
                   variant='subtle'
+                  color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-2))'
                   aria-label='Go back'
                 >
                   Seed Bank
@@ -89,57 +124,61 @@ function Header() {
             </Transition>
           </Group>
         </Group>
-        {pathname !== '/' && (
-          <MediaQuery styles={{ display: 'none' }} smallerThan='sm'>
-            <TaxonSearchInput
-              variant='filled'
-              style={{ width: 400 }}
-              onChange={(guid) => {
-                if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
-              }}
-            />
-          </MediaQuery>
-        )}
-        <Group style={{ flexGrow: 1, maxWidth: 140 }} position='right' spacing='xs'>
-          <Tooltip
-            transitionProps={{ transition: 'pop' }}
-            offset={10}
-            withArrow
-            label='Help / FAQ'
-            position='right'
-            aria-label=''
-          >
-            <ActionIcon
-              component={Link}
-              to='/help'
-              variant='filled'
-              radius='xl'
-              size={38}
-              aria-label='Help and frequently asked questions'
+        <Group>
+          {pathname !== '/' && (
+            <Box visibleFrom='md'>
+              <TaxonSearchInput
+                radius='lg'
+                style={{ width: 250 }}
+                onChange={(guid) => {
+                  if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
+                }}
+              />
+            </Box>
+          )}
+          <Group style={{ flexGrow: 1, maxWidth: 140 }} justify='right' gap='xs'>
+            <Tooltip
+              transitionProps={{ transition: 'pop' }}
+              offset={10}
+              withArrow
+              label='Help / FAQ'
+              position='right'
+              aria-label='Help / FAQ'
+              zIndex={600}
             >
-              <IconQuestionMark size={20} />
-            </ActionIcon>
-          </Tooltip>
-          <Tooltip
-            transitionProps={{ transition: 'pop' }}
-            offset={10}
-            withArrow
-            label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
-            position='right'
-          >
-            <ActionIcon
-              variant='filled'
-              radius='xl'
-              size={38}
-              onClick={() => toggleColorScheme()}
-              aria-label='Switch interface colour scheme'
+              <ActionIcon
+                color='gray'
+                component={Link}
+                to='/help'
+                radius='xl'
+                size={38}
+                aria-label='Help and frequently asked questions'
+              >
+                <IconQuestionMark size={20} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip
+              transitionProps={{ transition: 'pop' }}
+              offset={10}
+              withArrow
+              label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
+              position='right'
+              zIndex={600}
             >
-              {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
-            </ActionIcon>
-          </Tooltip>
+              <ActionIcon
+                color='gray'
+                radius='xl'
+                size={38}
+                onClick={() => toggleColorScheme()}
+                aria-label='Switch interface colour scheme'
+              >
+                {colorScheme === 'dark' ? <IconMoon size={20} /> : <IconSun size={20} />}
+              </ActionIcon>
+            </Tooltip>
+          </Group>
         </Group>
       </Group>
-    </MantineHeader>
+    </Paper>
   );
 }
 

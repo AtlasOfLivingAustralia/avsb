@@ -11,7 +11,6 @@ import {
   Text,
   Title,
   UnstyledButton,
-  useMantineTheme,
 } from '@mantine/core';
 
 import {
@@ -26,10 +25,13 @@ import {
   IconPhoto,
   IconX,
   TablerIcon,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Wave } from '#/components/Wave';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { breakpoints } from '#/theme/constants';
+
+import classes from './index.module.css';
 
 import {
   downloadRecordsItems,
@@ -43,8 +45,8 @@ import {
   viewTaxonTrialItems,
 } from './topics';
 
-import Topic from './components/Topic';
 import FAQ from './components/FAQ';
+import Topic from './components/Topic';
 
 export interface HelpTopicItem {
   icon: TablerIcon;
@@ -121,8 +123,7 @@ export function Component() {
   const [opened, { open, close }] = useDisclosure(false);
 
   // Theme hooks
-  const theme = useMantineTheme();
-  const mdOrLarger = useMediaQuery(`(min-width: ${theme.breakpoints.md})`, true);
+  const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
 
   return (
     <>
@@ -133,7 +134,7 @@ export function Component() {
         withCloseButton={false}
         size={1100}
         overlayProps={{
-          color: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2],
+          color: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
           opacity: 0.55,
           blur: 3,
         }}
@@ -155,10 +156,11 @@ export function Component() {
         <Topic instructions={helpTopics[topic].instructions} />
       </Modal>
       <Box
-        sx={{
-          backgroundColor:
-            theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2],
+        style={{
+          backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
+        pt={60}
+        mt={-90}
       >
         <Container size='lg' pt='xl'>
           <Center pt='lg' mb='xl' pb='xl'>
@@ -168,35 +170,21 @@ export function Component() {
           </Center>
           <Grid>
             {Object.entries(helpTopics).map(([key, { description, icon: Icon }]) => (
-              <Grid.Col xl={4} lg={4} md={4} sm={6} xs={12} key={key}>
+              <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 6, xs: 12 }} key={key}>
                 <UnstyledButton
+                  className={classes.topic}
                   onClick={() => {
                     setTopic(key);
                     open();
-                  }}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: theme.spacing.md,
-                    borderRadius: theme.radius.md,
-                    border: `1px solid ${
-                      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[4]
-                    }`,
-                    width: '100%',
-                    height: '100%',
-                    transition: 'opacity cubic-bezier(0, 0, 0, 1) 200ms',
-                    ':hover': {
-                      opacity: 0.4,
-                    },
                   }}
                 >
                   <Center w='100%'>
                     <Icon size='3rem' />
                   </Center>
                   <Text
-                    sx={{
-                      marginTop: theme.spacing.md,
-                      fontFamily: theme.headings.fontFamily,
+                    style={{
+                      marginTop: 'var(--mantine-spacing-md)',
+                      fontFamily: 'var(--mantine-font-family-headings)',
                       fontWeight: 'normal',
                     }}
                   >

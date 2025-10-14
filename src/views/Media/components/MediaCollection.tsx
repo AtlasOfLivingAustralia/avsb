@@ -1,6 +1,6 @@
 import { Alert, Button, Center, Divider, Grid, GridProps, Group, Stack, Text } from '@mantine/core';
-import { IconAlertCircle, IconAlertTriangle, IconExternalLink } from '@tabler/icons';
-import { useParams } from 'react-router-dom';
+import { IconAlertCircle, IconAlertTriangle, IconExternalLink } from '@tabler/icons-react';
+import { useParams } from 'react-router';
 
 // Project / local components
 import { MediaItem } from '#/api/graphql/types';
@@ -32,19 +32,20 @@ export default function MediaCollection({
           <Divider
             style={{ flexGrow: 1 }}
             label={
-              <Text size='lg' sx={({ headings }) => ({ fontFamily: headings.fontFamily })}>
+              <Text size='lg' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
                 {label}
               </Text>
             }
+            labelPosition='left'
             variant='dashed'
           />
           <Button
             component='a'
             target='_blank'
             href={`${import.meta.env.VITE_ALA_BIE}/species/${guid}#gallery`}
-            leftIcon={<IconExternalLink size='0.8rem' />}
+            leftSection={<IconExternalLink size='0.8rem' />}
             size='xs'
-            variant='light'
+            variant='subtle'
           >
             View more on ALA BIE
           </Button>
@@ -59,7 +60,7 @@ export default function MediaCollection({
       )}
       {media?.length > 0 ? (
         media?.map((item) => (
-          <Grid.Col key={item.identifier} xs={4} sm={4} md={4} lg={3} xl={3}>
+          <Grid.Col key={item.identifier} span={{ xs: 4, sm: 4, md: 4, lg: 3, xl: 3 }}>
             <MediaImage
               item={item}
               onClick={() => {
@@ -74,9 +75,9 @@ export default function MediaCollection({
       ) : (
         <Grid.Col span={12}>
           <Center>
-            <Stack align='center'>
+            <Stack justify='center'>
               <IconAlertCircle size='3rem' />
-              <Text color='dimmed'>No media found for this taxon</Text>
+              <Text c='dimmed'>No media found for this taxon</Text>
             </Stack>
           </Center>
         </Grid.Col>

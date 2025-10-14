@@ -1,5 +1,4 @@
-import { ReactNode, useState } from 'react';
-
+import { trialFields } from '#/helpers';
 import {
   Accordion,
   Alert,
@@ -12,45 +11,11 @@ import {
   Stack,
   Text,
   Title,
-  createStyles,
-  rem,
 } from '@mantine/core';
+import { IconAlertTriangle, TablerIcon } from '@tabler/icons-react';
+import { ReactNode, useState } from 'react';
 
-import { IconAlertTriangle, TablerIcon } from '@tabler/icons';
-import { trialFields } from '#/helpers';
-
-// Custom styles for Accordion component
-const useStyles = createStyles((theme) => ({
-  root: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
-    borderRadius: theme.radius.sm,
-  },
-  label: {
-    fontWeight: 600,
-  },
-  item: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
-    border: `${rem(1)} solid transparent`,
-    position: 'relative',
-    zIndex: 0,
-    transition: 'transform 150ms ease',
-
-    '&[data-active]': {
-      transform: 'scale(1.03)',
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-      boxShadow: theme.shadows.md,
-      borderColor: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3],
-      borderRadius: theme.radius.md,
-      zIndex: 1,
-    },
-  },
-
-  chevron: {
-    '&[data-rotate]': {
-      transform: 'rotate(-90deg)',
-    },
-  },
-}));
+import classes from './FAQ.module.css';
 
 export interface HelpTopicItem {
   icon: TablerIcon;
@@ -60,7 +25,6 @@ export interface HelpTopicItem {
 
 function FAQ() {
   const [value, setValue] = useState<string | null>('access-seeds');
-  const { classes } = useStyles();
 
   return (
     <Container size='lg' px='xl' mt={-80}>
@@ -79,7 +43,7 @@ function FAQ() {
         <Accordion.Item value='access-seeds'>
           <Accordion.Control>How do I access seeds?</Accordion.Control>
           <Accordion.Panel>
-            <Stack spacing='sm'>
+            <Stack gap='sm'>
               <Text size='sm'>
                 Seeds held by the Australian Seed Bank Partnership are obtained under strict
                 collection permits and can only be provided for conservation and scientific research
@@ -119,7 +83,7 @@ function FAQ() {
         <Accordion.Item value='germination-data-display'>
           <Accordion.Control>What germination data is displayed?</Accordion.Control>
           <Accordion.Panel>
-            <Stack spacing='sm'>
+            <Stack gap='sm'>
               <Text size='sm'>
                 A core set of germination data to be included in the Australian Virtual Seed Bank
                 was agreed by the Australian Seed Bank Partnership. Data includes:
@@ -236,7 +200,7 @@ function FAQ() {
         <Accordion.Item value='how-desensitised-locations'>
           <Accordion.Control>How are accession locations desensitised?</Accordion.Control>
           <Accordion.Panel>
-            <Stack spacing='sm'>
+            <Stack gap='sm'>
               <Text size='sm'>
                 Each state and territory (and some major data providers) provide lists of species
                 which they use restrict access to precise locations of these taxa. Restricted access
@@ -353,7 +317,7 @@ function FAQ() {
             Is it possible to select accessions for an area using the map?
           </Accordion.Control>
           <Accordion.Panel>
-            <Stack spacing='sm'>
+            <Stack gap='sm'>
               <Text size='sm'>
                 The current version of the Australian Virtual Seed Bank does not contain this
                 functionality. The ability to search for and select accessions in your area of
@@ -377,7 +341,7 @@ function FAQ() {
             Why don&apos;t all seedbank accessions appear on the summary maps / seedbank maps?
           </Accordion.Control>
           <Accordion.Panel>
-            <Stack spacing='sm'>
+            <Stack gap='sm'>
               <Text size='sm'>
                 The presence of seedbank locations on maps depends on a number of factors, i.e.:
               </Text>
@@ -391,17 +355,17 @@ function FAQ() {
                   withheld in the AVSB. See FAQs:
                   <List size='sm'>
                     <List.Item>
-                      <Anchor onClick={() => setValue('how-desensitised-locations')}>
+                      <Anchor size='sm' onClick={() => setValue('how-desensitised-locations')}>
                         How are accession locations desensitised?
                       </Anchor>
                     </List.Item>
                     <List.Item>
-                      <Anchor onClick={() => setValue('desensitised-locations')}>
+                      <Anchor size='sm' onClick={() => setValue('desensitised-locations')}>
                         How do I know that an accession location has been desensitised?
                       </Anchor>
                     </List.Item>
                     <List.Item>
-                      <Anchor onClick={() => setValue('no-accessions-trials')}>
+                      <Anchor size='sm' onClick={() => setValue('no-accessions-trials')}>
                         What do I do if I can&apos;t find accessions or trials for a particular
                         species?
                       </Anchor>

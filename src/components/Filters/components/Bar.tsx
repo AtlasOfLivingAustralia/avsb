@@ -1,7 +1,18 @@
-import { MouseEventHandler } from 'react';
-import { ActionIcon, Badge, Button, Divider, Group, GroupProps, Text, rem } from '@mantine/core';
-import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons';
 import { Predicate } from '#/api/graphql/types';
+import {
+  ActionIcon,
+  Badge,
+  Button,
+  Chip,
+  Divider,
+  Group,
+  GroupProps,
+  Paper,
+  rem,
+  Text,
+} from '@mantine/core';
+import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons-react';
+import { MouseEventHandler } from 'react';
 
 import { Filter } from '../types';
 
@@ -48,39 +59,40 @@ function FilterBar({ filters, predicates, onFiltersOpen, onRemove, ...rest }: Fi
       <Button
         variant='outline'
         onClick={onFiltersOpen}
-        leftIcon={<IconAdjustmentsHorizontal size='1rem' />}
+        leftSection={<IconAdjustmentsHorizontal size='1rem' />}
       >
         Filters
       </Button>
       <Divider ml={4} orientation='vertical' />
-      <Group maw={500} spacing={4}>
+      <Group maw={500} gap={4}>
         {predicates.length > 0 ? (
           predicates.map((predicate) => (
-            <Badge
+            <Paper
               key={predicate.key}
-              variant='outline'
-              pl={3}
-              leftSection={
-                <ActionIcon
-                  onClick={() => {
-                    if (onRemove) onRemove(predicate);
-                  }}
-                  size='xs'
-                  color='blue'
-                  radius='xl'
-                  variant='transparent'
-                  aria-label={`Remove ${predicate.key} filter`}
-                >
-                  <IconX size={rem(10)} />
-                </ActionIcon>
-              }
+              bg='light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))'
+              pr={8}
+              h={36}
+              radius='xl'
+              style={{ display: 'flex', alignItems: 'center' }}
             >
-              {getPredicateLabel(predicate.key || '') || predicate.key}:&nbsp;
-              {getPredicateValue(predicate)}
-            </Badge>
+              <ActionIcon
+                ml={4}
+                mr='xs'
+                color='grey'
+                onClick={() => {
+                  if (onRemove) onRemove(predicate);
+                }}
+              >
+                <IconX size='1rem' />
+              </ActionIcon>
+              <Text size='xs' style={{ cursor: 'default' }}>
+                <b>{getPredicateLabel(predicate.key || '') || predicate.key}</b>&nbsp;
+                {getPredicateValue(predicate)}
+              </Text>
+            </Paper>
           ))
         ) : (
-          <Text size='sm' color='dimmed'>
+          <Text size='sm' c='dimmed'>
             No filters selected
           </Text>
         )}

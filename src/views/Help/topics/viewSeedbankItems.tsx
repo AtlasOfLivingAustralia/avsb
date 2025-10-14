@@ -1,5 +1,5 @@
 import { Code } from '@mantine/core';
-import { IconArrowUpRight, IconClick, IconDownload, IconEye, IconMouse } from '@tabler/icons';
+import { IconArrowUpRight, IconClick, IconDownload, IconEye, IconMouse } from '@tabler/icons-react';
 
 import imageHome from '#/assets/help/home-min.png';
 import imageHomeDatasets from '#/assets/help/home-datasets-min.png';

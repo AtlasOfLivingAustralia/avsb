@@ -1,0 +1,13 @@
+.rank {
+	flex-grow: 1;
+  border-top-right-radius: var(--mantine-radius-xl);
+  border-bottom-right-radius: var(--mantine-radius-xl);
+
+	&:hover {
+		background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+	}
+}
+
+.body {
+	padding: 0;
+}

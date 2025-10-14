@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
-import { Text, Drawer, Group, ThemeIcon, SegmentedControl, GroupProps } from '@mantine/core';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useDisclosure } from '@mantine/hooks';
-import { IconFilter } from '@tabler/icons';
 import { Predicate } from '#/api/graphql/types';
+import { Drawer, Group, GroupProps, SegmentedControl, Text, ThemeIcon } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { IconFilter } from '@tabler/icons-react';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 
 // Project components / helpers
 import FilterBar from './components/Bar';
@@ -52,15 +51,15 @@ function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
         <Drawer.Overlay />
         <Drawer.Content aria-label='Filters drawer'>
           <Drawer.Header style={{ zIndex: 300 }}>
-            <Group position='apart' w='100%'>
+            <Group justify='space-between' w='100%'>
               <Group>
                 <ThemeIcon variant='light' radius='xl' size='xl'>
                   <IconFilter />
                 </ThemeIcon>
                 <Text
                   size='xl'
-                  weight='bold'
-                  sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}
+                  fw='bold'
+                  style={{ fontFamily: 'var(--mantine-font-family-headings)' }}
                 >
                   Query Filters
                 </Text>

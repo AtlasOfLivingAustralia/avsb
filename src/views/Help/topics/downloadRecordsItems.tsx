@@ -1,5 +1,5 @@
 import { Code } from '@mantine/core';
-import { IconClick, IconDownload } from '@tabler/icons';
+import { IconClick, IconDownload } from '@tabler/icons-react';
 
 import imageAccessions from '#/assets/help/taxon-accessions-min.png';
 import imageDownload from '#/assets/help/taxon-download-min.png';

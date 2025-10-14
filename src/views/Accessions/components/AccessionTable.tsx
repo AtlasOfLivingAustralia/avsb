@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Fragment, useEffect, useState } from 'react';
 import { Event, SeedBankAccession } from '#/api/graphql/types';
 import {
   Box,
@@ -13,55 +11,26 @@ import {
   Table,
   Text,
   Tooltip,
-  createStyles,
-  rem,
-  useMantineTheme,
 } from '@mantine/core';
 import {
-  IconArrowUpRight,
   IconArrowsMaximize,
   IconArrowsMinimize,
+  IconArrowUpRight,
   IconChevronDown,
-} from '@tabler/icons';
-import { Link } from 'react-router-dom';
+} from '@tabler/icons-react';
 import orderBy from 'lodash/orderBy';
-
+import { Fragment, useEffect, useState } from 'react';
+import { Link } from 'react-router';
 // Project components / helpers
 import { AccessionDetails, ThField } from '#/components';
 import { getIsDefined } from '#/helpers';
-
-const useStyles = createStyles((theme) => ({
-  header: {
-    position: 'sticky',
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-    transition: 'box-shadow 150ms ease',
-    zIndex: 100,
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
-      }`,
-    },
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.md,
-  },
-}));
+import classes from './AccessionTable.module.css';
 
 interface AccessionTableProps {
   events: Event[];
 }
 
 function AccessionTable({ events }: AccessionTableProps) {
-  const theme = useMantineTheme();
-  const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -80,19 +49,18 @@ function AccessionTable({ events }: AccessionTableProps) {
     setSortedData(orderBy(events || [], [field], [reversed ? 'desc' : 'asc']));
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setSorting(sortBy || '', true), [events]);
 
   return (
     <Card shadow='lg' p={0} withBorder>
-      <ScrollArea
-        type='auto'
+      <Table.ScrollContainer
+        minWidth={500}
         h='calc(100vh - 425px)'
-        onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+        scrollAreaProps={{ onScrollPositionChange: ({ y }) => setScrolled(y !== 0) }}
       >
-        <Table highlightOnHover>
-          <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-            <tr>
+        <Table stickyHeader>
+          <Table.Thead className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
+            <Table.Tr>
               <ThField
                 sorted={sortBy === 'extensions.seedbank.accessionNumber'}
                 reversed={reverseSortDirection}
@@ -135,11 +103,10 @@ function AccessionTable({ events }: AccessionTableProps) {
                 onSort={() => setSorting('extensions.seedbank.storageTemperatureInCelsius')}
                 fieldKey='storageTemperatureInCelsius'
               />
-              <th>
-                <Button.Group style={{ justifyContent: 'flex-end' }}>
+              <Table.Th>
+                <Button.Group style={{ justifyContent: 'flex-end' }} p='sm'>
                   <Button
                     variant='light'
-                    p={8}
                     size='xs'
                     onClick={() => setSelected(events.map(({ eventID }) => eventID || ''))}
                   >
@@ -151,27 +118,28 @@ function AccessionTable({ events }: AccessionTableProps) {
                     Collapse
                   </Button>
                 </Button.Group>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+              </Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
             {(!events || events?.length === 0) && (
-              <tr>
-                <td colSpan={8}>
+              <Table.Tr>
+                <Table.Td colSpan={8}>
                   <Center>
-                    <Text>No accession data found</Text>
+                    <Text size='sm'>No accession data found</Text>
                   </Center>
-                </td>
-              </tr>
+                </Table.Td>
+              </Table.Tr>
             )}
             {sortedData.map((event) => {
               const accession = event.extensions?.seedbank as SeedBankAccession;
               const isSelected = selected.includes(event.eventID || '');
               return (
                 <Fragment key={event.eventID}>
-                  <tr
+                  <Table.Tr
                     style={{ cursor: 'pointer' }}
                     onClick={(e) => {
+                      // biome-ignore lint: suspicious/noExplicitAny
                       const className = (e.target as any)?.className;
                       if (!(typeof className === 'string' && className.includes('Button'))) {
                         setSelected(
@@ -182,47 +150,47 @@ function AccessionTable({ events }: AccessionTableProps) {
                       }
                     }}
                   >
-                    <td style={{ paddingLeft: 25 }}>
+                    <Table.Td style={{ paddingLeft: 14 }}>
                       {accession?.accessionNumber || event.eventID}
-                    </td>
-                    <td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Table.Td>
+                    <Table.Td>
                       <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
                         <Box maw={250}>
-                          <Text lineClamp={2}>{event?.datasetTitle}</Text>
+                          <Text size='sm' lineClamp={2}>
+                            {event?.datasetTitle}
+                          </Text>
                         </Box>
                       </Tooltip.Floating>
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(accession?.dateCollected) &&
                         new Date(accession?.dateCollected || 0).toLocaleDateString()}
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(accession?.quantityCount) &&
                         `${accession?.quantityCount} seeds`}
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(accession?.purityPercentage) &&
                         `${accession.purityPercentage?.toFixed(2)}%`}
-                    </td>
-                    <td>
+                    </Table.Td>
+                    <Table.Td>
                       {getIsDefined(accession?.storageTemperatureInCelsius) &&
                         `${accession?.storageTemperatureInCelsius}°C`}
-                    </td>
-                    <td align='right'>
-                      <Group spacing='xs' position='right' miw={150}>
+                    </Table.Td>
+                    <Table.Td align='right'>
+                      <Group gap='xs' justify='right' miw={150}>
                         <Button
                           styles={{
                             label: {
                               textDecoration: 'underline',
                               textUnderlineOffset: 2,
                               textDecorationColor:
-                                theme.colorScheme === 'dark'
-                                  ? 'rgba(165, 216, 255, 0.25)'
-                                  : 'rgba(34, 139, 230, 0.25)',
+                                'light-dark(rgba(34, 139, 230, 0.25), rgba(165, 216, 255, 0.25))',
                             },
                           }}
-                          rightIcon={<IconArrowUpRight size='1rem' />}
+                          rightSection={<IconArrowUpRight size='1rem' />}
                           component={Link}
                           to={event.eventID || '/'}
                           variant='subtle'
@@ -240,44 +208,36 @@ function AccessionTable({ events }: AccessionTableProps) {
                           size={16}
                         />
                       </Group>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
+                    </Table.Td>
+                  </Table.Tr>
+                  <Table.Tr style={{ border: 'none' }}>
+                    <Table.Td
                       colSpan={8}
                       style={{
                         padding: 0,
-                        border: 'none',
-                        backgroundColor:
-                          theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
+                        backgroundColor: 'light-dark(white, var(--mantine-color-dark-6))',
                       }}
                     >
                       <Collapse in={isSelected}>
                         <Box
-                          sx={{
+                          style={{
                             backgroundColor:
-                              theme.colorScheme === 'dark'
-                                ? theme.colors.dark[7]
-                                : theme.colors.gray[1],
-                            borderTop: `1px solid ${
-                              theme.colorScheme === 'dark'
-                                ? theme.colors.dark[4]
-                                : theme.colors.gray[3]
-                            }`,
+                              'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))',
+                            borderBottom: `1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4))`,
                           }}
                           p='md'
                         >
                           <AccessionDetails event={event} />
                         </Box>
                       </Collapse>
-                    </td>
-                  </tr>
+                    </Table.Td>
+                  </Table.Tr>
                 </Fragment>
               );
             })}
-          </tbody>
+          </Table.Tbody>
         </Table>
-      </ScrollArea>
+      </Table.ScrollContainer>
     </Card>
   );
 }

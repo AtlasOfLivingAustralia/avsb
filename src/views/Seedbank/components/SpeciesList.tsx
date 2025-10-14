@@ -11,15 +11,17 @@ import {
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
-import { FixedSizeList } from 'react-window';
-import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons';
+import { List, RowComponentProps } from 'react-window';
+import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons-react';
 import { useDebouncedValue } from '@mantine/hooks';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { saveAs } from 'file-saver';
 
 // Project helpers
 import { taxonAPI } from '#/api';
 import { orderBy } from 'lodash';
+
+import classes from './SpeciesList.module.css';
 
 type SpeciesFacet = { key: string; count: number };
 
@@ -28,13 +30,7 @@ interface SpeciesListProps {
   species: SpeciesFacet[];
 }
 
-interface SpeciesRow {
-  index: number;
-  style: CSSProperties;
-  data: SpeciesFacet[];
-}
-
-function Row({ index, style, data }: SpeciesRow) {
+function Row({ index, style, data }: RowComponentProps<{ data: SpeciesFacet[] }>) {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -56,23 +52,13 @@ function Row({ index, style, data }: SpeciesRow) {
   };
 
   return (
-    <UnstyledButton
-      onClick={handleRowClick}
-      key={index}
-      style={style}
-      sx={{
-        transition: 'opacity cubic-bezier(0, 0, 0, 1) 200ms',
-        ':hover': {
-          opacity: 0.4,
-        },
-      }}
-    >
-      <Group position='apart'>
+    <UnstyledButton onClick={handleRowClick} key={index} className={classes.button} style={style}>
+      <Group justify='space-between' pl='md'>
         <Text size='sm' maw={205} truncate>
           {data[index].key}
         </Text>
-        <Group spacing='xs' mr='sm'>
-          <Badge>
+        <Group gap='xs' mr='sm'>
+          <Badge variant='light'>
             {data[index].count} Record{data[index].count > 1 && 's'}
           </Badge>
           <IconArrowUpRight size='1rem' />
@@ -101,7 +87,6 @@ function SpeciesList({ name, species }: SpeciesListProps) {
     setFiltered(
       species.filter(({ key }) => key.toLowerCase().includes(searchDebounced.toLowerCase())),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDebounced]);
 
   const onDownloadClick = () => {
@@ -120,11 +105,11 @@ function SpeciesList({ name, species }: SpeciesListProps) {
 
   return (
     <Paper p='md' h='100%' withBorder>
-      <Group mb='xs' position='apart'>
-        <Text size='xl' sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}>
+      <Group mb='xs' justify='space-between'>
+        <Text size='xl' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
           {species.length} Species
         </Text>
-        <Group spacing='xs'>
+        <Group gap='xs'>
           <SegmentedControl
             size='xs'
             value={sort}
@@ -146,7 +131,7 @@ function SpeciesList({ name, species }: SpeciesListProps) {
         </Group>
       </Group>
       <TextInput
-        icon={<IconSearch size='1rem' />}
+        leftSection={<IconSearch size='1rem' />}
         w='100%'
         variant='filled'
         mb='xs'
@@ -155,16 +140,18 @@ function SpeciesList({ name, species }: SpeciesListProps) {
         onChange={(event) => setSearch(event.currentTarget.value)}
       />
       <Divider mt='md' mb='xs' />
-      <FixedSizeList
-        height={395}
-        width='calc(100% + 16px)'
-        style={{ marginRight: -16 }}
-        itemData={sorted}
-        itemCount={sorted.length}
-        itemSize={45}
-      >
-        {Row}
-      </FixedSizeList>
+      <List
+        style={{
+          marginRight: 'calc(var(--mantine-spacing-md) * -1)',
+          marginLeft: 'calc(var(--mantine-spacing-md) * -1)',
+          height: 430,
+          width: 'calc(100% + (2 * var(--mantine-spacing-md)))',
+        }}
+        rowHeight={45}
+        rowProps={{ data: sorted }}
+        rowCount={sorted.length}
+        rowComponent={Row}
+      />
     </Paper>
   );
 }

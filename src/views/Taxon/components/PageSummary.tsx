@@ -1,13 +1,5 @@
-import {
-  Text,
-  Group,
-  HoverCard,
-  Stack,
-  useMantineTheme,
-  BoxProps,
-  UnstyledButton,
-} from '@mantine/core';
-import { IconQuestionCircle } from '@tabler/icons';
+import { BoxProps, Flex, HoverCard, Stack, Text, UnstyledButton } from '@mantine/core';
+import { IconEyeQuestion } from '@tabler/icons-react';
 
 const summaries: { [key: string]: string[] } = {
   summary: [
@@ -37,37 +29,31 @@ interface PageSummaryProps extends BoxProps {
 }
 
 function PageSummary({ currentPage, ...rest }: PageSummaryProps) {
-  const theme = useMantineTheme();
-
   return (
     <HoverCard width={350} position='left' withArrow offset={12}>
       <HoverCard.Target>
-        <UnstyledButton style={{ display: 'flex', justifyContent: 'flex-end' }} {...rest}>
-          <Group spacing='xs' pr='md'>
-            <IconQuestionCircle
-              color={theme.colorScheme === 'dark' ? theme.colors.blue[2] : theme.colors.blue[4]}
-            />
+        <UnstyledButton style={{ display: 'flex', cursor: 'help' }} {...rest}>
+          <Flex gap='xs' align='center'>
+            <IconEyeQuestion color='light-dark(var(--mantine-color-blue-4), var(--mantine-color-blue-2))' />
             <Text
-              sx={{
-                color: theme.colorScheme === 'dark' ? theme.colors.blue[2] : theme.colors.blue[4],
+              style={{
+                color: 'light-dark(var(--mantine-color-blue-4), var(--mantine-color-blue-2))',
                 textDecoration: 'underline',
                 textUnderlineOffset: 2,
                 textDecorationColor:
-                  theme.colorScheme === 'dark'
-                    ? 'rgba(165, 216, 255, 0.25)'
-                    : 'rgba(34, 139, 230, 0.25)',
+                  'light-dark(rgba(34, 139, 230, 0.25), rgba(165, 216, 255, 0.25))',
                 textTransform: 'capitalize',
               }}
               size='xs'
-              weight='bold'
+              fw='bold'
             >
               {currentPage} Page
             </Text>
-          </Group>
+          </Flex>
         </UnstyledButton>
       </HoverCard.Target>
       <HoverCard.Dropdown>
-        <Stack spacing='sm'>
+        <Stack gap='sm'>
           {summaries[currentPage]?.map((summary) => (
             <Text key={summary} size='sm'>
               {summary}

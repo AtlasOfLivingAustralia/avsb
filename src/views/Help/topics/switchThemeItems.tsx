@@ -1,4 +1,4 @@
-import { IconClick, IconMoon, IconSun } from '@tabler/icons';
+import { IconClick, IconMoon, IconSun } from '@tabler/icons-react';
 
 import imageHomeLight from '#/assets/help/home-light-min.png';
 

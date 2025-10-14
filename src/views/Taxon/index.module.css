@@ -1,0 +1,21 @@
+.list {
+  position: relative;
+}
+
+.indicator {
+  background-color: light-dark(var(--mantine-color-blue-7), var(--mantine-color-blue-8));
+  border-radius: var(--mantine-radius-xl);
+  box-shadow: var(--mantine-shadow-md);
+
+}
+
+.tab {
+  z-index: 1;
+  font-weight: 500;
+  transition: color 100ms ease;
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1));
+
+  &[data-active] {
+    color: var(--mantine-color-white);
+  }
+}

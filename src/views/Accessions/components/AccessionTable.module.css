@@ -1,0 +1,7 @@
+.header {
+  transition: box-shadow 300ms ease;
+}
+
+.scrolled {
+  box-shadow: var(--mantine-shadow-sm);
+}

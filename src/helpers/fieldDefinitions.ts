@@ -37,7 +37,7 @@ import {
   IconCircleDot,
   IconHandGrab,
   IconTag,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 
 export interface SeedbankFieldTrait {
   type: 'numeric' | 'categorical';
