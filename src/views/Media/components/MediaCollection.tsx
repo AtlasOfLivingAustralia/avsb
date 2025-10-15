@@ -47,7 +47,7 @@ export default function MediaCollection({
             size='xs'
             variant='subtle'
           >
-            View more on ALA BIE
+            View more on ALA Species Page
           </Button>
         </Group>
       </Grid.Col>
