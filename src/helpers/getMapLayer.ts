@@ -1,54 +1,43 @@
-import { AnyLayer } from 'mapbox-gl';
+import type { LayerSpecification, SourceSpecification } from 'mapbox-gl';
 
 const mapColors = ['#fed976', '#fd8d3c', '#F7642E', '#f03b20', '#bd0026'];
 
-export default function getLayerConfig(tile: string): AnyLayer {
+interface MapLayerConfig {
+  source: SourceSpecification;
+  layer: LayerSpecification;
+}
+
+export default function getLayerConfig(tile: string): MapLayerConfig {
   return {
-    id: 'events',
-    type: 'circle',
     source: {
       type: 'vector',
       tiles: [tile],
     },
-    'source-layer': 'aggs',
-    paint: {
-      // make circles larger as the user zooms from z12 to z22
-      'circle-radius': {
-        property: '_count',
-        type: 'interval',
-        stops: [
-          [0, 4],
-          [5, 5],
-          [10, 7],
-          [100, 10],
-          [1000, 14],
+    layer: {
+      id: 'events',
+      type: 'circle',
+      source: 'events',
+      'source-layer': 'aggs',
+      paint: {
+        // make circles larger as the user zooms from z12 to z22
+        'circle-radius': ['step', ['get', '_count'], 4, 5, 5, 10, 7, 100, 10, 1000, 14],
+        // color circles by ethnicity, using data-driven styles
+        'circle-color': [
+          'step',
+          ['get', '_count'],
+          mapColors[0],
+          10,
+          mapColors[1],
+          100,
+          mapColors[2],
+          1000,
+          mapColors[3],
+          10000,
+          mapColors[4],
         ],
-      },
-      // color circles by ethnicity, using data-driven styles
-      'circle-color': {
-        property: '_count',
-        type: 'interval',
-        stops: [0, 10, 100, 1000, 10000].map((x, i) => [x, mapColors[i]]),
-      },
-      'circle-opacity': {
-        property: '_count',
-        type: 'interval',
-        stops: [
-          [0, 1],
-          [10, 0.8],
-          [100, 0.7],
-          [1000, 0.6],
-          [10000, 0.6],
-        ],
-      },
-      'circle-stroke-color': mapColors[1],
-      'circle-stroke-width': {
-        property: '_count',
-        type: 'interval',
-        stops: [
-          [0, 1],
-          [10, 0],
-        ],
+        'circle-opacity': ['step', ['get', '_count'], 1, 10, 0.8, 100, 0.7, 1000, 0.6, 10000, 0.6],
+        'circle-stroke-color': mapColors[1],
+        'circle-stroke-width': ['step', ['get', '_count'], 1, 10, 0],
       },
     },
   };

@@ -2,12 +2,14 @@ import {
   ActionIcon,
   Badge,
   Box,
+  Center,
   Container,
   Divider,
   Flex,
   FloatingIndicator,
   Group,
   Image,
+  Paper,
   Skeleton,
   Tabs,
   Text,
@@ -86,18 +88,42 @@ export function Component() {
         <Group justify='space-between' align='start'>
           <Group align='start'>
             <Box mr='md'>
-              <Skeleton w={90} h={90} radius='lg' visible={!data || !imageLoaded}>
-                <Image
-                  src={
-                    data.imageIdentifier &&
-                    `${import.meta.env.VITE_ALA_IMAGES}/image/${data.imageIdentifier}/thumbnail`
-                  }
-                  w={90}
-                  h={90}
-                  radius='lg'
-                  alt={`Representative image of ${data.classification.scientificName}`}
-                  onLoad={() => setImageLoaded(true)}
-                />
+              <Skeleton
+                w={90}
+                h={90}
+                radius='lg'
+                visible={!data || (data && !data.imageIdentifier) || !imageLoaded}
+              >
+                {data?.imageIdentifier ? (
+                  <Image
+                    src={
+                      data.imageIdentifier &&
+                      `${import.meta.env.VITE_ALA_IMAGES}/image/${data.imageIdentifier.split(',')[0]}/thumbnail`
+                    }
+                    w={90}
+                    h={90}
+                    radius='lg'
+                    alt={`Representative image of ${data.classification.scientificName}`}
+                    onLoad={() => setImageLoaded(true)}
+                  />
+                ) : (
+                  <Paper
+                    w={90}
+                    h={90}
+                    radius='lg'
+                    bg='light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-6))'
+                  >
+                    <Center w={90} h={90}>
+                      <IconPhoto
+                        style={{
+                          color:
+                            'light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-3))',
+                        }}
+                        size='2rem'
+                      />
+                    </Center>
+                  </Paper>
+                )}
               </Skeleton>
             </Box>
             <Box>

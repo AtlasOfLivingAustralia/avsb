@@ -22,7 +22,7 @@ function ErrorBoundary() {
                 w={125}
                 h={125}
                 src={spottedPlant}
-                alt='Spotted plant'
+                alt='Spotted plant error image'
               />
             </Center>
           </div>
@@ -65,7 +65,7 @@ function ErrorBoundary() {
                 w={100}
                 h={100}
                 src={waterTap}
-                alt='Leaky water tap'
+                alt='Leaky water tap error image'
               />
             </Center>
           </div>

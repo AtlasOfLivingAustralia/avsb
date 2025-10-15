@@ -71,7 +71,7 @@ function Header() {
       <Group h={60} px={20} justify='space-between'>
         <Group gap='lg'>
           <Link to='/' style={{ display: 'flex' }} aria-label='Go to home'>
-            <Image src={logo} />
+            <Image src={logo} alt='Australian virtual seedbank logo' />
           </Link>
           <Group gap={2}>
             <Button

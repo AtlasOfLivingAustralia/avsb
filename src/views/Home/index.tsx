@@ -154,7 +154,7 @@ function Home() {
             >
               <picture>
                 <source srcSet={logoWhite} media='(prefers-color-scheme: dark)' />
-                <Image w={80} src={logoGrey} alt='AVSB Logo' />
+                <Image w={80} src={logoGrey} alt='Australian virtual seedbank logo' />
               </picture>
               <Text c='dimmed' size='sm' ta={mdOrLarger ? 'left' : 'center'}>
                 We acknowledge Partnership organisations for providing their data, and the Director

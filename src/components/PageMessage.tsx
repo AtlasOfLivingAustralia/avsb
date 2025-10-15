@@ -17,8 +17,15 @@ function PageMessage({ title, subtitle, message }: PageMessageProps) {
         <Group gap='xl' mr={50}>
           <div style={{ position: 'relative', width: 150, height: 150 }}>
             <Blob style={{ position: 'absolute' }} width={150} height={150} />
-            <Center h='100%' style={{ zIndex: 10 }}>
-              <Image fit='contain' w={100} h={100} src={waterTap} alt='Leaky water tap' />
+            <Center h='100%'>
+              <Image
+                style={{ zIndex: 10 }}
+                fit='contain'
+                w={100}
+                h={100}
+                src={waterTap}
+                alt='Leaky water tap'
+              />
             </Center>
           </div>
           <Stack gap={0}>

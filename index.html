@@ -5,14 +5,26 @@
     <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Inter Font -->
+    <!-- Font Fetching -->
+    <!-- Warm up origin -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload asynchronously -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend+Deca:wght@600;700&family=Poppins:wght@700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend+Deca:wght@600;700&display=swap"
     />
 
+    <!-- Preload asynchronously -->
+    <link
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend+Deca:wght@600;700&display=swap"
+    />
+    
     <!-- Analytics -->
     <script
       src="https://cdn.usefathom.com/script.js"
@@ -21,6 +33,7 @@
     ></script>
 
     <title>Australian Virtual Seed Bank</title>
+    <meta name="description" content="The Australian Virtual Seed Bank is an online portal that provides access to aggregated seed data sourced from various seed banks across Australia as part of the Australian Seed Bank Partnership.">
   </head>
   <body>
     <div id="root"></div>

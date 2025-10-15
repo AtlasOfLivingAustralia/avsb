@@ -66,7 +66,9 @@ function MapComponent({ width, height, token, itemListHeight, radius, onFullscre
         import.meta.env.VITE_API_ALA
       }/event/tile/event/mvt/{z}/{x}/{y}?queryId=${token}`;
 
-      map.current.addLayer(getMapLayer(tile));
+      const config = getMapLayer(tile);
+      map.current.addSource('events', config.source);
+      map.current.addLayer(config.layer);
       map.current.on('mouseenter', 'events', (e) => {
         if (map.current) {
           map.current.getCanvas().style.cursor = 'pointer';
@@ -132,6 +134,15 @@ function MapComponent({ width, height, token, itemListHeight, radius, onFullscre
                     type: 'equals',
                     key: 'taxonKey',
                     value: params.guid,
+                  },
+                ]
+              : []),
+            ...(params.resource
+              ? [
+                  {
+                    type: 'equals',
+                    key: 'datasetKey',
+                    value: params.resource,
                   },
                 ]
               : []),

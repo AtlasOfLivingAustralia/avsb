@@ -1,5 +1,3 @@
-// LogRocket
-import LogRocket from 'logrocket';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { PageMessage } from './components';
@@ -14,12 +12,7 @@ import '@mantine/dates/styles.css';
 import '@mantine/nprogress/styles.css';
 import './index.css';
 
-const { VITE_APP_LOGROCKET_ENABLED, VITE_APP_LOGROCKET_ID, VITE_APP_MAINTENANCE_MODE } = import.meta
-  .env;
-
-// Initialize LogRocket
-if (VITE_APP_LOGROCKET_ENABLED === 'true' && VITE_APP_LOGROCKET_ID)
-  LogRocket.init(VITE_APP_LOGROCKET_ID);
+const { VITE_APP_MAINTENANCE_MODE } = import.meta.env;
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
