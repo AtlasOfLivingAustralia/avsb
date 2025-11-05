@@ -224,7 +224,7 @@ export function Component() {
               height={350}
               alt={`Background ${selectedMedia?.title || 'image for currently selected image'}`}
             />
-            <Overlay blur={8} backgroundOpacity={0.3} color='#ffffff' center zIndex={100}>
+            <Overlay blur={8} backgroundOpacity={0.3} color='#ffffff' center zIndex={50}>
               {/** biome-ignore lint/a11y/noNoninteractiveElementInteractions: Needed for the onLoad handler */}
               <img
                 style={{ objectFit: 'contain', width: '100%', height: '100%' }}
@@ -259,9 +259,8 @@ export function Component() {
                   From{' '}
                   <Anchor
                     target='_blank'
-                    href={`${import.meta.env.VITE_ALA_COLLECTORY}/public/show/${
-                      selectedMedia?.provider
-                    }`}
+                    href={`${import.meta.env.VITE_ALA_COLLECTORY}/public/show/${selectedMedia?.provider
+                      }`}
                   >
                     {selectedMedia?.providerLiteral}
                   </Anchor>

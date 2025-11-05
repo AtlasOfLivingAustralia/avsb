@@ -1,22 +1,44 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: Lots of no-typing here */
-import { useState } from 'react';
+import { Event, EventSearchResult, Predicate } from '#/api/graphql/types';
 import {
-  Text,
-  Group,
-  ThemeIcon,
-  GroupProps,
   ActionIcon,
-  Tooltip,
-  Popover,
   Button,
+  Checkbox,
+  Divider,
+  Group,
+  GroupProps,
+  Modal,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  ThemeIcon,
+  Tooltip,
 } from '@mantine/core';
 import { IconDownload, IconFileDownload } from '@tabler/icons-react';
-import { Event, EventSearchResult, Predicate } from '#/api/graphql/types';
 import { saveAs } from 'file-saver';
 import get from 'lodash/get';
+import { useState } from 'react';
 
 // Config
 import { performGQLQuery } from '#/api';
+import { useDisclosure } from '@mantine/hooks';
+
+const DOWNLOAD_CATEGORIES = [
+  "Biosecurity management/planning",
+  "Citizen science",
+  "Collection management",
+  "Conservation management/planning",
+  "Ecological research",
+  "Education",
+  "Environmental assessment",
+  "Other",
+  "Other scientific research",
+  "Restoration/remediation",
+  "Scientific research",
+  "Species modelling",
+  "Systematic research/taxonomy"
+];
 
 export type DownloadField = { label: string; key: string; formatter?: (field: any) => any };
 
@@ -48,12 +70,21 @@ const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
 
 function Downloads({ query, total, predicates, fields, fileName, fetcher }: DownloadsProps) {
   // Download state
+  const [downloadReason, setDownloadReason] = useState<string | null>(null);
+  const [downloadOrg, setDownloadOrg] = useState<string>('');
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const downloadRecords = async () => {
     if (!isDownloading) {
       try {
         setIsDownloading(true);
+
+        // Push download reason to fathom
+        if (window.fathom) {
+          window.fathom.trackEvent(`Dataset download - ${downloadReason}`)
+        }
+
         const { data: response } = await performGQLQuery<{
           data: { eventSearch: EventSearchResult };
         }>(query, {
@@ -75,40 +106,32 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
       }
 
       setIsDownloading(false);
+      close();
     }
   };
 
   return (
-    <Popover width={200} position='left' withArrow shadow='md'>
-      <Popover.Target>
-        <Tooltip
-          transitionProps={{ transition: 'pop' }}
-          offset={10}
-          withArrow
-          label='Download Records'
-          position='left'
+    <>
+      <Modal opened={opened} onClose={close} title={<Group gap='sm'>
+        <ThemeIcon variant='light' size='lg' radius='lg'>
+          <IconFileDownload size='1rem' />
+        </ThemeIcon>
+        <Text
+          style={{
+            fontFamily: 'var(--mantine-font-family-headings)',
+            fontWeight: 'bold',
+          }}
         >
-          <ActionIcon size={36} variant='outline' color='blue' aria-label='Download records'>
-            <IconDownload size='1rem' />
-          </ActionIcon>
-        </Tooltip>
-      </Popover.Target>
-      <Popover.Dropdown>
-        <Group gap='sm'>
-          <ThemeIcon variant='light' size='lg' radius='lg'>
-            <IconFileDownload size='1rem' />
-          </ThemeIcon>
-          <Text
-            style={{
-              fontFamily: 'var(--mantine-font-family-headings)',
-              fontWeight: 'bold',
-            }}
-          >
-            {total} Records
-          </Text>
-        </Group>
-        <Group mt='md'>
+          {total} Record{total > 1 ? 's' : ''}
+        </Text>
+      </Group>}>
+        <Stack>
+          <TextInput placeholder="Organisation name" value={downloadOrg} onChange={(ev) => setDownloadOrg(ev.currentTarget.value)} />
+          <Select value={downloadReason} onChange={setDownloadReason} placeholder="Select download reason" data={DOWNLOAD_CATEGORIES} />
+          <Divider opacity={0.5} my="xs" variant="dashed" />
+          <Checkbox c="dimmed" size="xs" label="Remember for next time" />
           <Button
+            disabled={!downloadReason || downloadOrg.length < 1}
             onClick={downloadRecords}
             size='xs'
             variant='filled'
@@ -117,9 +140,20 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
           >
             {isDownloading ? 'Downloading' : 'Download'}
           </Button>
-        </Group>
-      </Popover.Dropdown>
-    </Popover>
+        </Stack>
+      </Modal>
+      <Tooltip
+        transitionProps={{ transition: 'pop' }}
+        offset={10}
+        withArrow
+        label='Download Records'
+        position='left'
+      >
+        <ActionIcon size={36} variant='outline' color='blue' aria-label='Download records' onClick={open}>
+          <IconDownload size='1rem' />
+        </ActionIcon>
+      </Tooltip>
+    </>
   );
 }
 

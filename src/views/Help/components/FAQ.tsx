@@ -4,6 +4,7 @@ import {
   Alert,
   Anchor,
   Center,
+  Code,
   Container,
   Group,
   List,
@@ -388,6 +389,20 @@ function FAQ() {
               is any accession or trial data for one of these taxa and who has seed for it in their
               collection is to do a general search for that taxon.
             </Text>
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item value='attribute-data'>
+          <Accordion.Control>
+            How do I properly attribute the data in the AVSB?
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Stack gap='sm'>
+              <Text size='sm'>When using data from the Australian Virtual Seed Bank in research, publications, or presentations, please acknowledge both the seed bank that contributed the data and the AVSB as the platform through which the data were accessed.</Text>
+              <Text size='sm'>A suggested citation is:</Text>
+              <Code style={{ borderRadius: 'var(--mantine-radius-lg)' }} p='sm'>
+                Seed bank name (year of data). Seed collection and/or germination data accessed via the Australian Virtual Seed Bank (https://seedbank.ala.org.au) on [date accessed].
+              </Code>
+            </Stack>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>

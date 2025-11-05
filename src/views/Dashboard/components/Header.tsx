@@ -144,7 +144,7 @@ function Header() {
               label='Help / FAQ'
               position='right'
               aria-label='Help / FAQ'
-              zIndex={600}
+
             >
               <ActionIcon
                 color='gray'
@@ -163,7 +163,7 @@ function Header() {
               withArrow
               label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
               position='right'
-              zIndex={600}
+
             >
               <ActionIcon
                 color='gray'

@@ -45,7 +45,6 @@ function Dashboard() {
             backgroundColor: 'transparent',
             border: 'none',
           }}
-          zIndex={500}
         >
           <Header />
         </AppShell.Header>
