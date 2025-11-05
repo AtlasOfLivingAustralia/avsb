@@ -170,7 +170,7 @@ export function Component() {
   if (initialMedia === null || initialMedia.specimens.length + initialMedia.other.length === 0)
     return (
       <Center h='calc(100vh - 380px)'>
-        <Stack justify='center'>
+        <Stack align='center'>
           <IconAlertCircle size='3rem' />
           <Text c='dimmed'>No media found for this taxon</Text>
         </Stack>
