@@ -61,7 +61,7 @@ function TreatmentCard({ event }: TreatmentCardProps) {
                       </Text>
                     ) : (
                       <Text size='sm' fw='bold' c='dimmed'>
-                        Not Availablefw=
+                        Not Available
                       </Text>
                     )}
                   </Box>

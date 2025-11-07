@@ -75,7 +75,7 @@ export default function MediaCollection({
       ) : (
         <Grid.Col span={12}>
           <Center>
-            <Stack justify='center'>
+            <Stack align='center'>
               <IconAlertCircle size='3rem' />
               <Text c='dimmed'>No media found for this taxon</Text>
             </Stack>

@@ -13,12 +13,12 @@ interface SDSProps {
 
 function SDS({ instances }: SDSProps) {
   return (
-    <Center w='100%'>
-      <Stack w='100%' justify='center' gap='xl'>
-        <ThemeIcon size={100} color='yellow' variant='light' radius={50}>
-          <IconAlertTriangle size='2.5rem' />
-        </ThemeIcon>
-        <Stack gap='xs' justify='center'>
+    <Center w='100%' h='100%'>
+      <Stack w='100%' align='center' gap='lg'>
+        <Stack gap='md' align='center'>
+          <ThemeIcon size={100} color='yellow' variant='light' radius={50}>
+            <IconAlertTriangle size='2.5rem' />
+          </ThemeIcon>
           <Title order={3} mb='xs'>
             Sensitive Species
           </Title>
