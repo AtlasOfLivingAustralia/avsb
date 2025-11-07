@@ -312,11 +312,11 @@ function AccessionPanel() {
                 <SDS instances={sds} />
               ) : (
                 <Center w='100%'>
-                  <Stack w='100%' justify='center' gap='xl'>
+                  <Stack w='100%' align='center' gap='xl'>
                     <ThemeIcon size={100} variant='light' radius={50}>
                       <IconMapPinOff size='2.5rem' />
                     </ThemeIcon>
-                    <Stack gap='xs' justify='center'>
+                    <Stack gap='xs' align='center'>
                       <Title order={3} mb='xs'>
                         Missing Coordinates
                       </Title>

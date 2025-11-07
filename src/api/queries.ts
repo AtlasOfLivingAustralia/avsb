@@ -121,6 +121,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
       total
       results {
         eventID
+        eventRemarks
         parentEventID
         locality
         datasetTitle
@@ -164,6 +165,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
       total
       results {
         eventID
+        eventRemarks
         parentEventID
         datasetTitle
         distinctTaxa {
