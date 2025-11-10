@@ -70,19 +70,26 @@ const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
 
 function Downloads({ query, total, predicates, fields, fileName, fetcher }: DownloadsProps) {
   // Download state
-  const [downloadReason, setDownloadReason] = useState<string | null>(null);
-  const [downloadOrg, setDownloadOrg] = useState<string>('');
+  const [downloadReason, setDownloadReason] = useState<string | null>(localStorage.getItem('avsb-download-reason') || '');
+  const [downloadOrg, setDownloadOrg] = useState<string>(localStorage.getItem('avsb-download-org') || '');
+  const [downloadRemember, setDownloadRemeber] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [opened, { open, close }] = useDisclosure(false);
 
   const downloadRecords = async () => {
     if (!isDownloading) {
       try {
+        // Update localStorage with download reason & org
+        if (downloadRemember) {
+          if (downloadReason) localStorage.setItem('avsb-download-reason', downloadReason);
+          localStorage.setItem('avsb-download-org', downloadOrg);
+        }
+
         setIsDownloading(true);
 
         // Push download reason to fathom
         if (window.fathom) {
-          window.fathom.trackEvent(`Dataset download - ${downloadReason}`)
+          window.fathom.trackEvent(`Dataset download - ${downloadReason}${downloadOrg.length > 0 ? ` - ${downloadOrg}` : ''}`)
         }
 
         const { data: response } = await performGQLQuery<{
@@ -101,6 +108,16 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
           }),
           `${fileName}, ${new Date().toLocaleDateString()}.csv`,
         );
+
+        if (!downloadRemember) {
+          // Clear the state
+          setDownloadOrg('');
+          setDownloadReason(null);
+
+          // Clear localStorage
+          localStorage.removeItem('avsb-download-reason');
+          localStorage.removeItem('avsb-download-org');
+        }
       } catch (error) {
         console.log(error);
       }
@@ -128,8 +145,7 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
         <Stack>
           <TextInput placeholder="Organisation name" value={downloadOrg} onChange={(ev) => setDownloadOrg(ev.currentTarget.value)} />
           <Select value={downloadReason} onChange={setDownloadReason} placeholder="Select download reason" data={DOWNLOAD_CATEGORIES} />
-          <Divider opacity={0.5} my="xs" variant="dashed" />
-          <Checkbox c="dimmed" size="xs" label="Remember for next time" />
+          <Checkbox checked={downloadRemember} onChange={(event) => setDownloadRemeber(event.currentTarget.checked)} c="dimmed" size="xs" label="Remember for next time" />
           <Button
             disabled={!downloadReason || downloadOrg.length < 1}
             onClick={downloadRecords}

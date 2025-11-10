@@ -13,7 +13,7 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons-react';
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import classes from './Summaries.module.css';
 
 interface SummaryCardProps {
@@ -22,8 +22,6 @@ interface SummaryCardProps {
 }
 
 function SummaryCard({ accessions, trials }: SummaryCardProps) {
-  const navigate = useNavigate();
-
   // Hoist the data from the response
   const { total: totalAccessions, results } = accessions?.documents || {};
   const { total: totalTrials } = trials?.documents || {};
@@ -31,72 +29,70 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
   const event = results?.[0];
   const loading = !results;
 
-  const onCardClick = () => {
-    if (event) navigate(`seedbank/${event.datasetKey}`);
-  };
-
   return (
-    <UnstyledButton onClick={onCardClick} className={classes.root}>
-      <Box h='100%' className={classes.wrapper}>
-        <Skeleton visible={loading}>
-          <Box style={{ display: 'flex' }}>
-            <Text
-              lineClamp={2}
-              mah={48}
-              style={{
-                fontFamily: 'var(--mantine-font-family-headings)',
-                color: 'light-dark(var(--mantine-color-dark-4), var(--mantine-color-gray-3))',
-              }}
-            >
-              {event?.datasetTitle || 'Seed Bank Name Placeholder Value Here'}
-            </Text>
-            <Box w={24} h={24} ml='auto' className={classes.arrow}>
-              <IconArrowUpRight className={classes.arrowIcon} size={24} />
+    <Link to={`seedbank/${event?.datasetKey}`}>
+      <UnstyledButton className={classes.root}>
+        <Box h='100%' className={classes.wrapper}>
+          <Skeleton visible={loading}>
+            <Box style={{ display: 'flex' }}>
+              <Text
+                lineClamp={2}
+                mah={48}
+                style={{
+                  fontFamily: 'var(--mantine-font-family-headings)',
+                  color: 'light-dark(var(--mantine-color-dark-4), var(--mantine-color-gray-3))',
+                }}
+              >
+                {event?.datasetTitle || 'Seed Bank Name Placeholder Value Here'}
+              </Text>
+              <Box w={24} h={24} ml='auto' className={classes.arrow}>
+                <IconArrowUpRight className={classes.arrowIcon} size={24} />
+              </Box>
             </Box>
-          </Box>
-        </Skeleton>
-        <Grid mt='md'>
-          <Grid.Col span={6}>
-            <Group gap='xs'>
-              <Skeleton width={34} height={34} circle visible={loading}>
-                <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
-                  <Text fw='bold' size='xs'>
-                    {getAbbreviatedNumber(totalAccessions || 0)}
+          </Skeleton>
+          <Grid mt='md'>
+            <Grid.Col span={6}>
+              <Group gap='xs'>
+                <Skeleton width={34} height={34} circle visible={loading}>
+                  <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
+                    <Text fw='bold' size='xs'>
+                      {getAbbreviatedNumber(totalAccessions || 0)}
+                    </Text>
+                  </ThemeIcon>
+                </Skeleton>
+                <Skeleton visible={loading} maw={50}>
+                  <Text
+                    size='sm'
+                    c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-4))'
+                  >
+                    Accessions
                   </Text>
-                </ThemeIcon>
-              </Skeleton>
-              <Skeleton visible={loading} maw={50}>
-                <Text
-                  size='sm'
-                  c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-4))'
-                >
-                  Accessions
-                </Text>
-              </Skeleton>
-            </Group>
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <Group gap='xs'>
-              <Skeleton width={34} height={34} circle visible={loading}>
-                <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
-                  <Text fw='bold' size='xs'>
-                    {getAbbreviatedNumber(totalTrials || 0)}
+                </Skeleton>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <Group gap='xs'>
+                <Skeleton width={34} height={34} circle visible={loading}>
+                  <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
+                    <Text fw='bold' size='xs'>
+                      {getAbbreviatedNumber(totalTrials || 0)}
+                    </Text>
+                  </ThemeIcon>
+                </Skeleton>
+                <Skeleton visible={loading} maw={50}>
+                  <Text
+                    size='sm'
+                    c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-4))'
+                  >
+                    Trials
                   </Text>
-                </ThemeIcon>
-              </Skeleton>
-              <Skeleton visible={loading} maw={50}>
-                <Text
-                  size='sm'
-                  c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-4))'
-                >
-                  Trials
-                </Text>
-              </Skeleton>
-            </Group>
-          </Grid.Col>
-        </Grid>
-      </Box>
-    </UnstyledButton>
+                </Skeleton>
+              </Group>
+            </Grid.Col>
+          </Grid>
+        </Box>
+      </UnstyledButton>
+    </Link>
   );
 }
 
@@ -104,8 +100,8 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
 const QUERY_SEEDBANK_SUMMARY_ALL = `
 query list {
   ${queries.DATA_RESOURCES.map((dataResource: string) =>
-    queries.QUERY_SEEDBANK_SUMMARY_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
-  ).join('')}
+  queries.QUERY_SEEDBANK_SUMMARY_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
+).join('')}
 }
 `;
 

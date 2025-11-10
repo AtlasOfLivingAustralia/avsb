@@ -299,7 +299,7 @@ export function Component() {
               marginRight: `calc(var(--mantine-spacing-lg)  * -1)`,
             }}
           />
-          <List spacing='xs'>
+          <List spacing='xs' p={0}>
             {imageProperties
               .filter(({ key }) => selectedMedia?.[key])
               .map(({ key, name, icon: Icon }) => (
