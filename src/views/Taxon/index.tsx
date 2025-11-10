@@ -92,7 +92,7 @@ export function Component() {
                 w={90}
                 h={90}
                 radius='lg'
-                visible={!data || (data && !data.imageIdentifier) || !imageLoaded}
+                visible={Boolean(data.imageIdentifier) && !imageLoaded}
               >
                 {data?.imageIdentifier ? (
                   <Image
