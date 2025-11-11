@@ -1,5 +1,6 @@
 import queries from '#/api/queries';
 import {
+  Alert,
   Anchor,
   Badge,
   Box,
@@ -25,6 +26,7 @@ import {
   IconExternalLink,
   // IconEye,
   IconFileFunction,
+  IconInfoCircle,
   IconPlant,
   IconSeeding,
   IconTestPipe,
@@ -174,51 +176,54 @@ export function Component() {
         preserveAspectRatio='none'
         waveType='bodyBottom'
       />
-      <Container size='lg' p='lg' mt={mdOrLarger ? -120 : -30} mb='xl'>
-        <Group justify='space-between'>
+      <Container size='lg' p='lg' mt={mdOrLarger ? -80 : -30} mb='xl'>
+        <Group align='flex-start' justify='space-between'>
           <Stack w={mdOrLarger ? 500 : '100%'} mb='xl' gap='xl'>
-            <Title fw='bold' size={42}>
-              <Text
-                component='span'
-                inherit
-                variant='gradient'
-                gradient={{ from: '#A6CE39', to: '#487759' }}
-              >
-                {stats.epbcSpecies.total}
-              </Text>{' '}
-              EPBC Species
-            </Title>
-            <Text size='sm'>
-              The Environment Protection and Biodiversity Conservation Act (EPBC Act) is
-              Australia&apos;s national legislation for protecting threatened species and
-              ecosystems. It recognises species at risk of extinction and prioritises their
-              conservation. By storing seeds from EPBC-listed plants, seed banks provide an
-              insurance policy against extinction, enabling restoration and recovery efforts in the
-              wild. While collections are held for these species, they may be small and not be
-              representative of the entire species. The portal contains{' '}
-              <b>{stats.epbcSpecies.total}</b> species listed under this act.
-            </Text>
-            <Anchor href='https://www.dcceew.gov.au/environment/epbc' target='_blank'>
-              Read more about the EPBC Act here{' '}
-              <IconExternalLink size='1rem' style={{ marginLeft: 4 }} />
-            </Anchor>
-            <Paper withBorder>
-              <ScrollArea h={200}>
-                <Stack gap='xs' py='xs'>
-                  {epbcDatasets.map(([key, count], index) => (
-                    <Fragment key={key}>
-                      <Flex justify='space-between' px='sm'>
-                        <Text size='sm'>{datasets[key]?.datasetTitle || 'Unknown Dataset'}</Text>
-                        <Badge variant='light' ml='sm' miw={50}>
-                          {count}
-                        </Badge>
-                      </Flex>
-                      {index !== epbcDatasets.length - 1 && <Divider />}
-                    </Fragment>
-                  ))}
-                </Stack>
-              </ScrollArea>
-            </Paper>
+            <Stack gap='xs'>
+              <Title fw='bold' size={42}>
+                Threatened species in our collections
+              </Title>
+              <Title c='dimmed' order={2}>Nationally listed species</Title>
+              <Text size='sm' mt='md'>
+                The Environment Protection and Biodiversity Conservation Act (EPBC Act) is
+                Australia&apos;s national legislation for protecting threatened species and
+                ecosystems. It recognises species at risk of extinction and prioritises their
+                conservation. By storing seeds from nationally listed plants, seed banks provide an
+                insurance policy against extinction, enabling restoration and recovery efforts in the
+                wild.
+              </Text>
+              <Text size='sm'>The portal contains{' '}
+                <b>{stats.epbcSpecies.total}</b> nationally listed species listed under the EPBC act.{' '}
+              </Text>
+              <Anchor href='https://www.dcceew.gov.au/environment/epbc' target='_blank' size='sm'>
+                Read more about the EPBC Act here{' '}
+                <IconExternalLink size='1rem' style={{ marginLeft: 4 }} />
+              </Anchor>
+              <Alert mt='sm' icon={<IconInfoCircle />}>While collections are held for these species, they could be small and may not be representative of the entire species.</Alert>
+            </Stack>
+            <Stack>
+              <Title c='dimmed' order={2}>State and Territory listed species</Title>
+              <Text size='sm'>
+
+              </Text>
+              <Paper withBorder>
+                <ScrollArea h={200}>
+                  <Stack gap='xs' py='xs'>
+                    {epbcDatasets.map(([key, count], index) => (
+                      <Fragment key={key}>
+                        <Flex justify='space-between' px='sm'>
+                          <Text size='sm'>{datasets[key]?.datasetTitle || 'Unknown Dataset'}</Text>
+                          <Badge variant='light' ml='sm' miw={50}>
+                            {count}
+                          </Badge>
+                        </Flex>
+                        {index !== epbcDatasets.length - 1 && <Divider />}
+                      </Fragment>
+                    ))}
+                  </Stack>
+                </ScrollArea>
+              </Paper>
+            </Stack>
           </Stack>
           {mdOrLarger && (
             <div style={{ width: 450, height: 450 }}>
