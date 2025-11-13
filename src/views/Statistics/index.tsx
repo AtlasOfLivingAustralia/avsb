@@ -4,6 +4,7 @@ import {
   Anchor,
   Badge,
   Box,
+  Button,
   Center,
   Container,
   Divider,
@@ -20,25 +21,24 @@ import {
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import {
+  IconArrowDown,
   IconBuilding,
   IconColorPicker,
-  // IconDownload,
   IconExternalLink,
-  // IconEye,
   IconFileFunction,
   IconInfoCircle,
   IconPlant,
   IconSeeding,
   IconTestPipe,
 } from '@tabler/icons-react';
-import { Fragment, useMemo } from 'react';
-import { useLoaderData } from 'react-router';
+import { Fragment } from 'react';
 
 import { Blob } from '#/components';
 import { Wave } from '#/components/Wave';
 import { breakpoints } from '#/theme/constants';
 
 import ecologyEarth from '../../assets/ecology-earth.png';
+import seedSprouting from '../../assets/seed-sprouting.png';
 import stats from '../../assets/stats/2025.json';
 import StatCard from './components/StatCard';
 
@@ -65,36 +65,46 @@ const recordStats = [
 const speciesStats = [
   {
     id: 'speciesWithAccession',
-    name: 'Species with Accession',
+    name: 'Species with an accession',
     icon: IconPlant,
   },
   {
     id: 'speciesWithTrial',
-    name: 'Species with Trial',
+    name: 'Species with a trial',
     icon: IconFileFunction,
   },
 ];
 
-interface Dataset {
-  datasetTitle: string;
-  datasetKey: string;
-}
-
 export function Component() {
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
-  const datasets = useLoaderData() as { [key: string]: Dataset };
+  // const datasets = useLoaderData() as { [key: string]: Dataset };
 
   return (
     <>
       <Container size='lg' p='lg' mt={-30}>
         <Space h={45} />
         <Center>
-          <Text c='dimmed' size='lg' fw='bold'>
-            The following statistics are current as at September, 2025
-          </Text>
+          <Stack ta='center' justify='center' gap={4}>
+            <Text size='sm' c='dimmed'>
+              The following statistics are current as at
+            </Text>
+            <Text ff='var(--mantine-font-family-headings)' c='dimmed' fz="h2" fw='bold'>
+              November, 2025
+            </Text>
+            <Paper p='xs' mt='lg' radius='xl'>
+              <Stack>
+                <Flex direction={mdOrLarger ? 'row' : 'column'} justify='center' gap='xs'>
+                  <Button href="#records" component='a' variant='light' leftSection={<IconArrowDown size="1rem" />}>Records</Button>
+                  <Button href="#threatened" component='a' variant='light' leftSection={<IconArrowDown size="1rem" />}>Threatened species</Button>
+                  <Button href="#explore" component='a' variant='light' leftSection={<IconArrowDown size="1rem" />}>Data explorer</Button>
+                </Flex>
+              </Stack>
+            </Paper>
+          </Stack>
         </Center>
       </Container>
       <Wave
+        id="records"
         width='100%'
         height={mdOrLarger ? 250 : 125}
         preserveAspectRatio='none'
@@ -106,76 +116,47 @@ export function Component() {
         style={{
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
+        pb='xl'
       >
-        <Container size='lg' p='lg'>
-          <Grid>
+        <Container size='lg' p='lg' pb='xl'>
+          <Grid gutter='lg'>
             <Grid.Col span={12}>
-              <Title>Records</Title>
+              <Title order={2} c='dimmed'>Records</Title>
             </Grid.Col>
-            {recordStats.map((stat, index) => (
-              <>
-                <Grid.Col key={stat.id} span={{ xl: 3, lg: 3, md: 3, sm: 12, xs: 12 }}>
-                  <StatCard {...stat} />
-                </Grid.Col>
-                {index !== recordStats.length - 1 && (
-                  <Grid.Col span={mdOrLarger ? 'content' : 12}>
-                    {mdOrLarger ? (
-                      <Divider orientation='vertical' h='100%' px='lg' />
-                    ) : (
-                      <Divider w='100%' />
-                    )}
-                  </Grid.Col>
-                )}
-              </>
+            {recordStats.map((stat) => (
+              <Grid.Col key={stat.id} span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+                <StatCard {...stat} />
+              </Grid.Col>
             ))}
             <Grid.Col span={12}>
-              <Divider variant='dashed' my='sm' />
+              <Title order={2} c='dimmed' pt='xl'>Datasets & Species</Title>
             </Grid.Col>
-            <Grid.Col span={12}>
-              <Title>Datasets</Title>
-            </Grid.Col>
-            <Grid.Col span={{ xl: 3, lg: 3, md: 3, sm: 12, xs: 12 }}>
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
               <StatCard
                 id={queries.DATA_RESOURCES.length}
                 name='Organisations'
                 icon={IconBuilding}
               />
             </Grid.Col>
-            <Grid.Col span={12}>
-              <Divider variant='dashed' my='sm' />
-            </Grid.Col>
-            <Grid.Col span={12}>
-              <Title>Species</Title>
-            </Grid.Col>
-            {speciesStats.map((stat, index) => (
-              <>
-                <Grid.Col key={stat.id} span={{ xl: 3, lg: 3, md: 4, sm: 12, xs: 12 }}>
-                  <StatCard {...stat} />
-                </Grid.Col>
-                {index !== speciesStats.length - 1 && (
-                  <Grid.Col span={mdOrLarger ? 'content' : 12}>
-                    {mdOrLarger ? (
-                      <Divider orientation='vertical' h='100%' px='lg' />
-                    ) : (
-                      <Divider w='100%' />
-                    )}
-                  </Grid.Col>
-                )}
-              </>
+            {speciesStats.map((stat) => (
+              <Grid.Col key={stat.id} span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+                <StatCard {...stat} />
+              </Grid.Col>
             ))}
           </Grid>
         </Container>
       </Box>
       <Wave
+        id="threatened"
         width='100%'
         height={mdOrLarger ? 250 : 125}
         preserveAspectRatio='none'
         waveType='bodyBottom'
       />
-      <Container size='lg' p='lg' mt={mdOrLarger ? -80 : -30} mb='xl'>
-        <Group align='flex-start' justify='space-between'>
-          <Stack w={mdOrLarger ? 500 : '100%'} mb='xl' gap='xl'>
-            <Stack gap='xs'>
+      <Container size='lg' p='lg' mt={mdOrLarger ? -80 : -30} mb='md'>
+        <Group align='flex-start' justify='space-between' gap="xs">
+          <Stack w={mdOrLarger ? 490 : '100%'} mb='xl' gap='xl'>
+            <Stack gap='md'>
               <Title fw='bold'>
                 Threatened species in our collections
               </Title>
@@ -197,36 +178,13 @@ export function Component() {
               </Anchor>
               <Alert mt='sm' icon={<IconInfoCircle />}>While collections are held for these species, they could be small and may not be representative of the entire species.</Alert>
             </Stack>
-            <Stack>
-              <Title c='dimmed' order={3}>State and Territory listed species</Title>
-              <Text size='sm'>
-                The Partnership also holds collections of species listed under relevant state and territory legislation:
-              </Text>
-              <Paper withBorder>
-                <ScrollArea h={200}>
-                  <Stack gap='xs' py='xs'>
-                    {STATE_SENSITIVE.map(([list, count], index) => (
-                      <Fragment key={list}>
-                        <Flex justify='space-between' px='sm'>
-                          <Text size='sm'>{list}</Text>
-                          <Badge variant='light' ml='sm' miw={50}>
-                            {count}
-                          </Badge>
-                        </Flex>
-                        {index !== STATE_SENSITIVE.length - 1 && <Divider />}
-                      </Fragment>
-                    ))}
-                  </Stack>
-                </ScrollArea>
-              </Paper>
-            </Stack>
           </Stack>
           {mdOrLarger && (
-            <div style={{ width: 450, height: 450 }}>
+            <div style={{ width: 450, height: 450, transform: 'rotate(85deg)' }}>
               <Blob style={{ position: 'absolute' }} width={450} height={450} />
               <Center h='100%'>
                 <Image
-                  style={{ zIndex: 10 }}
+                  style={{ zIndex: 10, transform: 'rotate(-85deg)' }}
                   w={200}
                   h={330}
                   src={ecologyEarth}
@@ -236,6 +194,80 @@ export function Component() {
             </div>
           )}
         </Group>
+      </Container>
+      <Wave
+        id="explore"
+        width='100%'
+        height={mdOrLarger ? 250 : 125}
+        preserveAspectRatio='none'
+        waveType={mdOrLarger ? 'body' : 'simple'}
+      />
+      <Box
+        mt={mdOrLarger ? -125 : -25}
+        mb={-5}
+        style={{
+          backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
+        }}
+      >
+        <Container size='lg' p='lg'>
+          <Group align='flex-start' justify='space-between' mt='xl' gap='xs'>
+            {mdOrLarger && (
+              <div style={{ width: 450, height: 450 }}>
+                <Blob style={{ position: 'absolute' }} width={450} height={450} inverse />
+                <Center h='100%'>
+                  <Image
+                    style={{ zIndex: 10 }}
+                    w={300}
+                    h={300}
+                    src={seedSprouting}
+                    alt='Watering can with plant'
+                  />
+                </Center>
+              </div>
+            )}
+            <Stack w={mdOrLarger ? 490 : '100%'} mb='xl' gap='xl'>
+              <Stack gap='md' ta={mdOrLarger ? 'right' : 'left'}>
+                <Title c='dimmed' order={3}>State and Territory listed species</Title>
+                <Text size='sm'>
+                  The Partnership also holds collections of species listed under relevant state and territory legislation:
+                </Text>
+                <Paper withBorder>
+                  <ScrollArea h={200}>
+                    <Stack gap='xs' py='xs'>
+                      {STATE_SENSITIVE.map(([list, count], index) => (
+                        <Fragment key={list}>
+                          <Flex justify='space-between' px='sm'>
+                            <Text size='sm'>{list}</Text>
+                            <Badge variant='light' ml='sm' miw={50}>
+                              {count}
+                            </Badge>
+                          </Flex>
+                          {index !== STATE_SENSITIVE.length - 1 && <Divider />}
+                        </Fragment>
+                      ))}
+                    </Stack>
+                  </ScrollArea>
+                </Paper>
+              </Stack>
+            </Stack>
+          </Group>
+        </Container>
+      </Box>
+      <Wave
+        id="threatened"
+        width='100%'
+        height={mdOrLarger ? 250 : 125}
+        preserveAspectRatio='none'
+        waveType='bodyBottom'
+      />
+      <Container size='lg' p='lg' mt={mdOrLarger ? -80 : -30} mb='xl'>
+        <Stack gap='md'>
+          <Title fw='bold'>
+            Data explorer
+          </Title>
+          <Title c='dimmed' order={3}>Explore our sensitive species</Title>
+          <Text>Data explorer here</Text>
+        </Stack>
       </Container>
     </>
   );

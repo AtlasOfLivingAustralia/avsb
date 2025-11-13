@@ -106,7 +106,7 @@ function SpeciesList({ name, species }: SpeciesListProps) {
   return (
     <Paper p='md' h='100%' withBorder>
       <Group mb='xs' justify='space-between'>
-        <Text size='xl' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
+        <Text fw={600} size='xl' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
           {species.length} Species
         </Text>
         <Group gap='xs'>
