@@ -4,7 +4,6 @@ import {
   ActionIcon,
   Button,
   Checkbox,
-  Divider,
   Group,
   GroupProps,
   Modal,

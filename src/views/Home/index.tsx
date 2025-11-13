@@ -13,6 +13,7 @@ import {
   Stack,
   Text,
   Title,
+  useComputedColorScheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconChartLine, IconExternalLink, IconMessageCircleQuestion } from '@tabler/icons-react';
@@ -30,8 +31,8 @@ import Summaries from './components/Summaries';
 
 function Home() {
   const navigate = useNavigate();
-
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
+  const colorScheme = useComputedColorScheme();
 
   return (
     <>
@@ -152,10 +153,7 @@ function Home() {
               w={mdOrLarger ? '70%' : '100%'}
               gap='md'
             >
-              <picture>
-                <source srcSet={logoWhite} media='(prefers-color-scheme: dark)' />
-                <Image w={80} src={logoGrey} alt='Australian virtual seedbank logo' />
-              </picture>
+              <Image w={80} src={colorScheme === 'dark' ? logoWhite : logoGrey} alt='Australian virtual seedbank logo' />
               <Text c='dimmed' size='sm' ta={mdOrLarger ? 'left' : 'center'}>
                 We acknowledge Partnership organisations for providing their data, and the Director
                 of National Parks and the Council of Heads of Australian Botanic Gardens for support
@@ -163,32 +161,28 @@ function Home() {
                 portal; it&apos;s a testament to the power of national collaboration, data
                 transparency, and a shared commitment to native plant conservation.
               </Text>
-            </Stack>
-            <Stack justify='center' mt={mdOrLarger ? 0 : 'xl'}>
-              <Paper p='xl' pl='md' radius='lg' withBorder>
-                <Group gap='xl'>
-                  <IconMessageCircleQuestion size='2rem' />
-                  <Stack>
-                    <Text size='lg' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
-                      Have a query?
-                    </Text>
-                    <Button
-                      variant='outline'
-                      leftSection={<IconExternalLink size='1rem' />}
-                      component='a'
-                      href='https://www.seedpartnership.org.au/about-us/contact-us/'
-                      target='_blank'
-                    >
-                      Contact Us
-                    </Button>
-                  </Stack>
-                </Group>
-              </Paper>
               <Text c='dimmed' size='sm' mt='xl'>
                 Illustration by{' '}
                 <Anchor href='https://icons8.com/illustrations/author/zD2oqC8lLBBA'>Icons 8</Anchor>{' '}
                 from <Anchor href='https://icons8.com/illustrations'>Ouch!</Anchor>
               </Text>
+            </Stack>
+            <Stack>
+              <Group>
+                <IconMessageCircleQuestion size='1.5rem' />
+                <Text size='lg' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
+                  Have a query?
+                </Text>
+              </Group>
+              <Button
+                variant='light'
+                leftSection={<IconExternalLink size='1rem' />}
+                component='a'
+                href='https://www.seedpartnership.org.au/about-us/contact-us/'
+                target='_blank'
+              >
+                Contact Us
+              </Button>
             </Stack>
           </Group>
         </Box>

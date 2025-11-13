@@ -38,6 +38,7 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
               <Text
                 lineClamp={2}
                 mah={48}
+                fw={600}
                 style={{
                   fontFamily: 'var(--mantine-font-family-headings)',
                   color: 'light-dark(var(--mantine-color-dark-4), var(--mantine-color-gray-3))',

@@ -31,7 +31,7 @@ import {
   IconSeeding,
   IconTestPipe,
 } from '@tabler/icons-react';
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import { useLoaderData } from 'react-router';
 
 import { Blob } from '#/components';
@@ -39,8 +39,10 @@ import { Wave } from '#/components/Wave';
 import { breakpoints } from '#/theme/constants';
 
 import ecologyEarth from '../../assets/ecology-earth.png';
-import stats from '../../assets/stats.json';
+import stats from '../../assets/stats/2025.json';
 import StatCard from './components/StatCard';
+
+const STATE_SENSITIVE = Object.entries(stats.stateSensitive);
 
 const recordStats = [
   {
@@ -80,13 +82,7 @@ interface Dataset {
 
 export function Component() {
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
-
   const datasets = useLoaderData() as { [key: string]: Dataset };
-
-  // EPBC Calculations
-  const epbcDatasets = Object.entries(stats.epbcSpecies)
-    .sort(([, a], [, b]) => b - a)
-    .filter(([key]) => queries.DATA_RESOURCES.includes(key));
 
   return (
     <>
@@ -140,7 +136,7 @@ export function Component() {
             </Grid.Col>
             <Grid.Col span={{ xl: 3, lg: 3, md: 3, sm: 12, xs: 12 }}>
               <StatCard
-                id={epbcDatasets.length.toString()}
+                id={queries.DATA_RESOURCES.length}
                 name='Organisations'
                 icon={IconBuilding}
               />
@@ -180,10 +176,10 @@ export function Component() {
         <Group align='flex-start' justify='space-between'>
           <Stack w={mdOrLarger ? 500 : '100%'} mb='xl' gap='xl'>
             <Stack gap='xs'>
-              <Title fw='bold' size={42}>
+              <Title fw='bold'>
                 Threatened species in our collections
               </Title>
-              <Title c='dimmed' order={2}>Nationally listed species</Title>
+              <Title c='dimmed' order={3}>Nationally listed species</Title>
               <Text size='sm' mt='md'>
                 The Environment Protection and Biodiversity Conservation Act (EPBC Act) is
                 Australia&apos;s national legislation for protecting threatened species and
@@ -193,7 +189,7 @@ export function Component() {
                 wild.
               </Text>
               <Text size='sm'>The portal contains{' '}
-                <b>{stats.epbcSpecies.total}</b> nationally listed species listed under the EPBC act.{' '}
+                <b>{stats.epbcTotal}</b> nationally listed species listed under the EPBC act.{' '}
               </Text>
               <Anchor href='https://www.dcceew.gov.au/environment/epbc' target='_blank' size='sm'>
                 Read more about the EPBC Act here{' '}
@@ -202,22 +198,22 @@ export function Component() {
               <Alert mt='sm' icon={<IconInfoCircle />}>While collections are held for these species, they could be small and may not be representative of the entire species.</Alert>
             </Stack>
             <Stack>
-              <Title c='dimmed' order={2}>State and Territory listed species</Title>
+              <Title c='dimmed' order={3}>State and Territory listed species</Title>
               <Text size='sm'>
-
+                The Partnership also holds collections of species listed under relevant state and territory legislation:
               </Text>
               <Paper withBorder>
                 <ScrollArea h={200}>
                   <Stack gap='xs' py='xs'>
-                    {epbcDatasets.map(([key, count], index) => (
-                      <Fragment key={key}>
+                    {STATE_SENSITIVE.map(([list, count], index) => (
+                      <Fragment key={list}>
                         <Flex justify='space-between' px='sm'>
-                          <Text size='sm'>{datasets[key]?.datasetTitle || 'Unknown Dataset'}</Text>
+                          <Text size='sm'>{list}</Text>
                           <Badge variant='light' ml='sm' miw={50}>
                             {count}
                           </Badge>
                         </Flex>
-                        {index !== epbcDatasets.length - 1 && <Divider />}
+                        {index !== STATE_SENSITIVE.length - 1 && <Divider />}
                       </Fragment>
                     ))}
                   </Stack>

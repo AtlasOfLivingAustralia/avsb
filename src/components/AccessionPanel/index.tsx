@@ -388,7 +388,7 @@ function AccessionPanel() {
       )}
       {accessionEvent.eventID && (
         <Grid.Col span={12}>
-          <Text size='lg' mb='md' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
+          <Text fw={600} size='lg' mb='md' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
             Related Trials
           </Text>
           <TrialSummary trials={trialEvents} />

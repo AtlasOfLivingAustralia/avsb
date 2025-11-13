@@ -1,0 +1,16 @@
+{
+  "accessions": 61797,
+  "trials": 34121,
+  "treatments": 32579,
+  "speciesWithAccession": 18288,
+  "speciesWithTrial": 10933,
+  "stateSensitive": {
+    "ACT Sensitive Species List": 16,
+    "Victorian Restricted Species List": 27,
+    "Western Australia: Sensitive Species": 1165,
+    "Queensland Confidential Species": 10,
+    "NSW Sensitive Species List": 91,
+    "South Australian Sensitive Species": 70
+  },
+  "epbcTotal": 919
+}
