@@ -1,7 +1,7 @@
 import { Group, Paper, Stack, Text, ThemeIcon } from '@mantine/core';
 import { TablerIcon } from '@tabler/icons-react';
 
-import stats from '../../../assets/stats/2025.json';
+import { stats } from '#/helpers/stats';
 
 interface StatCardProps {
   id: string;

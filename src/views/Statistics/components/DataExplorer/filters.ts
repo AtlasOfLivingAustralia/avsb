@@ -3,7 +3,6 @@ import {
   IconDatabase,
   IconDotsCircleHorizontal,
   IconDropletFilled,
-  IconExclamationCircle,
   IconHandStop,
   IconId,
   IconPackage,
@@ -16,7 +15,6 @@ import {
 import { ComboboxItem } from '@mantine/core';
 import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';
 import { Filter } from '#/components';
-import { sensitiveLists } from '#/helpers/stats';
 
 // Define a data fetcher for the dataset select search
 const fetchItems = async (query: string): Promise<ComboboxItem[]> => {
@@ -129,15 +127,6 @@ const filters: Filter[] = [
     placeholder: 'Enter temperature',
     icon: IconDropletFilled,
     group: 'Storage',
-  },
-  {
-    key: 'measurementOrFactTypes',
-    label: 'Sensitive Status',
-    type: 'multiSelect',
-    placeholder: 'Select sensitive statuses',
-    icon: IconExclamationCircle,
-    items: sensitiveLists,
-    group: 'Sensitive',
   },
 ];
 

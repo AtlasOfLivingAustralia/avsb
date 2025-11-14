@@ -331,7 +331,7 @@ interface Predicate {
   type: PredicateType;
   key?: string;
   value?: PredicateValue;
-  values?: PredicateValue[];
+  values?: PredicateValue[] | null;
   predicate?: Predicate;
   predicates?: Predicate[];
 }

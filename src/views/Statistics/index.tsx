@@ -36,11 +36,12 @@ import { Fragment } from 'react';
 import { Blob } from '#/components';
 import { Wave } from '#/components/Wave';
 import { breakpoints } from '#/theme/constants';
+import { stats } from '#/helpers/stats';
 
 import ecologyEarth from '../../assets/ecology-earth.png';
 import seedSprouting from '../../assets/seed-sprouting.png';
-import stats from '../../assets/stats/2025.json';
 import StatCard from './components/StatCard';
+import DataExplorer from './components/DataExplorer';
 
 const STATE_SENSITIVE = Object.entries(stats.stateSensitive);
 
@@ -77,7 +78,6 @@ const speciesStats = [
 
 export function Component() {
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
-  // const datasets = useLoaderData() as { [key: string]: Dataset };
 
   return (
     <>
@@ -196,7 +196,6 @@ export function Component() {
         </Group>
       </Container>
       <Wave
-        id="explore"
         width='100%'
         height={mdOrLarger ? 250 : 125}
         preserveAspectRatio='none'
@@ -254,7 +253,7 @@ export function Component() {
         </Container>
       </Box>
       <Wave
-        id="threatened"
+        id="explore"
         width='100%'
         height={mdOrLarger ? 250 : 125}
         preserveAspectRatio='none'
@@ -265,8 +264,8 @@ export function Component() {
           <Title fw='bold'>
             Data explorer
           </Title>
-          <Title c='dimmed' order={3}>Explore our sensitive species</Title>
-          <Text>Data explorer here</Text>
+          <Title c='dimmed' order={3} mb='xl'>Explore accessions for protected species</Title>
+          <DataExplorer />
         </Stack>
       </Container>
     </>

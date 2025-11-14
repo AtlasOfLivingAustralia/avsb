@@ -12,6 +12,7 @@ import NumericGreaterLessFilter from './filters/NumericGreaterLessFilter';
 import PercentFilter from './filters/PercentFilter';
 import SelectFilter from './filters/SelectFilter';
 import SelectSearchFilter from './filters/SelectSearchFilter';
+import MultiSelectFilter from './filters/MultiSelectFilter';
 import TextFilter from './filters/TextFilter';
 
 import classes from './Panel.module.css';
@@ -25,6 +26,7 @@ const filterComponents: {
   percent: PercentFilter,
   select: SelectFilter,
   selectSearch: SelectSearchFilter,
+  multiSelect: MultiSelectFilter,
   date: DateFilter,
 };
 
@@ -56,7 +58,7 @@ function FilterPanel({
     if (!onPredicates) return;
     let newPredicates;
 
-    if (newPred.value === null) {
+    if (newPred.value === null || newPred.values === null) {
       newPredicates = predicates.filter(({ key }) => newPred.key !== key);
     } else {
       const existing = predicates.find(({ key }) => newPred.key === key);

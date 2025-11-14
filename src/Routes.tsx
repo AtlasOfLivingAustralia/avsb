@@ -14,6 +14,7 @@ import queries from './api/queries';
 
 import { mapTrialTreatments } from './helpers';
 import { DashboardView, HomeView } from './views';
+import { sensitiveLists } from './helpers/stats';
 
 const routes = createBrowserRouter([
   {
@@ -48,24 +49,29 @@ const routes = createBrowserRouter([
         lazy: () => import('./views/Statistics'),
         loader: async () => {
           // Construct a query that fetches a summary all data resources
-          const QUERY_SEEDBANK_SUMMARY_ALL = `
-            query list {
-              ${queries.DATA_RESOURCES.map((dataResource: string) =>
-                queries.QUERY_DATASET_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
-              ).join('')}
-            }
-          `;
-
           const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
-            QUERY_SEEDBANK_SUMMARY_ALL,
+            gqlQueries.QUERY_EVENT_ACCESSIONS,
+            {
+              predicate: {
+                type: 'and',
+                predicates: [
+                  gqlQueries.PRED_DATA_RESOURCE,
+                  {
+                    type: 'equals',
+                    key: 'eventType',
+                    value: 'Accession',
+                  },
+                  {
+                    type: 'equals',
+                    key: 'measurementOrFactTypes',
+                    value: sensitiveLists[0],
+                  },
+                ],
+              },
+              size: 10,
+            },
           );
-          return Object.entries(data).reduce(
-            (prev, [key, value]) => ({
-              ...prev,
-              [key]: (value as { documents: { results: object[] } }).documents.results[0],
-            }),
-            {},
-          );
+          return data.eventSearch.documents;
         },
       },
       {
