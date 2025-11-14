@@ -90,14 +90,14 @@ function AusTraitsFieldInner({ trait }: { trait: SeedbankFieldTrait }) {
   let value;
 
   // If the trait is numeric, search the numeric_traits array
-  if (trait.type === 'numeric') {
+  if (trait.type === 'numeric' && numericTraits) {
     data = numericTraits.find(({ trait_name: traitName }) => traitName === trait.name) as
       | NumericTrait
       | undefined;
     value = data ? `${data.mean}${data.unit} (${data.min}-${data.max})` : null;
 
     // Otherwise search the categorical_traits array
-  } else if (trait.type === 'categorical') {
+  } else if (trait.type === 'categorical' && categoricalTraits) {
     data = categoricalTraits.find(({ trait_name: traitName }) => traitName === trait.name) as
       | CategoricalTrait
       | undefined;
