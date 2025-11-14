@@ -42,6 +42,7 @@ import ecologyEarth from '../../assets/ecology-earth.png';
 import seedSprouting from '../../assets/seed-sprouting.png';
 import StatCard from './components/StatCard';
 import DataExplorer from './components/DataExplorer';
+import { scrollTo } from '#/helpers/scrollTo';
 
 const STATE_SENSITIVE = Object.entries(stats.stateSensitive);
 
@@ -94,9 +95,9 @@ export function Component() {
             <Paper p='xs' mt='lg' radius='xl'>
               <Stack>
                 <Flex direction={mdOrLarger ? 'row' : 'column'} justify='center' gap='xs'>
-                  <Button href="#records" component='a' variant='light' leftSection={<IconArrowDown size="1rem" />}>Records</Button>
-                  <Button href="#threatened" component='a' variant='light' leftSection={<IconArrowDown size="1rem" />}>Threatened species</Button>
-                  <Button href="#explore" component='a' variant='light' leftSection={<IconArrowDown size="1rem" />}>Data explorer</Button>
+                  <Button onClick={() => scrollTo('records')} variant='light' leftSection={<IconArrowDown size="1rem" />}>Records</Button>
+                  <Button onClick={() => scrollTo('threatened')} variant='light' leftSection={<IconArrowDown size="1rem" />}>Threatened species</Button>
+                  <Button onClick={() => scrollTo('explore')} component='a' variant='light' leftSection={<IconArrowDown size="1rem" />}>Data explorer</Button>
                 </Flex>
               </Stack>
             </Paper>
