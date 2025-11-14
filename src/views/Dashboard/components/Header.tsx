@@ -129,7 +129,7 @@ function Header() {
             <Box visibleFrom='md'>
               <TaxonSearchInput
                 radius='lg'
-                style={{ width: 250 }}
+                style={{ width: 280 }}
                 onChange={(guid) => {
                   if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
                 }}
