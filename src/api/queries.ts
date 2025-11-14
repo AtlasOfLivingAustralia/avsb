@@ -18,6 +18,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         datasetKey
         locality
         distinctTaxa {
+          key
           scientificName
         }
         extensions {
@@ -167,6 +168,7 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         parentEventID
         datasetTitle
         distinctTaxa {
+          key
           scientificName
         }
         parentEvent {
@@ -563,6 +565,7 @@ query list($predicate: Predicate){
         decimalLongitude
         stateProvince
         distinctTaxa {
+          key
           scientificName
         }
         measurementOrFacts {
@@ -626,6 +629,7 @@ query list($predicate: Predicate){
         locality
         datasetTitle
         distinctTaxa {
+          key
           scientificName
         }
         extensions {
