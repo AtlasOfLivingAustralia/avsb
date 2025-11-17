@@ -17,6 +17,8 @@ import { IconAlertTriangle, TablerIcon } from '@tabler/icons-react';
 import { ReactNode, useState } from 'react';
 
 import classes from './FAQ.module.css';
+import { useMediaQuery } from '@mantine/hooks';
+import { breakpoints } from '#/theme';
 
 export interface HelpTopicItem {
   icon: TablerIcon;
@@ -26,9 +28,10 @@ export interface HelpTopicItem {
 
 function FAQ() {
   const [value, setValue] = useState<string | null>('access-seeds');
+  const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
 
   return (
-    <Container size='lg' px='xl' mt={-80}>
+    <Container size='xl' px='xl' mt={mdOrLarger ? -80 : 0}>
       <Center mb='xl' pb='xl'>
         <Group>
           <Title>FAQs / Help</Title>

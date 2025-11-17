@@ -82,7 +82,7 @@ export function Component() {
 
   return (
     <>
-      <Container size='lg' p='lg' mt={-30}>
+      <Container size='xl' p='lg' mt={-30}>
         <Space h={45} />
         <Center>
           <Stack ta='center' justify='center' gap={4}>
@@ -119,7 +119,7 @@ export function Component() {
         }}
         pb='xl'
       >
-        <Container size='lg' p='lg' pb='xl'>
+        <Container size='xl' p='lg' pb='xl'>
           <Grid gutter='lg'>
             <Grid.Col span={12}>
               <Title order={2} c='dimmed'>Records</Title>
@@ -154,7 +154,7 @@ export function Component() {
         preserveAspectRatio='none'
         waveType='bodyBottom'
       />
-      <Container size='lg' p='lg' mt={mdOrLarger ? -80 : -30} mb='md'>
+      <Container size='xl' p='lg' mt={mdOrLarger ? -80 : -30} mb='md'>
         <Group align='flex-start' justify='space-between' gap="xs">
           <Stack w={mdOrLarger ? 490 : '100%'} mb='xl' gap='xl'>
             <Stack gap='md'>
@@ -209,7 +209,7 @@ export function Component() {
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
       >
-        <Container size='lg' p='lg'>
+        <Container size='xl' p='lg'>
           <Group align='flex-start' justify='space-between' mt='xl' gap='xs'>
             {mdOrLarger && (
               <div style={{ width: 450, height: 450 }}>
@@ -260,7 +260,7 @@ export function Component() {
         preserveAspectRatio='none'
         waveType='bodyBottom'
       />
-      <Container size='lg' p='lg' mt={mdOrLarger ? -80 : -30} mb='xl'>
+      <Container size='xl' p='lg' mt={mdOrLarger ? -80 : -30} mb='xl'>
         <Stack gap='md'>
           <Title fw='bold'>
             Data explorer

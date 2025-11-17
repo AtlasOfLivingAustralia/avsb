@@ -57,7 +57,6 @@ export default function DataExplorer() {
 
   useEffect(() => {
     async function runQuery() {
-      console.log('running query')
       const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
         gqlQueries.QUERY_EVENT_ACCESSIONS,
         {

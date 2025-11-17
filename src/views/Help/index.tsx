@@ -162,7 +162,7 @@ export function Component() {
         pt={60}
         mt={-90}
       >
-        <Container size='lg' pt='xl'>
+        <Container size='xl' pt='xl'>
           <Center pt='lg' mb='xl' pb='xl'>
             <Group>
               <Title>How to</Title>
@@ -172,24 +172,25 @@ export function Component() {
             {Object.entries(helpTopics).map(([key, { description, icon: Icon }]) => (
               <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 6, xs: 12 }} key={key}>
                 <UnstyledButton
+                  mih={85}
                   className={classes.topic}
                   onClick={() => {
                     setTopic(key);
                     open();
                   }}
                 >
-                  <Center w='100%'>
-                    <Icon size='3rem' />
+                  <Icon className={classes.icon} size='6rem' />
+                  <Center h='100%'>
+                    <Text
+                      ta='center'
+                      style={{
+                        fontFamily: 'var(--mantine-font-family-headings)',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {description}
+                    </Text>
                   </Center>
-                  <Text
-                    style={{
-                      marginTop: 'var(--mantine-spacing-md)',
-                      fontFamily: 'var(--mantine-font-family-headings)',
-                      fontWeight: 'normal',
-                    }}
-                  >
-                    {description}
-                  </Text>
                 </UnstyledButton>
               </Grid.Col>
             ))}

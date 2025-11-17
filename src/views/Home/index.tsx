@@ -36,7 +36,7 @@ function Home() {
 
   return (
     <>
-      <Container size='lg' pt={mdOrLarger ? 'xl' : 0} mt={-30}>
+      <Container size='xl' pt={mdOrLarger ? 'xl' : 0} mt={-30}>
         <Group justify='space-between' pt={mdOrLarger ? 'xl' : 0}>
           <Stack p='xl' w={mdOrLarger ? 470 : '100%'}>
             <Title
@@ -102,7 +102,7 @@ function Home() {
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
       >
-        <Container size='lg'>
+        <Container size='xl'>
           <Box p='xl'>
             <Alert
               radius='lg'
@@ -145,7 +145,7 @@ function Home() {
         preserveAspectRatio='none'
         waveType='bodyBottom'
       />
-      <Container size='lg'>
+      <Container size='xl'>
         <Box mt={mdOrLarger ? -100 : 0} p='xl'>
           <Group justify={mdOrLarger ? 'space-between' : 'center'} mb='xl' pb='xl'>
             <Stack
