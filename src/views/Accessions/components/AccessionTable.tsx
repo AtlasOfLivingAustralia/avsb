@@ -192,8 +192,8 @@ function AccessionTable({ events }: AccessionTableProps) {
                           }}
                           rightSection={<IconArrowUpRight size='1rem' />}
                           component={Link}
-                          disabled={!event.eventID || !event.distinctTaxa?.[0].key}
-                          to={event.eventID ? `/taxon/${encodeURIComponent(event.distinctTaxa?.[0].key || '')}/accessions/${event.eventID}` : '/'}
+                          disabled={!event.eventID || !event.distinctTaxa?.[0]?.key}
+                          to={event.eventID ? `/taxon/${encodeURIComponent(event.distinctTaxa?.[0]?.key || '')}/accessions/${event.eventID}` : '/'}
                           variant='subtle'
                           size='xs'
                           px='xs'

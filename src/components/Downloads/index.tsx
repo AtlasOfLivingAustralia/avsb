@@ -52,19 +52,43 @@ interface DownloadsProps extends GroupProps {
 
 // Helper function to convert an event object to CSV string
 // given an array of fields
-const eventToCSV = (event: Event, fields: DownloadField[]) =>
-  fields
+const eventToCSV = (event: Event, fields: DownloadField[], emofFields: string[]) => {
+  const core = fields
     .map(({ key, formatter }) => {
       let value = get(event, key, '');
       if (typeof formatter === 'function') value = formatter(value);
       return value === null || value === undefined ? '' : value;
     })
-    .map((value) => (value.toString().includes(',') ? `"${value}"` : value))
-    .join(',');
+    .map((value) => (value.toString().includes(',') ? `"${value}"` : value));
+
+  const emofValues = emofFields.map((cur) => {
+    const mof = event.measurementOrFacts?.find(({ measurementType }) => measurementType === cur);
+
+    if (mof?.measurementValue) {
+      return (mof.measurementValue.toString().includes(',') ? `"${mof.measurementValue}"` : mof.measurementValue);
+    }
+
+    return '';
+  }, []);
+
+  return [...core, ...emofValues].join(',');
+}
 
 const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
-  const header = fields.map(({ label }) => label).join(',');
-  return [header, ...events.map((event) => eventToCSV(event, fields))].join('\n');
+  const emofTypes = new Set();
+
+  // Get all of the unique emofs
+  events.forEach((event) => {
+    (event.measurementOrFacts || []).forEach(emof => {
+      emofTypes.add(emof.measurementType);
+    })
+  });
+
+  const emofFields = Array.from(emofTypes).sort() as string[];
+  const header = [...fields, ...(emofFields.map((field) => ({ label: field })))]
+    .map(({ label }) => label).join(',');
+
+  return [header, ...events.map((event) => eventToCSV(event, fields, emofFields))].join('\n');
 };
 
 function Downloads({ query, total, predicates, fields, fileName, fetcher }: DownloadsProps) {
