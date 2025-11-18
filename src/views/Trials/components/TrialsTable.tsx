@@ -6,6 +6,7 @@ import {
   Center,
   Collapse,
   Divider,
+  Flex,
   Group,
   ScrollArea,
   Table,
@@ -21,13 +22,14 @@ import { ThField, TrialDetails } from '#/components';
 import { getIsDefined } from '#/helpers';
 import AccessionPopover from './AccessionPopover';
 import classes from './TrialsTable.module.css';
+import { SensitiveIcons } from '#/components/SensitiveIcons';
 
 interface TrialsTableProps {
   events: Event[];
   height?: string | number;
 }
 
-function TrialsTable({ events, height }: TrialsTableProps) {
+function TrialsTable({ events }: TrialsTableProps) {
   // const api = useAPI();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
@@ -179,7 +181,12 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     <Table.Td style={{ paddingLeft: 14 }}>
                       {trial?.accessionNumber || event.eventID}
                     </Table.Td>
-                    <Table.Td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Table.Td>
+                    <Table.Td>
+                      <Flex gap="xs" align="center">
+                        <SensitiveIcons event={event} />
+                        <Text size='sm'>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Text>
+                      </Flex>
+                    </Table.Td>
                     <Table.Td>
                       <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
                         <Box maw={250}>

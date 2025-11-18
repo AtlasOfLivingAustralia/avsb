@@ -21,6 +21,11 @@ query list($predicate: Predicate, $size: Int, $from: Int){
           key
           scientificName
         }
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementValue
+        }
         extensions {
           seedbank {
             accessionNumber
@@ -69,12 +74,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         measurementOrFacts {
           measurementID
           measurementType
-          measurementUnit
           measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
         }
         distinctTaxa {
           scientificName
@@ -167,6 +167,11 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         eventID
         parentEventID
         datasetTitle
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementValue
+        }
         distinctTaxa {
           key
           scientificName
@@ -222,12 +227,7 @@ query list($predicate: Predicate){
         measurementOrFacts {
           measurementID
           measurementType
-          measurementUnit
           measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
         }
         extensions {
           seedbank {
@@ -571,12 +571,7 @@ query list($predicate: Predicate){
         measurementOrFacts {
           measurementID
           measurementType
-          measurementUnit
           measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
         }
         extensions {
           seedbank {
@@ -631,6 +626,10 @@ query list($predicate: Predicate){
         distinctTaxa {
           key
           scientificName
+        }
+        measurementOrFacts {
+          measurementType
+          measurementValue
         }
         extensions {
           seedbank {

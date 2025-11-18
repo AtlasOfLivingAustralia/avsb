@@ -1,6 +1,6 @@
-type Variables = { [key: string]: unknown };
+import { Variables } from './graphql/types';
 
-const CACHE_PREFIX = 'gql:';
+const CACHE_PREFIX = 'avsb:';
 const MAX_CACHE_SIZE_BYTES = 100 * 1024; // 100kb
 const HASH_MOD = 2 ** 32;
 const HASH_MULTIPLIER = 31;
@@ -41,7 +41,7 @@ const getCachedResponse = <T>(cacheKey: string): T | null => {
   }
 };
 
-const maybeStoreResponse = (cacheKey: string, data: unknown) => {
+const maybeStoreResponse = (cacheKey: string, data: unknown, ignoreSize = false) => {
   if (!canUseSessionStorage()) return;
 
   const serialized = JSON.stringify(data);
@@ -49,7 +49,7 @@ const maybeStoreResponse = (cacheKey: string, data: unknown) => {
   const sizeInBytes = encoder ? encoder.encode(serialized).length : serialized.length * 2;
 
   // Don't store any big reponses (i.e. downloads) so sessionStorage doesn't fill up
-  if (sizeInBytes > MAX_CACHE_SIZE_BYTES) return;
+  if (sizeInBytes > MAX_CACHE_SIZE_BYTES && !ignoreSize) return;
 
   try {
     window.sessionStorage.setItem(cacheKey, serialized);
@@ -59,4 +59,3 @@ const maybeStoreResponse = (cacheKey: string, data: unknown) => {
 };
 
 export { buildCacheKey, getCachedResponse, maybeStoreResponse };
-export type { Variables };

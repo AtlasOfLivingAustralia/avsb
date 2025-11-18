@@ -6,8 +6,8 @@ import {
   Center,
   Collapse,
   Divider,
+  Flex,
   Group,
-  ScrollArea,
   Table,
   Text,
   Tooltip,
@@ -21,7 +21,9 @@ import {
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
+
 // Project components / helpers
+import { SensitiveIcons } from '#/components/SensitiveIcons';
 import { AccessionDetails, ThField } from '#/components';
 import { getIsDefined } from '#/helpers';
 import classes from './AccessionTable.module.css';
@@ -153,7 +155,12 @@ function AccessionTable({ events }: AccessionTableProps) {
                     <Table.Td style={{ paddingLeft: 14 }}>
                       {accession?.accessionNumber || event.eventID}
                     </Table.Td>
-                    <Table.Td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Table.Td>
+                    <Table.Td>
+                      <Flex gap="xs" align="center">
+                        <SensitiveIcons event={event} />
+                        <Text size='sm'>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Text>
+                      </Flex>
+                    </Table.Td>
                     <Table.Td>
                       <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
                         <Box maw={250}>

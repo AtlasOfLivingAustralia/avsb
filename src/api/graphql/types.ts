@@ -336,6 +336,8 @@ interface Predicate {
   predicates?: Predicate[];
 }
 
+type Variables = { [key: string]: unknown };
+
 export type {
   PredicateType,
   PredicateValue,
@@ -351,4 +353,5 @@ export type {
   SeedBankExtension,
   Contact,
   MediaItem,
+  Variables,
 };

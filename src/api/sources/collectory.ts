@@ -1,3 +1,5 @@
+import { buildCacheKey, getCachedResponse, maybeStoreResponse } from '../cache';
+
 interface DataResource {
   name: string | null;
   acronym: string | null;
@@ -26,25 +28,42 @@ interface DataResourceSummary {
 }
 
 async function dataResource(id: string): Promise<DataResource> {
+  const URL = `${import.meta.env.VITE_API_ALA}/metadata/ws/dataResource/${id}`;
+  const cacheKey = buildCacheKey(URL);
+
+  // Return a cached response (if we have one)
+  if (cacheKey) {
+    const cachedResponse = getCachedResponse<DataResource>(cacheKey);
+    if (cachedResponse) return cachedResponse;
+  }
+
   const response = await fetch(`${import.meta.env.VITE_API_ALA}/metadata/ws/dataResource/${id}`);
   const data = await response.text();
 
   // Catch 200 responses, but no entry found
   if (response.ok && data.startsWith('no entity with')) throw new Response(data, { status: 404 });
 
+  // Cache the response
+  if (cacheKey) maybeStoreResponse(cacheKey, data);
+
   return JSON.parse(data);
 }
 
 async function dataResourceList(): Promise<DataResourceSummary[]> {
-  // Return locally stored fetch results first
-  const dataResources = sessionStorage.getItem('collectory-resources');
-  if (dataResources) return JSON.parse(dataResources);
+  const URL = `${import.meta.env.VITE_API_ALA}/metadata/ws/dataResource`;
+  const cacheKey = buildCacheKey(URL);
+
+  // Return a cached response (if we have one)
+  if (cacheKey) {
+    const cachedResponse = getCachedResponse<DataResourceSummary[]>(cacheKey);
+    if (cachedResponse) return cachedResponse;
+  }
 
   // If we don't have any results stored locally, fetch & store them
-  const data = await (
-    await fetch(`${import.meta.env.VITE_API_ALA}/metadata/ws/dataResource`)
-  ).json();
-  sessionStorage.setItem('collectory-resources', JSON.stringify(data));
+  const data = await (await fetch(URL)).json();
+
+  // Cache the response
+  if (cacheKey) maybeStoreResponse(cacheKey, data, true);
 
   return data;
 }

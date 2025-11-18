@@ -1,3 +1,5 @@
+import { buildCacheKey, getCachedResponse, maybeStoreResponse } from '../cache';
+
 interface NumericTrait {
   unit: string;
   min: string;
@@ -29,11 +31,16 @@ interface AusTraitsCount {
 
 async function summary(search: string, guid: string): Promise<AusTraitsSummary> {
   try {
-    const data = await (
-      await fetch(
-        `${import.meta.env.VITE_API_BIE}/externalSite/ausTraitsSummary?s=${search}&guid=${guid}`,
-      )
-    ).json();
+    const URL = `${import.meta.env.VITE_API_BIE}/externalSite/ausTraitsSummary?s=${search}&guid=${guid}`;
+    const cacheKey = buildCacheKey(URL);
+
+    // Return a cached response (if we have one)
+    if (cacheKey) {
+      const cachedResponse = getCachedResponse<AusTraitsSummary>(cacheKey);
+      if (cachedResponse) return cachedResponse;
+    }
+
+    const data = await (await fetch(URL)).json();
 
     // Ensure we've successfully recieved the data back
     if (
@@ -41,6 +48,9 @@ async function summary(search: string, guid: string): Promise<AusTraitsSummary> 
       (Array.isArray(data) && data[0] === 'No summary data can be found for this taxon.')
     )
       return { numeric_traits: [], categorical_traits: [] };
+
+    // Cache the response
+    if (cacheKey) maybeStoreResponse(cacheKey, data);
 
     // Return the data
     return data;

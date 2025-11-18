@@ -1,5 +1,5 @@
-import { buildCacheKey, getCachedResponse, maybeStoreResponse } from './cache';
-import type { Variables } from './cache';
+import { buildCacheKey, getCachedResponse, maybeStoreResponse } from '../cache';
+import { Variables } from './types';
 
 async function performGQLQuery<T = unknown>(query: string, variables?: Variables) {
   const cacheKey = buildCacheKey(query, variables);
@@ -36,5 +36,4 @@ async function performGQLQuery<T = unknown>(query: string, variables?: Variables
   throw errorObj;
 }
 
-export type { Variables };
 export default performGQLQuery;

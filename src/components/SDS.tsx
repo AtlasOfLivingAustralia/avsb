@@ -4,7 +4,6 @@ import { IconAlertTriangle, IconExternalLink } from '@tabler/icons-react';
 import { Link } from 'react-router';
 
 // Project imports
-import { getInitials } from '#/helpers';
 import ConservationStatus from './ConservationStatus';
 
 interface SDSProps {
@@ -16,7 +15,7 @@ function SDS({ instances }: SDSProps) {
     <Center w='100%' h='100%'>
       <Stack w='100%' align='center' gap='lg'>
         <Stack gap='md' align='center'>
-          <ThemeIcon size={100} color='yellow' variant='light' radius={50}>
+          <ThemeIcon size={100} color='orange' variant='light' radius={50}>
             <IconAlertTriangle size='2.5rem' />
           </ThemeIcon>
           <Title order={3} mb='xs'>
@@ -39,8 +38,8 @@ function SDS({ instances }: SDSProps) {
               <ConservationStatus
                 key={authority}
                 place={zone?.name || 'Australia'}
-                initials={zone?.name ? getInitials(zone.name) : 'AUS'}
-                status={category.value}
+                initials={zone?.id || 'AUS'}
+                status={category?.value || "Sensitive"}
               />
             ))}
           </Stack>
