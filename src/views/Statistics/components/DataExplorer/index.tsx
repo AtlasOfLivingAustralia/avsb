@@ -136,7 +136,7 @@ export default function DataExplorer() {
             fields={downloadFields}
             fetcher={downloadFetcher}
             total={query.total as number}
-            fileName={`AVSB Accessions, ENTER-FILE-NAME-HERE`} // TODO: Fix
+            fileName={`AVSB Sensitive Accessions`}
           />
         </Group>
       </Group>

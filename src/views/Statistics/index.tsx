@@ -24,6 +24,7 @@ import {
   IconArrowDown,
   IconBuilding,
   IconColorPicker,
+  IconDownload,
   IconExternalLink,
   IconFileFunction,
   IconInfoCircle,
@@ -262,10 +263,16 @@ export function Component() {
       />
       <Container size='xl' p='lg' mt={mdOrLarger ? -80 : -30} mb='xl'>
         <Stack gap='md'>
-          <Title fw='bold'>
-            Data explorer
-          </Title>
-          <Title c='dimmed' order={3} mb='xl'>Explore accessions for protected species</Title>
+          <Flex justify='space-between' gap='sm'>
+            <Title fw='bold'>
+              Data explorer
+            </Title>
+            <Button mt={6} size='sm' variant='light' leftSection={<IconDownload />} component='a' href='/sensitive.zip' download='AVSB Sensitive Records 2025'>
+              Download full dataset
+            </Button>
+          </Flex>
+          <Title c='dimmed' order={3}>Explore accessions for protected species</Title>
+          <Text size='sm' mb='xl'>The table below lets you filter and refine the accession data we hold for protected species. You can also download all records (both accessions and trials).</Text>
           <DataExplorer />
         </Stack>
       </Container>
