@@ -44,7 +44,7 @@ async function dataResource(id: string): Promise<DataResource> {
   if (response.ok && data.startsWith('no entity with')) throw new Response(data, { status: 404 });
 
   // Cache the response
-  if (cacheKey) maybeStoreResponse(cacheKey, data);
+  if (cacheKey) maybeStoreResponse(cacheKey, JSON.parse(data));
 
   return JSON.parse(data);
 }
