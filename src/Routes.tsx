@@ -10,7 +10,6 @@ import {
   sdsAPI,
   taxonAPI,
 } from './api';
-import queries from './api/queries';
 
 import { mapTrialTreatments } from './helpers';
 import { DashboardView, HomeView } from './views';

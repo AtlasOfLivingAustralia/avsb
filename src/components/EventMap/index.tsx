@@ -1,10 +1,10 @@
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { ActionIcon, MantineShadow, Tooltip } from '@mantine/core';
 import { IconMaximize } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 
 // Mapbox
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { LngLatLike } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Project-imports
@@ -27,11 +27,38 @@ interface MapProps {
   height?: string | number;
   token?: string;
   itemListHeight?: string | number;
+  shadow?: string;
   radius?: string;
+  transparent?: boolean;
+  initialCenter?: LngLatLike;
+  initialZoom?: number;
+  zoomOnLoad?: number;
+  itemsTopOffset?: number;
+  itemsLeftOffset?: number;
   onFullscreen?: () => void;
+  onLoad?: () => void;
 }
 
-function MapComponent({ width, height, token, itemListHeight, radius, onFullscreen }: MapProps) {
+const TRANSPARENT_LIGHT = 'mapbox://styles/jackbrinkman/cmi6pdvw0000c01rcgrc43xmn';
+const TRANSPARENT_DARK = 'mapbox://styles/jackbrinkman/cmi6r8ly500bf01st7az16yo2';
+const MAP_CENTER: LngLatLike = [137.591797, -26.000092];
+
+function MapComponent({
+  width,
+  height,
+  token,
+  itemListHeight,
+  shadow,
+  radius,
+  transparent,
+  initialZoom,
+  initialCenter,
+  zoomOnLoad,
+  itemsTopOffset,
+  itemsLeftOffset,
+  onFullscreen,
+  onLoad
+}: MapProps) {
   // Map refs
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -58,13 +85,18 @@ function MapComponent({ width, height, token, itemListHeight, radius, onFullscre
   // Theme variables
   const colorScheme = useComputedColorScheme('dark');
   const [currentScheme, setCurrentScheme] = useState<'light' | 'dark'>(colorScheme);
+  const isDark = colorScheme === 'dark';
+
+  // Generate the style URL
+  const styleUrl = transparent ?
+    (!isDark ? TRANSPARENT_LIGHT : TRANSPARENT_DARK) :
+    `mapbox://styles/mapbox/${isDark ? 'light' : 'dark'}-v11`;
 
   // Helper function to add the events layer to the map
   const addLayer = () => {
     if (map.current) {
-      const tile = `${
-        import.meta.env.VITE_API_ALA
-      }/event/tile/event/mvt/{z}/{x}/{y}?queryId=${token}`;
+      const tile = `${import.meta.env.VITE_API_ALA
+        }/event/tile/event/mvt/{z}/{x}/{y}?queryId=${token}`;
 
       const config = getMapLayer(tile);
       map.current.addSource('events', config.source);
@@ -130,21 +162,21 @@ function MapComponent({ width, height, token, itemListHeight, radius, onFullscre
             },
             ...(params.guid
               ? [
-                  {
-                    type: 'equals',
-                    key: 'taxonKey',
-                    value: params.guid,
-                  },
-                ]
+                {
+                  type: 'equals',
+                  key: 'taxonKey',
+                  value: params.guid,
+                },
+              ]
               : []),
             ...(params.resource
               ? [
-                  {
-                    type: 'equals',
-                    key: 'datasetKey',
-                    value: params.resource,
-                  },
-                ]
+                {
+                  type: 'equals',
+                  key: 'datasetKey',
+                  value: params.resource,
+                },
+              ]
               : []),
           ],
         },
@@ -161,9 +193,7 @@ function MapComponent({ width, height, token, itemListHeight, radius, onFullscre
     if (currentScheme !== colorScheme && styleLoaded) {
       setCurrentScheme(colorScheme);
       setStyleLoaded(false);
-      map.current?.setStyle(
-        `mapbox://styles/mapbox/${colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
-      );
+      map.current?.setStyle(styleUrl);
     }
   }, [colorScheme, styleLoaded]);
 
@@ -172,12 +202,22 @@ function MapComponent({ width, height, token, itemListHeight, radius, onFullscre
     if (map.current || !mapContainer.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: `mapbox://styles/mapbox/${colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
-      center: [137.591797, -26.000092],
-      zoom: 2.5,
+      style: styleUrl,
+      center: initialCenter || MAP_CENTER,
+      zoom: initialZoom || 2.5,
     });
     map.current.on('render', () => map.current?.resize());
     map.current.on('style.load', () => setStyleLoaded(true));
+    map.current.on('load', () => {
+      if (onLoad) onLoad();
+      if (zoomOnLoad) {
+        map.current?.flyTo({
+          center: MAP_CENTER,
+          zoom: zoomOnLoad,
+          speed: 0.2
+        });
+      }
+    })
   }, []);
 
   return (
@@ -187,7 +227,7 @@ function MapComponent({ width, height, token, itemListHeight, radius, onFullscre
         width,
         height,
         borderRadius: radius || 'var(--mantine-radius-lg)',
-        boxShadow: 'var(--mantine-shadow-md)',
+        boxShadow: shadow || 'var(--mantine-shadow-md)',
       }}
     >
       <ItemList
@@ -195,6 +235,8 @@ function MapComponent({ width, height, token, itemListHeight, radius, onFullscre
         documents={selectedEvents?.data.eventSearch.documents || {}}
         open={Boolean(selectedPoint)}
         contentHeight={itemListHeight}
+        topOffset={itemsTopOffset}
+        leftOffset={itemsLeftOffset}
       />
       {onFullscreen && (
         <Tooltip

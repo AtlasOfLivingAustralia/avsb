@@ -29,10 +29,12 @@ interface ItemListProps {
   open: boolean;
   documents: EventDocuments;
   contentHeight?: number | string;
+  topOffset?: number;
+  leftOffset?: number;
   onClose?: () => void;
 }
 
-function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
+function ItemList({ open, documents, contentHeight, topOffset, leftOffset, onClose }: ItemListProps) {
   const { results, total } = documents;
 
   return (
@@ -43,8 +45,8 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
             ...styles,
             position: 'absolute',
             zIndex: 10,
-            top: 'var(--mantine-spacing-md)',
-            left: 'var(--mantine-spacing-md)',
+            top: `calc(var(--mantine-spacing-md) + ${topOffset || 0}px)`,
+            left: `calc(var(--mantine-spacing-md) + ${leftOffset || 0}px)`,
           }}
         >
           <Paper w={260} shadow='md' withBorder>
@@ -84,8 +86,8 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
                         to={
                           result.distinctTaxa?.[0]?.key
                             ? `/taxon/${encodeURIComponent(
-                                result.distinctTaxa?.[0]?.key,
-                              )}/accessions/${result.eventID}`
+                              result.distinctTaxa?.[0]?.key,
+                            )}/accessions/${result.eventID}`
                             : `../accessions/${result.eventID}`
                         }
                         p='xs'

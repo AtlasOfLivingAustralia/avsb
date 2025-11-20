@@ -16,7 +16,7 @@ import {
   useComputedColorScheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconChartLine, IconExternalLink, IconMessageCircleQuestion } from '@tabler/icons-react';
+import { IconChartLine, IconExternalLink, IconHandGrab, IconMessageCircleQuestion, IconPointer, IconPointerFilled } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router';
 // AVSB logos
 import logoGrey from '#/assets/avsb-logo-grey.png';
@@ -28,6 +28,7 @@ import { Wave } from '#/components/Wave';
 import { breakpoints } from '#/theme/constants';
 
 import Summaries from './components/Summaries';
+import { HomeMap } from './components/HomeMap';
 
 function Home() {
   const navigate = useNavigate();
@@ -58,21 +59,21 @@ function Home() {
               <br />
               Australia&apos;s seed data
             </Title>
-            <Text mt='sm'>
+            <Text mt='sm' c='light-dark(var(--mantine-color-gray-7),var(--mantine-color-gray-5))'>
               The Australian Virtual Seed Bank is an online portal that provides access to
               aggregated seed data sourced from various seed banks across Australia as part of the{' '}
               <Anchor href='https://www.seedpartnership.org.au/' target='_blank'>
                 Australian Seed Bank Partnership
               </Anchor>
             </Text>
-            <Text mb='md'>Get started by searching for a taxon below</Text>
+            <Text mb='md' c='light-dark(var(--mantine-color-gray-7),var(--mantine-color-gray-5))'>Get started by searching for a taxon below</Text>
             <TaxonSearchInput
               onChange={(guid) => {
                 if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
               }}
             />
           </Stack>
-          {mdOrLarger && (
+          {/* {mdOrLarger && (
             <div style={{ width: 450, height: 450 }}>
               <Blob style={{ position: 'absolute' }} width={450} height={450} />
               <Center h='100%'>
@@ -85,6 +86,9 @@ function Home() {
                 />
               </Center>
             </div>
+          )} */}
+          {mdOrLarger && (
+            <HomeMap />
           )}
         </Group>
       </Container>
