@@ -1,26 +1,12 @@
-import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';
-import queries from '#/api/queries';
-import { Center, Group, Loader, Stack, Text, Transition } from '@mantine/core';
+import { gqlQueries } from '#/api';
+import { Group, Stack, Text } from '@mantine/core';
 import { IconPointerFilled } from '@tabler/icons-react';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 
 const EventMap = lazy(() => import('#/components/EventMap'));
 
 export function HomeMap() {
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [token, setToken] = useState<string | undefined>();
-
-  useEffect(() => {
-    async function getToken() {
-      const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(queries.QUERY_EVENT_MAP, { predicate: gqlQueries.PRED_DATA_RESOURCE });
-
-      if (data.eventSearch._tileServerToken) {
-        setToken(data.eventSearch._tileServerToken);
-      }
-    }
-
-    getToken();
-  }, []);
 
   return (
     <Stack align='center' gap='xl' style={{ transition: 'opacity ease 1200ms', opacity: loaded ? 1 : 0 }}>
@@ -28,7 +14,7 @@ export function HomeMap() {
         <Suspense>
           <EventMap
             width={500} height={500}
-            token={token}
+            predicate={gqlQueries.PRED_DATA_RESOURCE}
             itemListHeight={180}
             shadow="none"
             initialCenter={[126.591797, -26.000092]}

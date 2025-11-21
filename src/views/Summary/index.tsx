@@ -19,7 +19,7 @@ import { IconAlertTriangle, IconExternalLink, IconMap } from '@tabler/icons-reac
 import { Fragment, lazy, Suspense } from 'react';
 import { useLoaderData, useNavigate, useRouteLoaderData } from 'react-router';
 // Project imports
-import { SDSInstance } from '#/api';
+import { gqlQueries, Predicate, SDSInstance } from '#/api';
 import { Taxon } from '#/api/sources/taxon';
 import { ConservationStatus, SDS } from '#/components';
 import { breakpoints } from '#/theme/constants';
@@ -38,6 +38,23 @@ export function Component() {
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
   const navigate = useNavigate();
 
+  const summaryPredicate: Predicate = {
+    type: 'and',
+    predicates: [
+      gqlQueries.PRED_DATA_RESOURCE,
+      {
+        type: 'in',
+        key: 'taxonKey',
+        values: [taxon.classification.guid],
+      },
+      {
+        type: 'equals',
+        key: 'eventType',
+        value: 'Accession',
+      },
+    ],
+  };
+
   return (
     <>
       <Modal
@@ -53,7 +70,10 @@ export function Component() {
         fullScreen
       >
         <Suspense fallback={<Skeleton w='100%' h={650} />}>
-          <EventMap width='100%' height={650} token={token} itemListHeight={180} radius={'0'} />
+          <EventMap width='100%' height={650} predicate={summaryPredicate}
+            initialToken={token}
+            itemListHeight={180}
+            radius={'0'} />
         </Suspense>
       </Modal>
       <Grid>
@@ -95,7 +115,8 @@ export function Component() {
                     onFullscreen={open}
                     width='100%'
                     height={450}
-                    token={token}
+                    predicate={summaryPredicate}
+                    initialToken={token}
                     itemListHeight={180}
                   />
                 </Card>

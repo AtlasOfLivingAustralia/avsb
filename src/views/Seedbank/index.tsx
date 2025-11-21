@@ -214,7 +214,12 @@ export function Component() {
           </Grid.Col>
           <Grid.Col span={{ xl: 8, lg: 8, md: 12, sm: 12, xs: 12 }}>
             <Suspense fallback={<Skeleton w='100%' h={450} />}>
-              <EventMap width='100%' height={450} token={token} />
+              <EventMap
+                width='100%'
+                height={450}
+                initialToken={token}
+                predicate={{ type: 'equals', key: 'datasetKey', value: params.resource }}
+              />
             </Suspense>
             <Alert
               title='Accession Map'
