@@ -44,7 +44,7 @@ async function dataResource(id: string): Promise<DataResource> {
   if (response.ok && data.startsWith('no entity with')) throw new Response(data, { status: 404 });
 
   // Cache the response
-  if (cacheKey) maybeStoreResponse(cacheKey, JSON.parse(data));
+  if (cacheKey && response.ok) maybeStoreResponse(cacheKey, JSON.parse(data));
 
   return JSON.parse(data);
 }
@@ -60,10 +60,11 @@ async function dataResourceList(): Promise<DataResourceSummary[]> {
   }
 
   // If we don't have any results stored locally, fetch & store them
-  const data = await (await fetch(URL)).json();
+  const response = await fetch(URL);
+  const data = await response.json();
 
   // Cache the response
-  if (cacheKey) maybeStoreResponse(cacheKey, data, true);
+  if (cacheKey && response.ok) maybeStoreResponse(cacheKey, data, true);
 
   return data;
 }

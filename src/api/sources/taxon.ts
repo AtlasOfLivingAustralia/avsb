@@ -196,7 +196,7 @@ async function info(guid: string): Promise<Taxon> {
   if (data.status && data.status !== 200) throw new Response(data.error, { status: data.status });
 
   // Cache the reponse
-  if (cacheKey) maybeStoreResponse(cacheKey, data);
+  if (cacheKey && response.ok) maybeStoreResponse(cacheKey, data);
 
   return data;
 }

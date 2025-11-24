@@ -22,18 +22,22 @@ async function performGQLQuery<T = unknown>(query: string, variables?: Variables
   });
 
   const data = await response.json();
-  if (response.ok) {
-    // caching implementation here
-    if (cacheKey) maybeStoreResponse(cacheKey, data);
-    return data as T;
-  }
 
   // If errorData is populated, we've recieved an error from the GraphQL server
-  const [error] = data?.errors || [];
-  const errorObj = new Error(error.message);
-  errorObj.stack = error.extensions?.exception?.stacktrace?.join('\n');
+  if ((data?.errors || []).length > 0 || !response.ok) {
+    const [error] = data?.errors || [];
+    const errorObj = new Error(error?.message || 'An error occurred');
+    errorObj.stack =
+      error?.extensions?.exception?.stacktrace?.join('\n') || 'An unknown error occurred.';
 
-  throw errorObj;
+    throw errorObj;
+  }
+
+  if (cacheKey && response.ok) {
+    maybeStoreResponse(cacheKey, data);
+  }
+
+  return data as T;
 }
 
 export default performGQLQuery;
