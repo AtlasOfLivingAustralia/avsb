@@ -29,7 +29,7 @@ export function HomeMap() {
       </div>
       <Group gap='sm'>
         <IconPointerFilled size="1rem" />
-        <Text size='xs' c='dimmed'>Click & drag to interact with the map and points</Text>
+        <Text size='xs' c='dimmed'>Click &amp; drag to interact with the map and points, double click to close polygon</Text>
       </Group>
     </Stack>
   )
