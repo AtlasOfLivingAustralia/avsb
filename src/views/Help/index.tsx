@@ -182,6 +182,7 @@ export function Component() {
                   <Icon className={classes.icon} size='6rem' />
                   <Center h='100%'>
                     <Text
+                      className={classes.text}
                       ta='center'
                       style={{
                         fontFamily: 'var(--mantine-font-family-headings)',
