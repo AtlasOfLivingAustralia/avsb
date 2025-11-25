@@ -24,6 +24,7 @@ export function HomeMap() {
             zoomOnLoad={1.5}
             itemsTopOffset={125}
             itemsLeftOffset={-200}
+            showRecordsButton
           />
         </Suspense>
       </div>

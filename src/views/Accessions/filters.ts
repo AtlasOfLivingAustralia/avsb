@@ -133,20 +133,11 @@ const filters: Filter[] = [
   },
   {
     key: 'measurementOrFactTypes',
-    label: 'Conservation Status',
+    label: 'Threatened Status',
     type: 'multiSelect',
-    placeholder: 'Select conservation statuses',
-    icon: IconHeartFilled,
-    items: conservationLists,
-    group: 'Threatened',
-  },
-  {
-    key: 'measurementOrFactTypes',
-    label: 'Sensitive Status',
-    type: 'multiSelect',
-    placeholder: 'Select sensitive statuses',
+    placeholder: 'Select threatened statuses',
     icon: IconExclamationCircle,
-    items: sensitiveLists,
+    items: [...conservationLists, ...sensitiveLists],
     group: 'Threatened',
   },
 ];

@@ -3,10 +3,8 @@ import {
   Anchor,
   Box,
   Center,
-  Chip,
   Container,
   Divider,
-  em,
   Flex,
   Grid,
   Group,
@@ -25,7 +23,6 @@ import {
   IconChevronUp,
   IconClock,
   IconDatabaseImport,
-  IconExternalLink,
   IconInfoCircle,
   IconLicense,
   IconMap,
@@ -119,6 +116,7 @@ export function Component() {
                       <b>{accessions.documents?.total?.toLocaleString()}</b>
                       &nbsp;Accessions
                     </Text>
+                    <Divider orientation='vertical' />
                     <Text size='sm'>
                       <b>{trials.documents?.total?.toLocaleString()}</b>&nbsp;Trials
                     </Text>
@@ -223,6 +221,7 @@ export function Component() {
                 height={450}
                 initialToken={token}
                 predicate={{ type: 'equals', key: 'datasetKey', value: params.resource }}
+                showRecordsButton
               />
             </Suspense>
             <Alert

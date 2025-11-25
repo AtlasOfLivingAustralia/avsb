@@ -1,5 +1,5 @@
 import { ActionIcon, Button, Group, Tooltip } from '@mantine/core';
-import { IconMaximize, IconMinimize } from '@tabler/icons-react';
+import { IconMaximize, IconMinimize, IconSearch } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 
@@ -19,6 +19,7 @@ import { useComputedColorScheme } from '@mantine/core';
 import ItemList from './components/ItemList';
 import { drawStyles } from './drawStyles';
 import { useFullscreen } from '@mantine/hooks';
+import { SelectionRecords } from './components/SelectionRecords';
 
 // Initialize MapBox
 mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_TOKEN;
@@ -42,6 +43,7 @@ interface MapProps {
   zoomOnLoad?: number;
   itemsTopOffset?: number;
   itemsLeftOffset?: number;
+  showRecordsButton?: boolean;
   onLoad?: () => void;
 }
 
@@ -63,6 +65,7 @@ function MapComponent({
   zoomOnLoad,
   itemsTopOffset,
   itemsLeftOffset,
+  showRecordsButton,
   onLoad
 }: MapProps) {
   // Map refs
@@ -93,6 +96,7 @@ function MapComponent({
   const [drawPredicate, setDrawPredicate] = useState<Predicate | null>(null);
   const [styleLoaded, setStyleLoaded] = useState<boolean>(false);
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
+  const [recordsOpened, setRecordsOpened] = useState<boolean>(false);
   const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery<{
     data: { eventSearch: EventSearchResult };
   }>(
@@ -314,44 +318,66 @@ function MapComponent({
   }, []);
 
   return (
-    <div
-      ref={fullscreenRef}
-      style={{
-        position: 'relative',
-        width,
-        height,
-        borderRadius: radius || 'var(--mantine-radius-lg)',
-        boxShadow: shadow || 'var(--mantine-shadow-md)',
-      }}
-    >
-      <ItemList
-        onClose={() => setSelectedPoint(null)}
-        documents={selectedEvents?.data.eventSearch.documents || {}}
-        open={Boolean(selectedPoint)}
-        contentHeight={itemListHeight}
-        topOffset={itemsTopOffset}
-        leftOffset={itemsLeftOffset}
+    <>
+      <SelectionRecords
+        opened={recordsOpened}
+        onClose={() => setRecordsOpened(false)}
+        predicates={drawPredicate ? [predicate, drawPredicate] : [predicate]}
       />
-      <Group
-        pos='absolute'
-        bottom='var(--mantine-spacing-xl)'
-        right='var(--mantine-spacing-md)'
-        style={{ zIndex: 20 }}>
-        <Button
-          leftSection={fullscreen ? <IconMinimize size="1rem" /> : <IconMaximize size="1rem" />}
-          color='gray'
-          radius='lg'
-          size='xs'
-          onClick={fullscreenToggle}
-          aria-label='View full screen map'>
-          {fullscreen ? 'Exit' : 'Enter'} fullscreen
-        </Button>
-      </Group>
       <div
-        ref={mapContainer}
-        style={{ width: fullscreen ? '100%' : width, height: fullscreen ? '100%' : height, borderRadius: radius || 'var(--mantine-radius-lg)' }}
-      />
-    </div>
+        ref={fullscreenRef}
+        style={{
+          position: 'relative',
+          width,
+          height,
+          borderRadius: radius || 'var(--mantine-radius-lg)',
+          boxShadow: shadow || 'var(--mantine-shadow-md)',
+        }}
+      >
+        <ItemList
+          onClose={() => setSelectedPoint(null)}
+          documents={selectedEvents?.data.eventSearch.documents || {}}
+          open={Boolean(selectedPoint)}
+          contentHeight={itemListHeight}
+          topOffset={itemsTopOffset}
+          leftOffset={itemsLeftOffset}
+        />
+        <Group
+          gap='xs'
+          pos='absolute'
+          bottom='var(--mantine-spacing-xl)'
+          right='var(--mantine-spacing-md)'
+          style={{ zIndex: 20 }}>
+          {showRecordsButton && (
+            <Button
+              leftSection={<IconSearch size="1rem" />}
+              color='gray'
+              radius='lg'
+              size='xs'
+              onClick={() => {
+                if (fullscreen) fullscreenToggle();
+                setRecordsOpened(true)
+              }}
+              aria-label='View map records'>
+              View records
+            </Button>
+          )}
+          <Button
+            leftSection={fullscreen ? <IconMinimize size="1rem" /> : <IconMaximize size="1rem" />}
+            color='gray'
+            radius='lg'
+            size='xs'
+            onClick={fullscreenToggle}
+            aria-label='View full screen map'>
+            {fullscreen ? 'Exit' : 'Enter'} fullscreen
+          </Button>
+        </Group>
+        <div
+          ref={mapContainer}
+          style={{ width: fullscreen ? '100%' : width, height: fullscreen ? '100%' : height, borderRadius: radius || 'var(--mantine-radius-lg)' }}
+        />
+      </div>
+    </>
   );
 }
 

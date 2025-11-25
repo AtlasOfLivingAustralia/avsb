@@ -44,6 +44,7 @@ import seedSprouting from '../../assets/seed-sprouting.png';
 import StatCard from './components/StatCard';
 import DataExplorer from './components/DataExplorer';
 import { scrollTo } from '#/helpers/scrollTo';
+import { StaticDownloads } from '#/components/Downloads/Static';
 
 const STATE_CONSERVATION = Object.entries(stats.stateConservation);
 
@@ -240,7 +241,7 @@ export function Component() {
                           <Flex justify='space-between' px='sm'>
                             <Text size='sm'>{list.split(':').map((part) => part.trim())[0]}</Text>
                             <Badge variant='light' ml='sm' miw={50}>
-                              {count}
+                              {count} species
                             </Badge>
                           </Flex>
                           {index !== STATE_CONSERVATION.length - 1 && <Divider />}
@@ -267,9 +268,16 @@ export function Component() {
             <Title fw='bold'>
               Data explorer
             </Title>
-            <Button mt={6} size='sm' variant='light' leftSection={<IconDownload />} component='a' href='/threatened.zip' download='AVSB Threatened Records 2025'>
+            <StaticDownloads
+              mt={6}
+              size='sm'
+              variant='light'
+              leftSection={<IconDownload />}
+              href='/threatened.zip'
+              download='AVSB Threatened Records 2025'
+            >
               Download all threatened species data
-            </Button>
+            </StaticDownloads>
           </Flex>
           <Title c='dimmed' order={3}>Explore accessions for protected species</Title>
           <Text size='sm' mb='xl'>The table below lets you filter and refine the accession data we hold for protected species. You can also download all records (both accessions and trials).</Text>

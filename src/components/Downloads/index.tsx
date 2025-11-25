@@ -23,7 +23,7 @@ import { useState } from 'react';
 import { performGQLQuery } from '#/api';
 import { useDisclosure } from '@mantine/hooks';
 
-const DOWNLOAD_CATEGORIES = [
+export const DOWNLOAD_CATEGORIES = [
   "Biosecurity management/planning",
   "Citizen science",
   "Collection management",

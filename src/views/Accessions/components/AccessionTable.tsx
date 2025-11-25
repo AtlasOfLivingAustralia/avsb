@@ -30,9 +30,10 @@ import classes from './AccessionTable.module.css';
 
 interface AccessionTableProps {
   events: Event[];
+  scrollOffset?: number;
 }
 
-function AccessionTable({ events }: AccessionTableProps) {
+function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -57,7 +58,7 @@ function AccessionTable({ events }: AccessionTableProps) {
     <Card shadow='lg' p={0} withBorder>
       <Table.ScrollContainer
         minWidth={500}
-        h='calc(100vh - 425px)'
+        h={`calc(100vh - ${scrollOffset || 425}px)`}
         scrollAreaProps={{ onScrollPositionChange: ({ y }) => setScrolled(y !== 0) }}
       >
         <Table stickyHeader>
