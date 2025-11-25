@@ -18,7 +18,8 @@ import AccessionTable from '#/views/Accessions/components/AccessionTable';
 import downloadFields from '#/views/Accessions/downloadFields';
 // Config
 import filters from './filters';
-import { sensitiveLists } from '#/helpers/stats';
+import { conservationLists } from '#/helpers/stats';
+import { getStateInitials } from '#/helpers/getStateInitials';
 
 interface LocationState {
   predicates?: Predicate[];
@@ -32,8 +33,8 @@ export default function DataExplorer() {
   const [pageSize, setPageSize] = useState<number>(10);
   const [query, setQuery] = useState<EventDocuments>(useLoaderData() as EventDocuments);
 
-  // Custom sensitive filters
-  const [sensitiveFilters, setSensitiveFilters] = useState<string[]>([sensitiveLists[0]]);
+  // Custom threatened filters
+  const [threatenedFilters, setThreatenedFilters] = useState<string[]>([conservationLists[0]]);
 
   const params = useParams();
   const mounted = useMounted();
@@ -50,7 +51,7 @@ export default function DataExplorer() {
     {
       type: 'in',
       key: 'measurementOrFactTypes',
-      values: sensitiveFilters
+      values: threatenedFilters
     },
     ...filterPredicates,
   ];
@@ -72,22 +73,22 @@ export default function DataExplorer() {
     }
 
     if (mounted) runQuery();
-  }, [page, pageSize, filterPredicates, sensitiveFilters]);
+  }, [page, pageSize, filterPredicates, threatenedFilters]);
 
   if (params.accession) return <Outlet />;
 
   const downloadFetcher = (data: { eventSearch: EventSearchResult }) =>
     data?.eventSearch?.documents?.results || [];
 
-  const onSensitiveFilterChange = (filters: string[]) => {
-    if (filters.length > 0) setSensitiveFilters(filters);
+  const onThreatenedFilterChange = (filters: string[]) => {
+    if (filters.length > 0) setThreatenedFilters(filters);
   }
 
   return (
     <Stack>
-      <Chip.Group value={sensitiveFilters} onChange={onSensitiveFilterChange} multiple>
+      <Chip.Group value={threatenedFilters} onChange={onThreatenedFilterChange} multiple>
         <Group gap='xs'>
-          {sensitiveLists.map((list) => <Chip key={list} value={list}>{list}</Chip>)}
+          {conservationLists.map((list) => <Chip key={list} value={list}>{getStateInitials(list)}</Chip>)}
         </Group>
       </Chip.Group>
       <Divider variant='dashed' my='md' />

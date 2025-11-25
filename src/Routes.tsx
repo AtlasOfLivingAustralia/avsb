@@ -13,7 +13,7 @@ import {
 
 import { mapTrialTreatments } from './helpers';
 import { DashboardView, HomeView } from './views';
-import { sensitiveLists } from './helpers/stats';
+import { conservationLists } from './helpers/stats';
 
 const routes = createBrowserRouter([
   {
@@ -63,7 +63,7 @@ const routes = createBrowserRouter([
                   {
                     type: 'equals',
                     key: 'measurementOrFactTypes',
-                    value: sensitiveLists[0],
+                    value: conservationLists[0],
                   },
                 ],
               },

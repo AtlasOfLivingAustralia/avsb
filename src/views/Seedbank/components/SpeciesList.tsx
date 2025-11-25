@@ -91,7 +91,7 @@ function SpeciesList({ name, species }: SpeciesListProps) {
 
   const onDownloadClick = () => {
     const csv = [
-      'Species Name,Count',
+      'Species Name,Record Count',
       ...sorted.map((record) => Object.values(record).join(',')),
     ].join('\n');
 

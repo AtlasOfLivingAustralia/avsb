@@ -6,11 +6,24 @@
   "speciesWithTrial": 10933,
   "stateSensitive": {
     "ACT Sensitive Species List": 16,
+    "South Australian Sensitive Species": 70,
+    "Queensland Confidential Species": 10,
+    "Birds Australia Sensitive Species List": 0,
     "Victorian Restricted Species List": 27,
     "Western Australia: Sensitive Species": 1165,
-    "Queensland Confidential Species": 10,
+    "Northern Territory Sensitive Species List": 0,
     "NSW Sensitive Species List": 91,
-    "South Australian Sensitive Species": 70
+    "Tasmanian Restricted Species": 0
+  },
+  "stateConservation": {
+    "New South Wales : Conservation Status": 409,
+    "Northern Territory : Conservation Status": 1,
+    "South Australia : Conservation Status": 395,
+    "Victoria : Conservation Status": 725,
+    "Western Australia: Conservation Status": 1165,
+    "Tasmania : Conservation Status": 239,
+    "Queensland : Conservation Status": 0,
+    "Australian Capital Territory : Conservation Status": 13
   },
   "epbcTotal": 919
 }

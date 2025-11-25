@@ -45,7 +45,7 @@ import StatCard from './components/StatCard';
 import DataExplorer from './components/DataExplorer';
 import { scrollTo } from '#/helpers/scrollTo';
 
-const STATE_SENSITIVE = Object.entries(stats.stateSensitive);
+const STATE_CONSERVATION = Object.entries(stats.stateConservation);
 
 const recordStats = [
   {
@@ -113,8 +113,8 @@ export function Component() {
         waveType={mdOrLarger ? 'body' : 'simple'}
       />
       <Box
-        mt={mdOrLarger ? -125 : -25}
-        mb={-5}
+        mt={mdOrLarger ? -150 : -25}
+        mb={-15}
         style={{
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
@@ -155,7 +155,7 @@ export function Component() {
         preserveAspectRatio='none'
         waveType='bodyBottom'
       />
-      <Container size='xl' p='lg' mt={mdOrLarger ? -80 : -30} mb='md'>
+      <Container size='xl' p='lg' mt={mdOrLarger ? -110 : -30} mb={mdOrLarger ? -25 : 0}>
         <Group align='flex-start' justify='space-between' gap="xs">
           <Stack w={mdOrLarger ? 490 : '100%'} mb='xl' gap='xl'>
             <Stack gap='md'>
@@ -204,13 +204,13 @@ export function Component() {
         waveType={mdOrLarger ? 'body' : 'simple'}
       />
       <Box
-        mt={mdOrLarger ? -125 : -25}
-        mb={-5}
+        mt={mdOrLarger ? -140 : -25}
+        mb={mdOrLarger ? -50 : 0}
         style={{
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
       >
-        <Container size='xl' p='lg'>
+        <Container size='xl' p='lg' >
           <Group align='flex-start' justify='space-between' mt='xl' gap='xs'>
             {mdOrLarger && (
               <div style={{ width: 450, height: 450 }}>
@@ -226,7 +226,7 @@ export function Component() {
                 </Center>
               </div>
             )}
-            <Stack w={mdOrLarger ? 490 : '100%'} mb='xl' gap='xl'>
+            <Stack w={mdOrLarger ? 490 : '100%'} gap='xl'>
               <Stack gap='md' ta={mdOrLarger ? 'right' : 'left'}>
                 <Title c='dimmed' order={3}>State and Territory listed species</Title>
                 <Text size='sm'>
@@ -235,15 +235,15 @@ export function Component() {
                 <Paper withBorder>
                   <ScrollArea h={200}>
                     <Stack gap='xs' py='xs'>
-                      {STATE_SENSITIVE.map(([list, count], index) => (
+                      {STATE_CONSERVATION.sort(([_, a], [__, b]) => b - a).map(([list, count], index) => (
                         <Fragment key={list}>
                           <Flex justify='space-between' px='sm'>
-                            <Text size='sm'>{list}</Text>
+                            <Text size='sm'>{list.split(':').map((part) => part.trim())[0]}</Text>
                             <Badge variant='light' ml='sm' miw={50}>
                               {count}
                             </Badge>
                           </Flex>
-                          {index !== STATE_SENSITIVE.length - 1 && <Divider />}
+                          {index !== STATE_CONSERVATION.length - 1 && <Divider />}
                         </Fragment>
                       ))}
                     </Stack>
@@ -267,8 +267,8 @@ export function Component() {
             <Title fw='bold'>
               Data explorer
             </Title>
-            <Button mt={6} size='sm' variant='light' leftSection={<IconDownload />} component='a' href='/sensitive.zip' download='AVSB Sensitive Records 2025'>
-              Download full dataset
+            <Button mt={6} size='sm' variant='light' leftSection={<IconDownload />} component='a' href='/threatened.zip' download='AVSB Threatened Records 2025'>
+              Download all threatened species data
             </Button>
           </Flex>
           <Title c='dimmed' order={3}>Explore accessions for protected species</Title>

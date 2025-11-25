@@ -112,14 +112,18 @@ export function Component() {
                   {collectory.websiteUrl}
                 </Anchor>
               )}
-              <Group mt='xl' pt='md' justify={smOrLarger ? 'flex-start' : 'center'}>
-                <Chip checked={false}>
-                  <b>{accessions.documents?.total?.toLocaleString()}</b>
-                  &nbsp;Accessions
-                </Chip>
-                <Chip checked={false}>
-                  <b>{trials.documents?.total?.toLocaleString()}</b>&nbsp;Trials
-                </Chip>
+              <Group justify={smOrLarger ? 'flex-start' : 'center'}>
+                <Paper mt='xl' py='xs' px='md'>
+                  <Group>
+                    <Text size='sm'>
+                      <b>{accessions.documents?.total?.toLocaleString()}</b>
+                      &nbsp;Accessions
+                    </Text>
+                    <Text size='sm'>
+                      <b>{trials.documents?.total?.toLocaleString()}</b>&nbsp;Trials
+                    </Text>
+                  </Group>
+                </Paper>
               </Group>
             </Flex>
           </Group>

@@ -1,5 +1,5 @@
 import { gqlQueries } from '#/api';
-import { Group, Stack, Text } from '@mantine/core';
+import { Group, Stack, Text, ThemeIcon } from '@mantine/core';
 import { IconPointerFilled } from '@tabler/icons-react';
 import { lazy, Suspense, useState } from 'react';
 
@@ -27,9 +27,11 @@ export function HomeMap() {
           />
         </Suspense>
       </div>
-      <Group gap='sm'>
-        <IconPointerFilled size="1rem" />
-        <Text size='xs' c='dimmed'>Click &amp; drag to interact with the map and points, double click to close polygon</Text>
+      <Group gap='md'>
+        <ThemeIcon variant='light' size='md'>
+          <IconPointerFilled size="1rem" />
+        </ThemeIcon>
+        <Text maw={400} size='xs' c='dimmed'>Click &amp; drag to interact with the map, use the polygon tool to draw a polygon for an area, double click to close</Text>
       </Group>
     </Stack>
   )

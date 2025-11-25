@@ -1,5 +1,5 @@
-import { ActionIcon, Tooltip } from '@mantine/core';
-import { IconMaximize } from '@tabler/icons-react';
+import { ActionIcon, Button, Group, Tooltip } from '@mantine/core';
+import { IconMaximize, IconMinimize } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 
@@ -18,6 +18,7 @@ import { getMapLayer, getWktFromGeohash } from '#/helpers';
 import { useComputedColorScheme } from '@mantine/core';
 import ItemList from './components/ItemList';
 import { drawStyles } from './drawStyles';
+import { useFullscreen } from '@mantine/hooks';
 
 // Initialize MapBox
 mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_TOKEN;
@@ -41,7 +42,6 @@ interface MapProps {
   zoomOnLoad?: number;
   itemsTopOffset?: number;
   itemsLeftOffset?: number;
-  onFullscreen?: () => void;
   onLoad?: () => void;
 }
 
@@ -63,7 +63,6 @@ function MapComponent({
   zoomOnLoad,
   itemsTopOffset,
   itemsLeftOffset,
-  onFullscreen,
   onLoad
 }: MapProps) {
   // Map refs
@@ -85,6 +84,8 @@ function MapComponent({
       styles: drawStyles
     }));
 
+  // Fullscreen & params hook
+  const { fullscreen, ref: fullscreenRef, toggle: fullscreenToggle } = useFullscreen();
   const params = useParams();
 
   // Map state & data
@@ -314,6 +315,7 @@ function MapComponent({
 
   return (
     <div
+      ref={fullscreenRef}
       style={{
         position: 'relative',
         width,
@@ -330,32 +332,24 @@ function MapComponent({
         topOffset={itemsTopOffset}
         leftOffset={itemsLeftOffset}
       />
-      {onFullscreen && (
-        <Tooltip
-          transitionProps={{ transition: 'pop' }}
-          label='Toggle Fullscreen'
+      <Group
+        pos='absolute'
+        bottom='var(--mantine-spacing-xl)'
+        right='var(--mantine-spacing-md)'
+        style={{ zIndex: 20 }}>
+        <Button
+          leftSection={fullscreen ? <IconMinimize size="1rem" /> : <IconMaximize size="1rem" />}
           color='gray'
-          position='left'
-          withArrow
-        >
-          <ActionIcon
-            color='gray'
-            onClick={onFullscreen}
-            variant='filled'
-            size='lg'
-            pos='absolute'
-            bottom='var(--mantine-spacing-md)'
-            right='var(--mantine-spacing-md)'
-            style={{ zIndex: 20 }}
-            aria-label='View full screen map'
-          >
-            <IconMaximize />
-          </ActionIcon>
-        </Tooltip>
-      )}
+          radius='lg'
+          size='xs'
+          onClick={fullscreenToggle}
+          aria-label='View full screen map'>
+          {fullscreen ? 'Exit' : 'Enter'} fullscreen
+        </Button>
+      </Group>
       <div
         ref={mapContainer}
-        style={{ width, height, borderRadius: radius || 'var(--mantine-radius-lg)' }}
+        style={{ width: fullscreen ? '100%' : width, height: fullscreen ? '100%' : height, borderRadius: radius || 'var(--mantine-radius-lg)' }}
       />
     </div>
   );

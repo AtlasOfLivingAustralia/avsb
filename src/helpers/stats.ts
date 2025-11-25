@@ -1,5 +1,6 @@
 import stats from '#/assets/stats/2025.json';
 
-const sensitiveLists = ['EPBC Act Threatened Species', ...Object.keys(stats.stateSensitive)];
+const sensitiveLists = Object.keys(stats.stateSensitive);
+const conservationLists = ['EPBC Act Threatened Species', ...Object.keys(stats.stateConservation)];
 
-export { stats, sensitiveLists };
+export { stats, sensitiveLists, conservationLists };
