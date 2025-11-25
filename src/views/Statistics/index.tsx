@@ -276,7 +276,7 @@ export function Component() {
               href='/threatened.zip'
               download='AVSB Threatened Records 2025'
             >
-              Download all threatened species data
+              Download all protected species data
             </StaticDownloads>
           </Flex>
           <Title c='dimmed' order={3}>Explore accessions for protected species</Title>
