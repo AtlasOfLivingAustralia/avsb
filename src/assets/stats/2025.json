@@ -4,26 +4,39 @@
   "treatments": 32579,
   "speciesWithAccession": 18288,
   "speciesWithTrial": 10933,
+  "epbcTotal": 974,
   "stateSensitive": {
-    "ACT Sensitive Species List": 16,
-    "South Australian Sensitive Species": 70,
+    "ACT Sensitive Species List": 18,
+    "South Australian Sensitive Species": 81,
     "Queensland Confidential Species": 10,
     "Birds Australia Sensitive Species List": 0,
     "Victorian Restricted Species List": 27,
-    "Western Australia: Sensitive Species": 1165,
+    "Western Australia: Sensitive Species": 1323,
     "Northern Territory Sensitive Species List": 0,
-    "NSW Sensitive Species List": 91,
+    "NSW Sensitive Species List": 101,
     "Tasmanian Restricted Species": 0
   },
   "stateConservation": {
-    "New South Wales : Conservation Status": 409,
+    "New South Wales : Conservation Status": 432,
     "Northern Territory : Conservation Status": 1,
-    "South Australia : Conservation Status": 395,
-    "Victoria : Conservation Status": 725,
-    "Western Australia: Conservation Status": 1165,
-    "Tasmania : Conservation Status": 239,
-    "Queensland : Conservation Status": 0,
+    "South Australia : Conservation Status": 457,
+    "Victoria : Conservation Status": 774,
+    "Western Australia: Conservation Status": 1324,
+    "Tasmania : Conservation Status": 255,
+    "Queensland : Conservation Status": 85,
     "Australian Capital Territory : Conservation Status": 13
   },
-  "epbcTotal": 919
+  "stateEPBC": {
+    "nsb": 192,
+    "tas": 68,
+    "vic": 120,
+    "nt": 1,
+    "wa": 171,
+    "wa_kensington": 322,
+    "greening": 0,
+    "qld": 47,
+    "plantbank": 370,
+    "sa": 82,
+    "asdp": 1
+  }
 }
