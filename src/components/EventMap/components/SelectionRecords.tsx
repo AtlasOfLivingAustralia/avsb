@@ -161,7 +161,7 @@ export function SelectionRecords({ opened, onClose, predicates: rawPredicates }:
             </Group>
           </Group>
           <AccessionTable scrollOffset={320} events={events || []} />
-          <Center mb='sm'>
+          <Center mb='sm' mt='lg'>
             <Pagination
               value={page}
               total={query ? Math.ceil((query.total as number) / pageSize) : 1}

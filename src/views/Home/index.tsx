@@ -109,7 +109,7 @@ function Home() {
         <Container size='xl'>
           <Box p='xl'>
             <Alert
-              radius='lg'
+              radius='xl'
               title='Portal Statistics'
               icon={<IconChartLine />}
               mb='xl'
