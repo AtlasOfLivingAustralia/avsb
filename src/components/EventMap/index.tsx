@@ -1,6 +1,6 @@
-import { ActionIcon, Button, Group, Tooltip } from '@mantine/core';
-import { IconMaximize, IconMinimize, IconSearch } from '@tabler/icons-react';
-import { useEffect, useRef, useState } from 'react';
+import { Button, Checkbox, Flex, Group, Paper } from '@mantine/core';
+import { IconLayersIntersect2, IconMaximize, IconMinimize, IconSearch } from '@tabler/icons-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 
 // Mapbox
@@ -43,13 +43,13 @@ interface MapProps {
   zoomOnLoad?: number;
   itemsTopOffset?: number;
   itemsLeftOffset?: number;
-  showRecordsButton?: boolean;
   onLoad?: () => void;
 }
 
 const TRANSPARENT_LIGHT = 'mapbox://styles/jackbrinkman/cmi7z3aob000h01si4rd8cuv8';
 const TRANSPARENT_DARK = 'mapbox://styles/jackbrinkman/cmi6r8ly500bf01st7az16yo2';
 const MAP_CENTER: LngLatLike = [137.591797, -26.000092];
+const RECORDS_PREDICATE: Predicate = { type: 'isNotNull', key: 'decimalLongitude' }
 
 function MapComponent({
   predicate,
@@ -65,7 +65,6 @@ function MapComponent({
   zoomOnLoad,
   itemsTopOffset,
   itemsLeftOffset,
-  showRecordsButton,
   onLoad
 }: MapProps) {
   // Map refs
@@ -97,6 +96,7 @@ function MapComponent({
   const [styleLoaded, setStyleLoaded] = useState<boolean>(false);
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
   const [recordsOpened, setRecordsOpened] = useState<boolean>(false);
+  const inverseRef = useRef<HTMLInputElement>(null);
   const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery<{
     data: { eventSearch: EventSearchResult };
   }>(
@@ -128,7 +128,11 @@ function MapComponent({
         value
       })) as Predicate[];
 
-    setDrawPredicate(predicates.length > 0 ? { type: 'or', predicates } : null);
+    if (predicates.length > 0) {
+      setDrawPredicate(inverseRef.current?.checked ? { type: 'not', predicate: { type: 'or', predicates } } : { type: 'or', predicates });
+    } else {
+      setDrawPredicate(null);
+    }
   }
 
   // Helper function to add the events layer to the map
@@ -322,7 +326,7 @@ function MapComponent({
       <SelectionRecords
         opened={recordsOpened}
         onClose={() => setRecordsOpened(false)}
-        predicates={drawPredicate ? [predicate, drawPredicate] : [predicate]}
+        predicates={drawPredicate ? [predicate, drawPredicate, RECORDS_PREDICATE] : [predicate, RECORDS_PREDICATE]}
       />
       <div
         ref={fullscreenRef}
@@ -346,22 +350,46 @@ function MapComponent({
           gap='xs'
           pos='absolute'
           bottom='var(--mantine-spacing-xl)'
+          left='var(--mantine-spacing-md)'
           right='var(--mantine-spacing-md)'
+          justify='center'
           style={{ zIndex: 20 }}>
-          {showRecordsButton && (
-            <Button
-              leftSection={<IconSearch size="1rem" />}
-              color='gray'
-              radius='lg'
-              size='xs'
-              onClick={() => {
-                if (fullscreen) fullscreenToggle();
-                setRecordsOpened(true)
-              }}
-              aria-label='View map records'>
-              View records
-            </Button>
-          )}
+
+          <Paper
+            style={{
+              transition: 'all ease 200ms',
+              width: drawPredicate ? 116 : 0,
+              overflow: 'hidden',
+              opacity: drawPredicate ? 1 : 0,
+            }}
+            px={8}
+            withBorder
+          >
+            <Flex align='center' justify='center' h={29} gap='sm'>
+              <IconLayersIntersect2 size="1rem" style={{ minWidth: '1rem', minHeight: '1rem' }} />
+              <Checkbox
+                ref={inverseRef}
+                onChange={handlePolygons}
+                label="Inverse"
+                labelPosition='left'
+                size='xs'
+                fw={600}
+                c='white'
+              />
+            </Flex>
+          </Paper>
+          <Button
+            leftSection={<IconSearch size="1rem" />}
+            color='gray'
+            radius='lg'
+            size='xs'
+            onClick={() => {
+              if (fullscreen) fullscreenToggle();
+              setRecordsOpened(true)
+            }}
+            aria-label='View map records'>
+            View records
+          </Button>
           <Button
             leftSection={fullscreen ? <IconMinimize size="1rem" /> : <IconMaximize size="1rem" />}
             color='gray'

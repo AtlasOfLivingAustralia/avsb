@@ -221,7 +221,6 @@ export function Component() {
                 height={450}
                 initialToken={token}
                 predicate={{ type: 'equals', key: 'datasetKey', value: params.resource }}
-                showRecordsButton
               />
             </Suspense>
             <Alert
