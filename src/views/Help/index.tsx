@@ -105,7 +105,7 @@ const helpTopics: { [key: string]: HelpTopic } = {
     instructions: viewTaxonMediaItems,
   },
   viewPortalStats: {
-    topic: 'View Statistics',
+    topic: 'View Seed Bank Snapshot',
     description: 'View portal data statistics',
     icon: IconChartLine,
     instructions: viewPortalStatisticsItem,

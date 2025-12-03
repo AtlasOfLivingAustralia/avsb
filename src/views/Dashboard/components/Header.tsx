@@ -82,9 +82,9 @@ function Header() {
               size='xs'
               variant='subtle'
               color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-2))'
-              aria-label='Portal Statistics'
+              aria-label='Seed Bank Snapshot'
             >
-              Portal Statistics
+              Seed Bank Snapshot
             </Button>
             <Transition transition={slideTransition} mounted={pathname !== '/'}>
               {(styles) => (

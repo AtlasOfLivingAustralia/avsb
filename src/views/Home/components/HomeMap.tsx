@@ -4,16 +4,17 @@ import { IconPointerFilled } from '@tabler/icons-react';
 import { lazy, Suspense, useState } from 'react';
 
 const EventMap = lazy(() => import('#/components/EventMap'));
+const SIZE = 470;
 
 export function HomeMap() {
   const [loaded, setLoaded] = useState<boolean>(false);
 
   return (
     <Stack align='center' gap='xl' style={{ transition: 'opacity ease 1200ms', opacity: loaded ? 1 : 0 }}>
-      <div style={{ width: 500, height: 500 }}>
+      <div style={{ width: SIZE, height: SIZE }}>
         <Suspense>
           <EventMap
-            width={500} height={500}
+            width={SIZE} height={SIZE}
             predicate={gqlQueries.PRED_DATA_RESOURCE}
             itemListHeight={180}
             shadow="none"

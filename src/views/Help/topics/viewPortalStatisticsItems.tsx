@@ -11,7 +11,7 @@ const items: HelpTopicItem[] = [
     icon: IconClick,
     content: (
       <>
-        Click on the <b>portal statistics</b> button on the top-left corner of the portal
+        Click on the <b>seed bank snapshot</b> button on the top-left corner of the portal
       </>
     ),
     image: imageHomeStatsHover,

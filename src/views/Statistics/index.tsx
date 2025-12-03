@@ -40,7 +40,7 @@ import { breakpoints } from '#/theme/constants';
 import { stats } from '#/helpers/stats';
 
 import ecologyEarth from '../../assets/ecology-earth.png';
-import seedSprouting from '../../assets/seed-sprouting.png';
+import spottedPlant from '../../assets/spotted-blue-succulent-plant.png';
 import StatCard from './components/StatCard';
 import DataExplorer from './components/DataExplorer';
 import { scrollTo } from '#/helpers/scrollTo';
@@ -219,9 +219,9 @@ export function Component() {
                 <Center h='100%'>
                   <Image
                     style={{ zIndex: 10 }}
-                    w={300}
-                    h={300}
-                    src={seedSprouting}
+                    w={270}
+                    h={283}
+                    src={spottedPlant}
                     alt='Watering can with plant'
                   />
                 </Center>
