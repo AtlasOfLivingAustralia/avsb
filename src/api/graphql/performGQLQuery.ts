@@ -36,7 +36,7 @@ async function performGQLQuery<T = unknown>(query: string, variables?: Variables
   }
 
   // Automatically map taxon name / ID emofs to the _taxon field
-  const keys = ['eventSearch', 'accession', 'accessions', 'trials'];
+  const keys = Object.keys(data.data);
   for (let k = 0; k < keys.length; k += 1) {
     const key = keys[k];
     const fullKey = `data.${key}.documents.results[0].measurementOrFacts`;
