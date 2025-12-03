@@ -154,7 +154,7 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
                     }}
                   >
                     <Table.Td style={{ paddingLeft: 14 }}>
-                      {accession?.accessionNumber || event.eventID}
+                      {accession?.accessionNumber || 'N/A'}
                     </Table.Td>
                     <Table.Td>
                       <Flex gap="xs" align="center">

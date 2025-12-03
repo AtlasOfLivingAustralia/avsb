@@ -34,16 +34,20 @@ import {
 } from '@tabler/icons-react';
 import { Fragment } from 'react';
 
+// Helpers
+import { scrollTo } from '#/helpers/scrollTo';
+import { stats } from '#/helpers/stats';
+import { breakpoints } from '#/theme/constants';
+
+// Static image assets
+import ecologyEarth from '#/assets/ecology-earth.png';
+import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
+
+// Components
 import { Blob } from '#/components';
 import { Wave } from '#/components/Wave';
-import { breakpoints } from '#/theme/constants';
-import { stats } from '#/helpers/stats';
-
-import ecologyEarth from '../../assets/ecology-earth.png';
-import spottedPlant from '../../assets/spotted-blue-succulent-plant.png';
 import StatCard from './components/StatCard';
 import DataExplorer from './components/DataExplorer';
-import { scrollTo } from '#/helpers/scrollTo';
 import { StaticDownloads } from '#/components/Downloads/Static';
 
 const STATE_CONSERVATION = Object.entries(stats.stateConservation);

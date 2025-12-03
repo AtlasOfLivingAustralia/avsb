@@ -95,7 +95,7 @@ function Home() {
           <Box px='xl'>
             <Group pt={mdOrLarger ? 0 : 'xl'} justify='space-between'>
               <Stack w={mdOrLarger ? 'calc(100vw - 530px)' : '100%'} maw={mdOrLarger ? 600 : undefined}>
-                <Group>
+                <Group mb='md'>
                   <IconSeedlingFilled size="2rem" />
                   <Title order={2} fw={600}>
                     Inside the vault

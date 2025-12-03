@@ -13,11 +13,11 @@ import { Downloads, Filters } from '#/components';
 import { useMounted } from '#/helpers';
 
 // Accession components
-import AccessionTable from '../../../views/Accessions/components/AccessionTable';
-import downloadFields from '../../../views/Accessions/downloadFields';
+import AccessionTable from '#/views/Accessions/components/AccessionTable';
+import downloadFields from '#/views/Accessions/downloadFields';
 
 // Config
-import filters from '../../../views/Accessions/filters';
+import filters from '#/views/Accessions/filters';
 import { IconMap } from '@tabler/icons-react';
 
 interface SelectionRecordsProps {

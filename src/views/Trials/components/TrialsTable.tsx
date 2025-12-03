@@ -179,7 +179,7 @@ function TrialsTable({ events }: TrialsTableProps) {
                     }}
                   >
                     <Table.Td style={{ paddingLeft: 14 }}>
-                      {trial?.accessionNumber || event.eventID}
+                      {trial?.accessionNumber || 'N/A'}
                     </Table.Td>
                     <Table.Td>
                       <Flex gap="xs" align="center">
