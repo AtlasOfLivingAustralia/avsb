@@ -100,7 +100,7 @@ function MapComponent({
   const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery<{
     data: { eventSearch: EventSearchResult };
   }>(
-    params.guid ? queries.QUERY_EVENT_MAP_POINT : queries.QUERY_EVENT_MAP_POINT_KEY,
+    queries.QUERY_EVENT_MAP_POINT,
     {},
     { lazy: true },
   );

@@ -3,7 +3,9 @@ import { DownloadField } from '#/components/Downloads';
 const downloadFields: DownloadField[] = [
   { label: 'Event ID', key: 'eventID' },
   { label: 'Accession Number', key: 'extensions.seedbank.accessionNumber' },
-  { label: 'Scientific Name', key: 'distinctTaxa[0].scientificName' },
+  { label: 'Scientific Name', key: '_taxon.taxonName' },
+  { label: 'Supplied Name', key: '_taxon.suppliedName' },
+  { label: 'Taxon ID', key: '_taxon.taxonID' },
   { label: 'Dataset Title', key: 'datasetTitle' },
   { label: 'Locality', key: 'parentEvent.locality' },
   { label: 'Decimal Latitude', key: 'parentEvent.decimalLatitude' },

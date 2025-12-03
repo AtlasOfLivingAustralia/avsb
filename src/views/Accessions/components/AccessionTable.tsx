@@ -71,9 +71,9 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
                 fieldKey='accessionNumber'
               />
               <ThField
-                sorted={sortBy === 'distinctTaxa[0].scientificName'}
+                sorted={sortBy === '_taxon.taxonName'}
                 reversed={reverseSortDirection}
-                onSort={() => setSorting('distinctTaxa[0].scientificName')}
+                onSort={() => setSorting('_taxon.taxonName')}
                 fieldKey='taxon'
               />
               <ThField
@@ -137,6 +137,7 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
             {sortedData.map((event) => {
               const accession = event.extensions?.seedbank as SeedBankAccession;
               const isSelected = selected.includes(event.eventID || '');
+
               return (
                 <Fragment key={event.eventID}>
                   <Table.Tr
@@ -159,7 +160,7 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
                     <Table.Td>
                       <Flex gap="xs" align="center">
                         <SensitiveIcons event={event} />
-                        <Text size='sm'>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Text>
+                        <Text size='sm'>{event._taxon?.taxonName || 'N/A'}</Text>
                       </Flex>
                     </Table.Td>
                     <Table.Td>
@@ -200,8 +201,8 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
                           }}
                           rightSection={<IconArrowUpRight size='1rem' />}
                           component={Link}
-                          disabled={!event.eventID || !event.distinctTaxa?.[0]?.key}
-                          to={event.eventID ? `/taxon/${encodeURIComponent(event.distinctTaxa?.[0]?.key || '')}/accessions/${event.eventID}` : '/'}
+                          disabled={!event.eventID || !event._taxon?.taxonID}
+                          to={event.eventID ? `/taxon/${encodeURIComponent(event._taxon?.taxonID || '')}/accessions/${event.eventID}` : '/'}
                           variant='subtle'
                           size='xs'
                           px='xs'

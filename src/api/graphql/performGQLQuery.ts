@@ -1,5 +1,7 @@
+import { get } from 'lodash';
 import { buildCacheKey, getCachedResponse, maybeStoreResponse } from '../cache';
 import { Variables } from './types';
+import { mapEventTaxa } from '#/helpers/mapEventTaxon';
 
 async function performGQLQuery<T = unknown>(query: string, variables?: Variables) {
   const cacheKey = buildCacheKey(query, variables);
@@ -31,6 +33,17 @@ async function performGQLQuery<T = unknown>(query: string, variables?: Variables
       error?.extensions?.exception?.stacktrace?.join('\n') || 'An unknown error occurred.';
 
     throw errorObj;
+  }
+
+  // Automatically map taxon name / ID emofs to the _taxon field
+  const keys = ['eventSearch', 'accession', 'accessions', 'trials'];
+  for (let k = 0; k < keys.length; k += 1) {
+    const key = keys[k];
+    const fullKey = `data.${key}.documents.results[0].measurementOrFacts`;
+
+    if (get(data, fullKey)) {
+      data.data[key].documents.results = mapEventTaxa(data.data[key].documents.results);
+    }
   }
 
   if (cacheKey && response.ok) {

@@ -8,7 +8,6 @@ import {
   Divider,
   Flex,
   Group,
-  ScrollArea,
   Table,
   Text,
   Tooltip,
@@ -17,6 +16,7 @@ import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+
 // Project components / helpers
 import { ThField, TrialDetails } from '#/components';
 import { getIsDefined } from '#/helpers';
@@ -30,7 +30,6 @@ interface TrialsTableProps {
 }
 
 function TrialsTable({ events }: TrialsTableProps) {
-  // const api = useAPI();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
@@ -80,9 +79,9 @@ function TrialsTable({ events }: TrialsTableProps) {
                 fieldKey='accessionNumber'
               />
               <ThField
-                sorted={sortBy === 'distinctTaxa[0].scientificName'}
+                sorted={sortBy === '_taxon.taxonName'}
                 reversed={reverseSortDirection}
-                onSort={() => setSorting('distinctTaxa[0].scientificName')}
+                onSort={() => setSorting('_taxon.taxonName')}
                 fieldKey='taxon'
               />
               <ThField
@@ -184,7 +183,7 @@ function TrialsTable({ events }: TrialsTableProps) {
                     <Table.Td>
                       <Flex gap="xs" align="center">
                         <SensitiveIcons event={event} />
-                        <Text size='sm'>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Text>
+                        <Text size='sm'>{event?._taxon?.taxonName || 'N/A'}</Text>
                       </Flex>
                     </Table.Td>
                     <Table.Td>

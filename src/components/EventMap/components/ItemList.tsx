@@ -17,6 +17,7 @@ import { IconX } from '@tabler/icons-react';
 import { Link } from 'react-router';
 
 import classes from './ItemList.module.css';
+import { mapEventTaxon } from '#/helpers/mapEventTaxon';
 
 const slideX = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -80,13 +81,14 @@ function ItemList({ open, documents, contentHeight, topOffset, leftOffset, onClo
                 {results &&
                   results.map((result: Event) => {
                     const accession = result.extensions?.seedbank as SeedBankAccession;
+
                     return (
                       <UnstyledButton
                         component={Link}
                         to={
-                          result.distinctTaxa?.[0]?.key
+                          result._taxon?.taxonID
                             ? `/taxon/${encodeURIComponent(
-                              result.distinctTaxa?.[0]?.key,
+                              result._taxon.taxonID,
                             )}/accessions/${result.eventID}`
                             : `../accessions/${result.eventID}`
                         }
@@ -97,9 +99,9 @@ function ItemList({ open, documents, contentHeight, topOffset, leftOffset, onClo
                         <Text size='sm'>
                           {accession?.accessionNumber || `Event ${result.eventID}`}
                         </Text>
-                        {result.distinctTaxa?.[0]?.key && (
+                        {result._taxon?.taxonID && (
                           <Text fw='bold' size='xs'>
-                            {result.distinctTaxa?.[0]?.scientificName}
+                            {result._taxon?.taxonName || 'N/A'}
                           </Text>
                         )}
                         <Text size='xs' c='dimmed'>

@@ -144,6 +144,11 @@ interface Event {
     seedbank?: SeedBankExtension;
   };
   treatments?: Event[];
+  _taxon?: {
+    taxonName?: string | null;
+    suppliedName?: string | null;
+    taxonID?: string | null;
+  };
 }
 
 interface EventDocuments {
