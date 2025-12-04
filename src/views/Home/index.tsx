@@ -8,6 +8,7 @@ import {
   Divider,
   Group,
   Image,
+  MantineSpacing,
   Space,
   Stack,
   Text,
@@ -15,7 +16,7 @@ import {
   useComputedColorScheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconArrowUpRhombus, IconArrowUpRight, IconDatabase, IconExternalLink, IconMessageCircleQuestion, IconSeedlingFilled } from '@tabler/icons-react';
+import { IconArrowUpRight, IconDatabase, IconExternalLink, IconMessageCircleQuestion, IconSeedlingFilled } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router';
 
 // Static logos
@@ -34,12 +35,13 @@ function Home() {
   const navigate = useNavigate();
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
   const colorScheme = useComputedColorScheme();
+  const pagePadding: MantineSpacing | undefined = mdOrLarger ? undefined : 'xl';
 
   return (
     <>
       <Container size='xl' pt={mdOrLarger ? 'xl' : 0} mt={-30}>
         <Group justify='space-between' pt={mdOrLarger ? 'xl' : 0}>
-          <Stack p='xl' w={mdOrLarger ? 'calc(100vw - 530px)' : '100%'} maw={mdOrLarger ? 600 : undefined}>
+          <Stack py='xl' px={pagePadding} w={mdOrLarger ? 'calc(100vw - 530px)' : '100%'} maw={mdOrLarger ? 600 : undefined}>
             <Title
               fw='bold'
               size={42}
@@ -92,7 +94,7 @@ function Home() {
         }}
       >
         <Container size='xl'>
-          <Box px='xl'>
+          <Box px={pagePadding}>
             <Group pt={mdOrLarger ? 0 : 'xl'} justify='space-between'>
               <Stack w={mdOrLarger ? 'calc(100vw - 530px)' : '100%'} maw={mdOrLarger ? 600 : undefined}>
                 <Group mb='md'>
@@ -164,7 +166,7 @@ function Home() {
         waveType='bodyBottom'
       />
       <Container size='xl'>
-        <Box mt={mdOrLarger ? -100 : 0} p='xl'>
+        <Box mt={mdOrLarger ? -100 : 0} px={pagePadding} py='xl'>
           <Group justify={mdOrLarger ? 'space-between' : 'center'} mb='xl' pb='xl'>
             <Stack
               align={mdOrLarger ? 'flex-start' : 'center'}
