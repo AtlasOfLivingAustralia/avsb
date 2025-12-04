@@ -36,7 +36,7 @@ import { Fragment } from 'react';
 
 // Helpers
 import { scrollTo } from '#/helpers/scrollTo';
-import { stats } from '#/helpers/stats';
+import { formatNumber, stats } from '#/helpers/stats';
 import { breakpoints } from '#/theme/constants';
 
 // Static image assets
@@ -96,14 +96,16 @@ export function Component() {
               The following statistics are current as at
             </Text>
             <Text ff='var(--mantine-font-family-headings)' c='dimmed' fz="h2" fw='bold'>
-              November, 2025
+              December, 2025
             </Text>
             <Paper p='xs' mt='lg' radius='xl'>
               <Stack>
                 <Flex direction={mdOrLarger ? 'row' : 'column'} justify='center' gap='xs'>
-                  <Button onClick={() => scrollTo('records')} variant='light' leftSection={<IconArrowDown size="1rem" />}>Records</Button>
-                  <Button onClick={() => scrollTo('threatened')} variant='light' leftSection={<IconArrowDown size="1rem" />}>Threatened species</Button>
-                  <Button onClick={() => scrollTo('explore')} component='a' variant='light' leftSection={<IconArrowDown size="1rem" />}>Data explorer</Button>
+                  <Button onClick={() => scrollTo('records')} variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Records</Button>
+                  <Divider orientation='vertical' />
+                  <Button onClick={() => scrollTo('threatened')} variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Threatened species</Button>
+                  <Divider orientation='vertical' />
+                  <Button onClick={() => scrollTo('explore')} component='a' variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Data explorer</Button>
                 </Flex>
               </Stack>
             </Paper>
@@ -118,7 +120,7 @@ export function Component() {
         waveType={mdOrLarger ? 'body' : 'simple'}
       />
       <Box
-        mt={mdOrLarger ? -150 : -25}
+        mt={mdOrLarger ? -130 : -25}
         mb={-15}
         style={{
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
@@ -128,7 +130,24 @@ export function Component() {
         <Container size='xl' p='lg' pb='xl'>
           <Grid gutter='lg'>
             <Grid.Col span={12}>
-              <Title order={2} c='dimmed'>Records</Title>
+              <Flex justify='space-between' gap='sm'>
+                <Stack gap='md'>
+                  <Title fw='bold'>
+                    Portal Statistics
+                  </Title>
+                  <Title order={3} c='dimmed'>Records</Title>
+                </Stack>
+                <StaticDownloads
+                  mt={6}
+                  size='sm'
+                  variant='light'
+                  leftSection={<IconDownload />}
+                  href='/all.zip'
+                  download='AVSB All Records 2025'
+                >
+                  Download all AVSB records
+                </StaticDownloads>
+              </Flex>
             </Grid.Col>
             {recordStats.map((stat) => (
               <Grid.Col key={stat.id} span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
@@ -136,7 +155,7 @@ export function Component() {
               </Grid.Col>
             ))}
             <Grid.Col span={12}>
-              <Title order={2} c='dimmed' pt='xl'>Datasets & Species</Title>
+              <Title order={3} c='dimmed' pt='xl'>Datasets & Species</Title>
             </Grid.Col>
             <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
               <StatCard
@@ -245,7 +264,7 @@ export function Component() {
                           <Flex justify='space-between' px='sm'>
                             <Text size='sm'>{list.split(':').map((part) => part.trim())[0]}</Text>
                             <Badge variant='light' ml='sm' miw={50}>
-                              {count} species
+                              {formatNumber(count)} species
                             </Badge>
                           </Flex>
                           {index !== STATE_CONSERVATION.length - 1 && <Divider />}

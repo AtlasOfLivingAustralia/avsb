@@ -27,6 +27,7 @@ import { SensitiveIcons } from '#/components/SensitiveIcons';
 import { AccessionDetails, ThField } from '#/components';
 import { getIsDefined } from '#/helpers';
 import classes from './AccessionTable.module.css';
+import { formatNumber } from '#/helpers/stats';
 
 interface AccessionTableProps {
   events: Event[];
@@ -178,7 +179,7 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
                     </Table.Td>
                     <Table.Td>
                       {getIsDefined(accession?.quantityCount) &&
-                        `${accession?.quantityCount} seeds`}
+                        `${formatNumber(accession?.quantityCount)} seed${accession?.quantityCount > 1 ? 's' : ''}`}
                     </Table.Td>
                     <Table.Td>
                       {getIsDefined(accession?.purityPercentage) &&

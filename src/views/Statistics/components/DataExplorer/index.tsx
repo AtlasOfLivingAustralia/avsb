@@ -18,7 +18,7 @@ import AccessionTable from '#/views/Accessions/components/AccessionTable';
 import downloadFields from '#/views/Accessions/downloadFields';
 // Config
 import filters from './filters';
-import { conservationLists } from '#/helpers/stats';
+import { conservationLists, formatNumber } from '#/helpers/stats';
 import { getStateInitials } from '#/helpers/getStateInitials';
 
 interface LocationState {
@@ -127,7 +127,7 @@ export default function DataExplorer() {
         <Group>
           <Text c='dimmed' ta='center' size='sm'>
             {(page - 1) * pageSize + 1}-
-            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {query.total} total
+            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {formatNumber(query.total || 0)} total
             records
           </Text>
           <Divider orientation='vertical' />

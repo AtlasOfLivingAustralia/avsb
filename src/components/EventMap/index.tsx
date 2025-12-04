@@ -48,7 +48,7 @@ interface MapProps {
 
 const TRANSPARENT_LIGHT = 'mapbox://styles/jackbrinkman/cmi7z3aob000h01si4rd8cuv8';
 const TRANSPARENT_DARK = 'mapbox://styles/jackbrinkman/cmi6r8ly500bf01st7az16yo2';
-const MAP_CENTER: LngLatLike = [137.591797, -26.000092];
+const MAP_CENTER: LngLatLike = [135, -30];
 const RECORDS_PREDICATE: Predicate = { type: 'isNotNull', key: 'decimalLongitude' }
 
 function MapComponent({
@@ -299,7 +299,7 @@ function MapComponent({
       container: mapContainer.current,
       style: styleUrl,
       center: initialCenter || MAP_CENTER,
-      zoom: initialZoom || 2.5,
+      zoom: initialZoom || 2.25,
     });
 
     map.current.addControl(drawControl.current, 'top-right');

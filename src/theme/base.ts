@@ -1,4 +1,4 @@
-import { createTheme } from '@mantine/core';
+import { Button, Chip, createTheme } from '@mantine/core';
 
 const base = createTheme({
   defaultRadius: 'lg',
@@ -19,6 +19,22 @@ const base = createTheme({
       '#141517',
       '#101113',
     ],
+  },
+  components: {
+    Button: Button.extend({
+      styles: {
+        root: {
+          transition: 'all ease-in 150ms',
+        },
+      },
+    }),
+    Chip: Chip.extend({
+      styles: {
+        label: {
+          transition: 'background-color ease-in 100ms',
+        },
+      },
+    }),
   },
 });
 

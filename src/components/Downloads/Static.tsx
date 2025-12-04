@@ -12,7 +12,7 @@ import {
   ThemeIcon,
   Tooltip,
 } from '@mantine/core';
-import { IconFileDownload } from '@tabler/icons-react';
+import { IconDownload, IconFileDownload } from '@tabler/icons-react';
 import { PropsWithChildren, useRef, useState } from 'react';
 
 // Config
@@ -68,7 +68,7 @@ export function StaticDownloads({ href, download, ...rest }: DownloadsProps) {
       <a ref={downloadRef} style={{ display: 'none' }} href={href} download={download} />
       <Modal opened={opened} onClose={close} title={<Group gap='sm'>
         <ThemeIcon variant='light' size='lg' radius='lg'>
-          <IconFileDownload size='1rem' />
+          <IconDownload size='1rem' />
         </ThemeIcon>
         <Text
           style={{
@@ -76,7 +76,7 @@ export function StaticDownloads({ href, download, ...rest }: DownloadsProps) {
             fontWeight: 'bold',
           }}
         >
-          Download Files
+          {download}
         </Text>
       </Group>}>
         <Stack>

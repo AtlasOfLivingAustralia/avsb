@@ -1,3 +1,4 @@
+import { MAX_DOWNLOAD_SIZE } from '#/helpers';
 import { Predicate } from './graphql/types';
 
 const QUERY_EVENT_ACCESSIONS = `
@@ -486,7 +487,7 @@ query image($key: String, $size: Int, $from: Int, $specimenParams: JSON, $otherP
 const DOWNLOAD_EVENT_ACCESSIONS = `
 query list($predicate: Predicate){
   eventSearch(
-    size: 10000
+    size: ${MAX_DOWNLOAD_SIZE}
     predicate: $predicate
     ) {
     documents {
@@ -546,7 +547,7 @@ query list($predicate: Predicate){
 const DOWNLOAD_EVENT_TRIALS = `
 query list($predicate: Predicate){
   eventSearch(
-    size: 10000
+    size: ${MAX_DOWNLOAD_SIZE}
     predicate: $predicate
     ) {
     documents {

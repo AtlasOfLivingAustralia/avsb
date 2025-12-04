@@ -1,6 +1,7 @@
 import {
   Alert,
   Anchor,
+  Badge,
   Box,
   Center,
   Container,
@@ -38,6 +39,7 @@ import { breakpoints } from '#/theme/constants';
 
 // Component imports
 import SpeciesList from './components/SpeciesList';
+import { formatNumber } from '#/helpers/stats';
 
 const EventMap = lazy(() => import('#/components/EventMap'));
 
@@ -109,19 +111,20 @@ export function Component() {
                   {collectory.websiteUrl}
                 </Anchor>
               )}
-              <Group justify={smOrLarger ? 'flex-start' : 'center'}>
-                <Paper mt='xl' py='xs' px='md'>
-                  <Group>
-                    <Text size='sm'>
-                      <b>{accessions.documents?.total?.toLocaleString()}</b>
-                      &nbsp;Accessions
-                    </Text>
-                    <Divider orientation='vertical' />
-                    <Text size='sm'>
-                      <b>{trials.documents?.total?.toLocaleString()}</b>&nbsp;Trials
-                    </Text>
-                  </Group>
-                </Paper>
+              <Group mt='xl' justify={smOrLarger ? 'flex-start' : 'center'}>
+                <Badge w={75} size='lg' variant='light'>
+                  {accessions.documents?.total?.toLocaleString()}
+                </Badge>
+                <Text size='sm'>
+                  Accessions
+                </Text>
+                <Divider mx='xs' orientation='vertical' />
+                <Badge w={75} size='lg' variant='light' color={trials.documents?.total === 0 ? 'gray' : 'blue'}>
+                  {trials.documents?.total?.toLocaleString()}
+                </Badge>
+                <Text size='sm'>
+                  Trials
+                </Text>
               </Group>
             </Flex>
           </Group>

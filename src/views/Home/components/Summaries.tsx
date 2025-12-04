@@ -1,20 +1,20 @@
 import { gqlQueries, useGQLQuery } from '#/api';
 import { EventSearchResult } from '#/api/graphql/types';
 import queries from '#/api/queries';
-import { getAbbreviatedNumber } from '#/helpers';
 import {
+  Badge,
   Box,
   Grid,
   GridProps,
   Group,
   Skeleton,
   Text,
-  ThemeIcon,
   UnstyledButton,
 } from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons-react';
 import { Link } from 'react-router';
 import classes from './Summaries.module.css';
+import { formatNumber } from '#/helpers/stats';
 
 interface SummaryCardProps {
   accessions?: EventSearchResult;
@@ -37,7 +37,7 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
             <Box style={{ display: 'flex' }}>
               <Text
                 lineClamp={2}
-                mah={48}
+                h={48}
                 fw={600}
                 style={{
                   fontFamily: 'var(--mantine-font-family-headings)',
@@ -54,12 +54,10 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
           <Grid mt='md'>
             <Grid.Col span={6}>
               <Group gap='xs'>
-                <Skeleton width={34} height={34} circle visible={loading}>
-                  <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
-                    <Text fw='bold' size='xs'>
-                      {getAbbreviatedNumber(totalAccessions || 0)}
-                    </Text>
-                  </ThemeIcon>
+                <Skeleton w={75} visible={loading} radius='xl'>
+                  <Badge w={75} size='lg' variant='light'>
+                    {formatNumber(totalAccessions || 0)}
+                  </Badge>
                 </Skeleton>
                 <Skeleton visible={loading} maw={50}>
                   <Text
@@ -73,12 +71,10 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
             </Grid.Col>
             <Grid.Col span={6}>
               <Group gap='xs'>
-                <Skeleton width={34} height={34} circle visible={loading}>
-                  <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
-                    <Text fw='bold' size='xs'>
-                      {getAbbreviatedNumber(totalTrials || 0)}
-                    </Text>
-                  </ThemeIcon>
+                <Skeleton w={75} visible={loading} radius='xl'>
+                  <Badge w={75} size='lg' variant='light' color={totalTrials === 0 ? 'gray' : 'blue'}>
+                    {formatNumber(totalTrials || 0)}
+                  </Badge>
                 </Skeleton>
                 <Skeleton visible={loading} maw={50}>
                   <Text

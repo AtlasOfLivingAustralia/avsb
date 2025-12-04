@@ -14,7 +14,7 @@ import {
   ThemeIcon,
   Tooltip,
 } from '@mantine/core';
-import { IconDownload, IconFileDownload } from '@tabler/icons-react';
+import { IconArrowUpRight, IconDownload, IconFileDownload } from '@tabler/icons-react';
 import { saveAs } from 'file-saver';
 import get from 'lodash/get';
 import { useState } from 'react';
@@ -22,6 +22,9 @@ import { useState } from 'react';
 // Config
 import { performGQLQuery } from '#/api';
 import { useDisclosure } from '@mantine/hooks';
+import { MAX_DOWNLOAD_SIZE } from '#/helpers';
+import { Link } from 'react-router';
+import { formatNumber } from '#/helpers/stats';
 
 export const DOWNLOAD_CATEGORIES = [
   "Biosecurity management/planning",
@@ -98,6 +101,7 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
   const [downloadRemember, setDownloadRemeber] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [opened, { open, close }] = useDisclosure(false);
+  const isMaxRecords = total > MAX_DOWNLOAD_SIZE;
 
   const downloadRecords = async () => {
     if (!isDownloading) {
@@ -162,23 +166,40 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
             fontWeight: 'bold',
           }}
         >
-          {total} Record{total > 1 ? 's' : ''}
+          {formatNumber(total)} Record{total > 1 ? 's' : ''}
         </Text>
       </Group>}>
         <Stack>
-          <TextInput placeholder="Organisation name" value={downloadOrg} onChange={(ev) => setDownloadOrg(ev.currentTarget.value)} />
-          <Select value={downloadReason} onChange={setDownloadReason} placeholder="Select download reason" data={DOWNLOAD_CATEGORIES} />
-          <Checkbox checked={downloadRemember} onChange={(event) => setDownloadRemeber(event.currentTarget.checked)} c="dimmed" size="xs" label="Remember for next time" />
-          <Button
-            disabled={!downloadReason || downloadOrg.length < 1}
-            onClick={downloadRecords}
-            size='xs'
-            variant='filled'
-            loading={isDownloading}
-            fullWidth
-          >
-            {isDownloading ? 'Downloading' : 'Download'}
-          </Button>
+          {!isMaxRecords ? (
+            <>
+              <TextInput placeholder="Organisation name" value={downloadOrg} onChange={(ev) => setDownloadOrg(ev.currentTarget.value)} />
+              <Select value={downloadReason} onChange={setDownloadReason} placeholder="Select download reason" data={DOWNLOAD_CATEGORIES} />
+              <Checkbox checked={downloadRemember} onChange={(event) => setDownloadRemeber(event.currentTarget.checked)} c="dimmed" size="xs" label="Remember for next time" />
+              <Button
+                disabled={!downloadReason || downloadOrg.length < 1}
+                onClick={downloadRecords}
+                size='xs'
+                variant='filled'
+                loading={isDownloading}
+                fullWidth
+              >
+                {isDownloading ? 'Downloading' : 'Download'}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Text size='sm'>
+                To download more than {formatNumber(MAX_DOWNLOAD_SIZE)} records, please download all AVSB records from the <b>Seed Bank Snapshot</b> page
+              </Text>
+              <Button
+                component={Link}
+                to="/dashboard"
+                size='xs'
+                rightSection={<IconArrowUpRight size="1rem" />}>
+                Seed Bank Snapshot
+              </Button>
+            </>
+          )}
         </Stack>
       </Modal>
       <Tooltip

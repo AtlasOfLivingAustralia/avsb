@@ -1,7 +1,7 @@
 import { Group, Paper, Stack, Text, ThemeIcon } from '@mantine/core';
 import { TablerIcon } from '@tabler/icons-react';
 
-import { stats } from '#/helpers/stats';
+import { formatNumber, stats } from '#/helpers/stats';
 
 interface StatCardProps {
   id: string;
@@ -18,7 +18,7 @@ function StatCard({ id, name, icon: Icon }: StatCardProps) {
         <Stack gap={0}>
           <Text fz={28} fw='bold' opacity={0.8}>
             {value
-              ? value.toLocaleString(undefined, { minimumFractionDigits: 2 }).replace('.00', '')
+              ? formatNumber(value)
               : id}
           </Text>
           <Text size='sm' c='dimmed'>{name}</Text>
