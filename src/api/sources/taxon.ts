@@ -19,10 +19,7 @@ async function suggest(query: string): Promise<SuggestedTaxon[]> {
   const { autoCompleteList } = await (
     await fetch(
       // Use production ALA API for autocomplete in all environments
-      `${import.meta.env.VITE_API_ALA.replace(
-        'api.test.ala.org.au',
-        'api.ala.org.au',
-      )}/species/search/auto?${params}`,
+      `${import.meta.env.VITE_API_ALA}/species/search/auto?${params}`,
     )
   ).json();
   return (autoCompleteList as SuggestedTaxon[]).filter(
