@@ -1,5 +1,5 @@
-import { Box, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
-import { IconNotes } from '@tabler/icons-react';
+import { Box, Divider, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
+import { IconFileDescription, IconNotes } from '@tabler/icons-react';
 
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import { getIsDefined, trialFields } from '#/helpers';
@@ -22,11 +22,11 @@ const isValidTreatment = ({
 }: SeedBankTreatment) =>
   Boolean(
     pretreatment ||
-      mediaSubstrate ||
-      darkHours ||
-      lightHours ||
-      dayTemperatureInCelsius ||
-      nightTemperatureInCelsius,
+    mediaSubstrate ||
+    darkHours ||
+    lightHours ||
+    dayTemperatureInCelsius ||
+    nightTemperatureInCelsius,
   );
 
 function TrialDetails({ event }: TrialDetailsProps) {
@@ -94,6 +94,18 @@ function TrialDetails({ event }: TrialDetailsProps) {
             </Paper>
           ))}
         </Grid.Col>
+      )}
+      {event.eventRemarks && (
+        <>
+          <Grid.Col span={12}>
+            <Divider my={6} variant='dashed' />
+          </Grid.Col>
+          <Grid.Col span={12}>
+            <IconText labelWidth={80} icon={IconFileDescription} title='Remarks'>
+              {event.eventRemarks}
+            </IconText>
+          </Grid.Col>
+        </>
       )}
     </Grid>
   );
