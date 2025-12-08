@@ -149,7 +149,7 @@ function Home() {
                   c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-6))'
                   size='xs'
                 >
-                  Last Updated September, 2025
+                  Last Updated December, 2025
                 </Text>
               </Group>
               <Text c='light-dark(var(--mantine-color-gray-7),var(--mantine-color-gray-5))'>Browse the collections provided by our seed bank partners. Click a dataset below to view their collections and germination records.</Text>
