@@ -22,7 +22,7 @@ import { ThField, TrialDetails } from '#/components';
 import { getIsDefined } from '#/helpers';
 import AccessionPopover from './AccessionPopover';
 import classes from './TrialsTable.module.css';
-import { SensitiveIcons } from '#/components/SensitiveIcons';
+import { ConservationIcons } from '#/components/ConservationIcons';
 
 interface TrialsTableProps {
   events: Event[];
@@ -182,7 +182,7 @@ function TrialsTable({ events }: TrialsTableProps) {
                     </Table.Td>
                     <Table.Td>
                       <Flex gap="xs" align="center">
-                        <SensitiveIcons event={event} />
+                        <ConservationIcons event={event} />
                         <Text size='sm'>{event?._taxon?.taxonName || 'N/A'}</Text>
                       </Flex>
                     </Table.Td>

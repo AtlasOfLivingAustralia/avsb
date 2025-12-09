@@ -23,7 +23,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 
 // Project components / helpers
-import { SensitiveIcons } from '#/components/SensitiveIcons';
+import { ConservationIcons } from '#/components/ConservationIcons';
 import { AccessionDetails, ThField } from '#/components';
 import { getIsDefined } from '#/helpers';
 import classes from './AccessionTable.module.css';
@@ -160,7 +160,7 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
                     </Table.Td>
                     <Table.Td>
                       <Flex gap="xs" align="center">
-                        <SensitiveIcons event={event} />
+                        <ConservationIcons event={event} />
                         <Text size='sm'>{event._taxon?.taxonName || 'N/A'}</Text>
                       </Flex>
                     </Table.Td>

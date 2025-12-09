@@ -3,22 +3,21 @@ import { Group, MantineStyleProp, Text, ThemeIcon, Tooltip, useComputedColorSche
 import { IconAlertTriangle } from "@tabler/icons-react";
 import { getConservationDetails } from "./ConservationStatus";
 
-const SENSITIVE_LISTS: { [key: string]: string } = {
+const CONSERVATION_LISTS: { [key: string]: string } = {
   'EPBC Act Threatened Species': 'EPBC',
-  'ACT Sensitive Species List': 'ACT',
-  'South Australian Sensitive Species': 'SA',
-  'Queensland Confidential Species': 'QLD',
-  'Victorian Restricted Species List': 'VIC',
-  'Western Australia: Sensitive Species': 'WA',
-  'Northern Territory Sensitive Species List': 'NT',
-  'NSW Sensitive Species List': 'NSW',
-  'New Zealand Sensitive Species List for Vascular Plants': 'NZ',
-  'Tasmanian Restricted Species': 'TAS'
+  'New South Wales : Conservation Status': 'NSW',
+  'Northern Territory : Conservation Status': 'NT',
+  'South Australia : Conservation Status': 'SA',
+  'Victoria : Conservation Status': 'VIC',
+  'Western Australia: Conservation Status': 'WA',
+  'Tasmania : Conservation Status': 'TAS',
+  'Queensland : Conservation Status': 'QLD',
+  'Australian Capital Territory : Conservation Status': 'ACT'
 };
 
-const SENSITIVE_KEYS = Object.keys(SENSITIVE_LISTS);
+const CONSERVATION_KEYS = Object.keys(CONSERVATION_LISTS);
 
-const SensitiveEmofs = ({ emofs }: { emofs: Measurement[] }) => {
+const ConservationEmofs = ({ emofs }: { emofs: Measurement[] }) => {
   return (
     <Group gap='md' py={4}>
       {emofs.map((emof) => {
@@ -27,7 +26,7 @@ const SensitiveEmofs = ({ emofs }: { emofs: Measurement[] }) => {
         return (
           <Group gap='xs' key={emof.measurementType}>
             <ThemeIcon color={details.color} variant='light' size='lg' radius='xl'>
-              <Text size='xs' fw='bold'>{SENSITIVE_LISTS[emof.measurementType || '']}</Text>
+              <Text size='xs' fw='bold'>{CONSERVATION_LISTS[emof.measurementType || '']}</Text>
             </ThemeIcon>
             <Text c='light-dark(var(--mantine-color-gray-7), var(--mantine-color-gray-4))' size='sm'>
               {emof.measurementValue}
@@ -39,21 +38,21 @@ const SensitiveEmofs = ({ emofs }: { emofs: Measurement[] }) => {
   )
 }
 
-interface SensitiveIconsProps {
+interface ConservationIconsProps {
   event: Event;
   style?: MantineStyleProp;
 }
 
-export const SensitiveIcons = ({ event, style }: SensitiveIconsProps) => {
+export const ConservationIcons = ({ event, style }: ConservationIconsProps) => {
   const isDark = useComputedColorScheme() === 'dark';
   const emofs = event.measurementOrFacts?.filter(({ measurementType }) =>
-    measurementType && SENSITIVE_KEYS.includes(measurementType)
+    measurementType && CONSERVATION_KEYS.includes(measurementType)
   ) || [];
 
   if (emofs.length < 1) return null;
 
   return (
-    <Tooltip color={isDark ? 'dark' : 'var(--mantine-color-gray-2)'} position='right' label={<SensitiveEmofs emofs={emofs} />} withArrow>
+    <Tooltip color={isDark ? 'dark' : 'var(--mantine-color-gray-2)'} position='right' label={<ConservationEmofs emofs={emofs} />} withArrow>
       <ThemeIcon color='orange' variant='light' opacity={0.6} style={style}>
         <IconAlertTriangle size="1rem" />
       </ThemeIcon>
