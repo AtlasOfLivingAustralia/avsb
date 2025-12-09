@@ -100,11 +100,11 @@ export function Component() {
             </Text>
             <Paper p='xs' mt='lg' radius='xl'>
               <Stack>
-                <Flex direction={mdOrLarger ? 'row' : 'column'} justify='center' gap='xs'>
+                <Flex direction={mdOrLarger ? 'row' : 'column'} justify='center' gap={mdOrLarger ? 'xs' : 4}>
                   <Button onClick={() => scrollTo('records')} variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Records</Button>
-                  <Divider orientation='vertical' />
+                  <Divider orientation={mdOrLarger ? 'vertical' : 'horizontal'} />
                   <Button onClick={() => scrollTo('threatened')} variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Threatened species</Button>
-                  <Divider orientation='vertical' />
+                  <Divider orientation={mdOrLarger ? 'vertical' : 'horizontal'} />
                   <Button onClick={() => scrollTo('explore')} component='a' variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Data explorer</Button>
                 </Flex>
               </Stack>
