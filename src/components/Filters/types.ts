@@ -8,6 +8,7 @@ type FilterType =
   | 'text'
   | 'select'
   | 'selectSearch'
+  | 'multiSelect'
   | 'numeric'
   | 'numericGreaterLess'
   | 'percent'

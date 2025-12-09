@@ -82,9 +82,9 @@ function Header() {
               size='xs'
               variant='subtle'
               color='light-dark(var(--mantine-color-dark-4), var(--mantine-color-blue-2))'
-              aria-label='Portal Statistics'
+              aria-label='Seed Bank Snapshot'
             >
-              Portal Statistics
+              Seed Bank Snapshot
             </Button>
             <Transition transition={slideTransition} mounted={pathname !== '/'}>
               {(styles) => (
@@ -129,7 +129,7 @@ function Header() {
             <Box visibleFrom='md'>
               <TaxonSearchInput
                 radius='lg'
-                style={{ width: 250 }}
+                style={{ width: 280 }}
                 onChange={(guid) => {
                   if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
                 }}
@@ -144,7 +144,7 @@ function Header() {
               label='Help / FAQ'
               position='right'
               aria-label='Help / FAQ'
-              zIndex={600}
+
             >
               <ActionIcon
                 color='gray'
@@ -163,7 +163,7 @@ function Header() {
               withArrow
               label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
               position='right'
-              zIndex={600}
+
             >
               <ActionIcon
                 color='gray'

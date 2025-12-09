@@ -6,8 +6,8 @@ import {
   Center,
   Collapse,
   Divider,
+  Flex,
   Group,
-  ScrollArea,
   Table,
   Text,
   Tooltip,
@@ -21,16 +21,20 @@ import {
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
+
 // Project components / helpers
+import { SensitiveIcons } from '#/components/SensitiveIcons';
 import { AccessionDetails, ThField } from '#/components';
 import { getIsDefined } from '#/helpers';
 import classes from './AccessionTable.module.css';
+import { formatNumber } from '#/helpers/stats';
 
 interface AccessionTableProps {
   events: Event[];
+  scrollOffset?: number;
 }
 
-function AccessionTable({ events }: AccessionTableProps) {
+function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -55,7 +59,7 @@ function AccessionTable({ events }: AccessionTableProps) {
     <Card shadow='lg' p={0} withBorder>
       <Table.ScrollContainer
         minWidth={500}
-        h='calc(100vh - 425px)'
+        h={`calc(100vh - ${scrollOffset || 425}px)`}
         scrollAreaProps={{ onScrollPositionChange: ({ y }) => setScrolled(y !== 0) }}
       >
         <Table stickyHeader>
@@ -68,9 +72,9 @@ function AccessionTable({ events }: AccessionTableProps) {
                 fieldKey='accessionNumber'
               />
               <ThField
-                sorted={sortBy === 'distinctTaxa[0].scientificName'}
+                sorted={sortBy === '_taxon.taxonName'}
                 reversed={reverseSortDirection}
-                onSort={() => setSorting('distinctTaxa[0].scientificName')}
+                onSort={() => setSorting('_taxon.taxonName')}
                 fieldKey='taxon'
               />
               <ThField
@@ -134,6 +138,7 @@ function AccessionTable({ events }: AccessionTableProps) {
             {sortedData.map((event) => {
               const accession = event.extensions?.seedbank as SeedBankAccession;
               const isSelected = selected.includes(event.eventID || '');
+
               return (
                 <Fragment key={event.eventID}>
                   <Table.Tr
@@ -151,9 +156,14 @@ function AccessionTable({ events }: AccessionTableProps) {
                     }}
                   >
                     <Table.Td style={{ paddingLeft: 14 }}>
-                      {accession?.accessionNumber || event.eventID}
+                      {accession?.accessionNumber || 'N/A'}
                     </Table.Td>
-                    <Table.Td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Table.Td>
+                    <Table.Td>
+                      <Flex gap="xs" align="center">
+                        <SensitiveIcons event={event} />
+                        <Text size='sm'>{event._taxon?.taxonName || 'N/A'}</Text>
+                      </Flex>
+                    </Table.Td>
                     <Table.Td>
                       <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
                         <Box maw={250}>
@@ -169,7 +179,7 @@ function AccessionTable({ events }: AccessionTableProps) {
                     </Table.Td>
                     <Table.Td>
                       {getIsDefined(accession?.quantityCount) &&
-                        `${accession?.quantityCount} seeds`}
+                        `${formatNumber(accession?.quantityCount)} seed${accession?.quantityCount > 1 ? 's' : ''}`}
                     </Table.Td>
                     <Table.Td>
                       {getIsDefined(accession?.purityPercentage) &&
@@ -192,7 +202,8 @@ function AccessionTable({ events }: AccessionTableProps) {
                           }}
                           rightSection={<IconArrowUpRight size='1rem' />}
                           component={Link}
-                          to={event.eventID || '/'}
+                          disabled={!event.eventID || !event._taxon?.taxonID}
+                          to={event.eventID ? `/taxon/${encodeURIComponent(event._taxon?.taxonID || '')}/accessions/${event.eventID}` : '/'}
                           variant='subtle'
                           size='xs'
                           px='xs'

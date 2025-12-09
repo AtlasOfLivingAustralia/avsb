@@ -1,12 +1,11 @@
 import {
   Alert,
   Anchor,
+  Badge,
   Box,
   Center,
-  Chip,
   Container,
   Divider,
-  em,
   Flex,
   Grid,
   Group,
@@ -25,7 +24,6 @@ import {
   IconChevronUp,
   IconClock,
   IconDatabaseImport,
-  IconExternalLink,
   IconInfoCircle,
   IconLicense,
   IconMap,
@@ -41,6 +39,7 @@ import { breakpoints } from '#/theme/constants';
 
 // Component imports
 import SpeciesList from './components/SpeciesList';
+import { formatNumber } from '#/helpers/stats';
 
 const EventMap = lazy(() => import('#/components/EventMap'));
 
@@ -112,14 +111,20 @@ export function Component() {
                   {collectory.websiteUrl}
                 </Anchor>
               )}
-              <Group mt='xl' pt='md' justify={smOrLarger ? 'flex-start' : 'center'}>
-                <Chip checked={false}>
-                  <b>{accessions.documents?.total?.toLocaleString()}</b>
-                  &nbsp;Accessions
-                </Chip>
-                <Chip checked={false}>
-                  <b>{trials.documents?.total?.toLocaleString()}</b>&nbsp;Trials
-                </Chip>
+              <Group mt='xl' justify={smOrLarger ? 'flex-start' : 'center'}>
+                <Badge w={75} size='lg' variant='light'>
+                  {accessions.documents?.total?.toLocaleString()}
+                </Badge>
+                <Text size='sm'>
+                  Accessions
+                </Text>
+                <Divider mx='xs' orientation='vertical' />
+                <Badge w={75} size='lg' variant='light' color={trials.documents?.total === 0 ? 'gray' : 'blue'}>
+                  {trials.documents?.total?.toLocaleString()}
+                </Badge>
+                <Text size='sm'>
+                  Trials
+                </Text>
               </Group>
             </Flex>
           </Group>
@@ -214,7 +219,12 @@ export function Component() {
           </Grid.Col>
           <Grid.Col span={{ xl: 8, lg: 8, md: 12, sm: 12, xs: 12 }}>
             <Suspense fallback={<Skeleton w='100%' h={450} />}>
-              <EventMap width='100%' height={450} token={token} />
+              <EventMap
+                width='100%'
+                height={450}
+                initialToken={token}
+                predicate={{ type: 'equals', key: 'datasetKey', value: params.resource }}
+              />
             </Suspense>
             <Alert
               title='Accession Map'

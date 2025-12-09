@@ -1,3 +1,4 @@
+import { MAX_DOWNLOAD_SIZE } from '#/helpers';
 import { Predicate } from './graphql/types';
 
 const QUERY_EVENT_ACCESSIONS = `
@@ -17,8 +18,10 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         datasetTitle
         datasetKey
         locality
-        distinctTaxa {
-          scientificName
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementValue
         }
         extensions {
           seedbank {
@@ -68,17 +71,7 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         measurementOrFacts {
           measurementID
           measurementType
-          measurementUnit
           measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
-        }
-        distinctTaxa {
-          scientificName
-          species
-          key
         }
         extensions {
           seedbank {
@@ -125,10 +118,10 @@ query list($predicate: Predicate, $trialPredicate: Predicate){
         parentEventID
         locality
         datasetTitle
-        distinctTaxa {
-          scientificName
-          species
-          key
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementValue
         }
         extensions {
           seedbank {
@@ -168,8 +161,10 @@ query list($predicate: Predicate, $size: Int, $from: Int){
         eventRemarks
         parentEventID
         datasetTitle
-        distinctTaxa {
-          scientificName
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementValue
         }
         parentEvent {
           eventID
@@ -222,12 +217,7 @@ query list($predicate: Predicate){
         measurementOrFacts {
           measurementID
           measurementType
-          measurementUnit
           measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
         }
         extensions {
           seedbank {
@@ -270,58 +260,10 @@ query point($predicate: Predicate){
         eventType {
           concept
         }
-        measurementOrFactTypes
-        extensions {
-          seedbank {
-            accessionNumber
-            herbariumVoucher
-            seedPerGram
-            formInStorage
-            quantityInGrams
-            quantityCount
-            collectionFill
-            purityPercentage
-            dateCollected
-            dateInStorage
-            storageTemperatureInCelsius
-            storageRelativeHumidityPercentage
-            publicationDOI
-            preStorageTreatment
-            primaryStorageSeedBank
-            degreeOfEstablishment
-            primaryCollector
-            plantForm
-            duplicatesReplicates
-            collectionPermitNumber
-            thousandSeedWeight
-            numberPlantsSampled
-            storageBehaviour
-            esRatio
-            dormancyClass
-          }
-        }
-      }
-    }
-  }
-}
-`;
-
-const QUERY_EVENT_MAP_POINT_KEY = `
-query point($predicate: Predicate){
-  eventSearch(predicate: $predicate) {
-    documents {
-      total
-      results {
-        datasetTitle
-        datasetKey
-        eventID
-        eventType {
-          concept
-        }
-        measurementOrFactTypes
-        distinctTaxa {
-          key
-          scientificName
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementValue
         }
         extensions {
           seedbank {
@@ -547,7 +489,7 @@ query image($key: String, $size: Int, $from: Int, $specimenParams: JSON, $otherP
 const DOWNLOAD_EVENT_ACCESSIONS = `
 query list($predicate: Predicate){
   eventSearch(
-    size: 10000
+    size: ${MAX_DOWNLOAD_SIZE}
     predicate: $predicate
     ) {
     documents {
@@ -564,18 +506,10 @@ query list($predicate: Predicate){
         decimalLatitude
         decimalLongitude
         stateProvince
-        distinctTaxa {
-          scientificName
-        }
         measurementOrFacts {
           measurementID
           measurementType
-          measurementUnit
           measurementValue
-          measurementMethod
-          measurementRemarks
-          measurementAccuracy
-          measurementDeterminedDate
         }
         extensions {
           seedbank {
@@ -615,7 +549,7 @@ query list($predicate: Predicate){
 const DOWNLOAD_EVENT_TRIALS = `
 query list($predicate: Predicate){
   eventSearch(
-    size: 10000
+    size: ${MAX_DOWNLOAD_SIZE}
     predicate: $predicate
     ) {
     documents {
@@ -627,8 +561,9 @@ query list($predicate: Predicate){
         parentEventID
         locality
         datasetTitle
-        distinctTaxa {
-          scientificName
+        measurementOrFacts {
+          measurementType
+          measurementValue
         }
         extensions {
           seedbank {
@@ -683,7 +618,6 @@ export default {
   QUERY_EVENT_TREATMENTS,
   QUERY_EVENT_MAP,
   QUERY_EVENT_MAP_POINT,
-  QUERY_EVENT_MAP_POINT_KEY,
   QUERY_TAXON_MEDIA,
   QUERY_DATASET,
   QUERY_DATASET_SUGGEST,

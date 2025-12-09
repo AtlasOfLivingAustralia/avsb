@@ -119,7 +119,7 @@ const accessionFields: SeedbankFieldMap = {
     description: 'The proportion of the accession, by weight, that is pure seed or fruit.',
   },
   storageTemperatureInCelsius: {
-    label: 'Storage Temperature',
+    label: 'Storage Temp',
     icon: IconTemperature,
     unit: '°C',
     examples: '"15C" "-20C" "-196C"',

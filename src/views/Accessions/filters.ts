@@ -1,8 +1,11 @@
 import {
   IconBox,
   IconDatabase,
+  IconDotsCircleHorizontal,
   IconDropletFilled,
+  IconExclamationCircle,
   IconHandStop,
+  IconHeartFilled,
   IconId,
   IconPackage,
   IconPercentage,
@@ -14,6 +17,7 @@ import {
 import { ComboboxItem } from '@mantine/core';
 import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';
 import { Filter } from '#/components';
+import { sensitiveLists, conservationLists } from '#/helpers/stats';
 
 // Define a data fetcher for the dataset select search
 const fetchItems = async (query: string): Promise<ComboboxItem[]> => {
@@ -81,6 +85,14 @@ const filters: Filter[] = [
     group: 'Collection',
   },
   {
+    key: 'seedbank_quantityCount',
+    label: 'Quantity (count)',
+    type: 'numericGreaterLess',
+    placeholder: 'Enter count',
+    icon: IconDotsCircleHorizontal,
+    group: 'Collection',
+  },
+  {
     key: 'seedbank_purityPercentage',
     label: 'Purity %',
     type: 'percent',
@@ -118,6 +130,15 @@ const filters: Filter[] = [
     placeholder: 'Enter temperature',
     icon: IconDropletFilled,
     group: 'Storage',
+  },
+  {
+    key: 'measurementOrFactTypes',
+    label: 'Threatened Status',
+    type: 'multiSelect',
+    placeholder: 'Select threatened statuses',
+    icon: IconExclamationCircle,
+    items: [...conservationLists, ...sensitiveLists],
+    group: 'Threatened',
   },
 ];
 

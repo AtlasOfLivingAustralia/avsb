@@ -1,22 +1,10 @@
-import { createTheme, DrawerRoot, Modal } from '@mantine/core';
+import { Button, Chip, createTheme } from '@mantine/core';
 
 const base = createTheme({
   defaultRadius: 'lg',
   fontFamily: 'Inter, sans-serif',
   headings: {
     fontFamily: 'Lexend Deca, sans-serif',
-  },
-  components: {
-    Modal: Modal.extend({
-      defaultProps: {
-        zIndex: 600,
-      },
-    }),
-    DrawerRoot: DrawerRoot.extend({
-      defaultProps: {
-        zIndex: 600,
-      },
-    }),
   },
   colors: {
     dark: [
@@ -31,6 +19,22 @@ const base = createTheme({
       '#141517',
       '#101113',
     ],
+  },
+  components: {
+    Button: Button.extend({
+      styles: {
+        root: {
+          transition: 'all ease-in 150ms',
+        },
+      },
+    }),
+    Chip: Chip.extend({
+      styles: {
+        label: {
+          transition: 'background-color ease-in 100ms',
+        },
+      },
+    }),
   },
 });
 

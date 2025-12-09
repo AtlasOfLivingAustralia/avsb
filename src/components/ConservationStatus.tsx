@@ -9,7 +9,7 @@ import {
   TablerIcon,
 } from '@tabler/icons-react';
 
-const getConservationDetails = (
+export const getConservationDetails = (
   status: string,
 ): { color: DefaultMantineColor; icon: TablerIcon } => {
   switch (status.toLowerCase()) {
@@ -23,12 +23,27 @@ const getConservationDetails = (
         color: 'dark',
         icon: IconX,
       };
+    case 'ex':
+      return {
+        color: 'dark',
+        icon: IconX,
+      };
     case 'critically endangered':
       return {
         color: 'red',
         icon: IconAlertOctagon,
       };
+    case 'cr':
+      return {
+        color: 'red',
+        icon: IconAlertOctagon,
+      };
     case 'endangered':
+      return {
+        color: 'orange',
+        icon: IconAlertTriangle,
+      };
+    case 'en':
       return {
         color: 'orange',
         icon: IconAlertTriangle,
@@ -43,12 +58,27 @@ const getConservationDetails = (
         color: 'orange',
         icon: IconAlertTriangle,
       };
+    case 'listed':
+      return {
+        color: 'orange',
+        icon: IconAlertTriangle,
+      };
     case 'vulnerable':
       return {
         color: 'yellow',
         icon: IconAlertCircle,
       };
+    case 'vu':
+      return {
+        color: 'yellow',
+        icon: IconAlertCircle,
+      };
     case 'near threatened':
+      return {
+        color: 'yellow',
+        icon: IconFlag,
+      };
+    case 'nt':
       return {
         color: 'yellow',
         icon: IconFlag,

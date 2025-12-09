@@ -12,7 +12,7 @@ function ErrorBoundary() {
   if ((error as unknown as { status: number }).status === 404) {
     return (
       <Center h='100vh'>
-        <Stack gap='xs' justify='center' pb={125} p='xl'>
+        <Stack gap='xs' align='center' pb={125} p='xl'>
           <div style={{ position: 'relative', width: 250, height: 250 }}>
             <Blob style={{ position: 'absolute' }} width={250} height={250} />
             <Center h='100%'>

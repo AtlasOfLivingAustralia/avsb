@@ -152,7 +152,6 @@ function AccessionPanel() {
   const accession = accessionEvent?.extensions?.seedbank as SeedBankAccession;
   const navigate = useNavigate();
 
-  const taxonInfo = accessionEvent.distinctTaxa?.[0];
   const hasCoordinates = accessionEvent.decimalLatitude && accessionEvent.decimalLongitude;
 
   return (
@@ -175,11 +174,13 @@ function AccessionPanel() {
                   mb={2}
                   checked={false}
                   onClick={() =>
-                    navigate(`/taxon/${encodeURIComponent(taxonInfo?.key || '')}/accessions`)
+                    navigate(`/taxon/${encodeURIComponent(accessionEvent._taxon?.taxonID || '')}/accessions`)
                   }
                 >
-                  {taxonInfo?.scientificName || taxonInfo?.species}
-                  <IconArrowUpRight style={{ marginLeft: 4 }} size='1rem' />
+                  <Group gap={4}>
+                    {accessionEvent._taxon?.taxonName || 'N/A'}
+                    <IconArrowUpRight style={{ marginLeft: 4 }} size='1rem' />
+                  </Group>
                 </Chip>
               </Group>
               <Button
@@ -388,7 +389,7 @@ function AccessionPanel() {
       )}
       {accessionEvent.eventID && (
         <Grid.Col span={12}>
-          <Text size='lg' mb='md' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
+          <Text fw={600} size='lg' mb='md' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
             Related Trials
           </Text>
           <TrialSummary trials={trialEvents} />

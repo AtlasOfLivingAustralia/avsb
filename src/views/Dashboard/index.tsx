@@ -1,36 +1,18 @@
 import { AppShell } from '@mantine/core';
-import {
-  completeNavigationProgress,
-  NavigationProgress,
-  resetNavigationProgress,
-  startNavigationProgress,
-} from '@mantine/nprogress';
-import { useEffect } from 'react';
-import { Outlet, useNavigation } from 'react-router';
+import { Outlet } from 'react-router';
 
 // Project components & helpers
 import Header from './components/Header';
+import NavigationProgress from './components/NavigationProgress';
+
 import './index.css';
+import { PageScroll } from './components/PageScroll';
 
 function Dashboard() {
-  const { state } = useNavigation();
-
-  useEffect(() => {
-    if (state === 'loading') {
-      resetNavigationProgress();
-      startNavigationProgress();
-    } else {
-      completeNavigationProgress();
-    }
-  }, [state]);
-
   return (
     <>
-      <NavigationProgress
-        stepInterval={20}
-        portalProps={{ 'aria-hidden': true }}
-        aria-label='Page navigation progress bar'
-      />
+      <NavigationProgress />
+      <PageScroll />
       <AppShell
         padding={0}
         header={{ height: 90 }}
@@ -45,7 +27,6 @@ function Dashboard() {
             backgroundColor: 'transparent',
             border: 'none',
           }}
-          zIndex={500}
         >
           <Header />
         </AppShell.Header>

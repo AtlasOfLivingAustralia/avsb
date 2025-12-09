@@ -6,8 +6,8 @@ import {
   Center,
   Collapse,
   Divider,
+  Flex,
   Group,
-  ScrollArea,
   Table,
   Text,
   Tooltip,
@@ -16,19 +16,20 @@ import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+
 // Project components / helpers
 import { ThField, TrialDetails } from '#/components';
 import { getIsDefined } from '#/helpers';
 import AccessionPopover from './AccessionPopover';
 import classes from './TrialsTable.module.css';
+import { SensitiveIcons } from '#/components/SensitiveIcons';
 
 interface TrialsTableProps {
   events: Event[];
   height?: string | number;
 }
 
-function TrialsTable({ events, height }: TrialsTableProps) {
-  // const api = useAPI();
+function TrialsTable({ events }: TrialsTableProps) {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
@@ -78,9 +79,9 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                 fieldKey='accessionNumber'
               />
               <ThField
-                sorted={sortBy === 'distinctTaxa[0].scientificName'}
+                sorted={sortBy === '_taxon.taxonName'}
                 reversed={reverseSortDirection}
-                onSort={() => setSorting('distinctTaxa[0].scientificName')}
+                onSort={() => setSorting('_taxon.taxonName')}
                 fieldKey='taxon'
               />
               <ThField
@@ -177,9 +178,14 @@ function TrialsTable({ events, height }: TrialsTableProps) {
                     }}
                   >
                     <Table.Td style={{ paddingLeft: 14 }}>
-                      {trial?.accessionNumber || event.eventID}
+                      {trial?.accessionNumber || 'N/A'}
                     </Table.Td>
-                    <Table.Td>{event.distinctTaxa?.[0]?.scientificName || 'N/A'}</Table.Td>
+                    <Table.Td>
+                      <Flex gap="xs" align="center">
+                        <SensitiveIcons event={event} />
+                        <Text size='sm'>{event?._taxon?.taxonName || 'N/A'}</Text>
+                      </Flex>
+                    </Table.Td>
                     <Table.Td>
                       <Tooltip.Floating label={<Text size='xs'>{event?.datasetTitle}</Text>}>
                         <Box maw={250}>

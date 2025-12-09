@@ -11,6 +11,7 @@ import { useMounted, mapTrialTreatments } from '#/helpers';
 import TrialsTable from './components/TrialsTable';
 import downloadFields from './downloadFields';
 import filters from './filters';
+import { formatNumber } from '#/helpers/stats';
 
 interface LocationState {
   predicates?: Predicate[];
@@ -164,7 +165,7 @@ export function Component() {
         <Group>
           <Text c='dimmed' ta='right' size='sm'>
             {(page - 1) * pageSize + 1}-
-            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {query.total} total
+            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {formatNumber(query.total || 0)} total
             records
           </Text>
           <Divider orientation='vertical' />

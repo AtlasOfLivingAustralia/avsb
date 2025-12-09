@@ -17,7 +17,7 @@ import { MouseEventHandler } from 'react';
 import { Filter } from '../types';
 
 function getPredicateValue(predicate: Predicate) {
-  const { key, value } = predicate;
+  const { key, value, values } = predicate;
 
   // Date handling
   if (value && key?.toLowerCase().includes('date')) {
@@ -40,6 +40,8 @@ function getPredicateValue(predicate: Predicate) {
   }
 
   if (key?.toLowerCase().includes('date')) return new Date(value as number).toLocaleDateString();
+
+  if (values) return values.join(', ');
   return `${value}`;
 }
 
@@ -64,7 +66,7 @@ function FilterBar({ filters, predicates, onFiltersOpen, onRemove, ...rest }: Fi
         Filters
       </Button>
       <Divider ml={4} orientation='vertical' />
-      <Group maw={500} gap={4}>
+      <Group gap={4}>
         {predicates.length > 0 ? (
           predicates.map((predicate) => (
             <Paper

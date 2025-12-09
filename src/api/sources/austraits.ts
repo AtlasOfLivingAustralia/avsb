@@ -1,3 +1,5 @@
+import { buildCacheKey, getCachedResponse, maybeStoreResponse } from '../cache';
+
 interface NumericTrait {
   unit: string;
   min: string;
@@ -29,18 +31,28 @@ interface AusTraitsCount {
 
 async function summary(search: string, guid: string): Promise<AusTraitsSummary> {
   try {
-    const data = await (
-      await fetch(
-        `${import.meta.env.VITE_API_BIE}/externalSite/ausTraitsSummary?s=${search}&guid=${guid}`,
-      )
-    ).json();
+    const URL = `${import.meta.env.VITE_API_BIE}/externalSite/ausTraitsSummary?s=${search}&guid=${guid}`;
+    const cacheKey = buildCacheKey(URL);
+
+    // Return a cached response (if we have one)
+    if (cacheKey) {
+      const cachedResponse = getCachedResponse<AusTraitsSummary>(cacheKey);
+      if (cachedResponse) return cachedResponse;
+    }
+
+    const response = await fetch(URL);
+    const data = await response.json();
 
     // Ensure we've successfully recieved the data back
     if (
+      !response.ok ||
       data.error ||
       (Array.isArray(data) && data[0] === 'No summary data can be found for this taxon.')
     )
       return { numeric_traits: [], categorical_traits: [] };
+
+    // Cache the response
+    if (cacheKey && response.ok) maybeStoreResponse(cacheKey, data);
 
     // Return the data
     return data;
@@ -52,17 +64,8 @@ async function summary(search: string, guid: string): Promise<AusTraitsSummary> 
   }
 }
 
-async function count(search: string, guid: string): Promise<AusTraitsCount[]> {
-  return (
-    await fetch(
-      `${import.meta.env.VITE_API_BIE}/externalSite/ausTraitsCount?s=${search}&guid=${guid}`,
-    )
-  ).json();
-}
-
 export default {
   summary,
-  count,
 };
 
 export type { NumericTrait, CategoricalTrait, AusTraitsSummary, AusTraitsCount };

@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Badge,
   Box,
+  Button,
   Center,
   Container,
   Divider,
@@ -13,7 +14,6 @@ import {
   Skeleton,
   Tabs,
   Text,
-  ThemeIcon,
   Title,
   Tooltip,
 } from '@mantine/core';
@@ -21,7 +21,6 @@ import { useClipboard, useMediaQuery } from '@mantine/hooks';
 import {
   IconBrandAsana,
   IconCopy,
-  IconDna2,
   IconExternalLink,
   IconId,
   IconLeaf,
@@ -53,10 +52,6 @@ const tabs = [
   {
     tabKey: 'Media',
     icon: IconPhoto,
-  },
-  {
-    tabKey: 'Sequences',
-    icon: IconDna2,
   },
   {
     tabKey: 'Traits',
@@ -92,7 +87,7 @@ export function Component() {
                 w={90}
                 h={90}
                 radius='lg'
-                visible={!data || (data && !data.imageIdentifier) || !imageLoaded}
+                visible={Boolean(data.imageIdentifier) && !imageLoaded}
               >
                 {data?.imageIdentifier ? (
                   <Image
@@ -167,35 +162,39 @@ export function Component() {
       <Tabs variant='none' value={currentPage}>
         <Container size={MAX_WIDTH} pb='sm'>
           <Flex justify={'space-between'}>
-            <Tabs.List ref={setRootRef} className={classes.list}>
-              {tabs.map(({ tabKey, icon: Icon }) => (
-                <Tabs.Tab
-                  key={tabKey}
-                  value={tabKey.toLowerCase()}
-                  ref={setControlRef(tabKey.toLowerCase())}
-                  className={classes.tab}
-                  leftSection={<Icon size='0.8rem' />}
-                  onClick={() => {
-                    if (tabKey !== 'Sequences') {
-                      navigate(tabKey.toLowerCase(), { state });
-                    } else {
-                      window.open(
-                        `https://www.ncbi.nlm.nih.gov/nuccore/?term=${encodeURIComponent(
-                          data.taxonConcept.nameString,
-                        )}`,
-                      );
-                    }
-                  }}
-                >
-                  {tabKey}
-                </Tabs.Tab>
-              ))}
-              <FloatingIndicator
-                target={controlsRefs[currentPage]}
-                parent={rootRef}
-                className={classes.indicator}
-              />
-            </Tabs.List>
+            <Group gap="xs">
+              <Tabs.List ref={setRootRef} className={classes.list}>
+                {tabs.map(({ tabKey, icon: Icon }) => (
+                  <Tabs.Tab
+                    key={tabKey}
+                    value={tabKey.toLowerCase()}
+                    ref={setControlRef(tabKey.toLowerCase())}
+                    className={classes.tab}
+                    leftSection={<Icon size='0.8rem' />}
+                    onClick={() => navigate(tabKey.toLowerCase(), { state })}
+                  >
+                    {tabKey}
+                  </Tabs.Tab>
+                ))}
+                <FloatingIndicator
+                  target={controlsRefs[currentPage]}
+                  parent={rootRef}
+                  className={classes.indicator}
+                />
+              </Tabs.List>
+              <Divider orientation='vertical' />
+              <Tooltip position='right' label='View genomes on NCBI' withArrow>
+                <Button
+                  color='light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1))'
+                  rightSection={<IconExternalLink size="1rem" />}
+                  component='a'
+                  href={`https://www.ncbi.nlm.nih.gov/nuccore/?term=${encodeURIComponent(data.taxonConcept.nameString)}`}
+                  target='blank'
+                  variant='transparent'>
+                  Sequences
+                </Button>
+              </Tooltip>
+            </Group>
             {mdOrLarger && <PageSummary currentPage={currentPage} />}
           </Flex>
         </Container>

@@ -35,6 +35,7 @@ export default function getLayerConfig(tile: string): MapLayerConfig {
           10000,
           mapColors[4],
         ],
+        'circle-emissive-strength': 1,
         'circle-opacity': ['step', ['get', '_count'], 1, 10, 0.8, 100, 0.7, 1000, 0.6, 10000, 0.6],
         'circle-stroke-color': mapColors[1],
         'circle-stroke-width': ['step', ['get', '_count'], 1, 10, 0],

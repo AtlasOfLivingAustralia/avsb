@@ -4,9 +4,10 @@ import {
   IconCircle,
   IconCircleDot,
   IconCircleDotted,
-  IconCircleOff,
   IconClock,
   IconDatabase,
+  IconExclamationCircle,
+  IconHeartFilled,
   IconId,
   IconPercentage,
   IconReceiptTax,
@@ -16,6 +17,7 @@ import {
 
 import { Filter } from '#/components';
 import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';
+import { sensitiveLists, conservationLists } from '#/helpers/stats';
 
 // Define a data fetcher for the dataset select search
 const fetchItems = async (query: string): Promise<ComboboxItem[]> => {
@@ -137,6 +139,15 @@ const filters: Filter[] = [
     placeholder: '10',
     icon: IconCircleDotted,
     group: 'Germination',
+  },
+  {
+    key: 'measurementOrFactTypes',
+    label: 'Threatened Status',
+    type: 'multiSelect',
+    placeholder: 'Select threatened statuses',
+    icon: IconExclamationCircle,
+    items: [...conservationLists, ...sensitiveLists],
+    group: 'Threatened',
   },
 ];
 

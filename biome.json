@@ -1,7 +1,13 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
-  "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
-  "files": { "ignoreUnknown": false },
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false
+  },
   "formatter": {
     "enabled": true,
     "formatWithErrors": false,
@@ -51,7 +57,10 @@
         "useValidAriaProps": "error",
         "useValidAriaRole": {
           "level": "error",
-          "options": { "allowInvalidRoles": [], "ignoreNonDom": false }
+          "options": {
+            "allowInvalidRoles": [],
+            "ignoreNonDom": false
+          }
         },
         "useValidAriaValues": "error",
         "useValidAutocomplete": "off",
@@ -117,7 +126,9 @@
         "useValidTypeof": "error",
         "useYield": "error"
       },
-      "performance": { "noAwaitInLoops": "error" },
+      "performance": {
+        "noAwaitInLoops": "error"
+      },
       "security": {
         "noDangerouslySetInnerHtml": "warn",
         "noDangerouslySetInnerHtmlWithChildren": "error",
@@ -132,7 +143,10 @@
         "noNestedTernary": "error",
         "noNonNullAssertion": "warn",
         "noParameterAssign": "error",
-        "noRestrictedGlobals": { "level": "off", "options": {} },
+        "noRestrictedGlobals": {
+          "level": "off",
+          "options": {}
+        },
         "noRestrictedImports": "off",
         "noYodaExpression": "error",
         "useArrayLiterals": "error",
@@ -213,17 +227,29 @@
       "arrowParentheses": "always",
       "bracketSameLine": false,
       "quoteStyle": "single",
+      "lineWidth": 100,
       "attributePosition": "auto",
       "bracketSpacing": true
     }
   },
-  "html": { "formatter": { "selfCloseVoidElements": "always" } },
+  "html": {
+    "formatter": {
+      "selfCloseVoidElements": "always"
+    }
+  },
   "overrides": [
     {
-      "includes": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+      "includes": [
+        "*.ts",
+        "*.tsx",
+        "*.mts",
+        "*.cts"
+      ],
       "linter": {
         "rules": {
-          "complexity": { "noArguments": "error" },
+          "complexity": {
+            "noArguments": "error"
+          },
           "correctness": {
             "noConstAssign": "off",
             "noGlobalObjectCalls": "off",
@@ -234,7 +260,9 @@
             "noUnreachableSuper": "off",
             "useValidTypeof": "off"
           },
-          "style": { "useConst": "error" },
+          "style": {
+            "useConst": "error"
+          },
           "suspicious": {
             "noDuplicateClassMembers": "off",
             "noDuplicateObjectKeys": "off",
@@ -250,7 +278,9 @@
       }
     },
     {
-      "includes": ["src/main.tsx"],
+      "includes": [
+        "src/main.tsx"
+      ],
       "assist": {
         "enabled": true,
         "actions": {
@@ -263,6 +293,10 @@
   ],
   "assist": {
     "enabled": true,
-    "actions": { "source": { "organizeImports": "on" } }
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   }
 }

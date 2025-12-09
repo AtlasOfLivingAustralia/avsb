@@ -17,6 +17,7 @@ import { IconX } from '@tabler/icons-react';
 import { Link } from 'react-router';
 
 import classes from './ItemList.module.css';
+import { mapEventTaxon } from '#/helpers/mapEventTaxon';
 
 const slideX = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -29,10 +30,12 @@ interface ItemListProps {
   open: boolean;
   documents: EventDocuments;
   contentHeight?: number | string;
+  topOffset?: number;
+  leftOffset?: number;
   onClose?: () => void;
 }
 
-function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
+function ItemList({ open, documents, contentHeight, topOffset, leftOffset, onClose }: ItemListProps) {
   const { results, total } = documents;
 
   return (
@@ -43,8 +46,8 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
             ...styles,
             position: 'absolute',
             zIndex: 10,
-            top: 'var(--mantine-spacing-md)',
-            left: 'var(--mantine-spacing-md)',
+            top: `calc(var(--mantine-spacing-md) + ${topOffset || 0}px)`,
+            left: `calc(var(--mantine-spacing-md) + ${leftOffset || 0}px)`,
           }}
         >
           <Paper w={260} shadow='md' withBorder>
@@ -78,14 +81,15 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
                 {results &&
                   results.map((result: Event) => {
                     const accession = result.extensions?.seedbank as SeedBankAccession;
+
                     return (
                       <UnstyledButton
                         component={Link}
                         to={
-                          result.distinctTaxa?.[0]?.key
+                          result._taxon?.taxonID
                             ? `/taxon/${encodeURIComponent(
-                                result.distinctTaxa?.[0]?.key,
-                              )}/accessions/${result.eventID}`
+                              result._taxon.taxonID,
+                            )}/accessions/${result.eventID}`
                             : `../accessions/${result.eventID}`
                         }
                         p='xs'
@@ -95,9 +99,9 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
                         <Text size='sm'>
                           {accession?.accessionNumber || `Event ${result.eventID}`}
                         </Text>
-                        {result.distinctTaxa?.[0]?.key && (
+                        {result._taxon?.taxonID && (
                           <Text fw='bold' size='xs'>
-                            {result.distinctTaxa?.[0]?.scientificName}
+                            {result._taxon?.taxonName || 'N/A'}
                           </Text>
                         )}
                         <Text size='xs' c='dimmed'>

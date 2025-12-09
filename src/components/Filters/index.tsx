@@ -50,7 +50,7 @@ function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
       <Drawer.Root opened={opened} onClose={close} keepMounted>
         <Drawer.Overlay />
         <Drawer.Content aria-label='Filters drawer'>
-          <Drawer.Header style={{ zIndex: 300 }}>
+          <Drawer.Header>
             <Group justify='space-between' w='100%'>
               <Group>
                 <ThemeIcon variant='light' radius='xl' size='xl'>

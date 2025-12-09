@@ -1,3 +1,5 @@
+import { buildCacheKey, getCachedResponse, maybeStoreResponse } from '../cache';
+
 interface SuggestedTaxon {
   commonName: string;
   georeferencedCount: number;
@@ -17,10 +19,7 @@ async function suggest(query: string): Promise<SuggestedTaxon[]> {
   const { autoCompleteList } = await (
     await fetch(
       // Use production ALA API for autocomplete in all environments
-      `${import.meta.env.VITE_API_ALA.replace(
-        'api.test.ala.org.au',
-        'api.ala.org.au',
-      )}/species/search/auto?${params}`,
+      `${import.meta.env.VITE_API_ALA}/species/search/auto?${params}`,
     )
   ).json();
   return (autoCompleteList as SuggestedTaxon[]).filter(
@@ -178,11 +177,23 @@ interface Taxon {
 }
 
 async function info(guid: string): Promise<Taxon> {
+  const URL = `${import.meta.env.VITE_API_ALA}/species/species/${guid}`;
+  const cacheKey = buildCacheKey(URL);
+
+  // Return a cached response (if we have one)
+  if (cacheKey) {
+    const cachedResponse = getCachedResponse<Taxon>(cacheKey);
+    if (cachedResponse) return cachedResponse;
+  }
+
   const response = await fetch(`${import.meta.env.VITE_API_ALA}/species/species/${guid}`);
   const data = await response.json();
 
   // Catch 200 responses, but an error status has been returned
   if (data.status && data.status !== 200) throw new Response(data.error, { status: data.status });
+
+  // Cache the reponse
+  if (cacheKey && response.ok) maybeStoreResponse(cacheKey, data);
 
   return data;
 }
