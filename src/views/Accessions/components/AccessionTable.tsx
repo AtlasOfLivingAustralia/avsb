@@ -23,7 +23,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 
 // Project components / helpers
-import { SensitiveIcons } from '#/components/SensitiveIcons';
+import { ConservationIcons } from '#/components/ConservationIcons';
 import { AccessionDetails, ThField } from '#/components';
 import { getIsDefined } from '#/helpers';
 import classes from './AccessionTable.module.css';
@@ -62,7 +62,7 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
         h={`calc(100vh - ${scrollOffset || 425}px)`}
         scrollAreaProps={{ onScrollPositionChange: ({ y }) => setScrolled(y !== 0) }}
       >
-        <Table stickyHeader>
+        <Table stickyHeader highlightOnHover>
           <Table.Thead className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
             <Table.Tr>
               <ThField
@@ -160,7 +160,7 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
                     </Table.Td>
                     <Table.Td>
                       <Flex gap="xs" align="center">
-                        <SensitiveIcons event={event} />
+                        <ConservationIcons event={event} />
                         <Text size='sm'>{event._taxon?.taxonName || 'N/A'}</Text>
                       </Flex>
                     </Table.Td>
