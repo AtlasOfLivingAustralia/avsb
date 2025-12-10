@@ -106,7 +106,7 @@ const helpTopics: { [key: string]: HelpTopic } = {
   },
   viewPortalStats: {
     topic: 'View Seed Bank Snapshot',
-    description: 'View portal data statistics',
+    description: 'View portal record and conservation statistics',
     icon: IconChartLine,
     instructions: viewPortalStatisticsItem,
   },
