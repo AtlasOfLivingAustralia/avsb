@@ -125,29 +125,6 @@ function FAQ() {
       ),
     },
     {
-      title: 'How do I add threatened species status to my downloaded data?',
-      value: 'download-threatend-species',
-      component: (
-        <Text size='sm'>
-          Although Threatened Species Status for taxa listed under state, territory and
-          commonwealth threatened species legislation is shown on the AVSB summary pages, this
-          is currently not included in the data downloads. You can download threatened species
-          lists for all jurisdictions in Australia from the ALA{' '}
-          <Anchor
-            target='_blank'
-            href='https://lists.ala.org.au/public/speciesLists?&max=25&sort=listName&order=asc&isThreatened=eq:true&isAuthoritative=eq:true&listType=eq:CONSERVATION_LIST'
-          >
-            here
-          </Anchor>{' '}
-          and attribute taxa in your downloads with their conservation status. If you need
-          further assistance, please contact{' '}
-          <Anchor target='_blank' href='mailto:support@ala.org.au'>
-            support@ala.org.au
-          </Anchor>
-        </Text>
-      ),
-    },
-    {
       title: 'How does the AVSB resolve taxonomic name matching issues?',
       value: 'resolve-taxonomic-name-matching',
       component: (
