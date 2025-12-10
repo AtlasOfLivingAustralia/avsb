@@ -62,7 +62,7 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
         h={`calc(100vh - ${scrollOffset || 425}px)`}
         scrollAreaProps={{ onScrollPositionChange: ({ y }) => setScrolled(y !== 0) }}
       >
-        <Table stickyHeader>
+        <Table stickyHeader highlightOnHover>
           <Table.Thead className={`${classes.header} ${scrolled ? classes.scrolled : ''}`}>
             <Table.Tr>
               <ThField
