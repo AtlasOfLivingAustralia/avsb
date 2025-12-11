@@ -1,35 +1,39 @@
 import {
-  Title,
-  Text,
-  Container,
-  Tabs,
-  Box,
-  Image,
-  Group,
-  Skeleton,
-  Menu,
   ActionIcon,
   Badge,
-  ScrollArea,
+  Box,
+  Button,
+  Center,
+  Container,
   Divider,
-  useMantineTheme,
-  ThemeIcon,
+  Flex,
+  FloatingIndicator,
+  Group,
+  Image,
+  Paper,
+  Skeleton,
+  Tabs,
+  Text,
+  Title,
+  Tooltip,
 } from '@mantine/core';
-import { useClipboard } from '@mantine/hooks';
+import { useClipboard, useMediaQuery } from '@mantine/hooks';
 import {
   IconBrandAsana,
   IconCopy,
-  IconDna2,
-  IconDotsVertical,
   IconExternalLink,
   IconId,
   IconLeaf,
   IconPhoto,
   IconTestPipe,
-} from '@tabler/icons';
-import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
+} from '@tabler/icons-react';
+import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router';
 import { Taxon } from '#/api/sources/taxon';
 import PageSummary from './components/PageSummary';
+import { useState } from 'react';
+
+import classes from './index.module.css';
+import { breakpoints } from '#/theme';
 
 const MAX_WIDTH = 1450;
 const tabs = [
@@ -50,139 +54,153 @@ const tabs = [
     icon: IconPhoto,
   },
   {
-    tabKey: 'Sequences',
-    icon: IconDna2,
-  },
-  {
     tabKey: 'Traits',
     icon: IconLeaf,
   },
 ];
 
-// eslint-disable-next-line import/prefer-default-export
 export function Component() {
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const { pathname, state } = useLocation();
   const { taxon: data } = useLoaderData() as { taxon: Taxon };
   const clipboard = useClipboard({ timeout: 500 });
   const currentPage = pathname.split('/')[3];
-  const theme = useMantineTheme();
   const navigate = useNavigate();
+
+  const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
+
+  // Tabs state
+  const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
+  const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
+  const setControlRef = (val: string) => (node: HTMLButtonElement) => {
+    controlsRefs[val] = node;
+    setControlsRefs(controlsRefs);
+  };
 
   return (
     <>
-      <Container size={MAX_WIDTH} py='xl'>
-        <Group position='apart' align='start'>
+      <Container size={MAX_WIDTH} py='xl' mt={-30}>
+        <Group justify='space-between' align='start'>
           <Group align='start'>
             <Box mr='md'>
-              <Skeleton pos='absolute' width={90} height={90} radius='lg' />
-              <Image
-                withPlaceholder
-                src={
-                  data.imageIdentifier &&
-                  `${import.meta.env.VITE_ALA_IMAGES}/image/${data.imageIdentifier}/thumbnail`
-                }
-                width={90}
-                height={90}
+              <Skeleton
+                w={90}
+                h={90}
                 radius='lg'
-                alt={`Representative image of ${data.classification.scientificName}`}
-              />
+                visible={Boolean(data.imageIdentifier) && !imageLoaded}
+              >
+                {data?.imageIdentifier ? (
+                  <Image
+                    src={
+                      data.imageIdentifier &&
+                      `${import.meta.env.VITE_ALA_IMAGES}/image/${data.imageIdentifier.split(',')[0]}/thumbnail`
+                    }
+                    w={90}
+                    h={90}
+                    radius='lg'
+                    alt={`Representative image of ${data.classification.scientificName}`}
+                    onLoad={() => setImageLoaded(true)}
+                  />
+                ) : (
+                  <Paper
+                    w={90}
+                    h={90}
+                    radius='lg'
+                    bg='light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-6))'
+                  >
+                    <Center w={90} h={90}>
+                      <IconPhoto
+                        style={{
+                          color:
+                            'light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-3))',
+                        }}
+                        size='2rem'
+                      />
+                    </Center>
+                  </Paper>
+                )}
+              </Skeleton>
             </Box>
             <Box>
               <Title>{data.taxonConcept.nameString}</Title>
-              <Group spacing='sm'>
-                <Text color='dimmed'>{data.commonNames[0]?.nameString || 'No common name'}</Text>
-                <Badge radius='sm'>{data.taxonConcept.rankString}</Badge>
+              <Group gap='sm'>
+                <Text c='dimmed'>{data.commonNames[0]?.nameString || 'No common name'}</Text>
+                <Badge variant='light' radius='md'>
+                  {data.taxonConcept.rankString}
+                </Badge>
               </Group>
             </Box>
           </Group>
-          <Menu shadow='md' position='bottom-end'>
-            <Menu.Target>
-              <ActionIcon size='xl' variant='light' radius='xl' aria-label='View taxon action menu'>
-                <IconDotsVertical />
+          <Group gap='sm'>
+            <Tooltip label={<Text size='xs'>Copy taxon ID</Text>}>
+              <ActionIcon
+                onClick={() => clipboard.copy(data.taxonConcept.guid)}
+                size='xl'
+                variant='light'
+                radius='xl'
+                aria-label='Copy taxon ID'
+              >
+                <IconCopy />
               </ActionIcon>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item
-                icon={<IconExternalLink size={14} />}
+            </Tooltip>
+            <Tooltip label={<Text size='xs'>View taxon on ALA</Text>}>
+              <ActionIcon
                 component='a'
                 target='_blank'
                 href={`${import.meta.env.VITE_ALA_BIE}/species/${data.taxonConcept.guid}`}
+                size='xl'
+                variant='light'
+                radius='xl'
+                aria-label='View taxon on ALA'
               >
-                View on ALA BIE
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconCopy size={14} />}
-                onClick={() => clipboard.copy(data.taxonConcept.guid)}
-              >
-                Copy Taxon ID
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
+                <IconExternalLink />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
         </Group>
       </Container>
-      <Tabs variant='default' mt='md' radius='sm' value={currentPage}>
-        <Group spacing={0}>
-          <Box
-            style={{ display: 'flex', alignItems: 'flex-end' }}
-            w={`calc(((100vw - ${MAX_WIDTH}px) / 2) + ${theme.spacing.md})`}
-            miw={theme.spacing.md}
-            h={48}
-          >
-            <Divider size={2} w='100%' />
-          </Box>
-          <Tabs.List style={{ flexGrow: 1 }}>
-            {tabs.map(({ icon: Icon, tabKey }) => (
-              <Tabs.Tab
-                key={tabKey}
-                value={tabKey.toLowerCase()}
-                onClick={() => {
-                  if (tabKey !== 'Sequences') {
-                    navigate(tabKey.toLowerCase(), { state });
-                  } else {
-                    window.open(
-                      `https://www.ncbi.nlm.nih.gov/nuccore/?term=${encodeURIComponent(
-                        data.taxonConcept.nameString,
-                      )}`,
-                    );
-                  }
-                }}
-              >
-                <Group spacing='xs'>
-                  <ThemeIcon
-                    variant='light'
-                    color={currentPage === tabKey.toLowerCase() ? 'blue' : 'gray'}
-                    radius='lg'
+      <Tabs variant='none' value={currentPage}>
+        <Container size={MAX_WIDTH} pb='sm'>
+          <Flex justify={'space-between'}>
+            <Group gap="xs">
+              <Tabs.List ref={setRootRef} className={classes.list}>
+                {tabs.map(({ tabKey, icon: Icon }) => (
+                  <Tabs.Tab
+                    key={tabKey}
+                    value={tabKey.toLowerCase()}
+                    ref={setControlRef(tabKey.toLowerCase())}
+                    className={classes.tab}
+                    leftSection={<Icon size='0.8rem' />}
+                    onClick={() => navigate(tabKey.toLowerCase(), { state })}
                   >
-                    <Icon size='0.9rem' />
-                  </ThemeIcon>
-                  {tabKey}
-                </Group>
-              </Tabs.Tab>
-            ))}
-          </Tabs.List>
-          <Box
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-end',
-              alignItems: 'flex-end',
-              flexGrow: 1,
-            }}
-            h={48}
-          >
-            <PageSummary
-              currentPage={currentPage}
-              pr={`calc((100vw - ${MAX_WIDTH}px) / 2)`}
-              mb={10}
-            />
-            <Divider size={2} w='100%' />
-          </Box>
-        </Group>
-        <ScrollArea type='auto' h='calc(100vh - 263px)'>
-          <Container size={MAX_WIDTH} py='xl'>
-            <Outlet />
-          </Container>
-        </ScrollArea>
+                    {tabKey}
+                  </Tabs.Tab>
+                ))}
+                <FloatingIndicator
+                  target={controlsRefs[currentPage]}
+                  parent={rootRef}
+                  className={classes.indicator}
+                />
+              </Tabs.List>
+              <Divider orientation='vertical' />
+              <Tooltip position='right' label='View genomes on NCBI' withArrow>
+                <Button
+                  color='light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1))'
+                  rightSection={<IconExternalLink size="1rem" />}
+                  component='a'
+                  href={`https://www.ncbi.nlm.nih.gov/nuccore/?term=${encodeURIComponent(data.taxonConcept.nameString)}`}
+                  target='blank'
+                  variant='transparent'>
+                  Sequences
+                </Button>
+              </Tooltip>
+            </Group>
+            {mdOrLarger && <PageSummary currentPage={currentPage} />}
+          </Flex>
+        </Container>
+        <Container size={MAX_WIDTH} pt='lg' pb='xl'>
+          <Outlet />
+        </Container>
       </Tabs>
     </>
   );

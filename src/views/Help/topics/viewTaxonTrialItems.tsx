@@ -1,5 +1,5 @@
 import { Code } from '@mantine/core';
-import { IconClick, IconEye } from '@tabler/icons';
+import { IconClick, IconEye } from '@tabler/icons-react';
 
 import imageTrials from '#/assets/help/taxon-trials-min.png';
 import imageTrialsExpanded from '#/assets/help/taxon-trials-expanded-min.png';

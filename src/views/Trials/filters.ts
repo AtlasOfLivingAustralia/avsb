@@ -1,24 +1,26 @@
-import { SelectItem } from '@mantine/core';
+import { ComboboxItem } from '@mantine/core';
 import {
   IconCalendar,
   IconCircle,
   IconCircleDot,
   IconCircleDotted,
-  IconCircleOff,
   IconClock,
   IconDatabase,
+  IconExclamationCircle,
+  IconHeartFilled,
   IconId,
   IconPercentage,
   IconReceiptTax,
   IconRotateClockwise2,
   IconSeeding,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 
 import { Filter } from '#/components';
 import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';
+import { sensitiveLists, conservationLists } from '#/helpers/stats';
 
 // Define a data fetcher for the dataset select search
-const fetchItems = async (query: string): Promise<SelectItem[]> => {
+const fetchItems = async (query: string): Promise<ComboboxItem[]> => {
   const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
     gqlQueries.QUERY_DATASET_SUGGEST,
     {
@@ -137,6 +139,15 @@ const filters: Filter[] = [
     placeholder: '10',
     icon: IconCircleDotted,
     group: 'Germination',
+  },
+  {
+    key: 'measurementOrFactTypes',
+    label: 'Threatened Status',
+    type: 'multiSelect',
+    placeholder: 'Select threatened statuses',
+    icon: IconExclamationCircle,
+    items: [...conservationLists, ...sensitiveLists],
+    group: 'Threatened',
   },
 ];
 

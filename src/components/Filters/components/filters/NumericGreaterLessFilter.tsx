@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/style/noNestedTernary: Tehe */
 import { useEffect, useState } from 'react';
 import { Stack, Group, Paper, SegmentedControl, NumberInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
@@ -62,7 +63,6 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
         },
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced, debouncedUpper, operation]);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
   }, [key, resetKey, setValue]);
 
   return (
-    <Stack spacing='sm'>
+    <Stack gap='sm'>
       <IconText icon={icon} title={label} />
       <Group>
         <Paper withBorder>
@@ -90,14 +90,22 @@ function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProp
           />
         </Paper>
         <NumberInput
-          onChange={setValue}
+          onChange={(val) =>
+            setValue(val === '' ? '' : typeof val === 'number' ? val : Number(val))
+          }
           style={{ flexGrow: 1 }}
           placeholder={placeholder}
-          precision={2}
+          decimalScale={2}
         />
       </Group>
       {operation === 'range' && (
-        <NumberInput onChange={setUpperValue} placeholder={placeholder} precision={2} />
+        <NumberInput
+          onChange={(val) =>
+            setUpperValue(val === '' ? '' : typeof val === 'number' ? val : Number(val))
+          }
+          placeholder={placeholder}
+          decimalScale={2}
+        />
       )}
     </Stack>
   );

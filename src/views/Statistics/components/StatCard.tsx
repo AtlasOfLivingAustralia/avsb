@@ -1,7 +1,7 @@
-import { Box, Group, Stack, Text, ThemeIcon } from '@mantine/core';
-import { TablerIcon } from '@tabler/icons';
+import { Group, Paper, Stack, Text, ThemeIcon } from '@mantine/core';
+import { TablerIcon } from '@tabler/icons-react';
 
-import stats from '../../../assets/stats.json';
+import { formatNumber, stats } from '#/helpers/stats';
 
 interface StatCardProps {
   id: string;
@@ -10,24 +10,24 @@ interface StatCardProps {
 }
 
 function StatCard({ id, name, icon: Icon }: StatCardProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: Arbitrary JSON
   const value = (stats as any)[id];
   return (
-    <Box pt='sm' pb='xl'>
-      <Group position='apart' pr='md'>
-        <Stack spacing={0}>
-          <Text size={28} weight='bold' opacity={0.8}>
+    <Paper pt='sm' px='sm' pb='lg' withBorder radius='xl' shadow='lg'>
+      <Group justify='space-between' align='flex-start'>
+        <Stack gap={0}>
+          <Text fz={28} fw='bold' opacity={0.8}>
             {value
-              ? value.toLocaleString(undefined, { minimumFractionDigits: 2 }).replace('.00', '')
+              ? formatNumber(value)
               : id}
           </Text>
-          <Text color='dimmed'>{name}</Text>
+          <Text size='sm' c='dimmed'>{name}</Text>
         </Stack>
         <ThemeIcon variant='light' size='xl' radius='xl'>
           <Icon size='1rem' />
         </ThemeIcon>
       </Group>
-    </Box>
+    </Paper>
   );
 }
 

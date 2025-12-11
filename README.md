@@ -10,17 +10,16 @@
 
 [Visual Studio Code](https://code.visualstudio.com/) is the recommended IDE for development.
 
-- [Node.js v16](https://nodejs.org/en/download/current/): Runtime
-- [Yarn](https://yarnpkg.com/getting-started/install): Package Manager
+- [Node.js v22](https://nodejs.org/en/download/current/): Runtime
+- [pnpm](https://pnpm.io): Package Manager
 - **VSCode Extensions**
-  - [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint): Code linting
-  - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode): Code formatting
+  - [Biome](biomejs.dev): Code linting & formatting
 
 ### Setting up
 
 1. Navigate into the `src` folder
-2. Install dependencies with `yarn`
-3. Start the project by running `yarn dev`
+2. Install dependencies with `pnpm install`
+3. Start the project by running `pnpm dev`
 
 ## CI/CD
 

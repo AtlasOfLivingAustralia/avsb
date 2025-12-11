@@ -1,13 +1,12 @@
-import { Box, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
-import { IconNotes } from '@tabler/icons';
+import { Box, Divider, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
+import { IconFileDescription, IconNotes } from '@tabler/icons-react';
 
 import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import { getIsDefined, trialFields } from '#/helpers';
-
+import FieldTooltip from '../FieldTooltip';
 import IconText from '../IconText';
 import TreatmentCard from '../TreatmentCard';
 import fields from './fields';
-import FieldTooltip from '../FieldTooltip';
 
 interface TrialDetailsProps {
   event: Event;
@@ -23,11 +22,11 @@ const isValidTreatment = ({
 }: SeedBankTreatment) =>
   Boolean(
     pretreatment ||
-      mediaSubstrate ||
-      darkHours ||
-      lightHours ||
-      dayTemperatureInCelsius ||
-      nightTemperatureInCelsius,
+    mediaSubstrate ||
+    darkHours ||
+    lightHours ||
+    dayTemperatureInCelsius ||
+    nightTemperatureInCelsius,
   );
 
 function TrialDetails({ event }: TrialDetailsProps) {
@@ -50,16 +49,16 @@ function TrialDetails({ event }: TrialDetailsProps) {
                   <Icon size='1rem' />
                 </ThemeIcon>
                 <Box>
-                  <Text color='dimmed' size='xs'>
+                  <Text c='dimmed' size='xs'>
                     {label}
                   </Text>
                   {getIsDefined(trial?.[key]) ? (
-                    <Text size='sm' weight='bold'>
+                    <Text size='sm' fw='bold'>
                       {trial[key]}
                       {unit && unit}
                     </Text>
                   ) : (
-                    <Text size='sm' weight='bold' color='dimmed'>
+                    <Text size='sm' fw='bold' c='dimmed'>
                       Not Available
                     </Text>
                   )}
@@ -83,17 +82,30 @@ function TrialDetails({ event }: TrialDetailsProps) {
               p='md'
               mt='sm'
               key={`${event.eventID}-${num + 1}`}
-              sx={(theme) => ({
-                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-              })}
+              style={{
+                backgroundColor:
+                  'light-dark(var(--mantine-color-white), var(--mantine-color-dark-6))',
+              }}
             >
-              <Text sx={(theme) => ({ fontFamily: theme.headings.fontFamily })} mb='xs'>
+              <Text style={{ fontFamily: 'var(--mantine-font-family-headings)' }} mb='xs'>
                 Trial Conditions {num + 1}
               </Text>
               <TreatmentCard event={treatment} />
             </Paper>
           ))}
         </Grid.Col>
+      )}
+      {event.eventRemarks && (
+        <>
+          <Grid.Col span={12}>
+            <Divider my={6} variant='dashed' />
+          </Grid.Col>
+          <Grid.Col span={12}>
+            <IconText labelWidth={80} icon={IconFileDescription} title='Remarks'>
+              {event.eventRemarks}
+            </IconText>
+          </Grid.Col>
+        </>
       )}
     </Grid>
   );

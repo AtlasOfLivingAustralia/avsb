@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { Carousel } from '@mantine/carousel';
 import { Box, Image, Paper, Text, ThemeIcon, rem } from '@mantine/core';
-import { Carousel, Embla, useAnimationOffsetEffect } from '@mantine/carousel';
+import { useState } from 'react';
 
 import { HelpTopicItem } from '..';
+
+import classes from './Topic.module.css';
 
 interface TopicProps {
   instructions: HelpTopicItem[];
@@ -10,52 +12,30 @@ interface TopicProps {
 
 function Topic({ instructions }: TopicProps) {
   const [slide, setSlide] = useState<number>(0);
-  const [embla, setEmbla] = useState<Embla | null>(null);
   const { content, icon: Icon } = instructions[slide];
-
-  // Delay the slide offset calculation to compensate
-  // for the modal opening animation
-  useAnimationOffsetEffect(embla, 200);
 
   return (
     <>
       <Carousel
         onSlideChange={(index) => setSlide(index)}
-        styles={(theme) => ({
-          control: {
-            '&[data-inactive]': {
-              opacity: 0,
-              cursor: 'default',
-            },
-          },
-          indicator: {
-            width: rem(12),
-            height: rem(4),
-            transition: 'width 250ms ease',
-            backgroundColor: theme.colorScheme === 'dark' ? theme.white : theme.colors.dark[3],
-            '&[data-active]': {
-              width: rem(40),
-            },
-          },
-        })}
+        classNames={classes}
         mx='auto'
         withIndicators
-        height={700}
-        getEmblaApi={setEmbla}
+        height={600}
       >
         {instructions.map(({ image }, index) => (
           <Carousel.Slide key={`${index * 2}`}>
             <Box
-              sx={(theme) => ({
+              style={{
                 backgroundColor:
-                  theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[3],
-              })}
+                  'light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-5))',
+              }}
             >
               <Image
                 pt='md'
                 fit='contain'
-                width='100%'
-                height={650}
+                w='100%'
+                h={550}
                 src={image}
                 alt={`Slide ${index + 1} of help images`}
               />
@@ -64,7 +44,7 @@ function Topic({ instructions }: TopicProps) {
         ))}
       </Carousel>
       <Paper px='md' pb='md'>
-        <Box sx={{ display: 'flex', alignItems: 'center', minHeight: 45 }}>
+        <Box style={{ display: 'flex', alignItems: 'center', minHeight: 45 }}>
           <ThemeIcon mr='sm' size='lg' variant='light' radius='lg'>
             <Icon size='1rem' />
           </ThemeIcon>

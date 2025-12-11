@@ -10,12 +10,14 @@ import {
   Text,
   Transition,
   UnstyledButton,
-  useMantineTheme,
 } from '@mantine/core';
 
-import { IconX } from '@tabler/icons';
 import { Event, EventDocuments, SeedBankAccession } from '#/api/graphql/types';
-import { Link } from 'react-router-dom';
+import { IconX } from '@tabler/icons-react';
+import { Link } from 'react-router';
+
+import classes from './ItemList.module.css';
+import { mapEventTaxon } from '#/helpers/mapEventTaxon';
 
 const slideX = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -28,11 +30,12 @@ interface ItemListProps {
   open: boolean;
   documents: EventDocuments;
   contentHeight?: number | string;
+  topOffset?: number;
+  leftOffset?: number;
   onClose?: () => void;
 }
 
-function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
-  const theme = useMantineTheme();
+function ItemList({ open, documents, contentHeight, topOffset, leftOffset, onClose }: ItemListProps) {
   const { results, total } = documents;
 
   return (
@@ -42,16 +45,15 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
           style={{
             ...styles,
             position: 'absolute',
-            color: 'white',
             zIndex: 10,
-            top: theme.spacing.md,
-            left: theme.spacing.md,
+            top: `calc(var(--mantine-spacing-md) + ${topOffset || 0}px)`,
+            left: `calc(var(--mantine-spacing-md) + ${leftOffset || 0}px)`,
           }}
         >
           <Paper w={260} shadow='md' withBorder>
-            <Group p='xs' position='apart'>
+            <Group p='xs' justify='space-between'>
               <Skeleton visible={!results} w={160}>
-                <Text color='dimmed' weight='bold' size='sm' transform='uppercase'>
+                <Text c='dimmed' fw='bold' size='sm' tt='uppercase'>
                   {total} result{total && total > 1 ? 's' : ''}
                 </Text>
               </Skeleton>
@@ -66,7 +68,7 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
             </Group>
             <Divider />
             <ScrollArea type='auto' h={contentHeight || 300} offsetScrollbars>
-              <Stack spacing={0}>
+              <Stack gap={0}>
                 {!results &&
                   [0, 1, 2, 3, 4].map((key) => (
                     <Box key={key} px='xs' pt='xs' mb='xs'>
@@ -79,34 +81,30 @@ function ItemList({ open, documents, contentHeight, onClose }: ItemListProps) {
                 {results &&
                   results.map((result: Event) => {
                     const accession = result.extensions?.seedbank as SeedBankAccession;
+
                     return (
                       <UnstyledButton
                         component={Link}
                         to={
-                          result.distinctTaxa?.[0]?.key
+                          result._taxon?.taxonID
                             ? `/taxon/${encodeURIComponent(
-                                result.distinctTaxa?.[0]?.key,
-                              )}/accessions/${result.eventID}`
+                              result._taxon.taxonID,
+                            )}/accessions/${result.eventID}`
                             : `../accessions/${result.eventID}`
                         }
                         p='xs'
                         key={result.eventID}
-                        sx={{
-                          '&:hover': {
-                            backgroundColor:
-                              theme.colorScheme === 'dark' ? theme.colors.dark[4] : 'white',
-                          },
-                        }}
+                        className={classes.item}
                       >
                         <Text size='sm'>
                           {accession?.accessionNumber || `Event ${result.eventID}`}
                         </Text>
-                        {result.distinctTaxa?.[0]?.key && (
-                          <Text weight='bold' size='xs'>
-                            {result.distinctTaxa?.[0]?.scientificName}
+                        {result._taxon?.taxonID && (
+                          <Text fw='bold' size='xs'>
+                            {result._taxon?.taxonName || 'N/A'}
                           </Text>
                         )}
-                        <Text size='xs' color='dimmed'>
+                        <Text size='xs' c='dimmed'>
                           {result.datasetTitle}
                         </Text>
                       </UnstyledButton>

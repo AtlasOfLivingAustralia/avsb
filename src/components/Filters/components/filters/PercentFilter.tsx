@@ -33,7 +33,7 @@ function PercentFilter({ filter, resetKey, onChange }: FilterItemProps) {
   }, [key, resetKey, setValue]);
 
   return (
-    <Stack spacing={0}>
+    <Stack gap={0}>
       <IconText icon={icon} title={label} />
       <Box px='sm' py='md'>
         <RangeSlider

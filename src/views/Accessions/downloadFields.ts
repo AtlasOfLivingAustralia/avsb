@@ -3,7 +3,10 @@ import { DownloadField } from '#/components/Downloads';
 const downloadFields: DownloadField[] = [
   { label: 'Event ID', key: 'eventID' },
   { label: 'Accession Number', key: 'extensions.seedbank.accessionNumber' },
-  { label: 'Scientific Name', key: 'distinctTaxa[0].scientificName' },
+  { label: 'Herbarium Voucher', key: 'extensions.seedbank.herbariumVoucher' },
+  { label: 'Scientific Name', key: '_taxon.taxonName' },
+  { label: 'Supplied Name', key: '_taxon.suppliedName' },
+  { label: 'Taxon ID', key: '_taxon.taxonID' },
   { label: 'Dataset Title', key: 'datasetTitle' },
   { label: 'Locality', key: 'locality' },
   { label: 'Decimal Latitude', key: 'decimalLatitude' },
@@ -11,6 +14,8 @@ const downloadFields: DownloadField[] = [
   { label: 'Seed/gm', key: 'extensions.seedbank.seedPerGram' },
   { label: 'Quantity (count)', key: 'extensions.seedbank.quantityCount' },
   { label: 'Quantity (g)', key: 'extensions.seedbank.quantityInGrams' },
+  { label: 'Number of Plants Sampled', key: 'extensions.seedbank.numberPlantsSampled' },
+  { label: 'Storage Behaviour', key: 'extensions.seedbank.storageBehaviour' },
   { label: 'Thousand Seed Weight', key: 'extensions.seedbank.thousandSeedWeight' },
   {
     label: 'Storage Relative Humidity',
@@ -50,5 +55,7 @@ const downloadFields: DownloadField[] = [
     key: 'extensions.seedbank.collectionFill',
   },
   { label: 'Publication DOI', key: 'extensions.seedbank.publicationDOI' },
+  { label: 'ES Ratio', key: 'extensions.seedbank.esRatio' },
+  { label: 'Dormancy Class', key: 'extensions.seedbank.dormancyClass' },
 ];
 export default downloadFields;

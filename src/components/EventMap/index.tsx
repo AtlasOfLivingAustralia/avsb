@@ -1,18 +1,25 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from 'react';
-import { ActionIcon, ColorScheme, Tooltip, useMantineTheme } from '@mantine/core';
-import { IconMaximize } from '@tabler/icons';
-import { useParams } from 'react-router-dom';
+import { Button, Checkbox, Flex, Group, Paper } from '@mantine/core';
+import { IconLayersIntersect2, IconMaximize, IconMinimize, IconSearch } from '@tabler/icons-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router';
 
 // Mapbox
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { LngLatLike } from 'mapbox-gl';
+import Draw from '@mapbox/mapbox-gl-draw';
+import wellknown, { GeoJSONPolygon } from 'wellknown';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+
 
 // Project-imports
-import { getMapLayer, getWktFromGeohash } from '#/helpers';
-import { EventSearchResult, useGQLQuery } from '#/api';
+import { EventSearchResult, performGQLQuery, Predicate, useGQLQuery } from '#/api';
 import queries from '#/api/queries';
+import { getMapLayer, getWktFromGeohash } from '#/helpers';
+import { useComputedColorScheme } from '@mantine/core';
 import ItemList from './components/ItemList';
+import { drawStyles } from './drawStyles';
+import { useFullscreen } from '@mantine/hooks';
+import { SelectionRecords } from './components/SelectionRecords';
 
 // Initialize MapBox
 mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_TOKEN;
@@ -23,14 +30,43 @@ interface MapPoint {
 }
 
 interface MapProps {
+  predicate: Predicate;
   width?: string | number;
   height?: string | number;
-  token?: string;
+  initialToken?: string;
   itemListHeight?: string | number;
-  onFullscreen?: () => void;
+  shadow?: string;
+  radius?: string;
+  transparent?: boolean;
+  initialCenter?: LngLatLike;
+  initialZoom?: number;
+  zoomOnLoad?: number;
+  itemsTopOffset?: number;
+  itemsLeftOffset?: number;
+  onLoad?: () => void;
 }
 
-function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
+const TRANSPARENT_LIGHT = 'mapbox://styles/jackbrinkman/cmi7z3aob000h01si4rd8cuv8';
+const TRANSPARENT_DARK = 'mapbox://styles/jackbrinkman/cmi6r8ly500bf01st7az16yo2';
+const MAP_CENTER: LngLatLike = [135, -30];
+const RECORDS_PREDICATE: Predicate = { type: 'isNotNull', key: 'decimalLongitude' }
+
+function MapComponent({
+  predicate,
+  width,
+  height,
+  initialToken,
+  itemListHeight,
+  shadow,
+  radius,
+  transparent,
+  initialZoom,
+  initialCenter,
+  zoomOnLoad,
+  itemsTopOffset,
+  itemsLeftOffset,
+  onLoad
+}: MapProps) {
   // Map refs
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -40,33 +76,89 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
       closeOnClick: false,
     }),
   );
+  const drawControl = useRef<Draw>(    // Create the Draw control
+    new Draw({
+      displayControlsDefault: false,
+      controls: {
+        polygon: true,
+        trash: true
+      },
+      styles: drawStyles
+    }));
 
+  // Fullscreen & params hook
+  const { fullscreen, ref: fullscreenRef, toggle: fullscreenToggle } = useFullscreen();
   const params = useParams();
 
   // Map state & data
+  const [token, setToken] = useState<string | null>(initialToken || null);
+  const [drawPredicate, setDrawPredicate] = useState<Predicate | null>(null);
   const [styleLoaded, setStyleLoaded] = useState<boolean>(false);
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
+  const [recordsOpened, setRecordsOpened] = useState<boolean>(false);
+  const inverseRef = useRef<HTMLInputElement>(null);
   const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery<{
     data: { eventSearch: EventSearchResult };
   }>(
-    params.guid ? queries.QUERY_EVENT_MAP_POINT : queries.QUERY_EVENT_MAP_POINT_KEY,
+    queries.QUERY_EVENT_MAP_POINT,
     {},
     { lazy: true },
   );
 
   // Theme variables
-  const theme = useMantineTheme();
-  const [currentScheme, setCurrentScheme] = useState<ColorScheme>(theme.colorScheme);
-  const borderRadius = theme.radius.md;
+  const colorScheme = useComputedColorScheme('dark');
+  const [currentScheme, setCurrentScheme] = useState<'light' | 'dark'>(colorScheme);
+  const isDark = colorScheme === 'dark';
+
+  // Generate the style URL
+  const styleUrl = transparent ?
+    (!isDark ? TRANSPARENT_LIGHT : TRANSPARENT_DARK) :
+    `mapbox://styles/mapbox/${isDark ? 'light' : 'dark'}-v11`;
+
+  // Helper function for onPolygons callback
+  const handlePolygons = () => {
+    const predicates = drawControl
+      .current.getAll()
+      .features
+      .filter(({ geometry }) => geometry.type === 'Polygon')
+      .map((feature) => wellknown.stringify(feature.geometry as GeoJSONPolygon))
+      .map((value) => ({
+        type: 'within',
+        key: 'scoordinates',
+        value
+      })) as Predicate[];
+
+    if (predicates.length > 0) {
+      setDrawPredicate(inverseRef.current?.checked ? { type: 'not', predicate: { type: 'or', predicates } } : { type: 'or', predicates });
+    } else {
+      setDrawPredicate(null);
+    }
+  }
 
   // Helper function to add the events layer to the map
   const addLayer = () => {
     if (map.current) {
-      const tile = `${
-        import.meta.env.VITE_API_ALA
-      }/event/tile/event/mvt/{z}/{x}/{y}?queryId=${token}`;
+      const tile = `${import.meta.env.VITE_API_ALA
+        }/event/tile/event/mvt/{z}/{x}/{y}?queryId=${token}`;
 
-      map.current.addLayer(getMapLayer(tile));
+      const config = getMapLayer(tile);
+      map.current.addSource('events', config.source);
+
+      // Find the first Mapbox Draw layer in the style
+      const style = map.current.getStyle();
+      const firstDrawLayer = style.layers?.find((layer) =>
+        layer.id.startsWith('gl-draw-'),
+      );
+
+      if (firstDrawLayer) {
+        // Insert events *before* the first Draw layer,
+        // so all gl-draw-* layers are above events.
+        map.current.addLayer(config.layer, firstDrawLayer.id);
+      } else {
+        // Fallback if Draw hasn't added its layers yet
+        map.current.addLayer(config.layer);
+      }
+
       map.current.on('mouseenter', 'events', (e) => {
         if (map.current) {
           map.current.getCanvas().style.cursor = 'pointer';
@@ -77,10 +169,21 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
             .setLngLat(e.lngLat)
             .setHTML(
               `<span style="color: black;"><b>Lng:</b> ${e.lngLat.lng.toFixed(
-                4,
-              )}<br/><b>Lat:</b> ${e.lngLat.lat.toFixed(4)}</span>`,
+                2,
+              )}<br/><b>Lat:</b> ${e.lngLat.lat.toFixed(2)}</span>`,
             )
             .addTo(map.current);
+        }
+      });
+      map.current.on('mousemove', 'events', (e) => {
+        if (map.current && popup.current) {
+          popup.current
+            .setLngLat(e.lngLat)
+            .setHTML(
+              `<span style="color: black;"><b>Lng:</b> ${e.lngLat.lng.toFixed(
+                2,
+              )}<br/><b>Lat:</b> ${e.lngLat.lat.toFixed(2)}</span>`,
+            )
         }
       });
       map.current.on('mouseleave', 'events', () => {
@@ -108,6 +211,32 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
     addLayer();
   };
 
+  const updateToken = async () => {
+    const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
+      queries.QUERY_EVENT_MAP,
+      {
+        predicate: drawPredicate ? {
+          type: 'and',
+          predicates: [predicate, drawPredicate]
+        } : predicate
+      }
+    );
+
+    if (data.eventSearch._tileServerToken) {
+      setToken(data.eventSearch._tileServerToken);
+    }
+  };
+
+  // Fetch a new token if an initial token does not exist
+  useEffect(() => {
+    if (!initialToken) updateToken();
+  }, []);
+
+  // Fetch a new token if the drawPredicate changes
+  useEffect(() => {
+    updateToken();
+  }, [drawPredicate]);
+
   // Query events based on the selected location
   useEffect(() => {
     if (selectedPoint?.geohash) {
@@ -128,12 +257,21 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
             },
             ...(params.guid
               ? [
-                  {
-                    type: 'equals',
-                    key: 'taxonKey',
-                    value: params.guid,
-                  },
-                ]
+                {
+                  type: 'equals',
+                  key: 'taxonKey',
+                  value: params.guid,
+                },
+              ]
+              : []),
+            ...(params.resource
+              ? [
+                {
+                  type: 'equals',
+                  key: 'datasetKey',
+                  value: params.resource,
+                },
+              ]
               : []),
           ],
         },
@@ -147,61 +285,128 @@ function Map({ width, height, token, itemListHeight, onFullscreen }: MapProps) {
   }, [token, styleLoaded]);
 
   useEffect(() => {
-    if (currentScheme !== theme.colorScheme && styleLoaded) {
-      setCurrentScheme(theme.colorScheme);
+    if (currentScheme !== colorScheme && styleLoaded) {
+      setCurrentScheme(colorScheme);
       setStyleLoaded(false);
-      map.current?.setStyle(
-        `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
-      );
+      map.current?.setStyle(styleUrl);
     }
-  }, [theme.colorScheme, styleLoaded]);
+  }, [colorScheme, styleLoaded]);
 
   // Add the map to the DOM when the component loads
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: `mapbox://styles/mapbox/${theme.colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
-      center: [137.591797, -26.000092],
-      zoom: 2.5,
+      style: styleUrl,
+      center: initialCenter || MAP_CENTER,
+      zoom: initialZoom || 2.25,
     });
+
+    map.current.addControl(drawControl.current, 'top-right');
+    map.current.on('draw.create', handlePolygons);
+    map.current.on('draw.delete', handlePolygons);
+    map.current.on('draw.update', handlePolygons);
+
     map.current.on('render', () => map.current?.resize());
     map.current.on('style.load', () => setStyleLoaded(true));
+    map.current.on('load', () => {
+      if (onLoad) onLoad();
+      if (zoomOnLoad) {
+        map.current?.flyTo({
+          center: MAP_CENTER,
+          zoom: zoomOnLoad,
+          speed: 0.2
+        });
+      }
+    })
   }, []);
 
   return (
-    <div style={{ position: 'relative', width, height, borderRadius, boxShadow: theme.shadows.md }}>
-      <ItemList
-        onClose={() => setSelectedPoint(null)}
-        documents={selectedEvents?.data.eventSearch.documents || {}}
-        open={Boolean(selectedPoint)}
-        contentHeight={itemListHeight}
+    <>
+      <SelectionRecords
+        opened={recordsOpened}
+        onClose={() => setRecordsOpened(false)}
+        predicates={drawPredicate ? [predicate, drawPredicate, RECORDS_PREDICATE] : [predicate, RECORDS_PREDICATE]}
       />
-      {onFullscreen && (
-        <Tooltip
-          transitionProps={{ transition: 'pop' }}
-          label='Toggle Fullscreen'
-          color='blue'
-          position='left'
-          withArrow
-        >
-          <ActionIcon
-            onClick={onFullscreen}
-            variant='filled'
-            size='lg'
-            pos='absolute'
-            top={theme.spacing.md}
-            right={theme.spacing.md}
-            style={{ zIndex: 20 }}
-            aria-label='View full screen map'
+      <div
+        ref={fullscreenRef}
+        style={{
+          position: 'relative',
+          width,
+          height,
+          borderRadius: radius || 'var(--mantine-radius-lg)',
+          boxShadow: shadow || 'var(--mantine-shadow-md)',
+        }}
+      >
+        <ItemList
+          onClose={() => setSelectedPoint(null)}
+          documents={selectedEvents?.data.eventSearch.documents || {}}
+          open={Boolean(selectedPoint)}
+          contentHeight={itemListHeight}
+          topOffset={itemsTopOffset}
+          leftOffset={itemsLeftOffset}
+        />
+        <Group
+          gap='xs'
+          pos='absolute'
+          bottom='var(--mantine-spacing-xl)'
+          left='var(--mantine-spacing-md)'
+          right='var(--mantine-spacing-md)'
+          justify='center'
+          style={{ zIndex: 20 }}>
+
+          <Paper
+            style={{
+              transition: 'all ease 200ms',
+              width: drawPredicate ? 116 : 0,
+              overflow: 'hidden',
+              opacity: drawPredicate ? 1 : 0,
+            }}
+            px={8}
+            withBorder
           >
-            <IconMaximize />
-          </ActionIcon>
-        </Tooltip>
-      )}
-      <div ref={mapContainer} style={{ width, height, borderRadius }} />
-    </div>
+            <Flex align='center' justify='center' h={29} gap='sm'>
+              <IconLayersIntersect2 size="1rem" style={{ minWidth: '1rem', minHeight: '1rem' }} />
+              <Checkbox
+                ref={inverseRef}
+                onChange={handlePolygons}
+                label="Inverse"
+                labelPosition='left'
+                size='xs'
+                fw={600}
+                c='white'
+              />
+            </Flex>
+          </Paper>
+          <Button
+            leftSection={<IconSearch size="1rem" />}
+            color='gray'
+            radius='lg'
+            size='xs'
+            onClick={() => {
+              if (fullscreen) fullscreenToggle();
+              setRecordsOpened(true)
+            }}
+            aria-label='View map records'>
+            View records
+          </Button>
+          <Button
+            leftSection={fullscreen ? <IconMinimize size="1rem" /> : <IconMaximize size="1rem" />}
+            color='gray'
+            radius='lg'
+            size='xs'
+            onClick={fullscreenToggle}
+            aria-label='View full screen map'>
+            {fullscreen ? 'Exit' : 'Enter'} fullscreen
+          </Button>
+        </Group>
+        <div
+          ref={mapContainer}
+          style={{ width: fullscreen ? '100%' : width, height: fullscreen ? '100%' : height, borderRadius: radius || 'var(--mantine-radius-lg)' }}
+        />
+      </div>
+    </>
   );
 }
 
-export default Map;
+export default MapComponent;

@@ -1,59 +1,20 @@
-import {
-  Text,
-  useMantineTheme,
-  Grid,
-  Skeleton,
-  Box,
-  Group,
-  ThemeIcon,
-  createStyles,
-  getStylesRef,
-  UnstyledButton,
-  SimpleGridProps,
-} from '@mantine/core';
-import { IconArrowUpRight } from '@tabler/icons';
-import { useNavigate } from 'react-router-dom';
-
 import { gqlQueries, useGQLQuery } from '#/api';
 import { EventSearchResult } from '#/api/graphql/types';
-import { getAbbreviatedNumber } from '#/helpers';
 import queries from '#/api/queries';
-
-const useStyles = createStyles((theme) => ({
-  root: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[4] : 'white',
-    transition: 'opacity 200ms cubic-bezier(0, 0, 0, 1)',
-    width: '100%',
-    height: '100%',
-    borderRadius: theme.radius.lg,
-    padding: theme.spacing.md,
-    boxShadow: theme.shadows.md,
-    ':hover': {
-      opacity: 0.4,
-    },
-    [`&:hover .${getStylesRef('arrow')}`]: {
-      transform: 'translate(6px, -6px)',
-    },
-    [`&:hover .${getStylesRef('arrowIcon')}`]: {
-      opacity: 1,
-    },
-  },
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    height: '100%',
-  },
-  arrow: {
-    ref: getStylesRef('arrow'),
-    transition: 'transform 200ms cubic-bezier(0, 0, 0, 1)',
-  },
-  arrowIcon: {
-    ref: getStylesRef('arrowIcon'),
-    transition: 'opacity 200ms cubic-bezier(0, 0, 0, 1)',
-    opacity: 0.2,
-  },
-}));
+import {
+  Badge,
+  Box,
+  Grid,
+  GridProps,
+  Group,
+  Skeleton,
+  Text,
+  UnstyledButton,
+} from '@mantine/core';
+import { IconArrowUpRight } from '@tabler/icons-react';
+import { Link } from 'react-router';
+import classes from './Summaries.module.css';
+import { formatNumber } from '#/helpers/stats';
 
 interface SummaryCardProps {
   accessions?: EventSearchResult;
@@ -61,10 +22,6 @@ interface SummaryCardProps {
 }
 
 function SummaryCard({ accessions, trials }: SummaryCardProps) {
-  const { classes } = useStyles();
-  const theme = useMantineTheme();
-  const navigate = useNavigate();
-
   // Hoist the data from the response
   const { total: totalAccessions, results } = accessions?.documents || {};
   const { total: totalTrials } = trials?.documents || {};
@@ -72,62 +29,67 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
   const event = results?.[0];
   const loading = !results;
 
-  const onCardClick = () => {
-    if (event) navigate(`seedbank/${event.datasetKey}`);
-  };
-
   return (
-    <UnstyledButton onClick={onCardClick} className={classes.root}>
-      <Box h='100%' className={classes.wrapper}>
-        <Skeleton visible={loading}>
-          <Box style={{ display: 'flex' }}>
-            <Text
-              lineClamp={2}
-              mah={48}
-              sx={{
-                fontFamily: theme.headings.fontFamily,
-                color: theme.colorScheme === 'dark' ? theme.colors.gray[3] : theme.colors.dark[3],
-              }}
-            >
-              {event?.datasetTitle || 'Seed Bank Name Placeholder Value Here'}
-            </Text>
-            <Box w={24} h={24} ml='auto' className={classes.arrow}>
-              <IconArrowUpRight className={classes.arrowIcon} size={24} />
+    <Link to={`seedbank/${event?.datasetKey}`}>
+      <UnstyledButton className={classes.root}>
+        <Box h='100%' className={classes.wrapper}>
+          <Skeleton visible={loading}>
+            <Box style={{ display: 'flex' }}>
+              <Text
+                lineClamp={2}
+                h={48}
+                fw={600}
+                style={{
+                  fontFamily: 'var(--mantine-font-family-headings)',
+                  color: 'light-dark(var(--mantine-color-dark-4), var(--mantine-color-gray-3))',
+                }}
+              >
+                {event?.datasetTitle || 'Seed Bank Name Placeholder Value Here'}
+              </Text>
+              <Box w={24} h={24} ml='auto' className={classes.arrow}>
+                <IconArrowUpRight className={classes.arrowIcon} size={24} />
+              </Box>
             </Box>
-          </Box>
-        </Skeleton>
-        <Grid mt='md'>
-          <Grid.Col span={6}>
-            <Group spacing='xs'>
-              <Skeleton width={34} height={34} circle visible={loading}>
-                <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
-                  <Text color={theme.primaryColor[0]} weight='bold' size='xs'>
-                    {getAbbreviatedNumber(totalAccessions || 0)}
+          </Skeleton>
+          <Grid mt='md'>
+            <Grid.Col span={6}>
+              <Group gap='xs'>
+                <Skeleton w={75} visible={loading} radius='xl'>
+                  <Badge w={75} size='lg' variant='light'>
+                    {formatNumber(totalAccessions || 0)}
+                  </Badge>
+                </Skeleton>
+                <Skeleton visible={loading} maw={50}>
+                  <Text
+                    size='sm'
+                    c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-4))'
+                  >
+                    Accessions
                   </Text>
-                </ThemeIcon>
-              </Skeleton>
-              <Skeleton visible={loading} maw={50}>
-                <Text size='sm'>Accessions</Text>
-              </Skeleton>
-            </Group>
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <Group spacing='xs'>
-              <Skeleton width={34} height={34} circle visible={loading}>
-                <ThemeIcon variant='light' size='sm' p='md' radius='xl'>
-                  <Text color={theme.primaryColor[0]} weight='bold' size='xs'>
-                    {getAbbreviatedNumber(totalTrials || 0)}
+                </Skeleton>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <Group gap='xs'>
+                <Skeleton w={75} visible={loading} radius='xl'>
+                  <Badge w={75} size='lg' variant='light' color={totalTrials === 0 ? 'gray' : 'blue'}>
+                    {formatNumber(totalTrials || 0)}
+                  </Badge>
+                </Skeleton>
+                <Skeleton visible={loading} maw={50}>
+                  <Text
+                    size='sm'
+                    c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-4))'
+                  >
+                    Trials
                   </Text>
-                </ThemeIcon>
-              </Skeleton>
-              <Skeleton visible={loading} maw={50}>
-                <Text size='sm'>Trials</Text>
-              </Skeleton>
-            </Group>
-          </Grid.Col>
-        </Grid>
-      </Box>
-    </UnstyledButton>
+                </Skeleton>
+              </Group>
+            </Grid.Col>
+          </Grid>
+        </Box>
+      </UnstyledButton>
+    </Link>
   );
 }
 
@@ -135,12 +97,12 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
 const QUERY_SEEDBANK_SUMMARY_ALL = `
 query list {
   ${queries.DATA_RESOURCES.map((dataResource: string) =>
-    queries.QUERY_SEEDBANK_SUMMARY_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
-  ).join('')}
+  queries.QUERY_SEEDBANK_SUMMARY_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
+).join('')}
 }
 `;
 
-function Summaries({ ...props }: SimpleGridProps) {
+function Summaries({ ...props }: GridProps) {
   const { data } = useGQLQuery<{ data: { [key: string]: EventSearchResult } }>(
     QUERY_SEEDBANK_SUMMARY_ALL,
   );
@@ -148,7 +110,7 @@ function Summaries({ ...props }: SimpleGridProps) {
   return (
     <Grid gutter='xl' {...props}>
       {gqlQueries.PRED_DATA_RESOURCE.values?.map((dataResource) => (
-        <Grid.Col key={dataResource as string} xs={12} sm={6} md={4} lg={4}>
+        <Grid.Col key={dataResource as string} span={{ xs: 12, sm: 6, md: 4, lg: 4 }}>
           <SummaryCard
             accessions={data?.data[`${dataResource}Accessions`]}
             trials={data?.data[`${dataResource}Trials`]}

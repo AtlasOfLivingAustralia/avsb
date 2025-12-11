@@ -1,4 +1,3 @@
-import { useMantineTheme } from '@mantine/core';
 import { SVGProps } from 'react';
 
 interface WaveProps extends SVGProps<SVGSVGElement> {
@@ -30,13 +29,10 @@ const waves = {
 };
 
 export default function Wave({ waveType, waveColour, ...rest }: WaveProps) {
-  const theme = useMantineTheme();
   return (
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' {...rest}>
       <path
-        fill={
-          waveColour || (theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2])
-        }
+        fill={waveColour || 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))'}
         fillOpacity='1'
         d={waves[waveType || 'new']}
       />

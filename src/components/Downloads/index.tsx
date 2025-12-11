@@ -1,22 +1,46 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
-import {
-  Text,
-  Group,
-  ThemeIcon,
-  GroupProps,
-  ActionIcon,
-  Tooltip,
-  Popover,
-  Button,
-} from '@mantine/core';
-import { IconDownload, IconFileDownload } from '@tabler/icons';
+/** biome-ignore-all lint/suspicious/noExplicitAny: Lots of no-typing here */
 import { Event, EventSearchResult, Predicate } from '#/api/graphql/types';
+import {
+  ActionIcon,
+  Button,
+  Checkbox,
+  Group,
+  GroupProps,
+  Modal,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  ThemeIcon,
+  Tooltip,
+} from '@mantine/core';
+import { IconArrowUpRight, IconDownload, IconFileDownload } from '@tabler/icons-react';
 import { saveAs } from 'file-saver';
 import get from 'lodash/get';
+import { useState } from 'react';
 
 // Config
 import { performGQLQuery } from '#/api';
+import { useDisclosure } from '@mantine/hooks';
+import { MAX_DOWNLOAD_SIZE } from '#/helpers';
+import { Link } from 'react-router';
+import { formatNumber } from '#/helpers/stats';
+
+export const DOWNLOAD_CATEGORIES = [
+  "Biosecurity management/planning",
+  "Citizen science",
+  "Collection management",
+  "Conservation management/planning",
+  "Ecological research",
+  "Education",
+  "Environmental assessment",
+  "Other",
+  "Other scientific research",
+  "Restoration/remediation",
+  "Scientific research",
+  "Species modelling",
+  "Systematic research/taxonomy"
+];
 
 export type DownloadField = { label: string; key: string; formatter?: (field: any) => any };
 
@@ -31,29 +55,70 @@ interface DownloadsProps extends GroupProps {
 
 // Helper function to convert an event object to CSV string
 // given an array of fields
-const eventToCSV = (event: Event, fields: DownloadField[]) =>
-  fields
+const eventToCSV = (event: Event, fields: DownloadField[], emofFields: string[]) => {
+  const core = fields
     .map(({ key, formatter }) => {
       let value = get(event, key, '');
       if (typeof formatter === 'function') value = formatter(value);
       return value === null || value === undefined ? '' : value;
     })
-    .map((value) => (value.toString().includes(',') ? `"${value}"` : value))
-    .join(',');
+    .map((value) => (value.toString().includes(',') ? `"${value}"` : value));
+
+  const emofValues = emofFields.map((cur) => {
+    const mof = event.measurementOrFacts?.find(({ measurementType }) => measurementType === cur);
+
+    if (mof?.measurementValue) {
+      return (mof.measurementValue.toString().includes(',') ? `"${mof.measurementValue}"` : mof.measurementValue);
+    }
+
+    return '';
+  }, []);
+
+  return [...core, ...emofValues].join(',');
+}
 
 const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
-  const header = fields.map(({ label }) => label).join(',');
-  return [header, ...events.map((event) => eventToCSV(event, fields))].join('\n');
+  const emofTypes = new Set();
+
+  // Get all of the unique emofs
+  events.forEach((event) => {
+    (event.measurementOrFacts || []).forEach(emof => {
+      emofTypes.add(emof.measurementType);
+    })
+  });
+
+  const emofFields = Array.from(emofTypes).sort() as string[];
+  const header = [...fields, ...(emofFields.map((field) => ({ label: field })))]
+    .map(({ label }) => label).join(',');
+
+  return [header, ...events.map((event) => eventToCSV(event, fields, emofFields))].join('\n');
 };
 
 function Downloads({ query, total, predicates, fields, fileName, fetcher }: DownloadsProps) {
   // Download state
+  const [downloadReason, setDownloadReason] = useState<string | null>(localStorage.getItem('avsb-download-reason') || '');
+  const [downloadOrg, setDownloadOrg] = useState<string>(localStorage.getItem('avsb-download-org') || '');
+  const [downloadRemember, setDownloadRemeber] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
+  const [opened, { open, close }] = useDisclosure(false);
+  const isMaxRecords = total > MAX_DOWNLOAD_SIZE;
 
   const downloadRecords = async () => {
     if (!isDownloading) {
       try {
+        // Update localStorage with download reason & org
+        if (downloadRemember) {
+          if (downloadReason) localStorage.setItem('avsb-download-reason', downloadReason);
+          localStorage.setItem('avsb-download-org', downloadOrg);
+        }
+
         setIsDownloading(true);
+
+        // Push download reason to fathom
+        if (window.fathom) {
+          window.fathom.trackEvent(`Dataset download - ${downloadReason}${downloadOrg.length > 0 ? ` - ${downloadOrg}` : ''}`)
+        }
+
         const { data: response } = await performGQLQuery<{
           data: { eventSearch: EventSearchResult };
         }>(query, {
@@ -70,56 +135,85 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
           }),
           `${fileName}, ${new Date().toLocaleDateString()}.csv`,
         );
+
+        if (!downloadRemember) {
+          // Clear the state
+          setDownloadOrg('');
+          setDownloadReason(null);
+
+          // Clear localStorage
+          localStorage.removeItem('avsb-download-reason');
+          localStorage.removeItem('avsb-download-org');
+        }
       } catch (error) {
         console.log(error);
       }
 
       setIsDownloading(false);
+      close();
     }
   };
 
   return (
-    <Popover width={200} position='left' withArrow shadow='md'>
-      <Popover.Target>
-        <Tooltip
-          transitionProps={{ transition: 'pop' }}
-          offset={10}
-          withArrow
-          label='Download Records'
-          position='left'
+    <>
+      <Modal opened={opened} onClose={close} title={<Group gap='sm'>
+        <ThemeIcon variant='light' size='lg' radius='lg'>
+          <IconFileDownload size='1rem' />
+        </ThemeIcon>
+        <Text
+          style={{
+            fontFamily: 'var(--mantine-font-family-headings)',
+            fontWeight: 'bold',
+          }}
         >
-          <ActionIcon size={36} variant='outline' color='blue' aria-label='Download records'>
-            <IconDownload size='1rem' />
-          </ActionIcon>
-        </Tooltip>
-      </Popover.Target>
-      <Popover.Dropdown>
-        <Group spacing='sm'>
-          <ThemeIcon variant='light' size='lg' radius='lg'>
-            <IconFileDownload size='1rem' />
-          </ThemeIcon>
-          <Text
-            sx={(theme) => ({
-              fontFamily: theme.headings.fontFamily,
-              fontWeight: 'bold',
-            })}
-          >
-            {total} Records
-          </Text>
-        </Group>
-        <Group mt='md'>
-          <Button
-            onClick={downloadRecords}
-            size='xs'
-            variant='filled'
-            loading={isDownloading}
-            fullWidth
-          >
-            {isDownloading ? 'Downloading' : 'Download'}
-          </Button>
-        </Group>
-      </Popover.Dropdown>
-    </Popover>
+          {formatNumber(total)} Record{total > 1 ? 's' : ''}
+        </Text>
+      </Group>}>
+        <Stack>
+          {!isMaxRecords ? (
+            <>
+              <TextInput placeholder="Organisation name" value={downloadOrg} onChange={(ev) => setDownloadOrg(ev.currentTarget.value)} />
+              <Select value={downloadReason} onChange={setDownloadReason} placeholder="Select download reason" data={DOWNLOAD_CATEGORIES} />
+              <Checkbox checked={downloadRemember} onChange={(event) => setDownloadRemeber(event.currentTarget.checked)} c="dimmed" size="xs" label="Remember for next time" />
+              <Button
+                disabled={!downloadReason || downloadOrg.length < 1}
+                onClick={downloadRecords}
+                size='xs'
+                variant='filled'
+                loading={isDownloading}
+                fullWidth
+              >
+                {isDownloading ? 'Downloading' : 'Download'}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Text size='sm'>
+                To download more than {formatNumber(MAX_DOWNLOAD_SIZE)} records, please download all AVSB records from the <b>Seed Bank Snapshot</b> page
+              </Text>
+              <Button
+                component={Link}
+                to="/dashboard"
+                size='xs'
+                rightSection={<IconArrowUpRight size="1rem" />}>
+                Seed Bank Snapshot
+              </Button>
+            </>
+          )}
+        </Stack>
+      </Modal>
+      <Tooltip
+        transitionProps={{ transition: 'pop' }}
+        offset={10}
+        withArrow
+        label='Download Records'
+        position='left'
+      >
+        <ActionIcon size={36} variant='outline' color='blue' aria-label='Download records' onClick={open}>
+          <IconDownload size='1rem' />
+        </ActionIcon>
+      </Tooltip>
+    </>
   );
 }
 

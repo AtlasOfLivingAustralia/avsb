@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   Box,
   Image,
@@ -8,8 +7,9 @@ import {
   UnstyledButton,
   UnstyledButtonProps,
 } from '@mantine/core';
-import { IconExternalLink } from '@tabler/icons';
-import { useParams } from 'react-router-dom';
+import { IconExternalLink } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
 // AVH logo
 import avhLogo from '#/assets/avh-logo-white.png';
@@ -74,7 +74,7 @@ function HerbariumLink({ voucher, ...rest }: HerbariumLinkProps) {
     >
       <Paper display='flex' withBorder>
         <ThemeIcon variant='gradient' size={66} gradient={{ from: '#A6CE39', to: '#487759' }}>
-          <Image width={25} src={avhLogo} alt='Australian Virtual Herbarium logo' />
+          <Image w={25} src={avhLogo} alt='Australian Virtual Herbarium logo' />
         </ThemeIcon>
         <Box w='100%' p='xs' ml='xs'>
           <Box display='flex'>
@@ -83,7 +83,7 @@ function HerbariumLink({ voucher, ...rest }: HerbariumLinkProps) {
             </Text>
             <IconExternalLink style={{ width: 18, height: 18, minWidth: 18, minHeight: 18 }} />
           </Box>
-          <Text color='dimmed' size='xs' mt={4} lineClamp={1}>
+          <Text c='dimmed' size='xs' mt={4} lineClamp={1}>
             {(() => {
               if (loading) return 'Finding specimen';
               if (error) return 'An error occurred';

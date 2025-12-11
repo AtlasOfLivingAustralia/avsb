@@ -34,7 +34,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
       onChange({
         type: 'equals',
         key,
-        value: single?.getTime(),
+        value: (single as Date)?.getTime(),
       });
     }
     if (operation === 'gte') {
@@ -42,7 +42,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
         type: 'range',
         key,
         value: {
-          gte: single?.getTime(),
+          gte: (single as Date)?.getTime(),
         },
       });
     }
@@ -51,7 +51,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
         type: 'range',
         key,
         value: {
-          lte: single?.getTime(),
+          lte: (single as Date)?.getTime(),
         },
       });
     }
@@ -60,12 +60,11 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
         type: 'range',
         key,
         value: {
-          gte: single?.getTime(),
-          lte: range?.getTime(),
+          gte: (single as Date)?.getTime(),
+          lte: (range as Date)?.getTime(),
         },
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [single, range, operation]);
 
   useEffect(() => {
@@ -77,7 +76,7 @@ function DateFilter({ filter, resetKey, onChange }: FilterItemProps) {
   }, [key, resetKey, setSingle, setRange]);
 
   return (
-    <Stack spacing='sm'>
+    <Stack gap='sm'>
       <IconText icon={icon} title={label} />
       <Group>
         <Paper withBorder>

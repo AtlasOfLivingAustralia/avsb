@@ -144,6 +144,11 @@ interface Event {
     seedbank?: SeedBankExtension;
   };
   treatments?: Event[];
+  _taxon?: {
+    taxonName?: string | null;
+    suppliedName?: string | null;
+    taxonID?: string | null;
+  };
 }
 
 interface EventDocuments {
@@ -331,10 +336,12 @@ interface Predicate {
   type: PredicateType;
   key?: string;
   value?: PredicateValue;
-  values?: PredicateValue[];
+  values?: PredicateValue[] | null;
   predicate?: Predicate;
   predicates?: Predicate[];
 }
+
+type Variables = { [key: string]: unknown };
 
 export type {
   PredicateType,
@@ -351,4 +358,5 @@ export type {
   SeedBankExtension,
   Contact,
   MediaItem,
+  Variables,
 };

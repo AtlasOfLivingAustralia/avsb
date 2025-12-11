@@ -1,4 +1,4 @@
-import { DefaultMantineColor, Group, Text, ThemeIcon, useMantineTheme } from '@mantine/core';
+import { DefaultMantineColor, Group, Text, ThemeIcon } from '@mantine/core';
 import {
   IconAlertCircle,
   IconAlertOctagon,
@@ -7,9 +7,9 @@ import {
   IconQuestionMark,
   IconX,
   TablerIcon,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 
-const getConservationDetails = (
+export const getConservationDetails = (
   status: string,
 ): { color: DefaultMantineColor; icon: TablerIcon } => {
   switch (status.toLowerCase()) {
@@ -23,12 +23,27 @@ const getConservationDetails = (
         color: 'dark',
         icon: IconX,
       };
+    case 'ex':
+      return {
+        color: 'dark',
+        icon: IconX,
+      };
     case 'critically endangered':
       return {
         color: 'red',
         icon: IconAlertOctagon,
       };
+    case 'cr':
+      return {
+        color: 'red',
+        icon: IconAlertOctagon,
+      };
     case 'endangered':
+      return {
+        color: 'orange',
+        icon: IconAlertTriangle,
+      };
+    case 'en':
       return {
         color: 'orange',
         icon: IconAlertTriangle,
@@ -43,12 +58,27 @@ const getConservationDetails = (
         color: 'orange',
         icon: IconAlertTriangle,
       };
+    case 'listed':
+      return {
+        color: 'orange',
+        icon: IconAlertTriangle,
+      };
     case 'vulnerable':
       return {
         color: 'yellow',
         icon: IconAlertCircle,
       };
+    case 'vu':
+      return {
+        color: 'yellow',
+        icon: IconAlertCircle,
+      };
     case 'near threatened':
+      return {
+        color: 'yellow',
+        icon: IconFlag,
+      };
+    case 'nt':
       return {
         color: 'yellow',
         icon: IconFlag,
@@ -74,20 +104,22 @@ interface ConservationStatusProps {
 
 function ConservationStatus({ place, status, initials }: ConservationStatusProps) {
   const { color } = getConservationDetails(status);
-  const theme = useMantineTheme();
 
   return (
-    <Group spacing='md' position='center'>
+    <Group gap='md' justify='center'>
       <ThemeIcon
         opacity={initials ? 1 : 0.6}
         variant={initials ? 'light' : 'gradient'}
         radius='xl'
         size={initials ? 'xl' : 'md'}
         color={color}
-        gradient={{ from: theme.colors[color][9], to: theme.colors[color][6] }}
+        gradient={{
+          from: `var(--mantine-color-${color}-9)`,
+          to: `var(--mantine-color-${color}-6)`,
+        }}
       >
         {initials && (
-          <Text weight='bold' color={color} size='xs'>
+          <Text fw='bold' c={color} size='xs'>
             {initials === 'Q' ? 'QLD' : initials}
           </Text>
         )}

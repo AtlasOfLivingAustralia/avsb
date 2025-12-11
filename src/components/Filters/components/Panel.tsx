@@ -1,21 +1,21 @@
-import { Fragment, ReactElement, useEffect, useState } from 'react';
-import { Accordion, Divider, Stack, StackProps, createStyles } from '@mantine/core';
 import { Predicate } from '#/api/graphql/types';
 import { useMounted } from '#/helpers';
-
-import isEqual from 'lodash/isEqual';
+import { Accordion, Divider, Stack, StackProps } from '@mantine/core';
 import groupBy from 'lodash/groupBy';
+import isEqual from 'lodash/isEqual';
 import orderBy from 'lodash/orderBy';
-
-import PercentFilter from './filters/PercentFilter';
-import NumericGreaterLessFilter from './filters/NumericGreaterLessFilter';
+import { Fragment, ReactElement, useEffect, useState } from 'react';
+import { Filter, FilterItemProps } from '../types';
+import DateFilter from './filters/DateFilter';
 import NumericFilter from './filters/NumericFilter';
-import TextFilter from './filters/TextFilter';
+import NumericGreaterLessFilter from './filters/NumericGreaterLessFilter';
+import PercentFilter from './filters/PercentFilter';
 import SelectFilter from './filters/SelectFilter';
 import SelectSearchFilter from './filters/SelectSearchFilter';
-import DateFilter from './filters/DateFilter';
+import MultiSelectFilter from './filters/MultiSelectFilter';
+import TextFilter from './filters/TextFilter';
 
-import { Filter, FilterItemProps } from '../types';
+import classes from './Panel.module.css';
 
 const filterComponents: {
   [key: string]: ({ filter, resetKey, onChange }: FilterItemProps) => ReactElement;
@@ -26,6 +26,7 @@ const filterComponents: {
   percent: PercentFilter,
   select: SelectFilter,
   selectSearch: SelectSearchFilter,
+  multiSelect: MultiSelectFilter,
   date: DateFilter,
 };
 
@@ -33,12 +34,6 @@ function FilterItem({ filter, resetKey, onChange, icon }: FilterItemProps) {
   const Component = filterComponents[filter.type];
   return <Component {...{ filter, resetKey, onChange, icon }} />;
 }
-
-const useStyles = createStyles((theme) => ({
-  item: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
-  },
-}));
 
 interface FilterPanelProps extends StackProps {
   filters: Filter[];
@@ -57,14 +52,13 @@ function FilterPanel({
   ...rest
 }: FilterPanelProps) {
   const [lastPredicates, setLastPredicates] = useState<Predicate[]>([]);
-  const { classes } = useStyles();
   const mounted = useMounted();
 
   const handleChange = (newPred: Predicate) => {
     if (!onPredicates) return;
     let newPredicates;
 
-    if (newPred.value === null) {
+    if (newPred.value === null || newPred.values === null) {
       newPredicates = predicates.filter(({ key }) => newPred.key !== key);
     } else {
       const existing = predicates.find(({ key }) => newPred.key === key);
@@ -82,7 +76,6 @@ function FilterPanel({
   // Reset the selected predicates for UI consistency
   useEffect(() => {
     if (predicates.length !== 0 && mounted) onPredicates([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort]);
 
   if (sort === 'groups') {
@@ -102,7 +95,7 @@ function FilterPanel({
           <Accordion.Item key={group} value={group}>
             <Accordion.Control>{group}</Accordion.Control>
             <Accordion.Panel>
-              <Stack spacing='xl' mt='xs'>
+              <Stack gap='xl' mt='xs'>
                 {items.map((filter) => (
                   <FilterItem
                     key={filter.key}
@@ -122,7 +115,7 @@ function FilterPanel({
   const sorted = orderBy(filters, [(filter) => filter.label.toLowerCase()], ['asc']);
 
   return (
-    <Stack {...rest} spacing='lg'>
+    <Stack {...rest} gap='lg'>
       {sorted.map((filter, filterIndex) => (
         <Fragment key={filter.key}>
           <FilterItem resetKey={resetKey} filter={filter} onChange={handleChange} />

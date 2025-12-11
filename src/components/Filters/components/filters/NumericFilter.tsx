@@ -22,7 +22,6 @@ function NumericFilter({ filter, resetKey, onChange }: FilterItemProps) {
       key,
       value: debounded,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounded]);
 
   useEffect(() => {
@@ -30,13 +29,22 @@ function NumericFilter({ filter, resetKey, onChange }: FilterItemProps) {
   }, [key, resetKey, setValue]);
 
   return (
-    <Stack spacing='sm'>
+    <Stack gap='sm'>
       <IconText icon={icon} title={label} />
       <NumberInput
-        onChange={setValue}
+        onChange={(val) => {
+          if (val === '' || val === undefined || val === null) {
+            setValue('');
+          } else if (typeof val === 'number') {
+            setValue(val);
+          } else {
+            const num = Number(val);
+            setValue(isNaN(num) ? '' : num);
+          }
+        }}
         style={{ flexGrow: 1 }}
         placeholder={placeholder}
-        precision={2}
+        decimalScale={2}
       />
     </Stack>
   );

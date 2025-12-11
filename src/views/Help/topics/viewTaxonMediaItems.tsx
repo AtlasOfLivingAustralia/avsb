@@ -1,5 +1,5 @@
 import { Code } from '@mantine/core';
-import { IconClick } from '@tabler/icons';
+import { IconClick } from '@tabler/icons-react';
 
 import imageMedia from '#/assets/help/taxon-media-min.png';
 import imageMediaSelect from '#/assets/help/taxon-media-select-min.png';
