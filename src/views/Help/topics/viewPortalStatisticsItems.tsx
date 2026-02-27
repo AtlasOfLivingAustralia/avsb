@@ -1,13 +1,13 @@
 import { IconClick, IconEye, IconFilter, IconMouse, IconSearch } from '@tabler/icons-react';
 
 import imageHomeStatsHover from '#/assets/help/home-stats-hover-min.png';
-import imageStats from '#/assets/help/stats-min.png';
 import imageStatsEpbc from '#/assets/help/stats-epbc-min.png';
-import imageStatsState from '#/assets/help/stats-state-min.png';
 import imageStatsExplorer from '#/assets/help/stats-explorer.png';
 import imageStatsExplorerFilter from '#/assets/help/stats-explorer-filter.png';
+import imageStats from '#/assets/help/stats-min.png';
+import imageStatsState from '#/assets/help/stats-state-min.png';
 
-import { HelpTopicItem } from '..';
+import { type HelpTopicItem } from '..';
 
 const items: HelpTopicItem[] = [
   {
@@ -27,8 +27,12 @@ const items: HelpTopicItem[] = [
   },
   {
     icon: IconMouse,
-    content:
-      <>When scrolling down, you can also see statistics relating to species listed under the <b>EPBC Act</b></>,
+    content: (
+      <>
+        When scrolling down, you can also see statistics relating to species listed under the{' '}
+        <b>EPBC Act</b>
+      </>
+    ),
     image: imageStatsEpbc,
   },
   {

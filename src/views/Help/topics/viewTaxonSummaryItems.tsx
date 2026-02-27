@@ -1,10 +1,8 @@
 import { IconEye } from '@tabler/icons-react';
 
 import imageTaxonSummary from '#/assets/help/taxon-summary-min.png';
-
+import { type HelpTopicItem } from '..';
 import gotoTaxonItems from './gotoTaxonItems';
-
-import { HelpTopicItem } from '..';
 
 const items: HelpTopicItem[] = [
   ...gotoTaxonItems,

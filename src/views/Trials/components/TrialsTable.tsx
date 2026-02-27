@@ -1,4 +1,3 @@
-import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import {
   Box,
   Button,
@@ -16,13 +15,14 @@ import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import type { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 
 // Project components / helpers
 import { ThField, TrialDetails } from '#/components';
+import { ConservationIcons } from '#/components/ConservationIcons';
 import { getIsDefined } from '#/helpers';
 import AccessionPopover from './AccessionPopover';
 import classes from './TrialsTable.module.css';
-import { ConservationIcons } from '#/components/ConservationIcons';
 
 interface TrialsTableProps {
   events: Event[];
@@ -181,7 +181,7 @@ function TrialsTable({ events }: TrialsTableProps) {
                       {trial?.accessionNumber || 'N/A'}
                     </Table.Td>
                     <Table.Td>
-                      <Flex gap="xs" align="center">
+                      <Flex gap='xs' align='center'>
                         <ConservationIcons event={event} />
                         <Text size='sm'>{event?._taxon?.taxonName || 'N/A'}</Text>
                       </Flex>

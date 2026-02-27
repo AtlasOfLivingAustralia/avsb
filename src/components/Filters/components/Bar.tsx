@@ -1,20 +1,17 @@
-import { Predicate } from '#/api/graphql/types';
 import {
   ActionIcon,
-  Badge,
   Button,
-  Chip,
   Divider,
   Group,
-  GroupProps,
+  type GroupProps,
   Paper,
-  rem,
   Text,
 } from '@mantine/core';
 import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons-react';
-import { MouseEventHandler } from 'react';
+import { type MouseEventHandler } from 'react';
+import { type Predicate } from '#/api/graphql/types';
 
-import { Filter } from '../types';
+import { type Filter } from '../types';
 
 function getPredicateValue(predicate: Predicate) {
   const { key, value, values } = predicate;

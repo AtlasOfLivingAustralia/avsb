@@ -1,25 +1,23 @@
 import { Button, Checkbox, Flex, Group, Paper } from '@mantine/core';
-import { IconLayersIntersect2, IconMaximize, IconMinimize, IconSearch } from '@tabler/icons-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router';
-
-// Mapbox
-import mapboxgl, { LngLatLike } from 'mapbox-gl';
 import Draw from '@mapbox/mapbox-gl-draw';
-import wellknown, { GeoJSONPolygon } from 'wellknown';
+import { IconLayersIntersect2, IconMaximize, IconMinimize, IconSearch } from '@tabler/icons-react';
+// Mapbox
+import mapboxgl, { type LngLatLike } from 'mapbox-gl';
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router';
+import wellknown, { type GeoJSONPolygon } from 'wellknown';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
-
+import { useComputedColorScheme } from '@mantine/core';
+import { useFullscreen } from '@mantine/hooks';
 // Project-imports
-import { EventSearchResult, performGQLQuery, Predicate, useGQLQuery } from '#/api';
+import { type EventSearchResult, type Predicate, performGQLQuery, useGQLQuery } from '#/api';
 import queries from '#/api/queries';
 import { getMapLayer, getWktFromGeohash } from '#/helpers';
-import { useComputedColorScheme } from '@mantine/core';
 import ItemList from './components/ItemList';
-import { drawStyles } from './drawStyles';
-import { useFullscreen } from '@mantine/hooks';
 import { SelectionRecords } from './components/SelectionRecords';
+import { drawStyles } from './drawStyles';
 
 // Initialize MapBox
 mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_TOKEN;
@@ -49,7 +47,7 @@ interface MapProps {
 const TRANSPARENT_LIGHT = 'mapbox://styles/jackbrinkman/cmi7z3aob000h01si4rd8cuv8';
 const TRANSPARENT_DARK = 'mapbox://styles/jackbrinkman/cmi6r8ly500bf01st7az16yo2';
 const MAP_CENTER: LngLatLike = [135, -30];
-const RECORDS_PREDICATE: Predicate = { type: 'isNotNull', key: 'decimalLongitude' }
+const RECORDS_PREDICATE: Predicate = { type: 'isNotNull', key: 'decimalLongitude' };
 
 function MapComponent({
   predicate,
@@ -65,7 +63,7 @@ function MapComponent({
   zoomOnLoad,
   itemsTopOffset,
   itemsLeftOffset,
-  onLoad
+  onLoad,
 }: MapProps) {
   // Map refs
   const mapContainer = useRef<HTMLDivElement | null>(null);
@@ -76,15 +74,17 @@ function MapComponent({
       closeOnClick: false,
     }),
   );
-  const drawControl = useRef<Draw>(    // Create the Draw control
+  const drawControl = useRef<Draw>(
+    // Create the Draw control
     new Draw({
       displayControlsDefault: false,
       controls: {
         polygon: true,
-        trash: true
+        trash: true,
       },
-      styles: drawStyles
-    }));
+      styles: drawStyles,
+    }),
+  );
 
   // Fullscreen & params hook
   const { fullscreen, ref: fullscreenRef, toggle: fullscreenToggle } = useFullscreen();
@@ -99,11 +99,7 @@ function MapComponent({
   const inverseRef = useRef<HTMLInputElement>(null);
   const { data: selectedEvents, update: updateSelectedEvents } = useGQLQuery<{
     data: { eventSearch: EventSearchResult };
-  }>(
-    queries.QUERY_EVENT_MAP_POINT,
-    {},
-    { lazy: true },
-  );
+  }>(queries.QUERY_EVENT_MAP_POINT, {}, { lazy: true });
 
   // Theme variables
   const colorScheme = useComputedColorScheme('dark');
@@ -111,44 +107,50 @@ function MapComponent({
   const isDark = colorScheme === 'dark';
 
   // Generate the style URL
-  const styleUrl = transparent ?
-    (!isDark ? TRANSPARENT_LIGHT : TRANSPARENT_DARK) :
-    `mapbox://styles/mapbox/${isDark ? 'light' : 'dark'}-v11`;
+  let styleUrl;
+
+  if (transparent) {
+    styleUrl = !isDark ? TRANSPARENT_LIGHT : TRANSPARENT_DARK;
+  } else {
+    styleUrl = `mapbox://styles/mapbox/${isDark ? 'light' : 'dark'}-v11`;
+  }
 
   // Helper function for onPolygons callback
   const handlePolygons = () => {
-    const predicates = drawControl
-      .current.getAll()
-      .features
-      .filter(({ geometry }) => geometry.type === 'Polygon')
+    const predicates = drawControl.current
+      .getAll()
+      .features.filter(({ geometry }) => geometry.type === 'Polygon')
       .map((feature) => wellknown.stringify(feature.geometry as GeoJSONPolygon))
       .map((value) => ({
         type: 'within',
         key: 'scoordinates',
-        value
+        value,
       })) as Predicate[];
 
     if (predicates.length > 0) {
-      setDrawPredicate(inverseRef.current?.checked ? { type: 'not', predicate: { type: 'or', predicates } } : { type: 'or', predicates });
+      setDrawPredicate(
+        inverseRef.current?.checked
+          ? { type: 'not', predicate: { type: 'or', predicates } }
+          : { type: 'or', predicates },
+      );
     } else {
       setDrawPredicate(null);
     }
-  }
+  };
 
   // Helper function to add the events layer to the map
   const addLayer = () => {
     if (map.current) {
-      const tile = `${import.meta.env.VITE_API_ALA
-        }/event/tile/event/mvt/{z}/{x}/{y}?queryId=${token}`;
+      const tile = `${
+        import.meta.env.VITE_API_ALA
+      }/event/tile/event/mvt/{z}/{x}/{y}?queryId=${token}`;
 
       const config = getMapLayer(tile);
       map.current.addSource('events', config.source);
 
       // Find the first Mapbox Draw layer in the style
       const style = map.current.getStyle();
-      const firstDrawLayer = style.layers?.find((layer) =>
-        layer.id.startsWith('gl-draw-'),
-      );
+      const firstDrawLayer = style.layers?.find((layer) => layer.id.startsWith('gl-draw-'));
 
       if (firstDrawLayer) {
         // Insert events *before* the first Draw layer,
@@ -183,7 +185,7 @@ function MapComponent({
               `<span style="color: black;"><b>Lng:</b> ${e.lngLat.lng.toFixed(
                 2,
               )}<br/><b>Lat:</b> ${e.lngLat.lat.toFixed(2)}</span>`,
-            )
+            );
         }
       });
       map.current.on('mouseleave', 'events', () => {
@@ -215,11 +217,13 @@ function MapComponent({
     const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
       queries.QUERY_EVENT_MAP,
       {
-        predicate: drawPredicate ? {
-          type: 'and',
-          predicates: [predicate, drawPredicate]
-        } : predicate
-      }
+        predicate: drawPredicate
+          ? {
+              type: 'and',
+              predicates: [predicate, drawPredicate],
+            }
+          : predicate,
+      },
     );
 
     if (data.eventSearch._tileServerToken) {
@@ -257,21 +261,21 @@ function MapComponent({
             },
             ...(params.guid
               ? [
-                {
-                  type: 'equals',
-                  key: 'taxonKey',
-                  value: params.guid,
-                },
-              ]
+                  {
+                    type: 'equals',
+                    key: 'taxonKey',
+                    value: params.guid,
+                  },
+                ]
               : []),
             ...(params.resource
               ? [
-                {
-                  type: 'equals',
-                  key: 'datasetKey',
-                  value: params.resource,
-                },
-              ]
+                  {
+                    type: 'equals',
+                    key: 'datasetKey',
+                    value: params.resource,
+                  },
+                ]
               : []),
           ],
         },
@@ -315,10 +319,10 @@ function MapComponent({
         map.current?.flyTo({
           center: MAP_CENTER,
           zoom: zoomOnLoad,
-          speed: 0.2
+          speed: 0.2,
         });
       }
-    })
+    });
   }, []);
 
   return (
@@ -326,7 +330,11 @@ function MapComponent({
       <SelectionRecords
         opened={recordsOpened}
         onClose={() => setRecordsOpened(false)}
-        predicates={drawPredicate ? [predicate, drawPredicate, RECORDS_PREDICATE] : [predicate, RECORDS_PREDICATE]}
+        predicates={
+          drawPredicate
+            ? [predicate, drawPredicate, RECORDS_PREDICATE]
+            : [predicate, RECORDS_PREDICATE]
+        }
       />
       <div
         ref={fullscreenRef}
@@ -353,8 +361,8 @@ function MapComponent({
           left='var(--mantine-spacing-md)'
           right='var(--mantine-spacing-md)'
           justify='center'
-          style={{ zIndex: 20 }}>
-
+          style={{ zIndex: 20 }}
+        >
           <Paper
             style={{
               transition: 'all ease 200ms',
@@ -366,11 +374,11 @@ function MapComponent({
             withBorder
           >
             <Flex align='center' justify='center' h={29} gap='sm'>
-              <IconLayersIntersect2 size="1rem" style={{ minWidth: '1rem', minHeight: '1rem' }} />
+              <IconLayersIntersect2 size='1rem' style={{ minWidth: '1rem', minHeight: '1rem' }} />
               <Checkbox
                 ref={inverseRef}
                 onChange={handlePolygons}
-                label="Inverse"
+                label='Inverse'
                 labelPosition='left'
                 size='xs'
                 fw={600}
@@ -379,30 +387,36 @@ function MapComponent({
             </Flex>
           </Paper>
           <Button
-            leftSection={<IconSearch size="1rem" />}
+            leftSection={<IconSearch size='1rem' />}
             color='gray'
             radius='lg'
             size='xs'
             onClick={() => {
               if (fullscreen) fullscreenToggle();
-              setRecordsOpened(true)
+              setRecordsOpened(true);
             }}
-            aria-label='View map records'>
+            aria-label='View map records'
+          >
             View records
           </Button>
           <Button
-            leftSection={fullscreen ? <IconMinimize size="1rem" /> : <IconMaximize size="1rem" />}
+            leftSection={fullscreen ? <IconMinimize size='1rem' /> : <IconMaximize size='1rem' />}
             color='gray'
             radius='lg'
             size='xs'
             onClick={fullscreenToggle}
-            aria-label='View full screen map'>
+            aria-label='View full screen map'
+          >
             {fullscreen ? 'Exit' : 'Enter'} fullscreen
           </Button>
         </Group>
         <div
           ref={mapContainer}
-          style={{ width: fullscreen ? '100%' : width, height: fullscreen ? '100%' : height, borderRadius: radius || 'var(--mantine-radius-lg)' }}
+          style={{
+            width: fullscreen ? '100%' : width,
+            height: fullscreen ? '100%' : height,
+            borderRadius: radius || 'var(--mantine-radius-lg)',
+          }}
         />
       </div>
     </>

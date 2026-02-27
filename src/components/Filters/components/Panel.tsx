@@ -1,18 +1,18 @@
-import { Predicate } from '#/api/graphql/types';
-import { useMounted } from '#/helpers';
-import { Accordion, Divider, Stack, StackProps } from '@mantine/core';
+import { Accordion, Divider, Stack, type StackProps } from '@mantine/core';
 import groupBy from 'lodash/groupBy';
 import isEqual from 'lodash/isEqual';
 import orderBy from 'lodash/orderBy';
-import { Fragment, ReactElement, useEffect, useState } from 'react';
-import { Filter, FilterItemProps } from '../types';
+import { Fragment, type ReactElement, useEffect, useState } from 'react';
+import { type Predicate } from '#/api/graphql/types';
+import { useMounted } from '#/helpers';
+import type { Filter, FilterItemProps } from '../types';
 import DateFilter from './filters/DateFilter';
+import MultiSelectFilter from './filters/MultiSelectFilter';
 import NumericFilter from './filters/NumericFilter';
 import NumericGreaterLessFilter from './filters/NumericGreaterLessFilter';
 import PercentFilter from './filters/PercentFilter';
 import SelectFilter from './filters/SelectFilter';
 import SelectSearchFilter from './filters/SelectSearchFilter';
-import MultiSelectFilter from './filters/MultiSelectFilter';
 import TextFilter from './filters/TextFilter';
 
 import classes from './Panel.module.css';

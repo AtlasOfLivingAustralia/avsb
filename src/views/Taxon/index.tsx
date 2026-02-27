@@ -27,13 +27,12 @@ import {
   IconPhoto,
   IconTestPipe,
 } from '@tabler/icons-react';
-import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router';
-import { Taxon } from '#/api/sources/taxon';
-import PageSummary from './components/PageSummary';
 import { useState } from 'react';
-
-import classes from './index.module.css';
+import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router';
+import { type Taxon } from '#/api/sources/taxon';
 import { breakpoints } from '#/theme';
+import PageSummary from './components/PageSummary';
+import classes from './index.module.css';
 
 const MAX_WIDTH = 1450;
 const tabs = [
@@ -162,7 +161,7 @@ export function Component() {
       <Tabs variant='none' value={currentPage}>
         <Container size={MAX_WIDTH} pb='sm'>
           <Flex justify={'space-between'}>
-            <Group gap="xs">
+            <Group gap='xs'>
               <Tabs.List ref={setRootRef} className={classes.list}>
                 {tabs.map(({ tabKey, icon: Icon }) => (
                   <Tabs.Tab
@@ -186,11 +185,12 @@ export function Component() {
               <Tooltip position='right' label='View genomes on NCBI' withArrow>
                 <Button
                   color='light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1))'
-                  rightSection={<IconExternalLink size="1rem" />}
+                  rightSection={<IconExternalLink size='1rem' />}
                   component='a'
                   href={`https://www.ncbi.nlm.nih.gov/nuccore/?term=${encodeURIComponent(data.taxonConcept.nameString)}`}
                   target='blank'
-                  variant='transparent'>
+                  variant='transparent'
+                >
                   Sequences
                 </Button>
               </Tooltip>

@@ -1,4 +1,3 @@
-import { Event, SeedBankAccession } from '#/api/graphql/types';
 import {
   Box,
   Button,
@@ -21,13 +20,13 @@ import {
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
-
+import type { Event, SeedBankAccession } from '#/api/graphql/types';
+import { AccessionDetails, ThField } from '#/components';
 // Project components / helpers
 import { ConservationIcons } from '#/components/ConservationIcons';
-import { AccessionDetails, ThField } from '#/components';
 import { getIsDefined } from '#/helpers';
-import classes from './AccessionTable.module.css';
 import { formatNumber } from '#/helpers/stats';
+import classes from './AccessionTable.module.css';
 
 interface AccessionTableProps {
   events: Event[];
@@ -159,7 +158,7 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
                       {accession?.accessionNumber || 'N/A'}
                     </Table.Td>
                     <Table.Td>
-                      <Flex gap="xs" align="center">
+                      <Flex gap='xs' align='center'>
                         <ConservationIcons event={event} />
                         <Text size='sm'>{event._taxon?.taxonName || 'N/A'}</Text>
                       </Flex>
@@ -203,7 +202,11 @@ function AccessionTable({ events, scrollOffset }: AccessionTableProps) {
                           rightSection={<IconArrowUpRight size='1rem' />}
                           component={Link}
                           disabled={!event.eventID || !event._taxon?.taxonID}
-                          to={event.eventID ? `/taxon/${encodeURIComponent(event._taxon?.taxonID || '')}/accessions/${event.eventID}` : '/'}
+                          to={
+                            event.eventID
+                              ? `/taxon/${encodeURIComponent(event._taxon?.taxonID || '')}/accessions/${event.eventID}`
+                              : '/'
+                          }
                           variant='subtle'
                           size='xs'
                           px='xs'

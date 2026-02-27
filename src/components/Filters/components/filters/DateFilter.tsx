@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Stack, Group, Paper, SegmentedControl } from '@mantine/core';
-import { DateInput, DateValue } from '@mantine/dates';
+import { Group, Paper, SegmentedControl, Stack } from '@mantine/core';
+import { DateInput, type DateValue } from '@mantine/dates';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import useMounted from '#/helpers/useMounted';
-
+import { useEffect, useState } from 'react';
 import IconText from '#/components/IconText';
-import { FilterItemProps } from '../../types';
+import useMounted from '#/helpers/useMounted';
+import { type FilterItemProps } from '../../types';
 
 dayjs.extend(customParseFormat);
 

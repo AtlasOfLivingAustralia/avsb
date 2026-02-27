@@ -1,25 +1,28 @@
-import { Center, Divider, Flex, Group, Loader, Modal, Pagination, Select, Stack, Text, ThemeIcon, Tooltip } from '@mantine/core';
-import { useEffect, useState } from 'react';
-
-// Project components / helpers
 import {
-  EventDocuments,
-  EventSearchResult,
-  gqlQueries,
-  performGQLQuery,
-  Predicate,
-} from '#/api';
+  Center,
+  Divider,
+  Flex,
+  Group,
+  Loader,
+  Modal,
+  Pagination,
+  Select,
+  Text,
+  ThemeIcon,
+  Tooltip,
+} from '@mantine/core';
+import { IconMap } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
+// Project components / helpers
+import { type EventDocuments, type EventSearchResult, gqlQueries, type Predicate, performGQLQuery } from '#/api';
 import { Downloads, Filters } from '#/components';
 import { useMounted } from '#/helpers';
-
+import { formatNumber } from '#/helpers/stats';
 // Accession components
 import AccessionTable from '#/views/Accessions/components/AccessionTable';
 import downloadFields from '#/views/Accessions/downloadFields';
-
 // Config
 import filters from '#/views/Accessions/filters';
-import { IconMap } from '@tabler/icons-react';
-import { formatNumber } from '#/helpers/stats';
 
 interface SelectionRecordsProps {
   predicates: Predicate[];
@@ -30,7 +33,11 @@ interface SelectionRecordsProps {
 const HEADER_HEIGHT = 66;
 const HEIGHT = `calc(100vh - (var(--modal-y-offset) * 2) - ${HEADER_HEIGHT}px - (var(--mantine-spacing-md))`;
 
-export function SelectionRecords({ opened, onClose, predicates: rawPredicates }: SelectionRecordsProps) {
+export function SelectionRecords({
+  opened,
+  onClose,
+  predicates: rawPredicates,
+}: SelectionRecordsProps) {
   // State hooks
   const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
   const [page, setPage] = useState<number>(1);
@@ -47,12 +54,12 @@ export function SelectionRecords({ opened, onClose, predicates: rawPredicates }:
     {
       type: 'equals',
       key: 'eventType',
-      value: 'Accession'
+      value: 'Accession',
     },
     {
       type: 'isNotNull',
-      key: 'taxonKey'
-    }
+      key: 'taxonKey',
+    },
   ];
 
   useEffect(() => {
@@ -75,7 +82,7 @@ export function SelectionRecords({ opened, onClose, predicates: rawPredicates }:
       try {
         runQuery();
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
   }, [opened, page, pageSize, filterPredicates]);
@@ -85,7 +92,7 @@ export function SelectionRecords({ opened, onClose, predicates: rawPredicates }:
 
   return (
     <Modal
-      size="100%"
+      size='100%'
       opened={opened}
       onClose={() => {
         setTimeout(() => {
@@ -96,20 +103,22 @@ export function SelectionRecords({ opened, onClose, predicates: rawPredicates }:
         }, 100);
         onClose();
       }}
-      title={<Group gap='sm'>
-        <ThemeIcon variant='light' size='lg' radius='lg'>
-          <IconMap size='1rem' />
-        </ThemeIcon>
-        <Text
-          style={{
-            fontFamily: 'var(--mantine-font-family-headings)',
-            fontWeight: 'bold',
-          }}
-        >
-          Map Accession Records
-        </Text>
-      </Group>
-      }>
+      title={
+        <Group gap='sm'>
+          <ThemeIcon variant='light' size='lg' radius='lg'>
+            <IconMap size='1rem' />
+          </ThemeIcon>
+          <Text
+            style={{
+              fontFamily: 'var(--mantine-font-family-headings)',
+              fontWeight: 'bold',
+            }}
+          >
+            Map Accession Records
+          </Text>
+        </Group>
+      }
+    >
       {query ? (
         <Flex direction='column' pt='md' justify='space-between' h={HEIGHT}>
           <Group justify='space-between' mb='lg'>
@@ -147,8 +156,8 @@ export function SelectionRecords({ opened, onClose, predicates: rawPredicates }:
             <Group>
               <Text c='dimmed' ta='center' size='sm'>
                 {(page - 1) * pageSize + 1}-
-                {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {formatNumber(query.total || 0)} total
-                records
+                {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of{' '}
+                {formatNumber(query.total || 0)} total records
               </Text>
               <Divider orientation='vertical' />
               <Downloads

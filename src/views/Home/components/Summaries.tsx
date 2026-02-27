@@ -1,20 +1,11 @@
-import { gqlQueries, useGQLQuery } from '#/api';
-import { EventSearchResult } from '#/api/graphql/types';
-import queries from '#/api/queries';
-import {
-  Badge,
-  Box,
-  Grid,
-  GridProps,
-  Group,
-  Skeleton,
-  Text,
-  UnstyledButton,
-} from '@mantine/core';
+import { Badge, Box, Grid, type GridProps, Group, Skeleton, Text, UnstyledButton } from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons-react';
 import { Link } from 'react-router';
-import classes from './Summaries.module.css';
+import { gqlQueries, useGQLQuery } from '#/api';
+import { type EventSearchResult } from '#/api/graphql/types';
+import queries from '#/api/queries';
 import { formatNumber } from '#/helpers/stats';
+import classes from './Summaries.module.css';
 
 interface SummaryCardProps {
   accessions?: EventSearchResult;
@@ -72,7 +63,12 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
             <Grid.Col span={6}>
               <Group gap='xs'>
                 <Skeleton w={75} visible={loading} radius='xl'>
-                  <Badge w={75} size='lg' variant='light' color={totalTrials === 0 ? 'gray' : 'blue'}>
+                  <Badge
+                    w={75}
+                    size='lg'
+                    variant='light'
+                    color={totalTrials === 0 ? 'gray' : 'blue'}
+                  >
                     {formatNumber(totalTrials || 0)}
                   </Badge>
                 </Skeleton>

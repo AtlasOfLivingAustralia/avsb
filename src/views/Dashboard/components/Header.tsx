@@ -1,4 +1,3 @@
-import logo from '#/assets/avsb-logo-square.png';
 import {
   ActionIcon,
   Box,
@@ -19,8 +18,9 @@ import {
   IconQuestionMark,
   IconSun,
 } from '@tabler/icons-react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
+import logo from '#/assets/avsb-logo-square.png';
 
 // Project components & helpers
 import { TaxonSearchInput } from '#/components';
@@ -144,7 +144,6 @@ function Header() {
               label='Help / FAQ'
               position='right'
               aria-label='Help / FAQ'
-
             >
               <ActionIcon
                 color='gray'
@@ -163,7 +162,6 @@ function Header() {
               withArrow
               label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} theme`}
               position='right'
-
             >
               <ActionIcon
                 color='gray'

@@ -3,7 +3,7 @@ import { IconMapPin } from '@tabler/icons-react';
 import { useLoaderData } from 'react-router';
 
 // Project imports
-import { Event, SeedBankAccession } from '#/api';
+import type { Event, SeedBankAccession } from '#/api';
 import { accessionFields, getIsDefined } from '#/helpers';
 import FieldTooltip from '../FieldTooltip';
 import IconText from '../IconText';

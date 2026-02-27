@@ -1,4 +1,3 @@
-import { CSSProperties, useEffect, useState } from 'react';
 import {
   ActionIcon,
   Badge,
@@ -11,15 +10,15 @@ import {
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
-import { List, RowComponentProps } from 'react-window';
-import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons-react';
 import { useDebouncedValue } from '@mantine/hooks';
-import { useNavigate, useParams } from 'react-router';
+import { IconArrowUpRight, IconDownload, IconSearch } from '@tabler/icons-react';
 import { saveAs } from 'file-saver';
-
+import { orderBy } from 'lodash';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import { List, type RowComponentProps } from 'react-window';
 // Project helpers
 import { taxonAPI } from '#/api';
-import { orderBy } from 'lodash';
 
 import classes from './SpeciesList.module.css';
 

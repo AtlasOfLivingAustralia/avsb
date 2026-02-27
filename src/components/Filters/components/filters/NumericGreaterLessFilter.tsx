@@ -1,11 +1,11 @@
 /** biome-ignore-all lint/style/noNestedTernary: Tehe */
-import { useEffect, useState } from 'react';
-import { Stack, Group, Paper, SegmentedControl, NumberInput } from '@mantine/core';
-import { useDebouncedValue } from '@mantine/hooks';
-import useMounted from '#/helpers/useMounted';
 
+import { Group, NumberInput, Paper, SegmentedControl, Stack } from '@mantine/core';
+import { useDebouncedValue } from '@mantine/hooks';
+import { useEffect, useState } from 'react';
 import IconText from '#/components/IconText';
-import { FilterItemProps } from '../../types';
+import useMounted from '#/helpers/useMounted';
+import { type FilterItemProps } from '../../types';
 
 function NumericGreaterLessFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<number | ''>();

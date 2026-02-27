@@ -1,4 +1,4 @@
-import { Variables } from './graphql/types';
+import type { Variables } from './graphql/types';
 
 const CACHE_PREFIX = 'avsb:';
 const MAX_CACHE_SIZE_BYTES = 100 * 1024; // 100kb

@@ -5,7 +5,7 @@ import {
   Text,
   ThemeIcon,
   UnstyledButton,
-  UnstyledButtonProps,
+  type UnstyledButtonProps,
 } from '@mantine/core';
 import { IconExternalLink } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';

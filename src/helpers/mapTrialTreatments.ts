@@ -1,4 +1,4 @@
-import { Event } from '#/api/graphql/types';
+import type { Event } from '#/api/graphql/types';
 
 function mapTrialTreatments(trials: Event[], treatments: Event[]): Event[] {
   return trials.map((trial: Event) => ({

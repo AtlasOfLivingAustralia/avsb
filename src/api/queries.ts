@@ -1,5 +1,5 @@
 import { MAX_DOWNLOAD_SIZE } from '#/helpers';
-import { Predicate } from './graphql/types';
+import { type Predicate } from './graphql/types';
 
 const QUERY_EVENT_ACCESSIONS = `
 query list($predicate: Predicate, $size: Int, $from: Int){

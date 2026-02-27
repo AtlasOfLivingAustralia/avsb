@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Group, Paper, Text, ThemeIcon } from '@mantine/core';
 import { IconFileDescription, IconNotes } from '@tabler/icons-react';
 
-import { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
+import type { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
 import { getIsDefined, trialFields } from '#/helpers';
 import FieldTooltip from '../FieldTooltip';
 import IconText from '../IconText';

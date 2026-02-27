@@ -1,4 +1,3 @@
-import queries from '#/api/queries';
 import {
   Alert,
   Anchor,
@@ -33,22 +32,20 @@ import {
   IconTestPipe,
 } from '@tabler/icons-react';
 import { Fragment } from 'react';
-
+import queries from '#/api/queries';
+// Static image assets
+import ecologyEarth from '#/assets/ecology-earth.png';
+import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
+// Components
+import { Blob } from '#/components';
+import { StaticDownloads } from '#/components/Downloads/Static';
+import { Wave } from '#/components/Wave';
 // Helpers
 import { scrollTo } from '#/helpers/scrollTo';
 import { formatNumber, stats } from '#/helpers/stats';
 import { breakpoints } from '#/theme/constants';
-
-// Static image assets
-import ecologyEarth from '#/assets/ecology-earth.png';
-import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
-
-// Components
-import { Blob } from '#/components';
-import { Wave } from '#/components/Wave';
-import StatCard from './components/StatCard';
 import DataExplorer from './components/DataExplorer';
-import { StaticDownloads } from '#/components/Downloads/Static';
+import StatCard from './components/StatCard';
 
 const STATE_CONSERVATION = Object.entries(stats.stateConservation);
 
@@ -95,17 +92,40 @@ export function Component() {
             <Text size='sm' c='dimmed'>
               The following statistics are current as at
             </Text>
-            <Text ff='var(--mantine-font-family-headings)' c='dimmed' fz="h2" fw='bold'>
+            <Text ff='var(--mantine-font-family-headings)' c='dimmed' fz='h2' fw='bold'>
               December, 2025
             </Text>
             <Paper p='xs' mt='lg' radius='xl'>
               <Stack>
-                <Flex direction={mdOrLarger ? 'row' : 'column'} justify='center' gap={mdOrLarger ? 'xs' : 4}>
-                  <Button onClick={() => scrollTo('records')} variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Records</Button>
+                <Flex
+                  direction={mdOrLarger ? 'row' : 'column'}
+                  justify='center'
+                  gap={mdOrLarger ? 'xs' : 4}
+                >
+                  <Button
+                    onClick={() => scrollTo('records')}
+                    variant='subtle'
+                    leftSection={<IconArrowDown size='1rem' />}
+                  >
+                    Records
+                  </Button>
                   <Divider orientation={mdOrLarger ? 'vertical' : 'horizontal'} />
-                  <Button onClick={() => scrollTo('threatened')} variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Threatened species</Button>
+                  <Button
+                    onClick={() => scrollTo('threatened')}
+                    variant='subtle'
+                    leftSection={<IconArrowDown size='1rem' />}
+                  >
+                    Threatened species
+                  </Button>
                   <Divider orientation={mdOrLarger ? 'vertical' : 'horizontal'} />
-                  <Button onClick={() => scrollTo('explore')} component='a' variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Data explorer</Button>
+                  <Button
+                    onClick={() => scrollTo('explore')}
+                    component='a'
+                    variant='subtle'
+                    leftSection={<IconArrowDown size='1rem' />}
+                  >
+                    Data explorer
+                  </Button>
                 </Flex>
               </Stack>
             </Paper>
@@ -113,7 +133,7 @@ export function Component() {
         </Center>
       </Container>
       <Wave
-        id="records"
+        id='records'
         width='100%'
         height={mdOrLarger ? 250 : 125}
         preserveAspectRatio='none'
@@ -132,10 +152,10 @@ export function Component() {
             <Grid.Col span={12}>
               <Flex justify='space-between' gap='sm'>
                 <Stack gap='md'>
-                  <Title fw='bold'>
-                    Portal Statistics
+                  <Title fw='bold'>Portal Statistics</Title>
+                  <Title order={3} c='dimmed'>
+                    Records
                   </Title>
-                  <Title order={3} c='dimmed'>Records</Title>
                 </Stack>
                 <StaticDownloads
                   mt={6}
@@ -155,7 +175,9 @@ export function Component() {
               </Grid.Col>
             ))}
             <Grid.Col span={12}>
-              <Title order={3} c='dimmed' pt='xl'>Datasets & Species</Title>
+              <Title order={3} c='dimmed' pt='xl'>
+                Datasets & Species
+              </Title>
             </Grid.Col>
             <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
               <StatCard
@@ -173,36 +195,40 @@ export function Component() {
         </Container>
       </Box>
       <Wave
-        id="threatened"
+        id='threatened'
         width='100%'
         height={mdOrLarger ? 250 : 125}
         preserveAspectRatio='none'
         waveType='bodyBottom'
       />
       <Container size='xl' p='lg' mt={mdOrLarger ? -110 : -30} mb={mdOrLarger ? -25 : 0}>
-        <Group align='flex-start' justify='space-between' gap="xs">
+        <Group align='flex-start' justify='space-between' gap='xs'>
           <Stack w={mdOrLarger ? 490 : '100%'} mb='xl' gap='xl'>
             <Stack gap='md'>
-              <Title fw='bold'>
-                Threatened species in our collections
+              <Title fw='bold'>Threatened species in our collections</Title>
+              <Title c='dimmed' order={3}>
+                Nationally listed species
               </Title>
-              <Title c='dimmed' order={3}>Nationally listed species</Title>
               <Text size='sm' mt='md'>
                 The Environment Protection and Biodiversity Conservation Act (EPBC Act) is
                 Australia&apos;s national legislation for protecting threatened species and
                 ecosystems. It recognises species at risk of extinction and prioritises their
                 conservation. By storing seeds from nationally listed plants, seed banks provide an
-                insurance policy against extinction, enabling restoration and recovery efforts in the
-                wild.
+                insurance policy against extinction, enabling restoration and recovery efforts in
+                the wild.
               </Text>
-              <Text size='sm'>The portal contains{' '}
-                <b>{stats.epbcTotal}</b> nationally listed species listed under the EPBC act.{' '}
+              <Text size='sm'>
+                The portal contains <b>{stats.epbcTotal}</b> nationally listed species listed under
+                the EPBC act.{' '}
               </Text>
               <Anchor href='https://www.dcceew.gov.au/environment/epbc' target='_blank' size='sm'>
                 Read more about the EPBC Act here{' '}
                 <IconExternalLink size='1rem' style={{ marginLeft: 4 }} />
               </Anchor>
-              <Alert mt='sm' icon={<IconInfoCircle />}>While collections are held for these species, they could be small and may not be representative of the entire species.</Alert>
+              <Alert mt='sm' icon={<IconInfoCircle />}>
+                While collections are held for these species, they could be small and may not be
+                representative of the entire species.
+              </Alert>
             </Stack>
           </Stack>
           {mdOrLarger && (
@@ -234,7 +260,7 @@ export function Component() {
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
       >
-        <Container size='xl' p='lg' >
+        <Container size='xl' p='lg'>
           <Group align='flex-start' justify='space-between' mt='xl' gap='xs'>
             {mdOrLarger && (
               <div style={{ width: 450, height: 450 }}>
@@ -252,24 +278,29 @@ export function Component() {
             )}
             <Stack w={mdOrLarger ? 490 : '100%'} gap='xl'>
               <Stack gap='md' ta={mdOrLarger ? 'right' : 'left'}>
-                <Title c='dimmed' order={3}>State and Territory listed species</Title>
+                <Title c='dimmed' order={3}>
+                  State and Territory listed species
+                </Title>
                 <Text size='sm'>
-                  The Partnership also holds collections of species listed under relevant state and territory legislation:
+                  The Partnership also holds collections of species listed under relevant state and
+                  territory legislation:
                 </Text>
                 <Paper withBorder>
                   <ScrollArea h={200}>
                     <Stack gap='xs' py='xs'>
-                      {STATE_CONSERVATION.sort(([_, a], [__, b]) => b - a).map(([list, count], index) => (
-                        <Fragment key={list}>
-                          <Flex justify='space-between' px='sm'>
-                            <Text size='sm'>{list.split(':').map((part) => part.trim())[0]}</Text>
-                            <Badge variant='light' ml='sm' miw={50}>
-                              {formatNumber(count)} species
-                            </Badge>
-                          </Flex>
-                          {index !== STATE_CONSERVATION.length - 1 && <Divider />}
-                        </Fragment>
-                      ))}
+                      {STATE_CONSERVATION.sort(([_, a], [__, b]) => b - a).map(
+                        ([list, count], index) => (
+                          <Fragment key={list}>
+                            <Flex justify='space-between' px='sm'>
+                              <Text size='sm'>{list.split(':').map((part) => part.trim())[0]}</Text>
+                              <Badge variant='light' ml='sm' miw={50}>
+                                {formatNumber(count)} species
+                              </Badge>
+                            </Flex>
+                            {index !== STATE_CONSERVATION.length - 1 && <Divider />}
+                          </Fragment>
+                        ),
+                      )}
                     </Stack>
                   </ScrollArea>
                 </Paper>
@@ -279,7 +310,7 @@ export function Component() {
         </Container>
       </Box>
       <Wave
-        id="explore"
+        id='explore'
         width='100%'
         height={mdOrLarger ? 250 : 125}
         preserveAspectRatio='none'
@@ -288,9 +319,7 @@ export function Component() {
       <Container size='xl' p='lg' mt={mdOrLarger ? -80 : -30} mb='xl'>
         <Stack gap='md'>
           <Flex justify='space-between' gap='sm'>
-            <Title fw='bold'>
-              Data explorer
-            </Title>
+            <Title fw='bold'>Data explorer</Title>
             <StaticDownloads
               mt={6}
               size='sm'
@@ -302,8 +331,13 @@ export function Component() {
               Download all protected species data
             </StaticDownloads>
           </Flex>
-          <Title c='dimmed' order={3}>Explore accessions for protected species</Title>
-          <Text size='sm' mb='xl'>The table below lets you filter and refine the accession data we hold for protected species. You can also download all records (both accessions and trials).</Text>
+          <Title c='dimmed' order={3}>
+            Explore accessions for protected species
+          </Title>
+          <Text size='sm' mb='xl'>
+            The table below lets you filter and refine the accession data we hold for protected
+            species. You can also download all records (both accessions and trials).
+          </Text>
           <DataExplorer />
         </Stack>
       </Container>

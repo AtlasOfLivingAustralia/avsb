@@ -1,4 +1,4 @@
-import { DownloadField } from '#/components/Downloads';
+import { type DownloadField } from '#/components/Downloads';
 
 const downloadFields: DownloadField[] = [
   { label: 'Event ID', key: 'eventID' },

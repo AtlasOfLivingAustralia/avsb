@@ -2,7 +2,7 @@ import { IconClick, IconMoon, IconSun } from '@tabler/icons-react';
 
 import imageHomeLight from '#/assets/help/home-light-min.png';
 
-import { HelpTopicItem } from '..';
+import { type HelpTopicItem } from '..';
 
 const items: HelpTopicItem[] = [
   {

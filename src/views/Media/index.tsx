@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-import { useLoaderData, useParams } from 'react-router';
 import {
   Anchor,
   Avatar,
@@ -29,13 +27,15 @@ import {
   IconLicense,
   IconQuestionMark,
   IconTypography,
-  TablerIcon,
+  type TablerIcon,
 } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
+import { useLoaderData, useParams } from 'react-router';
 
 // Project / local components
 import { gqlQueries, performGQLQuery } from '#/api';
+import type { MediaItem, Predicate } from '#/api/graphql/types';
 import { Filters } from '#/components';
-import { MediaItem, Predicate } from '#/api/graphql/types';
 import { useMounted } from '#/helpers';
 
 // Component imports

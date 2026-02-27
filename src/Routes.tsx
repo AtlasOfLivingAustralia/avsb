@@ -1,10 +1,10 @@
+import { createBrowserRouter, RouterProvider, redirect } from 'react-router';
 import { AccessionPanel, ErrorBoundary } from '#/components';
-import { createBrowserRouter, redirect, RouterProvider } from 'react-router';
 import {
   austraitsAPI,
   collectoryAPI,
-  Event,
-  EventSearchResult,
+  type Event,
+  type EventSearchResult,
   gqlQueries,
   performGQLQuery,
   sdsAPI,
@@ -12,8 +12,8 @@ import {
 } from './api';
 
 import { mapTrialTreatments } from './helpers';
-import { DashboardView, HomeView } from './views';
 import { conservationLists } from './helpers/stats';
+import { DashboardView, HomeView } from './views';
 
 const routes = createBrowserRouter([
   {

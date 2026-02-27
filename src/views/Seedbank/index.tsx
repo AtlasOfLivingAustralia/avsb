@@ -32,14 +32,12 @@ import { lazy, Suspense, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router';
 
 // Project imports
-import { DataResource, EventSearchResult } from '#/api';
+import type { DataResource, EventSearchResult } from '#/api';
 import { Contact } from '#/components';
 import { Wave } from '#/components/Wave';
 import { breakpoints } from '#/theme/constants';
-
 // Component imports
 import SpeciesList from './components/SpeciesList';
-import { formatNumber } from '#/helpers/stats';
 
 const EventMap = lazy(() => import('#/components/EventMap'));
 
@@ -115,16 +113,17 @@ export function Component() {
                 <Badge w={75} size='lg' variant='light'>
                   {accessions.documents?.total?.toLocaleString()}
                 </Badge>
-                <Text size='sm'>
-                  Accessions
-                </Text>
+                <Text size='sm'>Accessions</Text>
                 <Divider mx='xs' orientation='vertical' />
-                <Badge w={75} size='lg' variant='light' color={trials.documents?.total === 0 ? 'gray' : 'blue'}>
+                <Badge
+                  w={75}
+                  size='lg'
+                  variant='light'
+                  color={trials.documents?.total === 0 ? 'gray' : 'blue'}
+                >
                   {trials.documents?.total?.toLocaleString()}
                 </Badge>
-                <Text size='sm'>
-                  Trials
-                </Text>
+                <Text size='sm'>Trials</Text>
               </Group>
             </Flex>
           </Group>

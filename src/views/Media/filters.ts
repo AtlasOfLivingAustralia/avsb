@@ -1,8 +1,7 @@
+import { type ComboboxItem } from '@mantine/core';
 import { IconCalendar, IconCalendarEvent, IconDatabase } from '@tabler/icons-react';
-
-import { ComboboxItem } from '@mantine/core';
 import { collectoryAPI } from '#/api';
-import { Filter } from '#/components';
+import { type Filter } from '#/components';
 
 // Define a data fetcher for the dataset select search
 const fetchItems = async (query: string): Promise<ComboboxItem[]> => {

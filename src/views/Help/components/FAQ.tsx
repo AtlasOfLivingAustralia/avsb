@@ -1,9 +1,7 @@
-import { trialFields } from '#/helpers';
 import {
   Accordion,
   Alert,
   Anchor,
-  Center,
   Code,
   Container,
   Highlight,
@@ -14,12 +12,16 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { IconAlertTriangle, IconMessageQuestion, IconQuestionMark, IconUserQuestion, TablerIcon } from '@tabler/icons-react';
-import { ReactNode, useState } from 'react';
-
-import classes from './FAQ.module.css';
 import { useMediaQuery } from '@mantine/hooks';
+import {
+  IconAlertTriangle,
+  IconMessageQuestion,
+  type TablerIcon,
+} from '@tabler/icons-react';
+import { type ReactNode, useState } from 'react';
+import { trialFields } from '#/helpers';
 import { breakpoints } from '#/theme';
+import classes from './FAQ.module.css';
 
 export interface HelpTopicItem {
   icon: TablerIcon;
@@ -45,20 +47,19 @@ function FAQ() {
       component: (
         <Stack gap='sm'>
           <Text size='sm'>
-            Seeds held by the Australian Seed Bank Partnership are obtained under strict
-            collection permits and can only be provided for conservation and scientific research
-            purposes. If you are seeking seeds for personal use, we encourage you to contact
-            your local native plant nurseries and botanic gardens, who may be able to advise you
-            better about the types of plants that are available and appropriate to grow in your
-            area.
+            Seeds held by the Australian Seed Bank Partnership are obtained under strict collection
+            permits and can only be provided for conservation and scientific research purposes. If
+            you are seeking seeds for personal use, we encourage you to contact your local native
+            plant nurseries and botanic gardens, who may be able to advise you better about the
+            types of plants that are available and appropriate to grow in your area.
           </Text>
           <Text size='sm'>
             If you require seeds for research or conservation,{' '}
             <Anchor target='_blank' href='mailto:info@seedpartnership.org.au'>
               please send us a request
             </Anchor>
-            , providing the following information. On receipt of this information, we will put
-            you in touch with relevant seedbank(s) who may be able to assist with your request.
+            , providing the following information. On receipt of this information, we will put you
+            in touch with relevant seedbank(s) who may be able to assist with your request.
           </Text>
           <List size='sm'>
             <List.Item>The species/accessions you require, and the quantity needed;</List.Item>
@@ -74,8 +75,8 @@ function FAQ() {
           </List>
           <Alert color='yellow' icon={<IconAlertTriangle size='1rem' />}>
             Requests for species that are listed under State or Commonwealth environmental
-            legislation (threatened species) will be considered on a case-by-case basis.
-            Additional information may be required and seed cannot be guaranteed.
+            legislation (threatened species) will be considered on a case-by-case basis. Additional
+            information may be required and seed cannot be guaranteed.
           </Alert>
         </Stack>
       ),
@@ -86,8 +87,8 @@ function FAQ() {
       component: (
         <Stack gap='sm'>
           <Text size='sm'>
-            A core set of germination data to be included in the Australian Virtual Seed Bank
-            was agreed by the Australian Seed Bank Partnership. Data includes:
+            A core set of germination data to be included in the Australian Virtual Seed Bank was
+            agreed by the Australian Seed Bank Partnership. Data includes:
           </Text>
           <List size='sm'>
             {Object.values(trialFields).map((field) => (
@@ -98,14 +99,13 @@ function FAQ() {
             ))}
           </List>
           <Text size='sm'>
-            Note, however, that collecting germination data is time consuming and not all
-            seedbanks within the Partnership have the opportunity to collect data for every
-            collection. The Partnership will work towards providing additional germination data
-            in the future.
+            Note, however, that collecting germination data is time consuming and not all seedbanks
+            within the Partnership have the opportunity to collect data for every collection. The
+            Partnership will work towards providing additional germination data in the future.
           </Text>
           <Text size='sm'>
-            Other information collected for accessions and trials can be found under the
-            “Additional Data” heading in the Accession or Trials view.
+            Other information collected for accessions and trials can be found under the “Additional
+            Data” heading in the Accession or Trials view.
           </Text>
         </Stack>
       ),
@@ -117,10 +117,10 @@ function FAQ() {
         <Text size='sm'>
           Currently the Australian Virtual Seed Bank can only display up to 40 accession trial
           records per page. The total number of accession / trial records are shown above the
-          results tables. You can use filters to query within the records for your selected
-          taxon. If you wish to view or query all accession or trial records for a specific
-          taxon, you can download the entire record set as a .csv file using the download button
-          on either the Trials or Accessions tabs.
+          results tables. You can use filters to query within the records for your selected taxon.
+          If you wish to view or query all accession or trial records for a specific taxon, you can
+          download the entire record set as a .csv file using the download button on either the
+          Trials or Accessions tabs.
         </Text>
       ),
     },
@@ -131,10 +131,7 @@ function FAQ() {
         <Text size='sm'>
           When a seedbank provides data to be included in the AVSB, the ALA&apos;s name matching
           service aligns the scientific names in the dataset with those in the{' '}
-          <Anchor
-            target='_blank'
-            href='https://biodiversity.org.au/nsl/services/search/taxonomy'
-          >
+          <Anchor target='_blank' href='https://biodiversity.org.au/nsl/services/search/taxonomy'>
             Australian Plant Census
           </Anchor>{' '}
           (where they have been included) or the{' '}
@@ -150,13 +147,13 @@ function FAQ() {
       value: 'raw-scientific-name',
       component: (
         <Text size='sm'>
-          The AVSB doesn&apos;t display the scientific name as provided by the seedbanks (i.e.,
-          the verbatim / supplied scientific name). You can, however, find the supplied
-          scientific name provided by the seedbank by searching species observations in the
-          Atlas of Living Australia and filtering records for the taxon by Data Resource (i.e.,
-          your seedbank name e.g. National Seedbank). You can then look at the details of
-          records and will be able to see the supplied and matched names for the taxon record.
-          For more information about how to filter data in the ALA please contact{' '}
+          The AVSB doesn&apos;t display the scientific name as provided by the seedbanks (i.e., the
+          verbatim / supplied scientific name). You can, however, find the supplied scientific name
+          provided by the seedbank by searching species observations in the Atlas of Living
+          Australia and filtering records for the taxon by Data Resource (i.e., your seedbank name
+          e.g. National Seedbank). You can then look at the details of records and will be able to
+          see the supplied and matched names for the taxon record. For more information about how to
+          filter data in the ALA please contact{' '}
           <Anchor target='_blank' href='mailto:support@ala.org.au'>
             support@ala.org.au
           </Anchor>{' '}
@@ -177,19 +174,19 @@ function FAQ() {
       component: (
         <Stack gap='sm'>
           <Text size='sm'>
-            Each state and territory (and some major data providers) provide lists of species
-            which they use restrict access to precise locations of these taxa. Restricted access
-            (often referred to as sensitive) species data includes point locality data on
-            species whose records are normally generalised when made available publicly as well
-            as data that is withheld or modified for a variety of reasons. Note that listed
-            threatened species may or may not be considered sensitive, and not all sensitive
-            species are listed as threatened.
+            Each state and territory (and some major data providers) provide lists of species which
+            they use restrict access to precise locations of these taxa. Restricted access (often
+            referred to as sensitive) species data includes point locality data on species whose
+            records are normally generalised when made available publicly as well as data that is
+            withheld or modified for a variety of reasons. Note that listed threatened species may
+            or may not be considered sensitive, and not all sensitive species are listed as
+            threatened.
           </Text>
           <Text size='sm'>
-            The rules for desensitising sensitive species are provided by each state and
-            territory. Some species may have their records withheld from public view. Others
-            will have their latitude and longitudes truncated to 1 or 2 decimal places. For more
-            information about principles for handling sensitive species data, see the{' '}
+            The rules for desensitising sensitive species are provided by each state and territory.
+            Some species may have their records withheld from public view. Others will have their
+            latitude and longitudes truncated to 1 or 2 decimal places. For more information about
+            principles for handling sensitive species data, see the{' '}
             <Anchor target='_blank' href='https://rasd.org.au'>
               National Framework for the Sharing of Restricted Access Species Data in Australia
             </Anchor>{' '}
@@ -200,9 +197,8 @@ function FAQ() {
             .
           </Text>
           <Text size='sm'>
-            The lists of species which are used in the Australian Virtual Seed Bank are those
-            used in the Atlas of Living Australia&apos;s Sensitive Data Service. You can view
-            these lists{' '}
+            The lists of species which are used in the Australian Virtual Seed Bank are those used
+            in the Atlas of Living Australia&apos;s Sensitive Data Service. You can view these lists{' '}
             <Anchor
               target='_blank'
               href='https://lists.ala.org.au/public/speciesLists?&max=25&sort=listName&order=asc&isSDS=eq:true&isSDS=eq:true'
@@ -211,8 +207,8 @@ function FAQ() {
             </Anchor>
             . The state and territory lists generally only apply to records located within that
             state / territory. Observation records of these species in the ALA are generalised,
-            however, in the AVSB, all locality information for these taxa is withheld. Accession
-            and trial data, where it exists, will still be accessible.
+            however, in the AVSB, all locality information for these taxa is withheld. Accession and
+            trial data, where it exists, will still be accessible.
           </Text>
         </Stack>
       ),
@@ -223,28 +219,28 @@ function FAQ() {
       component: (
         <Text size='sm'>
           When you search for data in the AVSB for a taxon which is considered sensitive, the
-          summary map will be replaced with a sensitive data redaction message. Where seed bank
-          data exists, when you click on either the trials or accessions tab you can still
-          access the data for trials and accessions for these taxa. When viewing the details of
-          an accession record, the same sensitive data redacation message appears (where the
-          locality map usually shows).
+          summary map will be replaced with a sensitive data redaction message. Where seed bank data
+          exists, when you click on either the trials or accessions tab you can still access the
+          data for trials and accessions for these taxa. When viewing the details of an accession
+          record, the same sensitive data redacation message appears (where the locality map usually
+          shows).
         </Text>
       ),
     },
     {
-      title: 'What do I do if I can\'t find accessions or trials for a particular species?',
+      title: "What do I do if I can't find accessions or trials for a particular species?",
       value: 'no-accessions-trials',
       component: (
         <Text size='sm'>
-          If there is no accession or trials data showing for the species you are interested in,
-          try searching by genus or family instead. Often related species have similar
-          germination requirements.{' '}
+          If there is no accession or trials data showing for the species you are interested in, try
+          searching by genus or family instead. Often related species have similar germination
+          requirements.{' '}
           <Anchor target='_blank' href='https://www.anpc.asn.au/plant-germplasm'>
             The publication &lsquo;Plant Germplasm Conservation in Australia&rsquo; includes
             up-to-date general information on germination and dormancy in Australian species
           </Anchor>
-          . If you cannot find information you are after, and would like more information,
-          please contact the{' '}
+          . If you cannot find information you are after, and would like more information, please
+          contact the{' '}
           <Anchor target='_blank' href='mailto:info@seedpartnership.org.au'>
             Australian Seed Bank Partnership
           </Anchor>
@@ -288,30 +284,29 @@ function FAQ() {
       value: 'select-accession-area',
       component: (
         <Stack gap='sm'>
-          <Text size='sm'>
-            The portal includes this functionality.
-          </Text>
+          <Text size='sm'>The portal includes this functionality.</Text>
           <List size='sm'>
             <List.Item>
-              <b>Creating a search area:</b>{' '}
-              When viewing a map, select the polygon tool in the top-right hand corner of map, and begin clicking to draw points.{' '}
-              When finished, double click to confirm the last point of the polygon, and the accessions search area will be constrained to that polygon.{' '}
-              You can draw multiple polygons on any given map.
+              <b>Creating a search area:</b> When viewing a map, select the polygon tool in the
+              top-right hand corner of map, and begin clicking to draw points. When finished, double
+              click to confirm the last point of the polygon, and the accessions search area will be
+              constrained to that polygon. You can draw multiple polygons on any given map.
             </List.Item>
             <List.Item>
-              <b>Editing a search area:</b>{' '}
-              Polygons themselves can be moved by clicking and dragging on them. The points on existing polygons can also be moved by clicking and dragging on them.
+              <b>Editing a search area:</b> Polygons themselves can be moved by clicking and
+              dragging on them. The points on existing polygons can also be moved by clicking and
+              dragging on them.
             </List.Item>
             <List.Item>
-              <b>Deleting a search area:</b>{' '}
-              To delete existing polygons, click on the polygon, and then click the 'delete' icon in the top-right hand corner of the map.
+              <b>Deleting a search area:</b> To delete existing polygons, click on the polygon, and
+              then click the 'delete' icon in the top-right hand corner of the map.
             </List.Item>
           </List>
         </Stack>
       ),
     },
     {
-      title: 'Why don\'t all seedbank accessions appear on the summary maps / seedbank maps?',
+      title: "Why don't all seedbank accessions appear on the summary maps / seedbank maps?",
       value: 'missing-accessions-summary-map',
       component: (
         <Stack gap='sm'>
@@ -320,12 +315,10 @@ function FAQ() {
           </Text>
           <List size='sm'>
             <List.Item>Not all seed banks collect location data for all accessions</List.Item>
+            <List.Item>Some seed banks may withhold point locations for some accessions</List.Item>
             <List.Item>
-              Some seed banks may withhold point locations for some accessions
-            </List.Item>
-            <List.Item>
-              Coordinates for sensitive species in each of the states and territories are
-              withheld in the AVSB. See FAQs:
+              Coordinates for sensitive species in each of the states and territories are withheld
+              in the AVSB. See FAQs:
               <List size='sm'>
                 <List.Item>
                   <Anchor size='sm' onClick={() => setValue('how-desensitised-locations')}>
@@ -339,8 +332,7 @@ function FAQ() {
                 </List.Item>
                 <List.Item>
                   <Anchor size='sm' onClick={() => setValue('no-accessions-trials')}>
-                    What do I do if I can&apos;t find accessions or trials for a particular
-                    species?
+                    What do I do if I can&apos;t find accessions or trials for a particular species?
                   </Anchor>
                 </List.Item>
               </List>
@@ -354,11 +346,11 @@ function FAQ() {
       value: 'taxon-phrase-names',
       component: (
         <Text size='sm'>
-          Phrase names are temporary names for taxa that haven&apos;t yet been formally
-          described in a taxonomic publication. These names aren&apos;t currently displayed
-          within the species list on seed bank summary pages. The best way to find out if there
-          is any accession or trial data for one of these taxa and who has seed for it in their
-          collection is to do a general search for that taxon.
+          Phrase names are temporary names for taxa that haven&apos;t yet been formally described in
+          a taxonomic publication. These names aren&apos;t currently displayed within the species
+          list on seed bank summary pages. The best way to find out if there is any accession or
+          trial data for one of these taxa and who has seed for it in their collection is to do a
+          general search for that taxon.
         </Text>
       ),
     },
@@ -369,12 +361,13 @@ function FAQ() {
         <Stack gap='sm'>
           <Text size='sm'>
             When using data from the Australian Virtual Seed Bank in research, publications, or
-            presentations, please acknowledge both the seed bank that contributed the data and
-            the AVSB as the platform through which the data were accessed.
+            presentations, please acknowledge both the seed bank that contributed the data and the
+            AVSB as the platform through which the data were accessed.
           </Text>
           <Text size='sm'>A suggested citation is:</Text>
           <Code style={{ borderRadius: 'var(--mantine-radius-lg)' }} p='sm'>
-            Seed bank name (year of data). Seed collection and/or germination data accessed via the Australian Virtual Seed Bank (https://seedbank.ala.org.au) on [date accessed].
+            Seed bank name (year of data). Seed collection and/or germination data accessed via the
+            Australian Virtual Seed Bank (https://seedbank.ala.org.au) on [date accessed].
           </Code>
         </Stack>
       ),
@@ -408,7 +401,13 @@ function FAQ() {
           {filteredItems.map((item) => (
             <Accordion.Item key={item.value} value={item.value}>
               <Accordion.Control>
-                {search.length > 0 ? <Highlight fw={600} highlight={search}>{item.title}</Highlight> : item.title}
+                {search.length > 0 ? (
+                  <Highlight fw={600} highlight={search}>
+                    {item.title}
+                  </Highlight>
+                ) : (
+                  item.title
+                )}
               </Accordion.Control>
               <Accordion.Panel>{item.component}</Accordion.Panel>
             </Accordion.Item>
@@ -416,7 +415,7 @@ function FAQ() {
         </Accordion>
       ) : (
         <Stack align='center'>
-          <IconMessageQuestion size="2.5rem" />
+          <IconMessageQuestion size='2.5rem' />
           <Text ff='heading' fw={600} ta='center' size='lg' c='dimmed'>
             No FAQs match your search
           </Text>

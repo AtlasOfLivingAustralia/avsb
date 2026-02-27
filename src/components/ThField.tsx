@@ -1,9 +1,9 @@
-import { SeedBankExtension } from '#/api';
-import { FieldTooltip } from '#/components';
-import { allFields } from '#/helpers';
 import { Box, Center, Table, Text, UnstyledButton } from '@mantine/core';
 import { IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons-react';
-import { CSSProperties, PropsWithChildren } from 'react';
+import type { CSSProperties, PropsWithChildren } from 'react';
+import { type SeedBankExtension } from '#/api';
+import { FieldTooltip } from '#/components';
+import { allFields } from '#/helpers';
 import classes from './ThField.module.css';
 
 interface ThBaseProps {

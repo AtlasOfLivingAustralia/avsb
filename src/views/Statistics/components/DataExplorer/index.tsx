@@ -1,25 +1,28 @@
-import { Center, Chip, Divider, Group, Pagination, Select, Stack, Text, Tooltip } from '@mantine/core';
+import {
+  Center,
+  Chip,
+  Divider,
+  Group,
+  Pagination,
+  Select,
+  Stack,
+  Text,
+  Tooltip,
+} from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { Outlet, useLoaderData, useLocation, useParams } from 'react-router';
 
 // Project components / helpers
-import {
-  EventDocuments,
-  EventSearchResult,
-  gqlQueries,
-  performGQLQuery,
-  Predicate,
-} from '#/api';
+import { type EventDocuments, type EventSearchResult, gqlQueries, type Predicate, performGQLQuery } from '#/api';
 import { Downloads, Filters } from '#/components';
 import { useMounted } from '#/helpers';
-
+import { getStateInitials } from '#/helpers/getStateInitials';
+import { conservationLists, formatNumber } from '#/helpers/stats';
 // Accession components
 import AccessionTable from '#/views/Accessions/components/AccessionTable';
 import downloadFields from '#/views/Accessions/downloadFields';
 // Config
 import filters from './filters';
-import { conservationLists, formatNumber } from '#/helpers/stats';
-import { getStateInitials } from '#/helpers/getStateInitials';
 
 interface LocationState {
   predicates?: Predicate[];
@@ -51,7 +54,7 @@ export default function DataExplorer() {
     {
       type: 'in',
       key: 'measurementOrFactTypes',
-      values: threatenedFilters
+      values: threatenedFilters,
     },
     ...filterPredicates,
   ];
@@ -82,13 +85,17 @@ export default function DataExplorer() {
 
   const onThreatenedFilterChange = (filters: string[]) => {
     if (filters.length > 0) setThreatenedFilters(filters);
-  }
+  };
 
   return (
     <Stack>
       <Chip.Group value={threatenedFilters} onChange={onThreatenedFilterChange} multiple>
         <Group gap='xs'>
-          {conservationLists.map((list) => <Chip key={list} value={list}>{getStateInitials(list)}</Chip>)}
+          {conservationLists.map((list) => (
+            <Chip key={list} value={list}>
+              {getStateInitials(list)}
+            </Chip>
+          ))}
         </Group>
       </Chip.Group>
       <Divider variant='dashed' my='md' />
@@ -127,8 +134,8 @@ export default function DataExplorer() {
         <Group>
           <Text c='dimmed' ta='center' size='sm'>
             {(page - 1) * pageSize + 1}-
-            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {formatNumber(query.total || 0)} total
-            records
+            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of{' '}
+            {formatNumber(query.total || 0)} total records
           </Text>
           <Divider orientation='vertical' />
           <Downloads

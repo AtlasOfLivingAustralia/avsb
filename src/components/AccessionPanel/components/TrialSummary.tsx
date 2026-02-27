@@ -1,8 +1,8 @@
-import { gqlQueries, performGQLQuery } from '#/api';
 import { Skeleton } from '@mantine/core';
 import { useEffect, useState } from 'react';
+import { gqlQueries, performGQLQuery } from '#/api';
 // Project components / helpers
-import { Event, EventSearchResult } from '#/api/graphql/types';
+import type { Event, EventSearchResult } from '#/api/graphql/types';
 import queries from '#/api/queries';
 import { mapTrialTreatments } from '#/helpers';
 import TrialsTable from '#/views/Trials/components/TrialsTable';

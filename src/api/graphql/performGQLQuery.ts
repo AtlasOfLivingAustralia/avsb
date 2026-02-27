@@ -1,7 +1,7 @@
 import { get } from 'lodash';
-import { buildCacheKey, getCachedResponse, maybeStoreResponse } from '../cache';
-import { Variables } from './types';
 import { mapEventTaxa } from '#/helpers/mapEventTaxon';
+import { buildCacheKey, getCachedResponse, maybeStoreResponse } from '../cache';
+import type { Variables } from './types';
 
 async function performGQLQuery<T = unknown>(query: string, variables?: Variables) {
   const cacheKey = buildCacheKey(query, variables);

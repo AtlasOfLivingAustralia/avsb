@@ -1,4 +1,4 @@
-import { Event } from '#/api';
+import type { Event } from '#/api';
 
 export const mapEventTaxon = (event: Event) => {
   if ((event.measurementOrFacts || []).length > 0) {

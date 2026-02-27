@@ -1,16 +1,16 @@
-import { Predicate } from '#/api/graphql/types';
-import { Drawer, Group, GroupProps, SegmentedControl, Text, ThemeIcon } from '@mantine/core';
+import { Drawer, Group, type GroupProps, SegmentedControl, Text, ThemeIcon } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconFilter } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { type Predicate } from '#/api/graphql/types';
 
 // Project components / helpers
 import FilterBar from './components/Bar';
 import FilterPanel from './components/Panel';
 
 // Config
-import { Filter, FiltersSort } from './types';
+import type { Filter, FiltersSort } from './types';
 
 interface FiltersProps extends GroupProps {
   filters: Filter[];

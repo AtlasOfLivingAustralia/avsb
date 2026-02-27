@@ -1,18 +1,18 @@
-import { useMounted } from '#/helpers';
 import {
   Combobox,
-  ComboboxItem,
+  type ComboboxItem,
   InputBase,
-  InputBaseProps,
+  type InputBaseProps,
   Loader,
-  MantineRadius,
+  type MantineRadius,
   useCombobox,
 } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
-import React, { CSSProperties, KeyboardEvent, useEffect, useState } from 'react';
+import React, { type CSSProperties, type KeyboardEvent, useEffect, useState } from 'react';
+import { useMounted } from '#/helpers';
 
 export interface SearchSelectProps {
   customTypes?: string[];
@@ -81,10 +81,10 @@ function SelectSearch({
     ...uniqBy(dataSorted, 'value'),
     ...(search.length > 0
       ? customTypes.map((type) => ({
-          type,
-          value: `${type}:${search}`,
-          label: search,
-        }))
+        type,
+        value: `${type}:${search}`,
+        label: search,
+      }))
       : []),
   ];
 

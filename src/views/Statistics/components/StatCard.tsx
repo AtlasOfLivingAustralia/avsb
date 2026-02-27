@@ -1,5 +1,5 @@
 import { Group, Paper, Stack, Text, ThemeIcon } from '@mantine/core';
-import { TablerIcon } from '@tabler/icons-react';
+import { type TablerIcon } from '@tabler/icons-react';
 
 import { formatNumber, stats } from '#/helpers/stats';
 
@@ -17,11 +17,11 @@ function StatCard({ id, name, icon: Icon }: StatCardProps) {
       <Group justify='space-between' align='flex-start'>
         <Stack gap={0}>
           <Text fz={28} fw='bold' opacity={0.8}>
-            {value
-              ? formatNumber(value)
-              : id}
+            {value ? formatNumber(value) : id}
           </Text>
-          <Text size='sm' c='dimmed'>{name}</Text>
+          <Text size='sm' c='dimmed'>
+            {name}
+          </Text>
         </Stack>
         <ThemeIcon variant='light' size='xl' radius='xl'>
           <Icon size='1rem' />

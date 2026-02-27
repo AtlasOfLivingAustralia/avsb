@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
 import { Stack } from '@mantine/core';
+import { useEffect, useState } from 'react';
 
-import { SelectSearch, IconText } from '#/components';
-import { FilterItemProps } from '../../types';
+import { IconText, SelectSearch } from '#/components';
+import { type FilterItemProps } from '../../types';
 
 function SelectDataFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const { key, label, placeholder, fetchItems, icon } = filter;
