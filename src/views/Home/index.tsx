@@ -8,6 +8,7 @@ import {
   Group,
   Image,
   type MantineSpacing,
+  Paper,
   Space,
   Stack,
   Text,
@@ -43,6 +44,20 @@ function Home() {
 
   return (
     <>
+      <svg
+        width='0'
+        height='0'
+        aria-hidden='true'
+        focusable='false'
+        style={{ position: 'absolute' }}
+      >
+        <defs>
+          <linearGradient id='home-gradient' x1='0%' y1='0%' x2='100%' y2='100%'>
+            <stop offset='0%' stopColor='#A6CE39' />
+            <stop offset='100%' stopColor='#487759' />
+          </linearGradient>
+        </defs>
+      </svg>
       <Container size='xl' pt={mdOrLarger ? 'xl' : 0} mt={-30}>
         <Group justify='space-between' pt={mdOrLarger ? 'xl' : 0}>
           <Stack
@@ -52,10 +67,10 @@ function Home() {
             maw={mdOrLarger ? 600 : undefined}
           >
             <Title
-              fw='bold'
-              size={42}
+              fw={600}
+              size={44}
               style={{
-                color: 'light-dark(var(--mantine-color-dark-4), var(--mantine-color-gray-2))',
+                color: 'light-dark(var(--mantine-color-dark-4), var(--mantine-color-gray-3))',
               }}
             >
               <Text
@@ -63,12 +78,13 @@ function Home() {
                 inherit
                 variant='gradient'
                 gradient={{ from: '#A6CE39', to: '#487759' }}
+
               >
                 Open access
               </Text>
               &nbsp;to
               <br />
-              Australia&apos;s conservation seed banks
+              <span style={{ fontWeight: 600 }}>Australia&apos;s conservation<br />seed banks</span>
             </Title>
             <Text mt='sm' c='light-dark(var(--mantine-color-gray-8),var(--mantine-color-gray-5))'>
               The Australian Virtual Seed Bank connects you with seed collection and germination
@@ -123,9 +139,19 @@ function Home() {
                 w={mdOrLarger ? 'calc(100vw - 530px)' : '100%'}
                 maw={mdOrLarger ? 600 : undefined}
               >
-                <Group mb='md'>
-                  <IconSeedlingFilled size='2rem' />
-                  <Title order={2} fw={600}>
+                <Group mb='md' gap='xl'>
+                  <Paper
+                    p='sm'
+                    bg='light-dark(white, var(--mantine-color-gray-8))'
+                    shadow='lg'
+                  >
+                    <Center>
+                      <IconSeedlingFilled
+                        style={{ fill: 'url(#home-gradient)' }}
+                      />
+                    </Center>
+                  </Paper>
+                  <Title c='light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3))' order={2} fw={500} size={28}>
                     Inside the vault
                   </Title>
                 </Group>
@@ -178,9 +204,19 @@ function Home() {
             <Space h={20} />
             <Stack>
               <Group justify='space-between'>
-                <Group>
-                  <IconDatabase size='2rem' />
-                  <Title order={2} fw={600}>
+                <Group mb='md' gap='xl'>
+                  <Paper
+                    p='sm'
+                    bg='light-dark(white, var(--mantine-color-gray-8))'
+                    shadow='lg'
+                  >
+                    <Center>
+                      <IconDatabase
+                        style={{ stroke: 'url(#home-gradient)' }}
+                      />
+                    </Center>
+                  </Paper>
+                  <Title c='light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3))' order={2} fw={500} size={28}>
                     Our Datasets
                   </Title>
                 </Group>

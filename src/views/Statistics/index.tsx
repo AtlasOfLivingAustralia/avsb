@@ -152,8 +152,8 @@ export function Component() {
             <Grid.Col span={12}>
               <Flex justify='space-between' gap='sm'>
                 <Stack gap='md'>
-                  <Title fw='bold'>Portal Statistics</Title>
-                  <Title order={3} c='dimmed'>
+                  <Title fw={600}>Portal Statistics</Title>
+                  <Title fw={500} order={3} c='dimmed'>
                     Records
                   </Title>
                 </Stack>
@@ -175,7 +175,7 @@ export function Component() {
               </Grid.Col>
             ))}
             <Grid.Col span={12}>
-              <Title order={3} c='dimmed' pt='xl'>
+              <Title fw={500} order={3} c='dimmed' pt='xl'>
                 Datasets & Species
               </Title>
             </Grid.Col>
@@ -205,8 +205,8 @@ export function Component() {
         <Group align='flex-start' justify='space-between' gap='xs'>
           <Stack w={mdOrLarger ? 490 : '100%'} mb='xl' gap='xl'>
             <Stack gap='md'>
-              <Title fw='bold'>Threatened species in our collections</Title>
-              <Title c='dimmed' order={3}>
+              <Title fw={600}>Threatened species in our collections</Title>
+              <Title fw={500} c='dimmed' order={3}>
                 Nationally listed species
               </Title>
               <Text size='sm' mt='md'>
@@ -278,7 +278,7 @@ export function Component() {
             )}
             <Stack w={mdOrLarger ? 490 : '100%'} gap='xl'>
               <Stack gap='md' ta={mdOrLarger ? 'right' : 'left'}>
-                <Title c='dimmed' order={3}>
+                <Title fw={500} c='dimmed' order={3}>
                   State and Territory listed species
                 </Title>
                 <Text size='sm'>
@@ -319,7 +319,7 @@ export function Component() {
       <Container size='xl' p='lg' mt={mdOrLarger ? -80 : -30} mb='xl'>
         <Stack gap='md'>
           <Flex justify='space-between' gap='sm'>
-            <Title fw='bold'>Data explorer</Title>
+            <Title fw={600}>Data explorer</Title>
             <StaticDownloads
               mt={6}
               size='sm'
@@ -331,7 +331,7 @@ export function Component() {
               Download all protected species data
             </StaticDownloads>
           </Flex>
-          <Title c='dimmed' order={3}>
+          <Title fw={500} c='dimmed' order={3}>
             Explore accessions for protected species
           </Title>
           <Text size='sm' mb='xl'>
