@@ -50,7 +50,7 @@ import StatCard from './components/StatCard';
 import DataExplorer from './components/DataExplorer';
 import { StaticDownloads } from '#/components/Downloads/Static';
 
-const STATE_CONSERVATION = Object.entries(stats.stateConservation);
+const STATE_CONSERVATION = Object.entries(stats.conservation);
 
 const recordStats = [
   {
