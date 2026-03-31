@@ -229,7 +229,6 @@ export function Component() {
       />
       <Box
         mt={mdOrLarger ? -140 : -25}
-        mb={mdOrLarger ? -50 : 0}
         style={{
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
@@ -254,24 +253,34 @@ export function Component() {
               <Stack gap='md' ta={mdOrLarger ? 'right' : 'left'}>
                 <Title c='dimmed' order={3}>State and Territory listed species</Title>
                 <Text size='sm'>
-                  The Partnership also holds collections of species listed under relevant state and territory legislation:
+                  The partnership also holds collections for species listed as under Australian state and territory legislation.
                 </Text>
-                <Paper withBorder>
-                  <ScrollArea h={200}>
-                    <Stack gap='xs' py='xs'>
-                      {STATE_CONSERVATION.sort(([_, a], [__, b]) => b - a).map(([list, count], index) => (
-                        <Fragment key={list}>
-                          <Flex justify='space-between' px='sm'>
-                            <Text size='sm'>{list.split(':').map((part) => part.trim())[0]}</Text>
-                            <Badge variant='light' ml='sm' miw={50}>
-                              {formatNumber(count)} species
-                            </Badge>
-                          </Flex>
-                          {index !== STATE_CONSERVATION.length - 1 && <Divider />}
-                        </Fragment>
-                      ))}
-                    </Stack>
-                  </ScrollArea>
+                <Text size='sm'>
+                  Species are counted as threatened if they are listed in any Australian jurisdiction regardless of where the seed was collected or which seed bank holds the collection.
+                </Text>
+                <Paper mt='lg' withBorder>
+                  <Stack gap={0}>
+                    <Group justify='space-between' py='xs' px='xs'>
+                      <Text c='dimmed' fw='bold' size='sm' ta='left' maw={200}>Applicable environmental legislation</Text>
+                      <Text c='dimmed' fw='bold' size='sm' ta='right' maw={200}>Species held in ASBP collections</Text>
+                    </Group>
+                    <Divider />
+                    <ScrollArea h={200}>
+                      <Stack gap='xs' py='xs'>
+                        {STATE_CONSERVATION.sort(([_, a], [__, b]) => b - a).map(([list, count], index) => (
+                          <Fragment key={list}>
+                            <Flex justify='space-between' px='sm'>
+                              <Text size='sm'>{list.split(':').map((part) => part.trim())[0]}</Text>
+                              <Badge variant='light' ml='sm' miw={50}>
+                                {formatNumber(count)} species
+                              </Badge>
+                            </Flex>
+                            {index !== STATE_CONSERVATION.length - 1 && <Divider />}
+                          </Fragment>
+                        ))}
+                      </Stack>
+                    </ScrollArea>
+                  </Stack>
                 </Paper>
               </Stack>
             </Stack>
@@ -303,7 +312,10 @@ export function Component() {
             </StaticDownloads>
           </Flex>
           <Title c='dimmed' order={3}>Explore accessions for protected species</Title>
-          <Text size='sm' mb='xl'>The table below lets you filter and refine the accession data we hold for protected species. You can also download all records (both accessions and trials).</Text>
+          <Stack gap='xs' mb='md'>
+            <Text x- size='sm'>Use the table below to filter and download threatened species records from Australian Seed Bank Partnership vaults.</Text>
+            <Text size='sm'>Click the buttons to apply national (EPBC Act) or jurisdictional threatened species legislation to filter records for species listed in any Australian state, territory or nationally.</Text>
+          </Stack>
           <DataExplorer />
         </Stack>
       </Container>
