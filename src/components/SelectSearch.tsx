@@ -81,10 +81,10 @@ function SelectSearch({
     ...uniqBy(dataSorted, 'value'),
     ...(search.length > 0
       ? customTypes.map((type) => ({
-          type,
-          value: `${type}:${search}`,
-          label: search,
-        }))
+        type,
+        value: `${type}:${search}`,
+        label: search,
+      }))
       : []),
   ];
 
@@ -112,9 +112,8 @@ function SelectSearch({
     </Combobox.Option>
   ));
 
-  const displayValue = value
-    ? allData.find((item) => item.value === value)?.label || search
-    : search;
+  const selectedItem = value ? allData.find((item) => item.value === value) : null;
+  const displayValue = selectedItem?.label || search;
 
   return (
     <Combobox store={combobox} onOptionSubmit={handleChange} withinPortal={false}>
@@ -129,11 +128,19 @@ function SelectSearch({
           className={className}
           onChange={(event) => {
             const newValue = event.currentTarget.value;
+            const selectedLabel = selectedItem?.label || '';
+            const shouldClearSelection = !!value && newValue !== selectedLabel;
+
             setSearch(newValue);
-            if (newValue === '') {
+
+            if (shouldClearSelection) {
+              setValue(null);
+              if (onChange) onChange(null);
+            } else if (newValue === '') {
               setValue(null);
               if (onChange) onChange(null);
             }
+
             if (newValue !== '') setLoading(true);
             combobox.openDropdown();
             combobox.updateSelectedOptionIndex();
