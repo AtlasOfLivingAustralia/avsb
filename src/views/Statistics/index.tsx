@@ -253,7 +253,7 @@ export function Component() {
               <Stack gap='md' ta={mdOrLarger ? 'right' : 'left'}>
                 <Title c='dimmed' order={3}>State and Territory listed species</Title>
                 <Text size='sm'>
-                  The partnership also holds collections for species listed as under Australian state and territory legislation.
+                  The Partnership also holds collections for species listed under Australian state and territory legislation.
                 </Text>
                 <Text size='sm'>
                   Species are counted as threatened if they are listed in any Australian jurisdiction regardless of where the seed was collected or which seed bank holds the collection.
