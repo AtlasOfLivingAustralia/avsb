@@ -75,42 +75,28 @@ export function Component() {
           </Grid.Col>
         )}
       <Grid.Col span={{ sm: 12, md: 7, lg: 8 }}>
-        {taxon.taxonConcept.rankString === 'species' && sds.length > 0 ? (
-          <Card
-            style={{ display: 'flex', alignItems: 'center' }}
-            shadow='lg'
-            h='100%'
-            miw={345}
-            withBorder
-          >
-            <SDS instances={sds} />
+        <Suspense fallback={<Skeleton w='100%' height={450} />}>
+          <Card shadow='lg' p={0}>
+            <EventMap
+              width='100%'
+              height={450}
+              predicate={summaryPredicate}
+              initialToken={token}
+              itemListHeight={180}
+            />
           </Card>
-        ) : (
-          <>
-            <Suspense fallback={<Skeleton w='100%' height={450} />}>
-              <Card shadow='lg' p={0}>
-                <EventMap
-                  width='100%'
-                  height={450}
-                  predicate={summaryPredicate}
-                  initialToken={token}
-                  itemListHeight={180}
-                />
-              </Card>
-            </Suspense>
-            <Alert
-              title='Accession Map'
-              icon={<IconMap />}
-              mt='sm'
-              styles={{ title: { marginBottom: 4 } }}
-            >
-              Accessions of this species were collected from the locations shown above. Click a dot
-              to be shown a list of accessions at that location, then click an accession entry to
-              see full accession details. Visit the &apos;Accessions&apos; tab to see details for
-              all locations.
-            </Alert>
-          </>
-        )}
+        </Suspense>
+        <Alert
+          title='Accession Map'
+          icon={<IconMap />}
+          mt='sm'
+          styles={{ title: { marginBottom: 4 } }}
+        >
+          Accessions of this species were collected from the locations shown above. Click a dot
+          to be shown a list of accessions at that location, then click an accession entry to
+          see full accession details. Visit the &apos;Accessions&apos; tab to see details for
+          all locations.
+        </Alert>
       </Grid.Col>
       <Grid.Col span={{ sm: 12, md: 5, lg: 4 }}>
         <Card shadow='lg' h='100%' p={0} withBorder>
