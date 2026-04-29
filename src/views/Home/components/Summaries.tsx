@@ -104,7 +104,7 @@ function Summaries({ ...props }: GridProps) {
   );
 
   return (
-    <Grid gutter='xl' {...props}>
+    <Grid gap='xl' {...props}>
       {gqlQueries.PRED_DATA_RESOURCE.values?.map((dataResource) => (
         <Grid.Col key={dataResource as string} span={{ xs: 12, sm: 6, md: 4, lg: 4 }}>
           <SummaryCard

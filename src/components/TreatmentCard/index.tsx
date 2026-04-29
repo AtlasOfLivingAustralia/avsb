@@ -40,7 +40,7 @@ function TreatmentCard({ event }: TreatmentCardProps) {
           marginRight: 'calc(var(--mantine-spacing-md) * -1)',
         }}
       />
-      <Grid gutter='xs'>
+      <Grid gap='xs'>
         {fields
           .map((key) => ({ key, ...treatmentFields[key] }))
           .map(({ key, label, description, examples, icon: Icon, unit }) => (

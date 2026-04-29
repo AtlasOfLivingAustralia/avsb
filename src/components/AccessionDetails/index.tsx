@@ -20,7 +20,7 @@ function AccessionDetails({ event: eventProp }: AccessionDetailsProps) {
 
   return (
     <>
-      <Grid gutter='xs'>
+      <Grid gap='xs'>
         {fields
           .map((key) => ({ key, ...accessionFields[key] }))
           .map(({ key, label, description, examples, unit, icon: Icon }) => (

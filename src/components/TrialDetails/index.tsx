@@ -38,7 +38,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
   ) as Event[];
 
   return (
-    <Grid gutter='xs'>
+    <Grid gap='xs'>
       {fields
         .map((key) => ({ key, ...trialFields[key] }))
         .map(({ key, label, description, examples, icon: Icon, unit }) => (
@@ -81,7 +81,7 @@ function TrialDetails({ event }: TrialDetailsProps) {
               withBorder
               p='md'
               mt='sm'
-              key={`${event.eventID}-${num + 1}`}
+              key={`${event.eventID}-${treatment.eventID || treatment.eventRemarks || treatment.eventType || 'treatment'}`}
               style={{
                 backgroundColor:
                   'light-dark(var(--mantine-color-white), var(--mantine-color-dark-6))',

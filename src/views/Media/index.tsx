@@ -178,7 +178,7 @@ export function Component() {
     );
 
   return (
-    <Grid gutter='xl'>
+    <Grid gap='xl'>
       <Grid.Col span={12}>
         <Filters
           predicates={Object.values(predicates)}

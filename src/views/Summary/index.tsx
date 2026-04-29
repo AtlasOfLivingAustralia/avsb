@@ -18,9 +18,9 @@ import { IconAlertTriangle, IconExternalLink, IconMap } from '@tabler/icons-reac
 import { Fragment, lazy, Suspense } from 'react';
 import { useLoaderData, useNavigate, useRouteLoaderData } from 'react-router';
 // Project imports
-import { gqlQueries, type Predicate, type SDSInstance } from '#/api';
+import { gqlQueries, type Predicate } from '#/api';
 import { type Taxon } from '#/api/sources/taxon';
-import { ConservationStatus, SDS } from '#/components';
+import { ConservationStatus } from '#/components';
 import { breakpoints } from '#/theme/constants';
 
 import classes from './index.module.css';
@@ -28,9 +28,8 @@ import classes from './index.module.css';
 const EventMap = lazy(() => import('#/components/EventMap'));
 
 export function Component() {
-  const { taxon, sds } = useRouteLoaderData('taxon') as {
+  const { taxon } = useRouteLoaderData('taxon') as {
     taxon: Taxon;
-    sds: SDSInstance[];
   };
   const token = useLoaderData() as string;
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);

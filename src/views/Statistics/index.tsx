@@ -148,7 +148,7 @@ export function Component() {
         pb='xl'
       >
         <Container size='xl' p='lg' pb='xl'>
-          <Grid gutter='lg'>
+          <Grid gap='lg'>
             <Grid.Col span={12}>
               <Flex justify='space-between' gap='sm'>
                 <Stack gap='md'>

@@ -26,7 +26,7 @@ export default function MediaCollection({
 }: MediaCollectionProps) {
   const { guid } = useParams();
   return (
-    <Grid gutter='xs' {...rest}>
+    <Grid gap='xs' {...rest}>
       <Grid.Col span={12}>
         <Group mb={disclaimer ? 0 : 'md'}>
           <Divider

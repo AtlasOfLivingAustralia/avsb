@@ -24,7 +24,7 @@ function Topic({ instructions }: TopicProps) {
         height={600}
       >
         {instructions.map(({ image }, index) => (
-          <Carousel.Slide key={`${index * 2}`}>
+          <Carousel.Slide key={image}>
             <Box
               style={{
                 backgroundColor:

@@ -246,7 +246,7 @@ function TrialsTable({ events }: TrialsTableProps) {
                         backgroundColor: 'light-dark(white, var(--mantine-color-dark-6))',
                       }}
                     >
-                      <Collapse in={isSelected}>
+                      <Collapse expanded={isSelected}>
                         <Box
                           style={{
                             backgroundColor:

@@ -10,7 +10,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 import { useComputedColorScheme } from '@mantine/core';
-import { useFullscreen } from '@mantine/hooks';
+import { useFullscreenElement } from '@mantine/hooks';
 // Project-imports
 import { type EventSearchResult, type Predicate, performGQLQuery, useGQLQuery } from '#/api';
 import queries from '#/api/queries';
@@ -87,7 +87,7 @@ function MapComponent({
   );
 
   // Fullscreen & params hook
-  const { fullscreen, ref: fullscreenRef, toggle: fullscreenToggle } = useFullscreen();
+  const { fullscreen, ref: fullscreenRef, toggle: fullscreenToggle } = useFullscreenElement();
   const params = useParams();
 
   // Map state & data

@@ -155,7 +155,7 @@ function AccessionPanel() {
   const hasCoordinates = accessionEvent.decimalLatitude && accessionEvent.decimalLongitude;
 
   return (
-    <Grid gutter='xl' pb='xl'>
+    <Grid gap='xl' pb='xl'>
       {accessionEvent && (
         <Grid.Col span={12}>
           <Paper p='sm' mb='lg' withBorder>
@@ -198,7 +198,7 @@ function AccessionPanel() {
         </Grid.Col>
       )}
       <Grid.Col span={12}>
-        <Grid gutter='xl'>
+        <Grid gap='xl'>
           {fields
             .map((key) => ({ key, ...accessionFields[key] }))
             .map(({ key, label, description, examples, unit, icon: Icon }) => (
@@ -228,7 +228,7 @@ function AccessionPanel() {
               </Grid.Col>
             ))}
         </Grid>
-        <Grid gutter='xs' p='sm' mt='md'>
+        <Grid gap='xs' p='sm' mt='md'>
           {longFields
             .map((key) => ({ key, ...accessionFields[key] }))
             .map(({ key, label, description, examples, trait, icon: Icon }) => (
