@@ -204,9 +204,10 @@ query list($predicate: Predicate, $size: Int, $from: Int){
 `;
 
 const QUERY_EVENT_TREATMENTS = `
-query list($predicate: Predicate){
+query list($predicate: Predicate, $size: Int){
   eventSearch(
-    predicate: $predicate
+    predicate: $predicate,
+    size: $size
     ) {
     documents {
       results {

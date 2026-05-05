@@ -141,9 +141,8 @@ function MapComponent({
   // Helper function to add the events layer to the map
   const addLayer = () => {
     if (map.current) {
-      const tile = `${
-        import.meta.env.VITE_API_ALA
-      }/event/tile/event/mvt/{z}/{x}/{y}?queryId=${token}`;
+      const tile = `${import.meta.env.VITE_API_ALA
+        }/event/tile/event/mvt/{z}/{x}/{y}?queryId=${token}`;
 
       const config = getMapLayer(tile);
       map.current.addSource('events', config.source);
@@ -219,9 +218,9 @@ function MapComponent({
       {
         predicate: drawPredicate
           ? {
-              type: 'and',
-              predicates: [predicate, drawPredicate],
-            }
+            type: 'and',
+            predicates: [predicate, drawPredicate],
+          }
           : predicate,
       },
     );
@@ -261,21 +260,21 @@ function MapComponent({
             },
             ...(params.guid
               ? [
-                  {
-                    type: 'equals',
-                    key: 'taxonKey',
-                    value: params.guid,
-                  },
-                ]
+                {
+                  type: 'equals',
+                  key: 'taxonKey',
+                  value: params.guid,
+                },
+              ]
               : []),
             ...(params.resource
               ? [
-                  {
-                    type: 'equals',
-                    key: 'datasetKey',
-                    value: params.resource,
-                  },
-                ]
+                {
+                  type: 'equals',
+                  key: 'datasetKey',
+                  value: params.resource,
+                },
+              ]
               : []),
           ],
         },
