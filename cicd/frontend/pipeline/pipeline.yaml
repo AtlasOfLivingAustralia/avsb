@@ -455,7 +455,7 @@ Resources:
                     Fn::ImportValue:
                       Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
                 RunOrder: 6
-          - !Ref AWS::NoValue
+        - !Ref AWS::NoValue
 
 
   ExportConfigLogGroup:
