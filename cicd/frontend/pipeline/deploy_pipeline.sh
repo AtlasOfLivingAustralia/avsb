@@ -37,13 +37,13 @@ done
 branch=$(git branch --show-current)
 
 # confirm which environment we're deploying to if it wasnt explicitly set
-if [ "$branch" = "main" ] && [ "$ENV" = "nonprod" ]; then
+if [[ ( "$branch" == "main" || "$branch" == "master" ) &&  "$ENV" == "nonprod" ]]; then
   echo "Deploy to production or staging?"
   echo "1) production"
   echo "2) staging"
-  read -p "Enter your choice (1 or 2): " choice
+  read -r -p "Enter your choice (1 or 2): " choice
 
-  case $choice in
+  case "$choice" in
     1)
       ENV="prod"
       ;;
@@ -105,7 +105,7 @@ environment=$($SCRIPT_DIR/../../branch_2_env.py --branch $branch --env $ENV)
 echo environment: $environment
 
 # load environment vars
-$SCRIPT_DIR/../../gen_env_vars.py --env $environment --clean-branch $clean_branch --conf $SCRIPT_DIR/../config.ini > env.txt
+$SCRIPT_DIR/../../gen_env_vars.py --env $environment  --clean-branch $clean_branch --conf $SCRIPT_DIR/../config.ini > env.txt
 source env.txt
 rm env.txt
 
@@ -137,6 +137,7 @@ aws cloudformation deploy \
     --region $REGION \
     --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
     --parameter-overrides \
+        pAllowTeardown=$ALLOW_TEARDOWN \
         pAutoDeploy=$AUTO_DEPLOY \
         pBootstrapStackName=$BOOTSTRAP_STACK_NAME \
         pBucketsStackName=$BUCKETS_STACK_NAME \
@@ -145,6 +146,7 @@ aws cloudformation deploy \
         pGitHubBranch=$branch \
         pGitHubOwner=$GITHUB_OWNER \
         pGitHubRepositoryName=$GITHUB_REPO_NAME \
+        pLambdaStackName=$LAMBDA_STACK_NAME-$clean_branch \
         pPipelineFingerprint=$PIPELINE_MD5 \
         pProductComponent=$PRODUCT_COMPONENT \
         pProductName=$PRODUCT_NAME \
