@@ -130,7 +130,7 @@ esac
 
 # deploy/update the template
 echo "Deploying the pipeline template"
-echo cloudformation deploy \
+aws cloudformation deploy \
     --template-file pipeline.yaml \
     --stack-name $PIPELINE_STACK_NAME \
     --tags product=$PRODUCT_NAME component=cicd environment=$environment branch=$branch version=$COMMIT_ID \
