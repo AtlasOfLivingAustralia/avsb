@@ -3,7 +3,7 @@ set -ueo pipefail
 
 ###
 # Deploy the codepipeline for AVSB site
-# You must have AWS CLI authentication for this to run. 
+# You must have AWS CLI authentication for this to run.
 
 usage() {
  echo "Usage: $0 [OPTIONS]"
@@ -53,7 +53,7 @@ fi
 # check if we're on a detached head
 if [[ -n $branch ]]; then
   real_branch=1
-elif [[ -z $branch && -n $BRANCH_OVERRIDE ]]; then 
+elif [[ -z $branch && -n $BRANCH_OVERRIDE ]]; then
   real_branch=0
   branch=$BRANCH_OVERRIDE
 else
@@ -130,7 +130,7 @@ esac
 
 # deploy/update the template
 echo "Deploying the pipeline template"
-aws cloudformation deploy \
+echo cloudformation deploy \
     --template-file pipeline.yaml \
     --stack-name $PIPELINE_STACK_NAME \
     --tags product=$PRODUCT_NAME component=cicd environment=$environment branch=$branch version=$COMMIT_ID \
@@ -151,5 +151,3 @@ aws cloudformation deploy \
         pProductName=$PRODUCT_NAME \
         pRestartExecutionOnUpdate=$RESTART_PIPELINE_ON_UPDATE \
         pUsEast1CodePipelineArtifactBucketName=$US_EAST_ARTIFACT_BUCKET \
-
-
