@@ -1,48 +1,59 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
+
 Description: AVSB Infrastructure
 
 Parameters:
   pAvsbWafWebAclArn:
-    Type: String
     Description: The WAF Web ACL to attach the CloudFront distribution to
+    Type: String
+
   pSourceBucket:
-    Type: String
     Description: The bucket name for the site
+    Type: String
+
   pBucketPath:
-    Type: String
     Description: Optional path that the files are stored under
+    Type: String
+
   pCleanBranch:
-    Type: String
     Description: A cleaned version of the code branch name
+    Type: String
     Default: development
+
   pEnvironment:
-    Type: String
     Description: The AWS environment this belongs to
+    Type: String
+
   pHostedZone:
-    Type: String
     Description: The hosted zone the site are accessed under
+    Type: String
+
   pSubDomain:
-    Type: String
     Description: The subdomain the site are accessed on
-  pSslCertificate:
     Type: String
+
+  pSslCertificate:
     Description: The arn of the SSL certificate to be used
+    Type: String
 
 Conditions:
   IsDev: !Equals
     - !Ref pEnvironment
     - development
-  NotDev: !Not [ Condition: IsDev ]
+
+  NotDev: !Not
+    - !Condition IsDev
 
 Resources:
   AvsbBucket:
-    Type: 'AWS::S3::Bucket'
     DeletionPolicy: Delete
+    Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub ${pSourceBucket}
       PublicAccessBlockConfiguration:
         BlockPublicAcls: TRUE
         BlockPublicPolicy: TRUE
+        IgnorePublicAcls: TRUE
         RestrictPublicBuckets: TRUE
       Tags:
         - Key: component
@@ -55,25 +66,37 @@ Resources:
     Properties:
       Bucket: !Ref AvsbBucket
       PolicyDocument:
-        Version: 2012-10-17
+        Version: "2012-10-17"
         Statement:
-          - Action:
-              - 's3:GetObject'
+          - Sid: AllowCloudFrontService
+            Action:
+              - s3:GetObject
             Effect: Allow
-            Resource: !Sub 'arn:aws:s3:::${AvsbBucket}/*'
+            Resource: !Sub arn:aws:s3:::${AvsbBucket}/*
             Principal:
-              AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${AvsbCloudFrontOai}'
+              AWS: !Sub arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${AvsbCloudFrontOai}
+          - Sid: TLSAccessOnly
+            Action:
+              - s3:*
+            Effect: Deny
+            Resource:
+              - !Sub arn:aws:s3:::${AvsbBucket}
+              - !Sub arn:aws:s3:::${AvsbBucket}/*
+            Principal: '*'
+            Condition:
+              Bool:
+                aws:SecureTransport: "false"
 
   AvsbDnsRecord:
     Type: AWS::Route53::RecordSet
     Properties:
-      Name: !Sub '${pSubDomain}.${pHostedZone}'
+      Name: !Sub ${pSubDomain}.${pHostedZone}
       Comment: !Sub AVSB domain for the ${pEnvironment} environment
       Type: A
       AliasTarget:
         DNSName: !GetAtt AvsbCloudFrontDistro.DomainName
         HostedZoneId: Z2FDTNDATAQYW2
-      HostedZoneName: !Sub '${pHostedZone}.'
+      HostedZoneName: !Sub ${pHostedZone}.
 
   AvsbCloudFrontDistro:
     Type: AWS::CloudFront::Distribution
@@ -81,7 +104,7 @@ Resources:
     Properties:
       DistributionConfig:
         Aliases:
-          - !Sub '${pSubDomain}.${pHostedZone}'
+          - !Sub ${pSubDomain}.${pHostedZone}
         Comment: !Sub CF Distribution for the AVSB site ${pEnvironment}
         CustomErrorResponses:
           - ErrorCode: 403
@@ -104,11 +127,11 @@ Resources:
         HttpVersion: http2
         IPV6Enabled: false
         Origins:
-          - DomainName: !Sub '${pSourceBucket}.s3.${AWS::Region}.amazonaws.com'
+          - DomainName: !Sub ${pSourceBucket}.s3.${AWS::Region}.amazonaws.com
             Id: avsb-s3
             S3OriginConfig:
-              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${AvsbCloudFrontOai}'
-            OriginPath: !Sub '/${pBucketPath}'
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${AvsbCloudFrontOai}
+            OriginPath: !Sub /${pBucketPath}
         ViewerCertificate:
           AcmCertificateArn: !Ref pSslCertificate
           MinimumProtocolVersion: TLSv1.2_2021
@@ -127,8 +150,11 @@ Resources:
         MaxTTL: 86400
         MinTTL: 1
         Name: !Sub
-          - "Avsb-cache-Policy-${ResourceName}"
-          - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+          - Avsb-cache-Policy-${ResourceName}
+          - ResourceName: !If
+              - IsDev
+              - !Ref pCleanBranch
+              - !Ref pEnvironment
         ParametersInCacheKeyAndForwardedToOrigin:
           CookiesConfig:
             CookieBehavior: none
@@ -150,9 +176,11 @@ Resources:
 Outputs:
   AvsbBucketName:
     Value: !Ref AvsbBucket
+
   AvsbBucketArn:
     Value: !GetAtt AvsbBucket.Arn
+
   AvsbCloudFrontDistributionArn:
     Value: !Sub
-      - "arn:aws:cloudfront::${AWS::AccountId}:distribution/${DistributionId}"
+      - arn:aws:cloudfront::${AWS::AccountId}:distribution/${DistributionId}
       - DistributionId: !GetAtt AvsbCloudFrontDistro.Id
