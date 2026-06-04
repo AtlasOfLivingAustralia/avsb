@@ -69,7 +69,7 @@ interface SeedBankTrial {
   id?: string;
   accessionNumber?: string | null;
   herbariumVoucher?: string | null;
-  testDateStarted?: string | null;
+  testDateStarted?: number | null;
   testLengthInDays?: string | null;
   numberGerminated?: number | null;
   germinationRateInDays?: number | null;
