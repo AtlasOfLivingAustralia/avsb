@@ -73,6 +73,7 @@ function FilterBar({ filters, predicates, onFiltersOpen, onRemove, ...rest }: Fi
               h={36}
               radius='xl'
               style={{ display: 'flex', alignItems: 'center' }}
+              withBorder
             >
               <ActionIcon
                 ml={4}

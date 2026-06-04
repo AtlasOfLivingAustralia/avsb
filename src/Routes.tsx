@@ -26,6 +26,7 @@ const routes = createBrowserRouter([
         element: <HomeView />,
       },
       {
+        id: 'seedbank',
         path: 'seedbank/:resource',
         lazy: () => import('./views/Seedbank'),
         loader: async ({ params }) => {
