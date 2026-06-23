@@ -1,6 +1,7 @@
 import { spatialAPI, type Field, type FieldObject, type Predicate } from '#/api';
 import {
   ActionIcon,
+  Button,
   Center,
   Divider,
   Group,
@@ -45,10 +46,10 @@ function filterSpatialFields(fields: Field[], query: string): Field[] {
 
 interface LayerListProps {
   open: boolean;
-  contentHeight?: number | string;
+  contentHeight?: number;
   topOffset?: number;
   rightOffset?: number;
-  onSelect: (predicate: Predicate) => void;
+  onSelect: (predicate: Predicate | null) => void;
   onClose?: () => void;
 }
 
@@ -61,6 +62,7 @@ function LayerList({
   onClose,
 }: LayerListProps) {
   const [spatialFields, setSpatialFields] = useState<Field[] | null>(null);
+  const [selected, setSelected] = useState<FieldObject[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [search, setSearch] = useState('');
   const [debouncedSearch] = useDebouncedValue(search, 200);
@@ -69,6 +71,39 @@ function LayerList({
     () => (spatialFields ? filterSpatialFields(spatialFields, debouncedSearch) : null),
     [spatialFields, debouncedSearch],
   );
+
+  const handleSelect = (newObject: FieldObject) => {
+    if (selected.findIndex((object) => object.id === newObject.id) > -1) {
+      setSelected((objects) => objects.filter(({ id }) => id !== newObject.id));
+    } else {
+      setSelected((objects) => [...objects, newObject]);
+    }
+  }
+
+  useEffect(() => {
+    if (selected.length === 0) {
+      onSelect(null)
+    } else {
+      onSelect({
+        type: 'or',
+        predicates: selected.flatMap((object) => ({
+          type: 'and',
+          predicates: [
+            {
+              type: 'equals',
+              key: 'measurementType',
+              value: object.fieldname
+            },
+            {
+              type: 'equals',
+              key: 'measurementValue',
+              value: object.name
+            }
+          ]
+        }))
+      })
+    }
+  }, [selected]);
 
   useEffect(() => {
     async function fetchSpatial() {
@@ -90,7 +125,7 @@ function LayerList({
           style={{
             ...styles,
             position: 'absolute',
-            zIndex: 10,
+            zIndex: 15,
             top: `calc(var(--mantine-spacing-md) + ${topOffset || 0}px)`,
             right: `calc(var(--mantine-spacing-md) + ${rightOffset || 0}px)`,
           }}
@@ -130,27 +165,25 @@ function LayerList({
                 </Stack>
               </Center>
             ) : (
-              <Stack h={contentHeight || 300} gap={0} style={{ overflowY: 'auto' }}>
+              <Stack h={(contentHeight || 300) - (selected.length > 0 ? 30 : 0)} gap={0} style={{ overflowY: 'auto' }}>
                 <FieldList
                   fields={filteredFields}
                   search={debouncedSearch}
-                  onSelect={(object) => onSelect({
-                    type: 'and',
-                    predicates: [
-                      {
-                        type: 'equals',
-                        key: 'measurementType',
-                        value: object.fieldname
-                      },
-                      {
-                        type: 'equals',
-                        key: 'measurementValue',
-                        value: object.name
-                      }
-                    ]
-                  })}
+                  selected={selected}
+                  onSelect={handleSelect}
                 />
               </Stack>
+            )}
+            {selected.length > 0 && (
+              <Button
+                style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+                size='xs'
+                variant='light'
+                fullWidth
+                onClick={() => setSelected([])}
+              >
+                Clear {selected.length} layer{selected.length > 1 ? 's' : ''}
+              </Button>
             )}
           </Paper>
         </div>

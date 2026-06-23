@@ -29,8 +29,8 @@ export function HomeMap() {
             onLoad={() => setLoaded(true)}
             zoomOnLoad={1.5}
             itemsTopOffset={125}
-            itemsLeftOffset={-200}
-            layersRightOffset={-200}
+            itemsLeftOffset={-100}
+            layersRightOffset={-100}
           />
         </Suspense>
       </div>

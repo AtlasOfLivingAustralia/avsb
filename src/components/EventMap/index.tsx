@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, Group, Paper } from '@mantine/core';
+import { Button, Checkbox, Flex, Group, Indicator, Paper, Pill } from '@mantine/core';
 import Draw from '@mapbox/mapbox-gl-draw';
 import { IconLayersIntersect2, IconSearch, IconStack2 } from '@tabler/icons-react';
 // Mapbox
@@ -40,12 +40,12 @@ interface MapProps {
   zoomOnLoad?: number;
 
   // Items config
-  itemListHeight?: string | number;
+  itemListHeight?: number;
   itemsTopOffset?: number;
   itemsLeftOffset?: number;
 
   // Layers config
-  layersListHeight?: string | number;
+  layersListHeight?: number;
   layersTopOffset?: number;
   layersRightOffset?: number;
   onLoad?: () => void;
@@ -343,11 +343,7 @@ function MapComponent({
       <SelectionRecords
         opened={recordsOpened}
         onClose={() => setRecordsOpened(false)}
-        predicates={
-          drawPredicate
-            ? [predicate, drawPredicate, RECORDS_PREDICATE]
-            : [predicate, RECORDS_PREDICATE]
-        }
+        predicates={[predicate, RECORDS_PREDICATE, ...([drawPredicate, spatialPredicate].filter((pred) => !!pred))]}
       />
       <div
         style={{
@@ -381,7 +377,7 @@ function MapComponent({
           left='var(--mantine-spacing-md)'
           right='var(--mantine-spacing-md)'
           justify='center'
-          style={{ zIndex: 20 }}
+          style={{ zIndex: 10 }}
         >
           <Paper
             style={{
@@ -414,12 +410,15 @@ function MapComponent({
             onClick={() => {
               setRecordsOpened(true);
             }}
-            aria-label={`View ${drawPredicate ? 'selected' : 'map'}  records`}
+            aria-label={`View ${(drawPredicate || spatialPredicate) ? 'selected' : 'map'}  records`}
           >
             {drawPredicate ? 'Selected' : 'Map'} records
           </Button>
           <Button
             leftSection={<IconStack2 size='1rem' />}
+            rightSection={spatialPredicate && (
+              <Pill color='blue' size='xs'>{spatialPredicate.predicates?.length}</Pill>
+            )}
             color='gray'
             radius='lg'
             size='xs'

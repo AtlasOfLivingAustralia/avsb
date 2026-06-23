@@ -62,6 +62,12 @@ export function SelectionRecords({
     },
   ];
 
+  const mapPredicatesKey = JSON.stringify(rawPredicates);
+
+  useEffect(() => {
+    setPage(1);
+  }, [mapPredicatesKey]);
+
   useEffect(() => {
     async function runQuery() {
       const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
@@ -85,7 +91,7 @@ export function SelectionRecords({
         console.log(error);
       }
     }
-  }, [opened, page, pageSize, filterPredicates]);
+  }, [opened, page, pageSize, filterPredicates, mapPredicatesKey]);
 
   const downloadFetcher = (data: { eventSearch: EventSearchResult }) =>
     data?.eventSearch?.documents?.results || [];
