@@ -25,7 +25,6 @@ config_defaults = {
 
 # read the config file
 config = configparser.ConfigParser(defaults=config_defaults, interpolation=configparser.ExtendedInterpolation())
-config.read(args.conf)
 
 # combine the master config with the component specific config
 script_dir = os.path.dirname(os.path.realpath(__file__))

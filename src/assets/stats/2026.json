@@ -1,0 +1,18 @@
+{
+  "accessions": 60418,
+  "trials": 34121,
+  "treatments": 32579,
+  "speciesWithAccession": 18243,
+  "speciesWithTrial": 10933,
+  "epbcTotal": 983,
+  "conservation": {
+    "New South Wales : Conservation Status": 504,
+    "Northern Territory : Conservation Status": 17,
+    "South Australia : Conservation Status": 573,
+    "Victoria : Conservation Status": 1129,
+    "Western Australia: Conservation Status": 1480,
+    "Tasmania : Conservation Status": 340,
+    "Queensland : Conservation Status": 190,
+    "Australian Capital Territory : Conservation Status": 14
+  }
+}

@@ -26,3 +26,4 @@ stats.html
 
 # Local configuration
 config/.env.development.local
+.claude/settings.local.json
