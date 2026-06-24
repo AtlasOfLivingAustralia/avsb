@@ -337,7 +337,7 @@ export function Component() {
               Download all protected species data
             </StaticDownloads>
           </Flex>
-          <Title c='dimmed' order={3}>Explore accessions for protected species</Title>
+          <Title fw={500} c='dimmed' order={3}>Explore accessions for protected species</Title>
           <Stack gap='xs' mb='md'>
             <Text x- size='sm'>Use the table below to filter and download threatened species records from Australian Seed Bank Partnership vaults.</Text>
             <Text size='sm'>Click the buttons to apply national (EPBC Act) or jurisdictional threatened species legislation to filter records for species listed in any Australian state, territory or nationally.</Text>
