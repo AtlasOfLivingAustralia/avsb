@@ -11,6 +11,8 @@ import { IconExternalLink } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
+import { biocacheAPI } from '#/api';
+
 // AVH logo
 import avhLogo from '#/assets/avh-logo-white.png';
 
@@ -41,14 +43,10 @@ function HerbariumLink({ voucher, ...rest }: HerbariumLinkProps) {
         disableAllQualityFilters: 'true',
       });
 
-      const data = await fetch(
-        `${import.meta.env.VITE_API_ALA}/occurrences/occurrences/search?${params.toString()}`,
-      );
-
-      if (data.ok) {
-        const { totalRecords, occurrences } = await data.json();
+      try {
+        const { totalRecords, occurrences } = await biocacheAPI.occurrences(params);
         if (totalRecords > 0) setUuid(occurrences[0].uuid);
-      } else {
+      } catch {
         setError(true);
       }
 

@@ -37,7 +37,7 @@ async function dataResource(id: string): Promise<DataResource> {
     if (cachedResponse) return cachedResponse;
   }
 
-  const response = await fetch(`${import.meta.env.VITE_API_ALA}/metadata/ws/dataResource/${id}`);
+  const response = await fetch(URL);
   const data = await response.text();
 
   // Catch 200 responses, but no entry found

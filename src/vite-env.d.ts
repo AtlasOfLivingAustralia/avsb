@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly VITE_ALA_IMAGES: string;
   readonly VITE_ALA_BIE: string;
   readonly VITE_ALA_COLLECTORY: string;
+  readonly VITE_ALA_BIOCACHE: string;
   readonly VITE_APP_DATA_RESOURCES: string;
   readonly VITE_APP_MAPBOX_TOKEN: string;
   readonly VITE_APP_FATHOM_ID: string;
