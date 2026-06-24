@@ -17,7 +17,7 @@ curl -X POST "https://api.datadoghq.com/api/v1/events" \
           "alert_type": "success",
           "source_type_name": "amazon codebuild",
           "title": "$PRODUCT_NAME $PRODUCT_COMPONENT was deployed to $ENVIRONMENT",
-          "text": "%%% \n[$COMMIT_ID](https://github.com/$REPO/commit/$COMMIT_ID) - $COMMIT_MSG\nBranch:$SRC_BRANCH\nEnvironment:$ENVIRONMENT\n\n $DEPLOY_MSG\n %%%",
+          "text": "%%% \n[$COMMIT_ID](https://github.com/$REPO/commit/$COMMIT_ID) - $COMMIT_MSG\nBranch:$SRC_BRANCH\nEnvironment:$ENVIRONMENT\n\n $DEPLOY_MSG \n %%%",
           "tags": [
             "product:$PRODUCT_NAME",
             "component:$PRODUCT_COMPONENT",

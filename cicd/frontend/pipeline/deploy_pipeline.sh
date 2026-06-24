@@ -3,7 +3,7 @@ set -ueo pipefail
 
 ###
 # Deploy the codepipeline for AVSB site
-# You must have AWS CLI authentication for this to run. 
+# You must have AWS CLI authentication for this to run.
 
 usage() {
  echo "Usage: $0 [OPTIONS]"
@@ -37,13 +37,13 @@ done
 branch=$(git branch --show-current)
 
 # confirm which environment we're deploying to if it wasnt explicitly set
-if [ "$branch" = "main" ] && [ "$ENV" = "nonprod" ]; then
+if [[ ( "$branch" == "main" || "$branch" == "master" ) &&  "$ENV" == "nonprod" ]]; then
   echo "Deploy to production or staging?"
   echo "1) production"
   echo "2) staging"
-  read -p "Enter your choice (1 or 2): " choice
+  read -r -p "Enter your choice (1 or 2): " choice
 
-  case $choice in
+  case "$choice" in
     1)
       ENV="prod"
       ;;
@@ -53,7 +53,7 @@ fi
 # check if we're on a detached head
 if [[ -n $branch ]]; then
   real_branch=1
-elif [[ -z $branch && -n $BRANCH_OVERRIDE ]]; then 
+elif [[ -z $branch && -n $BRANCH_OVERRIDE ]]; then
   real_branch=0
   branch=$BRANCH_OVERRIDE
 else
@@ -105,7 +105,7 @@ environment=$($SCRIPT_DIR/../../branch_2_env.py --branch $branch --env $ENV)
 echo environment: $environment
 
 # load environment vars
-$SCRIPT_DIR/../../gen_env_vars.py --env $environment --clean-branch $clean_branch --conf $SCRIPT_DIR/../config.ini > env.txt
+$SCRIPT_DIR/../../gen_env_vars.py --env $environment  --clean-branch $clean_branch --conf $SCRIPT_DIR/../config.ini > env.txt
 source env.txt
 rm env.txt
 
@@ -137,6 +137,7 @@ aws cloudformation deploy \
     --region $REGION \
     --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
     --parameter-overrides \
+        pAllowTeardown=$ALLOW_TEARDOWN \
         pAutoDeploy=$AUTO_DEPLOY \
         pBootstrapStackName=$BOOTSTRAP_STACK_NAME \
         pBucketsStackName=$BUCKETS_STACK_NAME \
@@ -150,5 +151,3 @@ aws cloudformation deploy \
         pProductName=$PRODUCT_NAME \
         pRestartExecutionOnUpdate=$RESTART_PIPELINE_ON_UPDATE \
         pUsEast1CodePipelineArtifactBucketName=$US_EAST_ARTIFACT_BUCKET \
-
-
