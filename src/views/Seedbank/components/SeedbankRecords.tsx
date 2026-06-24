@@ -26,7 +26,7 @@ import { useParams, useRouteLoaderData } from 'react-router';
 
 
 export function SeedbankRecords() {
-	const { gql } = useRouteLoaderData('seedbank');
+	const { gql, collectory } = useRouteLoaderData('seedbank');
 
 	// State hooks
 	const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
@@ -128,7 +128,7 @@ export function SeedbankRecords() {
 						fields={downloadFields}
 						fetcher={downloadFetcher}
 						total={query?.total || 0 as number}
-						fileName={`AVSB Map Accessions`}
+						fileName={`AVSB ${collectory?.acronym || 'Seedbank'} Accessions`}
 					/>
 				</Group>
 			</Group>
