@@ -1,5 +1,4 @@
 import {
-  Alert,
   Anchor,
   Box,
   Button,
@@ -8,7 +7,8 @@ import {
   Divider,
   Group,
   Image,
-  MantineSpacing,
+  type MantineSpacing,
+  Paper,
   Space,
   Stack,
   Text,
@@ -16,7 +16,13 @@ import {
   useComputedColorScheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconArrowUpRight, IconDatabase, IconExternalLink, IconMessageCircleQuestion, IconSeedlingFilled } from '@tabler/icons-react';
+import {
+  IconArrowUpRight,
+  IconDatabase,
+  IconExternalLink,
+  IconMessageCircleQuestion,
+  IconSeedlingFilled,
+} from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router';
 
 // Static logos
@@ -27,9 +33,8 @@ import wateringCan from '#/assets/watering-can-and-plant.png';
 import { Blob, TaxonSearchInput } from '#/components';
 import { Wave } from '#/components/Wave';
 import { breakpoints } from '#/theme/constants';
-
-import Summaries from './components/Summaries';
 import { HomeMap } from './components/HomeMap';
+import Summaries from './components/Summaries';
 
 function Home() {
   const navigate = useNavigate();
@@ -39,14 +44,33 @@ function Home() {
 
   return (
     <>
+      <svg
+        width='0'
+        height='0'
+        aria-hidden='true'
+        focusable='false'
+        style={{ position: 'absolute' }}
+      >
+        <defs>
+          <linearGradient id='home-gradient' x1='0%' y1='0%' x2='100%' y2='100%'>
+            <stop offset='0%' stopColor='#A6CE39' />
+            <stop offset='100%' stopColor='#487759' />
+          </linearGradient>
+        </defs>
+      </svg>
       <Container size='xl' pt={mdOrLarger ? 'xl' : 0} mt={-30}>
         <Group justify='space-between' pt={mdOrLarger ? 'xl' : 0}>
-          <Stack py='xl' px={pagePadding} w={mdOrLarger ? 'calc(100vw - 530px)' : '100%'} maw={mdOrLarger ? 600 : undefined}>
+          <Stack
+            py='xl'
+            px={pagePadding}
+            w={mdOrLarger ? 'calc(100vw - 530px)' : '100%'}
+            maw={mdOrLarger ? 600 : undefined}
+          >
             <Title
-              fw='bold'
-              size={42}
+              fw={600}
+              size={44}
               style={{
-                color: 'light-dark(var(--mantine-color-dark-4), var(--mantine-color-gray-2))',
+                color: 'light-dark(var(--mantine-color-dark-4), var(--mantine-color-gray-3))',
               }}
             >
               <Text
@@ -54,29 +78,44 @@ function Home() {
                 inherit
                 variant='gradient'
                 gradient={{ from: '#A6CE39', to: '#487759' }}
+
               >
                 Open access
               </Text>
               &nbsp;to
               <br />
-              Australia&apos;s conservation seed banks
+              <span style={{ fontWeight: 600 }}>Australia&apos;s conservation<br />seed banks</span>
             </Title>
             <Text mt='sm' c='light-dark(var(--mantine-color-gray-8),var(--mantine-color-gray-5))'>
-              The Australian Virtual Seed Bank connects you with seed collection and germination information from seed banks across Australia.
+              The Australian Virtual Seed Bank connects you with seed collection and germination
+              information from seed banks across Australia.
             </Text>
             <Text c='light-dark(var(--mantine-color-gray-8),var(--mantine-color-gray-5))'>
-              Co-developed by the <Anchor href='https://www.seedpartnership.org.au/' target='_blank'>Australian Seed Bank Partnership</Anchor> and the <Anchor href='https://www.ala.org.au/' target='_blank'>Atlas of Living Australia</Anchor>, this resource supports research, restoration, and species recovery.
+              Co-developed by the{' '}
+              <Anchor href='https://www.seedpartnership.org.au/' target='_blank'>
+                Australian Seed Bank Partnership
+              </Anchor>{' '}
+              and the{' '}
+              <Anchor href='https://www.ala.org.au/' target='_blank'>
+                Atlas of Living Australia
+              </Anchor>
+              , this resource supports research, restoration, and species recovery.
             </Text>
-            <Text fw={600} mt='sm' mb='md' c='light-dark(var(--mantine-color-gray-8),var(--mantine-color-gray-5))'>Start your journey now by searching for a plant species or family below</Text>
+            <Text
+              fw={600}
+              mt='sm'
+              mb='md'
+              c='light-dark(var(--mantine-color-gray-8),var(--mantine-color-gray-5))'
+            >
+              Start your journey now by searching for a plant species or family below
+            </Text>
             <TaxonSearchInput
               onChange={(guid) => {
                 if (guid) navigate(`/taxon/${encodeURIComponent(guid)}`);
               }}
             />
           </Stack>
-          {mdOrLarger && (
-            <HomeMap />
-          )}
+          {mdOrLarger && <HomeMap />}
         </Group>
       </Container>
       {mdOrLarger && <Space h={40} />}
@@ -96,25 +135,47 @@ function Home() {
         <Container size='xl'>
           <Box px={pagePadding}>
             <Group pt={mdOrLarger ? 0 : 'xl'} justify='space-between'>
-              <Stack w={mdOrLarger ? 'calc(100vw - 530px)' : '100%'} maw={mdOrLarger ? 600 : undefined}>
-                <Group mb='md'>
-                  <IconSeedlingFilled size="2rem" />
-                  <Title order={2} fw={600}>
+              <Stack
+                w={mdOrLarger ? 'calc(100vw - 530px)' : '100%'}
+                maw={mdOrLarger ? 600 : undefined}
+              >
+                <Group mb='md' gap='xl'>
+                  <Paper
+                    p='sm'
+                    bg='light-dark(white, var(--mantine-color-gray-8))'
+                    shadow='lg'
+                  >
+                    <Center>
+                      <IconSeedlingFilled
+                        style={{ fill: 'url(#home-gradient)' }}
+                      />
+                    </Center>
+                  </Paper>
+                  <Title c='light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3))' order={2} fw={500} size={28}>
                     Inside the vault
                   </Title>
                 </Group>
                 <Text c='light-dark(var(--mantine-color-gray-7),var(--mantine-color-gray-5))'>
-                  Our <Anchor component={Link} to='/dashboard'>Seed Bank Snapshot</Anchor> page reveals the story behind Australia&apos;s conservation collections. Discover who is contributing to country-wide seed banking efforts, explore national counts of our seed accessions, trials, and treatments, and download information about the National and State listed threatened species we hold.
+                  Our{' '}
+                  <Anchor component={Link} to='/dashboard'>
+                    Seed Bank Snapshot
+                  </Anchor>{' '}
+                  page reveals the story behind Australia&apos;s conservation collections. Discover
+                  who is contributing to country-wide seed banking efforts, explore national counts
+                  of our seed accessions, trials, and treatments, and download information about the
+                  National and State listed threatened species we hold.
                 </Text>
                 <Text c='light-dark(var(--mantine-color-gray-7),var(--mantine-color-gray-5))'>
-                  These insights empower conservation planning, research, and policy decisions to protect Australia&apos;s plants for the future.
+                  These insights empower conservation planning, research, and policy decisions to
+                  protect Australia&apos;s plants for the future.
                 </Text>
                 <Group mt='lg'>
                   <Button
                     component={Link}
-                    to="/dashboard"
+                    to='/dashboard'
                     variant='light'
-                    rightSection={<IconArrowUpRight size="1.2rem" />}>
+                    rightSection={<IconArrowUpRight size='1.2rem' />}
+                  >
                     Seed Bank Snapshot
                   </Button>
                 </Group>
@@ -135,13 +196,27 @@ function Home() {
               )}
             </Group>
             <Space h={20} />
-            <Divider color='light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))' my='xl' variant='dashed' />
+            <Divider
+              color='light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))'
+              my='xl'
+              variant='dashed'
+            />
             <Space h={20} />
             <Stack>
               <Group justify='space-between'>
-                <Group>
-                  <IconDatabase size="2rem" />
-                  <Title order={2} fw={600}>
+                <Group mb='md' gap='xl'>
+                  <Paper
+                    p='sm'
+                    bg='light-dark(white, var(--mantine-color-gray-8))'
+                    shadow='lg'
+                  >
+                    <Center>
+                      <IconDatabase
+                        style={{ stroke: 'url(#home-gradient)' }}
+                      />
+                    </Center>
+                  </Paper>
+                  <Title c='light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3))' order={2} fw={500} size={28}>
                     Our Datasets
                   </Title>
                 </Group>
@@ -152,7 +227,10 @@ function Home() {
                   Last Updated December, 2025
                 </Text>
               </Group>
-              <Text c='light-dark(var(--mantine-color-gray-7),var(--mantine-color-gray-5))'>Browse the collections provided by our seed bank partners. Click a dataset below to view their collections and germination records.</Text>
+              <Text c='light-dark(var(--mantine-color-gray-7),var(--mantine-color-gray-5))'>
+                Browse the collections provided by our seed bank partners. Click a dataset below to
+                view their collections and germination records.
+              </Text>
               <Summaries mt='md' />
             </Stack>
           </Box>
@@ -173,7 +251,11 @@ function Home() {
               w={mdOrLarger ? '70%' : '100%'}
               gap='md'
             >
-              <Image w={80} src={colorScheme === 'dark' ? logoWhite : logoGrey} alt='Australian virtual seedbank logo' />
+              <Image
+                w={80}
+                src={colorScheme === 'dark' ? logoWhite : logoGrey}
+                alt='Australian virtual seedbank logo'
+              />
               <Text c='dimmed' size='sm' ta={mdOrLarger ? 'left' : 'center'}>
                 We acknowledge Partnership organisations for providing their data, and the Director
                 of National Parks and the Council of Heads of Australian Botanic Gardens for support

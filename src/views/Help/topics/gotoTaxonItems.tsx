@@ -4,7 +4,7 @@ import { IconClick, IconMouse } from '@tabler/icons-react';
 import imageHomeSearch from '#/assets/help/home-search-min.png';
 import imageHomeSearchSelect from '#/assets/help/home-search-select-min.png';
 
-import { HelpTopicItem } from '..';
+import { type HelpTopicItem } from '..';
 
 const items: HelpTopicItem[] = [
   {

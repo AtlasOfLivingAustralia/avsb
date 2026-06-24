@@ -1,4 +1,4 @@
-import { SeedBankAccession } from '#/api/graphql/types';
+import type { SeedBankAccession } from '#/api/graphql/types';
 
 const fields: (keyof SeedBankAccession)[] = [
   'seedPerGram',

@@ -1,6 +1,6 @@
-import { Box, BoxProps, Text } from '@mantine/core';
-import { TablerIcon } from '@tabler/icons-react';
-import { CSSProperties, PropsWithChildren } from 'react';
+import { Box, type BoxProps, Text } from '@mantine/core';
+import { type TablerIcon } from '@tabler/icons-react';
+import type { CSSProperties, PropsWithChildren } from 'react';
 
 interface IconTextProps extends BoxProps {
   icon?: TablerIcon;

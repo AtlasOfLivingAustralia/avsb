@@ -11,13 +11,10 @@ import {
   Transition,
   UnstyledButton,
 } from '@mantine/core';
-
-import { Event, EventDocuments, SeedBankAccession } from '#/api/graphql/types';
 import { IconX } from '@tabler/icons-react';
 import { Link } from 'react-router';
-
+import type { Event, EventDocuments, SeedBankAccession } from '#/api/graphql/types';
 import classes from './ItemList.module.css';
-import { mapEventTaxon } from '#/helpers/mapEventTaxon';
 
 const slideX = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -35,7 +32,14 @@ interface ItemListProps {
   onClose?: () => void;
 }
 
-function ItemList({ open, documents, contentHeight, topOffset, leftOffset, onClose }: ItemListProps) {
+function ItemList({
+  open,
+  documents,
+  contentHeight,
+  topOffset,
+  leftOffset,
+  onClose,
+}: ItemListProps) {
   const { results, total } = documents;
 
   return (

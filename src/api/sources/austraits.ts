@@ -48,8 +48,9 @@ async function summary(search: string, guid: string): Promise<AusTraitsSummary> 
       !response.ok ||
       data.error ||
       (Array.isArray(data) && data[0] === 'No summary data can be found for this taxon.')
-    )
+    ) {
       return { numeric_traits: [], categorical_traits: [] };
+    }
 
     // Cache the response
     if (cacheKey && response.ok) maybeStoreResponse(cacheKey, data);

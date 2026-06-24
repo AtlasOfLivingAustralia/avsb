@@ -1,4 +1,4 @@
-import { BoxProps, Flex, HoverCard, Stack, Text, UnstyledButton } from '@mantine/core';
+import { type BoxProps, Flex, HoverCard, Stack, Text, UnstyledButton } from '@mantine/core';
 import { IconEyeQuestion } from '@tabler/icons-react';
 
 const summaries: { [key: string]: string[] } = {

@@ -46,7 +46,7 @@ import {
   useRouteLoaderData,
 } from 'react-router';
 // Project imports
-import {
+import type {
   AusTraitsSummary,
   CategoricalTrait,
   Event,
@@ -54,7 +54,7 @@ import {
   SDSInstance,
   SeedBankAccession,
 } from '#/api';
-import { accessionFields, getIsDefined, SeedbankFieldTrait } from '#/helpers';
+import { accessionFields, getIsDefined, type SeedbankFieldTrait } from '#/helpers';
 import Contact from '../Contact';
 import FieldTooltip from '../FieldTooltip';
 import IconText from '../IconText';
@@ -155,7 +155,7 @@ function AccessionPanel() {
   const hasCoordinates = accessionEvent.decimalLatitude && accessionEvent.decimalLongitude;
 
   return (
-    <Grid gutter='xl' pb='xl'>
+    <Grid gap='xl' pb='xl'>
       {accessionEvent && (
         <Grid.Col span={12}>
           <Paper p='sm' mb='lg' withBorder>
@@ -174,7 +174,9 @@ function AccessionPanel() {
                   mb={2}
                   checked={false}
                   onClick={() =>
-                    navigate(`/taxon/${encodeURIComponent(accessionEvent._taxon?.taxonID || '')}/accessions`)
+                    navigate(
+                      `/taxon/${encodeURIComponent(accessionEvent._taxon?.taxonID || '')}/accessions`,
+                    )
                   }
                 >
                   <Group gap={4}>
@@ -196,7 +198,7 @@ function AccessionPanel() {
         </Grid.Col>
       )}
       <Grid.Col span={12}>
-        <Grid gutter='xl'>
+        <Grid gap='xl'>
           {fields
             .map((key) => ({ key, ...accessionFields[key] }))
             .map(({ key, label, description, examples, unit, icon: Icon }) => (
@@ -226,7 +228,7 @@ function AccessionPanel() {
               </Grid.Col>
             ))}
         </Grid>
-        <Grid gutter='xs' p='sm' mt='md'>
+        <Grid gap='xs' p='sm' mt='md'>
           {longFields
             .map((key) => ({ key, ...accessionFields[key] }))
             .map(({ key, label, description, examples, trait, icon: Icon }) => (
@@ -389,7 +391,12 @@ function AccessionPanel() {
       )}
       {accessionEvent.eventID && (
         <Grid.Col span={12}>
-          <Text fw={600} size='lg' mb='md' style={{ fontFamily: 'var(--mantine-font-family-headings)' }}>
+          <Text
+            fw={600}
+            size='lg'
+            mb='md'
+            style={{ fontFamily: 'var(--mantine-font-family-headings)' }}
+          >
             Related Trials
           </Text>
           <TrialSummary trials={trialEvents} />

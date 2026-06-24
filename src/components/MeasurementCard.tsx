@@ -1,5 +1,5 @@
-import { Measurement } from '#/api/graphql/types';
-import { Badge, Box, Group, Paper, PaperProps, Text, Tooltip } from '@mantine/core';
+import { Badge, Box, Group, Paper, type PaperProps, Text, Tooltip } from '@mantine/core';
+import { type Measurement } from '#/api/graphql/types';
 
 interface MeasurementCardContentProps extends PaperProps {
   measurement: Measurement;

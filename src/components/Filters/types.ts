@@ -1,6 +1,6 @@
-import { ComboboxItem } from '@mantine/core';
-import { TablerIcon } from '@tabler/icons-react';
-import { Predicate } from '#/api/graphql/types';
+import { type ComboboxItem } from '@mantine/core';
+import { type TablerIcon } from '@tabler/icons-react';
+import { type Predicate } from '#/api/graphql/types';
 
 export type FiltersSort = 'alphabetical' | 'groups';
 

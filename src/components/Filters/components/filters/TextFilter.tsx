@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Stack, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
+import { useEffect, useState } from 'react';
 
 import IconText from '#/components/IconText';
-import { FilterItemProps } from '../../types';
+import { type FilterItemProps } from '../../types';
 
 function TextFilter({ filter, resetKey, onChange }: FilterItemProps) {
   const [value, setValue] = useState<string>('');

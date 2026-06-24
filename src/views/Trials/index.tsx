@@ -2,16 +2,16 @@ import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mant
 import { useEffect, useState } from 'react';
 import { useLoaderData, useLocation, useParams, useRouteLoaderData } from 'react-router';
 import { gqlQueries, performGQLQuery } from '#/api';
-import { Event, EventDocuments, EventSearchResult, Predicate } from '#/api/graphql/types';
+import type { Event, EventDocuments, EventSearchResult, Predicate } from '#/api/graphql/types';
 import queries from '#/api/queries';
-import { Taxon } from '#/api/sources/taxon';
+import { type Taxon } from '#/api/sources/taxon';
 // Project components / helpers
 import { Downloads, Filters } from '#/components';
-import { useMounted, mapTrialTreatments } from '#/helpers';
+import { mapTrialTreatments, useMounted } from '#/helpers';
+import { formatNumber } from '#/helpers/stats';
 import TrialsTable from './components/TrialsTable';
 import downloadFields from './downloadFields';
 import filters from './filters';
-import { formatNumber } from '#/helpers/stats';
 
 interface LocationState {
   predicates?: Predicate[];
@@ -165,8 +165,8 @@ export function Component() {
         <Group>
           <Text c='dimmed' ta='right' size='sm'>
             {(page - 1) * pageSize + 1}-
-            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {formatNumber(query.total || 0)} total
-            records
+            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of{' '}
+            {formatNumber(query.total || 0)} total records
           </Text>
           <Divider orientation='vertical' />
           <Downloads

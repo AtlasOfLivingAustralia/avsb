@@ -1,17 +1,14 @@
 import { Code } from '@mantine/core';
 import { IconClick, IconEye } from '@tabler/icons-react';
-
-import imageAccessions from '#/assets/help/taxon-accessions-min.png';
-import imageAccessionsExpanded from '#/assets/help/taxon-accessions-expanded-min.png';
-import imageAccessionsResults from '#/assets/help/taxon-accessions-results-min.png';
-import imageAccessionsFullHover from '#/assets/help/taxon-accessions-full-hover-min.png';
-import imageAccessionsDetails from '#/assets/help/taxon-accessions-details-min.png';
-import imageAccessionsDetailsMap from '#/assets/help/taxon-accessions-details-map-min.png';
 import imageAccessionsDetailsBottom from '#/assets/help/taxon-accessions-details-bottom-min.png';
-
+import imageAccessionsDetailsMap from '#/assets/help/taxon-accessions-details-map-min.png';
+import imageAccessionsDetails from '#/assets/help/taxon-accessions-details-min.png';
+import imageAccessionsExpanded from '#/assets/help/taxon-accessions-expanded-min.png';
+import imageAccessionsFullHover from '#/assets/help/taxon-accessions-full-hover-min.png';
+import imageAccessions from '#/assets/help/taxon-accessions-min.png';
+import imageAccessionsResults from '#/assets/help/taxon-accessions-results-min.png';
+import { type HelpTopicItem } from '..';
 import gotoTaxonItems from './gotoTaxonItems';
-
-import { HelpTopicItem } from '..';
 
 const items: HelpTopicItem[] = [
   ...gotoTaxonItems,

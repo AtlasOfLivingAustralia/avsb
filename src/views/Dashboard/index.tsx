@@ -1,18 +1,17 @@
 import { AppShell } from '@mantine/core';
-import { Outlet } from 'react-router';
+import { Outlet, ScrollRestoration } from 'react-router';
 
 // Project components & helpers
 import Header from './components/Header';
 import NavigationProgress from './components/NavigationProgress';
 
 import './index.css';
-import { PageScroll } from './components/PageScroll';
 
 function Dashboard() {
   return (
     <>
       <NavigationProgress />
-      <PageScroll />
+      <ScrollRestoration />
       <AppShell
         padding={0}
         header={{ height: 90 }}

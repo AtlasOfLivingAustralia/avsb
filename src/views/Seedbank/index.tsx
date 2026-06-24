@@ -32,20 +32,19 @@ import { lazy, Suspense, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router';
 
 // Project imports
-import { DataResource, EventSearchResult } from '#/api';
+import type { DataResource, EventSearchResult } from '#/api';
 import { Contact } from '#/components';
 import { Wave } from '#/components/Wave';
 import { breakpoints } from '#/theme/constants';
 
 // Component imports
-import SpeciesList from './components/SpeciesList';
-import { formatNumber } from '#/helpers/stats';
+import { SeedbankRecords } from './components/SeedbankRecords';
 
 const EventMap = lazy(() => import('#/components/EventMap'));
 
 interface SeedbankRouteData {
   gql: {
-    eventSearch: EventSearchResult;
+    summary: EventSearchResult;
     accessions: EventSearchResult;
     trials: EventSearchResult;
   };
@@ -55,8 +54,8 @@ interface SeedbankRouteData {
 export function Component() {
   const [logoLoaded, setLogoLoaded] = useState<boolean>(false);
   const { gql, collectory } = useLoaderData() as SeedbankRouteData;
-  const { eventSearch, accessions, trials } = gql;
-  const { _tileServerToken: token, documents, stats, occurrenceFacet } = eventSearch;
+  const { summary: eventSearch, accessions, trials } = gql;
+  const { _tileServerToken: token, documents, stats } = eventSearch;
 
   const [event] = documents?.results || [];
   const params = useParams();
@@ -72,7 +71,7 @@ export function Component() {
           marginTop: -130,
         }}
       >
-        <Container size='xl' pt='xl'>
+        <Container size='xl' p='xl'>
           <Group
             mt='xl'
             pt='md'
@@ -115,23 +114,24 @@ export function Component() {
                 <Badge w={75} size='lg' variant='light'>
                   {accessions.documents?.total?.toLocaleString()}
                 </Badge>
-                <Text size='sm'>
-                  Accessions
-                </Text>
+                <Text size='sm'>Accessions</Text>
                 <Divider mx='xs' orientation='vertical' />
-                <Badge w={75} size='lg' variant='light' color={trials.documents?.total === 0 ? 'gray' : 'blue'}>
+                <Badge
+                  w={75}
+                  size='lg'
+                  variant='light'
+                  color={trials.documents?.total === 0 ? 'gray' : 'blue'}
+                >
                   {trials.documents?.total?.toLocaleString()}
                 </Badge>
-                <Text size='sm'>
-                  Trials
-                </Text>
+                <Text size='sm'>Trials</Text>
               </Group>
             </Flex>
           </Group>
         </Container>
       </Box>
       <Wave width='100%' height={200} preserveAspectRatio='none' waveType='bodyBottom' />
-      <Container size='xl' pt='xl' mt={-85}>
+      <Container size='xl' py='xl' mt={-85}>
         <Grid>
           {(collectory.pubDescription || collectory.pubShortDescription) && (
             <Grid.Col span={12} pb='lg'>
@@ -201,7 +201,7 @@ export function Component() {
               </Group>
             </Paper>
           </Grid.Col>
-          <Grid.Col span={{ xl: 4, lg: 4, sm: 12, xs: 12 }}>
+          <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
             <Paper p='md' withBorder>
               <Group>
                 <IconLicense />
@@ -214,41 +214,63 @@ export function Component() {
               </Group>
             </Paper>
           </Grid.Col>
-          <Grid.Col span={12} py='xl'>
-            <Divider variant='dashed' />
-          </Grid.Col>
-          <Grid.Col span={{ xl: 8, lg: 8, md: 12, sm: 12, xs: 12 }}>
-            <Suspense fallback={<Skeleton w='100%' h={450} />}>
-              <EventMap
-                width='100%'
-                height={450}
-                initialToken={token}
-                predicate={{ type: 'equals', key: 'datasetKey', value: params.resource }}
-              />
-            </Suspense>
-            <Alert
-              title='Accession Map'
-              icon={<IconMap />}
-              mt='sm'
-              styles={{ title: { marginBottom: 4 } }}
-            >
-              Accessions were collected from the locations shown above. Click a dot to be shown a
-              list of accessions at that location, then click an accession entry to see full
-              accession details.
-            </Alert>
-          </Grid.Col>
-          <Grid.Col span={{ xl: 4, lg: 4, md: 12, sm: 12, xs: 12 }}>
-            <SpeciesList
-              name={event?.datasetTitle || 'Unknown Dataset'}
-              species={occurrenceFacet?.species || []}
-            />
+        </Grid>
+      </Container>
+      <Wave width='100%' height={200} preserveAspectRatio='none' waveType={smOrLarger ? 'body' : 'simple'} />
+      <Box
+        style={{
+          backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
+          marginTop: smOrLarger ? -85 : -30
+        }}
+      >
+        <Container size='xl' py='xl'>
+          <Grid>
+            <Grid.Col span={12}>
+              <Suspense fallback={<Skeleton w='100%' h={450} />}>
+                <EventMap
+                  width='100%'
+                  height={450}
+                  initialToken={token}
+                  predicate={{ type: 'equals', key: 'datasetKey', value: params.resource }}
+                />
+              </Suspense>
+              <Alert
+                title='Accession Map'
+                icon={<IconMap />}
+                mt='sm'
+                styles={{ title: { marginBottom: 4 } }}
+              >
+                Accessions were collected from the locations shown above. Click a dot to be shown a
+                list of accessions at that location, then click an accession entry to see full
+                accession details.
+              </Alert>
+            </Grid.Col>
+          </Grid>
+        </Container>
+      </Box>
+      <Wave width='100%' height={200} preserveAspectRatio='none' waveType='bodyBottom' />
+      <Container size='xl' mt={-35}>
+        <Grid>
+          <Grid.Col span={12}>
+            <Title order={3}>Explore records</Title>
+            <SeedbankRecords />
           </Grid.Col>
           <Grid.Col span={12}>
-            <Contact dataResource={params.resource || ''} />
           </Grid.Col>
         </Grid>
       </Container>
-      <Space h={45} />
+      <Wave width='100%' height={150} preserveAspectRatio='none' waveType={smOrLarger ? 'body' : 'simple'} />
+      <Box
+        style={{
+          backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
+          marginTop: smOrLarger ? -85 : -30
+        }}
+      >
+        <Container size='xl' py='xl'>
+          <Contact dataResource={params.resource || ''} />
+        </Container>
+        <Space h={20} />
+      </Box>
     </>
   );
 }

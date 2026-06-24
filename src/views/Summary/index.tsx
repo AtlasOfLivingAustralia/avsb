@@ -18,9 +18,9 @@ import { IconAlertTriangle, IconExternalLink, IconMap } from '@tabler/icons-reac
 import { Fragment, lazy, Suspense } from 'react';
 import { useLoaderData, useNavigate, useRouteLoaderData } from 'react-router';
 // Project imports
-import { gqlQueries, Predicate, SDSInstance } from '#/api';
-import { Taxon } from '#/api/sources/taxon';
-import { ConservationStatus, SDS } from '#/components';
+import { gqlQueries, type Predicate } from '#/api';
+import { type Taxon } from '#/api/sources/taxon';
+import { ConservationStatus } from '#/components';
 import { breakpoints } from '#/theme/constants';
 
 import classes from './index.module.css';
@@ -28,9 +28,8 @@ import classes from './index.module.css';
 const EventMap = lazy(() => import('#/components/EventMap'));
 
 export function Component() {
-  const { taxon, sds } = useRouteLoaderData('taxon') as {
+  const { taxon } = useRouteLoaderData('taxon') as {
     taxon: Taxon;
-    sds: SDSInstance[];
   };
   const token = useLoaderData() as string;
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
@@ -54,7 +53,6 @@ export function Component() {
   };
 
   return (
-
     <Grid>
       {taxon.taxonConcept.rankString === 'species' &&
         Object.keys(taxon.conservationStatuses).length > 0 && (
@@ -76,42 +74,28 @@ export function Component() {
           </Grid.Col>
         )}
       <Grid.Col span={{ sm: 12, md: 7, lg: 8 }}>
-        {taxon.taxonConcept.rankString === 'species' && sds.length > 0 ? (
-          <Card
-            style={{ display: 'flex', alignItems: 'center' }}
-            shadow='lg'
-            h='100%'
-            miw={345}
-            withBorder
-          >
-            <SDS instances={sds} />
+        <Suspense fallback={<Skeleton w='100%' height={450} />}>
+          <Card shadow='lg' p={0}>
+            <EventMap
+              width='100%'
+              height={450}
+              predicate={summaryPredicate}
+              initialToken={token}
+              itemListHeight={180}
+            />
           </Card>
-        ) : (
-          <>
-            <Suspense fallback={<Skeleton w='100%' height={450} />}>
-              <Card shadow='lg' p={0}>
-                <EventMap
-                  width='100%'
-                  height={450}
-                  predicate={summaryPredicate}
-                  initialToken={token}
-                  itemListHeight={180}
-                />
-              </Card>
-            </Suspense>
-            <Alert
-              title='Accession Map'
-              icon={<IconMap />}
-              mt='sm'
-              styles={{ title: { marginBottom: 4 } }}
-            >
-              Accessions of this species were collected from the locations shown above. Click a
-              dot to be shown a list of accessions at that location, then click an accession entry
-              to see full accession details. Visit the &apos;Accessions&apos; tab to see details
-              for all locations.
-            </Alert>
-          </>
-        )}
+        </Suspense>
+        <Alert
+          title='Accession Map'
+          icon={<IconMap />}
+          mt='sm'
+          styles={{ title: { marginBottom: 4 } }}
+        >
+          Accessions of this species were collected from the locations shown above. Click a dot
+          to be shown a list of accessions at that location, then click an accession entry to
+          see full accession details. Visit the &apos;Accessions&apos; tab to see details for
+          all locations.
+        </Alert>
       </Grid.Col>
       <Grid.Col span={{ sm: 12, md: 5, lg: 4 }}>
         <Card shadow='lg' h='100%' p={0} withBorder>

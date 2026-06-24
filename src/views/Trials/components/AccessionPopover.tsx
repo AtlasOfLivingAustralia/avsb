@@ -1,4 +1,3 @@
-import { Event, SeedBankAccession } from '#/api';
 import {
   Box,
   Button,
@@ -12,6 +11,7 @@ import {
 } from '@mantine/core';
 import { IconExternalLink, IconHandStop, IconMapPin, IconPackage } from '@tabler/icons-react';
 import { Link } from 'react-router';
+import type { Event, SeedBankAccession } from '#/api';
 
 import { allFields } from '#/helpers';
 

@@ -1,7 +1,7 @@
-import { SDSInstance } from '#/api';
 import { Anchor, Center, Divider, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 import { IconAlertTriangle, IconExternalLink } from '@tabler/icons-react';
 import { Link } from 'react-router';
+import { type SDSInstance } from '#/api';
 
 // Project imports
 import ConservationStatus from './ConservationStatus';
@@ -39,7 +39,7 @@ function SDS({ instances }: SDSProps) {
                 key={authority}
                 place={zone?.name || 'Australia'}
                 initials={zone?.id || 'AUS'}
-                status={category?.value || "Sensitive"}
+                status={category?.value || 'Sensitive'}
               />
             ))}
           </Stack>

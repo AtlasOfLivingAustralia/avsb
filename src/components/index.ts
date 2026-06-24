@@ -8,7 +8,7 @@ export { default as Downloads } from './Downloads';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as FieldTooltip } from './FieldTooltip';
 export { default as Filters } from './Filters';
-export type { Filter } from './Filters/types';
+export { type Filter } from './Filters/types';
 export { default as IconText } from './IconText';
 export { default as Logo } from './Logo';
 export { default as LogoLoader } from './LogoLoader';
@@ -20,4 +20,3 @@ export { default as TaxonSearchInput } from './TaxonSearchInput';
 export { default as ThField } from './ThField';
 export { default as TreatmentCard } from './TreatmentCard';
 export { default as TrialDetails } from './TrialDetails';
-

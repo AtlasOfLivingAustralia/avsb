@@ -1,4 +1,4 @@
-import { SeedBankTreatment } from '#/api/graphql/types';
+import type { SeedBankTreatment } from '#/api/graphql/types';
 
 const fields: (keyof SeedBankTreatment)[] = [
   'mediaSubstrate',

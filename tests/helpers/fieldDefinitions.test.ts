@@ -1,5 +1,5 @@
 import { expect, expectTypeOf, test } from 'vitest';
-import { TablerIcon } from '@tabler/icons-react';
+import { type TablerIcon } from '@tabler/icons-react';
 
 import { allFields, SeedbankField } from '../../src/helpers/fieldDefinitions';
 

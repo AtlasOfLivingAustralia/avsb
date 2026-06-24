@@ -1,6 +1,6 @@
-import { NumericTrait } from '#/api';
 import { ActionIcon, Flex, Group, Paper, Skeleton, Text, Tooltip } from '@mantine/core';
 import { IconBook } from '@tabler/icons-react';
+import { type NumericTrait } from '#/api';
 
 interface NumericTraitCardProps {
   trait: NumericTrait | null;

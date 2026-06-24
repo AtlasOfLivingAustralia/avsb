@@ -1,5 +1,5 @@
 import { MAX_DOWNLOAD_SIZE } from '#/helpers';
-import { Predicate } from './graphql/types';
+import { type Predicate } from './graphql/types';
 
 const QUERY_EVENT_ACCESSIONS = `
 query list($predicate: Predicate, $size: Int, $from: Int){
@@ -204,9 +204,10 @@ query list($predicate: Predicate, $size: Int, $from: Int){
 `;
 
 const QUERY_EVENT_TREATMENTS = `
-query list($predicate: Predicate){
+query list($predicate: Predicate, $size: Int){
   eventSearch(
-    predicate: $predicate
+    predicate: $predicate,
+    size: $size
     ) {
     documents {
       results {
@@ -386,7 +387,7 @@ const QUERY_SEEDBANK_SUMMARY_TEMPLATE = `
 
 const QUERY_SEEDBANK_SUMMARY_FULL = `
 query list($datasetKey: JSON){
-  eventSearch(predicate: {type: equals, key: "datasetKey", value: $datasetKey}) {
+  summary: eventSearch(predicate: {type: equals, key: "datasetKey", value: $datasetKey}) {
     _tileServerToken
     documents(size: 1) {
       total
@@ -415,20 +416,48 @@ query list($datasetKey: JSON){
       eventTypeHierarchy {
         key
       }
-    }   
-    occurrenceFacet {
-      species(size: 10000) {
-        key
-        count
-      }
-      samplingProtocol {
-        key
-      }
     }
   }
-  accessions: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: $datasetKey}, {type: equals, key: "eventType", value: "Accession"}]}) {
-    documents(size: 0) {
+  accessions: eventSearch(
+    size: 10
+    from: 0
+    predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: $datasetKey}, {type: equals, key: "eventType", value: "Accession"}]}
+    ) {
+    documents {
+      size
+      from
       total
+      results {
+        eventID
+        parentEventID
+        datasetTitle
+        datasetKey
+        locality
+        measurementOrFacts {
+          measurementID
+          measurementType
+          measurementValue
+        }
+        extensions {
+          seedbank {
+            accessionNumber
+            herbariumVoucher
+            seedPerGram
+            formInStorage
+            quantityInGrams
+            quantityCount
+            collectionFill
+            purityPercentage
+            dateCollected
+            storageTemperatureInCelsius
+            storageRelativeHumidityPercentage
+            primaryStorageSeedBank
+            primaryCollector
+            duplicatesReplicates
+            thousandSeedWeight
+          }
+        }
+      }
     }
   }
   trials: eventSearch(predicate: {type: and, predicates: [{type: equals, key: "datasetKey", value: $datasetKey}, {type: equals, key: "eventType", value: "Trial"}]}) {

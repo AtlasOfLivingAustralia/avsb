@@ -3,18 +3,18 @@ import {
   Avatar,
   Button,
   Card,
-  CardProps,
+  type CardProps,
   Group,
   Skeleton,
   Stack,
   Text,
 } from '@mantine/core';
 import { IconMail, IconMapPin, IconPhone } from '@tabler/icons-react';
-import { CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 import { Link, useLocation } from 'react-router';
 
 import { useGQLQuery } from '#/api';
-import { Contact as ContactType } from '#/api/graphql/types';
+import { type Contact as ContactType } from '#/api/graphql/types';
 import queries from '#/api/queries';
 import { getInitials } from '#/helpers';
 
@@ -65,8 +65,8 @@ function Contact({ dataResource, ...rest }: ContactProps) {
             <Avatar size={50} radius='xl'>
               {contact?.individualName
                 ? `${contact.individualName[0].givenName?.[0].charAt(
-                    0,
-                  )}${contact.individualName[0].surName?.[0].charAt(0)}`
+                  0,
+                )}${contact.individualName[0].surName?.[0].charAt(0)}`
                 : getInitials(contact?.organizationName?.[0] || '', 3)}
             </Avatar>
           </Skeleton>

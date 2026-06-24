@@ -1,7 +1,7 @@
+import { Badge, type ComboboxItem, Group, Stack, Text } from '@mantine/core';
 import { useAPI } from '#/api';
-import { Badge, ComboboxItem, Group, Stack, Text } from '@mantine/core';
 
-import SelectSearch, { SearchSelectProps } from './SelectSearch';
+import SelectSearch, { type SearchSelectProps } from './SelectSearch';
 
 interface TaxonItem extends ComboboxItem {
   rankString?: string;

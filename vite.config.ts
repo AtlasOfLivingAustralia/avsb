@@ -1,19 +1,12 @@
-// import react from '@vitejs/plugin-react-swc';
-import react from '@vitejs/plugin-react';
-import { visualizer } from 'rollup-plugin-visualizer';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
+import babel from '@rolldown/plugin-babel';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: ['babel-plugin-react-compiler'],
-      },
-    }),
-    tsconfigPaths(),
-    visualizer(),
-  ],
+  plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
+  resolve: {
+    tsconfigPaths: true,
+  },
   envDir: './config',
 });

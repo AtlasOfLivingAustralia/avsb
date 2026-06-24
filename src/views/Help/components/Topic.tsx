@@ -1,8 +1,8 @@
 import { Carousel } from '@mantine/carousel';
-import { Box, Image, Paper, Text, ThemeIcon, rem } from '@mantine/core';
+import { Box, Image, Paper, rem, Text, ThemeIcon } from '@mantine/core';
 import { useState } from 'react';
 
-import { HelpTopicItem } from '..';
+import { type HelpTopicItem } from '..';
 
 import classes from './Topic.module.css';
 
@@ -24,7 +24,7 @@ function Topic({ instructions }: TopicProps) {
         height={600}
       >
         {instructions.map(({ image }, index) => (
-          <Carousel.Slide key={`${index * 2}`}>
+          <Carousel.Slide key={image}>
             <Box
               style={{
                 backgroundColor:

@@ -2,14 +2,12 @@ import { Code } from '@mantine/core';
 import { IconClick, IconEye } from '@tabler/icons-react';
 
 import imageAccessions from '#/assets/help/taxon-accessions-min.png';
-import imageFiltersHover from '#/assets/help/taxon-filters-hover-min.png';
-import imageFilters from '#/assets/help/taxon-filters-min.png';
 import imageFiltersAbc from '#/assets/help/taxon-filters-abc-min.png';
 import imageFiltersActive from '#/assets/help/taxon-filters-active-min.png';
-
+import imageFiltersHover from '#/assets/help/taxon-filters-hover-min.png';
+import imageFilters from '#/assets/help/taxon-filters-min.png';
+import { type HelpTopicItem } from '..';
 import gotoTaxonItems from './gotoTaxonItems';
-
-import { HelpTopicItem } from '..';
 
 const items: HelpTopicItem[] = [
   ...gotoTaxonItems,
