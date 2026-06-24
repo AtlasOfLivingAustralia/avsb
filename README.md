@@ -35,7 +35,7 @@ There are also dynamic environments that are created for each feature branch. Th
 | main                                  | production  | https://seedbank.ala.org.au              |
 | main                                  | staging     | https://seedbank-staging.ala.org.au      |
 | testing                               | testing     | https://seedbank.test.ala.org.au         |
-| feature\* (e.g. feature/121-new-logo) | development | https://avsb-121-new-logo.dev.ala.org.au |
+| feature\* (e.g. feature/121-new-logo) | development | https://seedbank-121-new-logo.dev.ala.org.au |
 
 ### Configuration
 
