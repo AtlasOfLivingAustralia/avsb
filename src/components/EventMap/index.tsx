@@ -1,26 +1,25 @@
-import { Button, Checkbox, Flex, Group, Indicator, Paper, Pill } from '@mantine/core';
+import { Button, Checkbox, Flex, Group, Paper, Pill } from '@mantine/core';
 import Draw from '@mapbox/mapbox-gl-draw';
 import { IconLayersIntersect2, IconSearch, IconStack2 } from '@tabler/icons-react';
+
 // Mapbox
-import mapboxgl, { type LngLatLike } from 'mapbox-gl';
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import { FullscreenControl, type LngLatLike, Map as MapboxMap, Popup } from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import wellknown, { type GeoJSONPolygon } from 'wellknown';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 import { useComputedColorScheme } from '@mantine/core';
+
 // Project-imports
 import { type EventSearchResult, type Predicate, performGQLQuery, useGQLQuery } from '#/api';
 import queries from '#/api/queries';
 import { getMapLayer, getWktFromGeohash } from '#/helpers';
 import ItemList from './components/ItemList';
+import LayerList from './components/LayerList';
 import { SelectionRecords } from './components/SelectionRecords';
 import { drawStyles } from './drawStyles';
-import LayerList from './components/LayerList';
-
-// Initialize MapBox
-mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_TOKEN;
 
 interface MapPoint {
   geohash: string | null;
@@ -77,9 +76,9 @@ function MapComponent({
 }: MapProps) {
   // Map refs
   const mapContainer = useRef<HTMLDivElement | null>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const popup = useRef<mapboxgl.Popup>(
-    new mapboxgl.Popup({
+  const map = useRef<MapboxMap | null>(null);
+  const popup = useRef<Popup>(
+    new Popup({
       closeButton: false,
       closeOnClick: false,
     }),
@@ -311,15 +310,16 @@ function MapComponent({
   // Add the map to the DOM when the component loads
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
-    map.current = new mapboxgl.Map({
+    map.current = new MapboxMap({
       container: mapContainer.current,
       style: styleUrl,
       center: initialCenter || MAP_CENTER,
       zoom: initialZoom || 2.25,
+      accessToken: import.meta.env.VITE_APP_MAPBOX_TOKEN
     });
 
     map.current.addControl(drawControl.current, 'top-right');
-    map.current.addControl(new mapboxgl.FullscreenControl());
+    map.current.addControl(new FullscreenControl());
     map.current.on('draw.create', handlePolygons);
     map.current.on('draw.delete', handlePolygons);
     map.current.on('draw.update', handlePolygons);

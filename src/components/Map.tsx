@@ -1,10 +1,9 @@
 import { useComputedColorScheme } from '@mantine/core';
 // Mapbox
-import mapboxgl from 'mapbox-gl';
+import { Map as MapboxMap, Marker } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { useEffect, useRef, useState } from 'react';
 
-mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_TOKEN;
+import { useEffect, useRef, useState } from 'react';
 
 interface MapProps {
   width?: string | number;
@@ -15,7 +14,7 @@ interface MapProps {
 function MapComponent({ width, height, center }: MapProps) {
   // Map refs
   const mapContainer = useRef<HTMLDivElement | null>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
+  const map = useRef<MapboxMap | null>(null);
 
   // Map state & data
   const [styleLoaded, setStyleLoaded] = useState<boolean>(false);
@@ -38,13 +37,14 @@ function MapComponent({ width, height, center }: MapProps) {
   // Add the map to the DOM when the component loads
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
-    map.current = new mapboxgl.Map({
+    map.current = new MapboxMap({
       container: mapContainer.current,
       style: `mapbox://styles/mapbox/${colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
       center,
       zoom: 6,
+      accessToken: import.meta.env.VITE_APP_MAPBOX_TOKEN
     });
-    new mapboxgl.Marker().setLngLat(center).addTo(map.current);
+    new Marker().setLngLat(center).addTo(map.current);
     map.current.on('render', () => map.current?.resize());
     map.current.on('style.load', () => setStyleLoaded(true));
   }, []);
