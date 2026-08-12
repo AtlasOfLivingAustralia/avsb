@@ -336,13 +336,15 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref BuildCode
-                EnvironmentVariables: !Sub |
+                PrimarySource: AvsbSourceArtifact
+                EnvironmentVariables: |
                   [
                    { "name": "NODE_VERSION", "value":"#{ExportConfigNS.NODE_VERSION}" },
                   ]
               Namespace: BuildAvsbNS
               InputArtifacts:
                 - Name: AvsbSourceArtifact
+                - Name: ExportConfigArtifact
               OutputArtifacts:
                 - Name: BuildAvsbArtifact
               RunOrder: 1
