@@ -11,6 +11,10 @@ phases:
     runtime-versions:
       nodejs: $NODE_VERSION
     commands:
+      - echo Running on $(lsb_release -d | cut -f2)
+      - echo aws-cli version $(aws --version)
+      - echo loading all exported vars..
+      - set -a ; source "$CODEBUILD_SRC_DIR_ExportConfigArtifact/env.txt" ; set +a
       - echo updating corepack...
       - npm install --global corepack@latest
       - echo installing pnpm...
