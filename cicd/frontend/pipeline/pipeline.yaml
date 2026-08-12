@@ -101,7 +101,11 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:8.0
+        Image: aws/codebuild/standard:7.0
+        EnvironmentVariables:
+          - Name: ARTIFACTS_BUCKET
+            Value: !ImportValue
+              Fn::Sub: ${pBucketsStackName}-${AWS::Region}-CodePipelineArtifactBucketName
       Source:
         Type: CODEPIPELINE
         BuildSpec: !Sub cicd/${pProductComponent}/pipeline/export_config_buildspec.yaml
@@ -124,7 +128,7 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:8.0
+        Image: aws/codebuild/standard:7.0
       Source:
         Type: CODEPIPELINE
         BuildSpec: !Sub cicd/${pProductComponent}/pipeline/npm_build_buildspec.yaml
@@ -147,7 +151,7 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:8.0
+        Image: aws/codebuild/standard:7.0
       Source:
         Type: CODEPIPELINE
         BuildSpec: !Sub cicd/${pProductComponent}/pipeline/empty_bucket_buildspec.yaml
@@ -170,7 +174,10 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:8.0
+        Image: aws/codebuild/standard:7.0
+        EnvironmentVariables:
+          - Name: CLEAN_BRANCH
+            Value: !Ref pCleanBranch
       Source:
         Type: CODEPIPELINE
         BuildSpec: !Sub cicd/${pProductComponent}/pipeline/deploy_notification_buildspec.yaml
@@ -254,23 +261,15 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref ExportConfig
-                EnvironmentVariables: !Sub
-                  - |
-                    [
-                     { "name": "ARTIFACTS_BUCKET", "value":"${ArtifactsBucket}" },
-                     { "name": "AUTHOR", "value": "#{CheckoutSrcNS.AuthorDisplayName}" },
-                     { "name": "CLEAN_BRANCH", "value":"${pCleanBranch}" },
-                     { "name": "COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
-                     { "name": "ENVIRONMENT", "value":"${pEnvironment}" },
-                     { "name": "EXECUTION_ID", "value":"#{codepipeline.PipelineExecutionId}" },
-                     { "name": "PIPELINE_FINGERPRINT", "value":"#{variables.PIPELINE_FINGERPRINT}" },
-                     { "name": "PRODUCT_COMPONENT", "value":"${pProductComponent}" },
-                     { "name": "PRODUCT_NAME", "value":"${pProductName}" },
-                     { "name": "REPO", "value":"#{CheckoutSrcNS.FullRepositoryName}" },
-                     { "name": "SRC_BRANCH", "value":"${pGitHubBranch}" }
-                    ]
-                  - ArtifactsBucket: !ImportValue
-                      Fn::Sub: ${pBucketsStackName}-${AWS::Region}-CodePipelineArtifactBucketName
+                EnvironmentVariables: !Sub |
+                  [
+                    { "name":"CLEAN_BRANCH", "value":"${pCleanBranch}" },
+                    { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
+                    { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
+                    { "name":"PIPELINE_FINGERPRINT", "value":"#{variables.PIPELINE_FINGERPRINT}" },
+                    { "name":"PRODUCT_COMPONENT", "value":"${pProductComponent}" },
+                    { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" }
+                  ]
               Namespace: ExportConfigNS
               InputArtifacts:
                 - Name: AvsbSourceArtifact
@@ -336,9 +335,12 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref BuildCode
-                EnvironmentVariables: !Sub |
+                EnvironmentVariables: |
                   [
-                   { "name": "NODE_VERSION", "value":"#{ExportConfigNS.NODE_VERSION}" },
+                    { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
+                    { "name":"ENVIRONMENT", "value":"#{ExportConfigNS.ENVIRONMENT}" },
+                    { "name":"NODE_VERSION", "value":"#{ExportConfigNS.NODE_VERSION}" },
+                    { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" }
                   ]
               Namespace: BuildAvsbNS
               InputArtifacts:
@@ -354,9 +356,14 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref EmptyBucket
+                EnvironmentVariables: |
+                  [
+                    { "name":"SOURCE_BUCKET", "value":"#{ExportConfigNS.SOURCE_BUCKET}" },
+                    { "name":"BUCKET_PATH", "value":"#{ExportConfigNS.BUCKET_PATH}" }
+                  ]
               Namespace: EmptyBucketPreDeployNS
               InputArtifacts:
-                - Name: ExportConfigArtifact
+                - Name: AvsbSourceArtifact
               RunOrder: 2
             - Name: UploadFilesToS3
               ActionTypeId:
@@ -371,7 +378,7 @@ Resources:
                 CacheControl: public, max-age=#{ExportConfigNS.MAX_AGE}
               OutputArtifacts: []
               InputArtifacts:
-                - Name: ExportConfigArtifact
+                - Name: BuildAvsbArtifact
               RunOrder: 3
             - Name: DeployNotification
               ActionTypeId:
@@ -381,9 +388,25 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref DeployNotification
+                EnvironmentVariables: !Sub |
+                  [
+                    { "name":"AUTHOR", "value":"#{CheckoutSrcNS.AuthorDisplayName}" },
+                    { "name":"CLEAN_BRANCH", "value":"${pCleanBranch}" },
+                    { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
+                    { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
+                    { "name":"EXECUTION_ID", "value":"#{codepipeline.PipelineExecutionId}" },
+                    { "name":"HOSTED_ZONE", "value":"#{ExportConfigNS.HOSTED_ZONE}" },
+                    { "name":"PRODUCT_COMPONENT", "value":"#{ExportConfigNS.PRODUCT_COMPONENT}" },
+                    { "name":"PRODUCT_NAME", "value":"#{ExportConfigNS.PRODUCT_NAME}" },
+                    { "name":"REPO", "value":"#{CheckoutSrcNS.FullRepositoryName}" },
+                    { "name":"SLACK_ALERT_CHANNEL", "value":"#{ExportConfigNS.SLACK_ALERT_CHANNEL}" },
+                    { "name":"SLACK_DEPLOY_NOTIFICATION", "value":"#{ExportConfigNS.SLACK_DEPLOY_NOTIFICATION}" },
+                    { "name":"SRC_BRANCH", "value":"${pGitHubBranch}" },
+                    { "name":"SUB_DOMAIN", "value":"#{ExportConfigNS.SUB_DOMAIN}" }
+                  ]
               Namespace: DeployNotificationNS
               InputArtifacts:
-                - Name: ExportConfigArtifact
+                - Name: AvsbSourceArtifact
               RunOrder: 5
         - !If
           - AllowTeardown
@@ -406,9 +429,14 @@ Resources:
                   Provider: CodeBuild
                 Configuration:
                   ProjectName: !Ref EmptyBucket
+                  EnvironmentVariables: |
+                    [
+                      { "name":"SOURCE_BUCKET", "value":"#{ExportConfigNS.SOURCE_BUCKET}" },
+                      { "name":"BUCKET_PATH", "value":"#{ExportConfigNS.BUCKET_PATH}" }
+                    ]
                 Namespace: EmptyBucketPreDeleteNS
                 InputArtifacts:
-                  - Name: ExportConfigArtifact
+                  - Name: AvsbSourceArtifact
                 RunOrder: 2
               - Name: TeardownAvsbSite
                 ActionTypeId:
