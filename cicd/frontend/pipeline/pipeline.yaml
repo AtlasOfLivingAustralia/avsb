@@ -373,7 +373,7 @@ Resources:
                 CacheControl: public, max-age=#{ExportConfigNS.MAX_AGE}
               OutputArtifacts: []
               InputArtifacts:
-                - Name: ExportConfigArtifact
+                - Name: AvsbSourceArtifact
               RunOrder: 3
             - Name: DeployNotification
               ActionTypeId:
