@@ -339,7 +339,7 @@ Resources:
                 PrimarySource: AvsbSourceArtifact
                 EnvironmentVariables: |
                   [
-                   { "name": "NODE_VERSION", "value":"#{ExportConfigNS.NODE_VERSION}" },
+                   { "name": "NODE_VERSION", "value":"#{ExportConfigNS.NODE_VERSION}" }
                   ]
               Namespace: BuildAvsbNS
               InputArtifacts:
