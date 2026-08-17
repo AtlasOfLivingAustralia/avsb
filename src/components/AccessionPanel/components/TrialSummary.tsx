@@ -52,7 +52,7 @@ export function canGraphTrials(trials: Event[]): boolean {
 function TrialSummary({ trials }: TrialSummaryProps) {
   // State hooks
   const [query, setQuery] = useState<Event[]>([]);
-  const showGraph = useMemo(() => canGraphTrials(trials), [trials]);
+  const showGraph = useMemo(() => false, []);
 
   useEffect(() => {
     async function runQuery() {
