@@ -1,71 +1,109 @@
 # Australian Virtual Seed Bank
 
-> A [React](https://reactjs.org/)-based single-page application for the Australian Seedbank Partnership, built with [Vite](https://vitejs.dev/)
+A [React](https://react.dev/) single-page application for the [Australian Seed Bank Partnership](https://www.seedpartnership.org.au/), built with [TypeScript](https://www.typescriptlang.org/), [Vite](https://vitejs.dev/), and [Mantine](https://mantine.dev/).
 
-**Please create new issues in the [avsb-requirements](https://github.com/AtlasOfLivingAustralia/avsb-requirements) repository**
+**Create new issues in the [avsb-requirements](https://github.com/AtlasOfLivingAustralia/avsb-requirements) repository.**
 
-## Getting Started
+## Local development
 
 ### Prerequisites
 
-[Visual Studio Code](https://code.visualstudio.com/) is the recommended IDE for development.
+[Visual Studio Code](https://code.visualstudio.com/) is the recommended editor.
 
-- [Node.js v22](https://nodejs.org/en/download/current/): Runtime
-- [pnpm](https://pnpm.io): Package Manager
-- **VSCode Extensions**
-  - [Biome](biomejs.dev): Code linting & formatting
+- [Node.js 22](https://nodejs.org/en/download/) (22.12 or later). This matches `NODE_VERSION` in [`cicd/frontend/config.ini`](cicd/frontend/config.ini).
+- [pnpm](https://pnpm.io/installation), enabled with Corepack: `corepack enable pnpm`
+- [Biome](https://biomejs.dev/) VS Code extension, for linting and formatting
 
-### Setting up
+The [dev container](.devcontainer/devcontainer.json) is for CloudFormation and pipeline work. It does not install Node.js, so use a local Node.js 22 install to run the app.
 
-1. Navigate into the `src` folder
-2. Install dependencies with `pnpm install`
-3. Start the project by running `pnpm dev`
+### Setup
+
+From the repository root:
+
+```sh
+pnpm install
+pnpm dev
+```
+
+Vite serves the app with the `development` mode env file. Other commands:
+
+| Command | Purpose |
+| --- | --- |
+| `pnpm test` | Run the Vitest suite |
+| `pnpm test:coverage` | Run tests with coverage |
+| `pnpm lint` | Lint `src` with Biome |
+| `pnpm lint:fix` | Lint and apply Biome fixes |
+| `pnpm build:development` | Typecheck and build for development |
+| `pnpm build:testing` | Typecheck and build for testing |
+| `pnpm build:staging` | Typecheck and build for staging |
+| `pnpm build:production` | Typecheck and build for production |
+| `pnpm preview` | Serve the last production build locally |
+
+CI installs dependencies with pnpm, runs `pnpm test`, then runs `pnpm build:<environment>`.
+
+### App configuration
+
+Vite reads environment files from [`config/`](config/). Each deploy mode has its own file (`.env.development`, `.env.testing`, `.env.staging`, `.env.production`).
+
+For local-only overrides, add `config/.env.development.local`. That file is gitignored.
 
 ## CI/CD
 
-This project is CICD enabled! Check in and push will trigger a build and deploy. Details below
+Pushes to origin build and deploy through AWS CodePipeline. Whether a pipeline starts on every commit is set per environment with `AUTO_DEPLOY` in [`cicd/frontend/config.ini`](cicd/frontend/config.ini).
 
 ### Environments
 
-There are 3 static environments, testing, staging and production. The environment is determined by the branch it's running on.
-There are also dynamic environments that are created for each feature branch. These are created on demand and destroyed when the branch is deleted.
+`main` and `testing` are long-lived. Any other branch, including `feature/*`, gets a development environment. `main` feeds both staging and production; the bootstrap script chooses which one.
 
-| git branch                            | environment | URL                                      |
-| ------------------------------------- | ----------- | ---------------------------------------- |
-| main                                  | production  | https://seedbank.ala.org.au              |
-| main                                  | staging     | https://seedbank-staging.ala.org.au      |
-| testing                               | testing     | https://seedbank.test.ala.org.au         |
-| feature\* (e.g. feature/121-new-logo) | development | https://avsb-121-new-logo.dev.ala.org.au |
+Branch names used in hostnames and stack names are sanitised by [`cicd/clean_branch.sh`](cicd/clean_branch.sh): the `feature/` prefix is removed, separators become hyphens, and the result is lowercased and truncated.
+
+| Git branch | Environment | URL | Auto-deploy |
+| --- | --- | --- | --- |
+| `main` | production | https://seedbank.ala.org.au | No |
+| `main` | staging | https://seedbank-staging.ala.org.au | Yes |
+| `testing` | testing | https://seedbank.test.ala.org.au | Yes |
+| other branches, e.g. `feature/121-new-logo` | development | https://seedbank-121-new-logo.dev.ala.org.au | Yes |
 
 ### Configuration
 
-All configuration is handled in the [`cicd/config.ini`](cicd/config.ini) file. The File format is of a standard ini file with different sections corresponding to the different environments. There is a [DEFAULT] section that includes values common to all environments such as the code repo details. Default values can be overridden in an environment section
+Pipeline settings are standard INI files. `[DEFAULT]` holds values shared by every environment. An environment section overrides those values.
 
-### Git branching
+- [`config.ini`](config.ini) — product name, GitHub repository, region, and shared pipeline settings
+- [`cicd/frontend/config.ini`](cicd/frontend/config.ini) — frontend stack names, S3, CloudFront hostnames, and `AUTO_DEPLOY`
 
-The branching model for this project is very similar to [gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
-The `main` branch is a faithful representation of what is running in staging and production, the `testing` branch represents what is deployed to the testing environment. Both of these branches are protected and can only be altered through PRs.
+### Branching
 
-### Deployment
+`main` matches what is released to staging and production. `testing` matches the testing environment. Both branches are protected and change only through pull requests.
 
-All branches are CICD enabled with auto deployment, any commits to origin will result in a deployment to the corresponding environment. This behavior is configurable at the environment level in the `cicd/config.ini` file using the AUTO_DEPLOY variable.
+### Bootstrapping a pipeline
 
-For each environment there is a one off bootstrapping process that needs to be run to create the CodePipeline that handles the CICD. For the static environments production, staging and testing this is done once and will pretty much never need to be done again. For the dynamic development environments this needs to be done once for each new branch that is created. To run the bootstrapping process authenticate with the AWS CLI in the comparison account and then run the `cicd/pipeline/deploy_pipeline.sh` script. This will create the CodePipeline and all the other AWS resources needed to run the environment.
+Each environment needs a one-off bootstrap that creates its CodePipeline and related AWS resources. Production, staging, and testing are bootstrapped once. A development environment is bootstrapped once per branch.
+
+Authenticate the AWS CLI in the account for that environment. Commit and push the branch, then run:
+
+```sh
+cicd/frontend/pipeline/deploy_pipeline.sh
+```
+
+On `main`, the script asks whether to target production or staging. Pass `-e prod` to select production. Pass `-b <branch>` when the checkout is detached.
 
 ### Development workflow
 
-The `main` and `testing` branches are protected and cant be committed to directly. To begin development on a feature or enhancement:
+1. Branch from `main`, for example `feature/update-footer`.
+2. Push the branch and bootstrap its development environment with `cicd/frontend/pipeline/deploy_pipeline.sh`.
+3. Commit and push changes. The development environment deploys automatically. Run the test suite before opening a pull request.
+4. Open a pull request into `testing` and request at least one reviewer. Merging deploys to https://seedbank.test.ala.org.au.
+5. Delete the feature branch and tear down its development environment in CodePipeline.
+6. Complete UAT on the testing environment.
+7. Open a pull request from `testing` into `main` and request at least one reviewer. Merging deploys to staging.
+8. Release production from the production CodePipeline when staging is accepted. Production does not deploy on merge because `AUTO_DEPLOY` is `false`.
 
-- Create a branch off `main` that includes a short description of the feature e.g. `feature/update-footer`
-- Bootstrap the new development environment bu running the `cicd/pipeline/deploy_pipeline.sh` script
-- Make all your changes and commit them to your branch. Test.
-- Once it's ready for deployment create a PR to merge your branch into `testing` Include at least one reviewer. It can be left up to the PR author if they want to wait for an approval, at the very least the reviewer receives a notification that we are getting ready for a testing deploy.
-- Once the PR is merged it will be automatically deployed to the `testing` environment. Delete the feature branch and development environment using CodePipeline
-- Do any required UAT testing on the testing environment
-- When UAT is passed create a PR to merge `testing` into `main` including at least one reviewer. Again it can be left up to the author if they want to wait for an approval
-- When the PR is merged the changed will be automatically deployed to staging and production
+Waiting for review approval is up to the pull request author. Requesting a reviewer still notifies them that a testing or production release is coming.
 
 ### Rollback
 
-To rollback to any previous revision go to CodePipeline and after selecting "Release Change" choose the commit to release. [Detailed instructions here](https://docs.aws.amazon.com/codepipeline/latest/userguide/pipelines-trigger-source-overrides.html#pipelines-trigger-source-overrides-console)
+In CodePipeline, choose **Release change** and select the commit to release. See [AWS: Start a pipeline with a source revision override](https://docs.aws.amazon.com/codepipeline/latest/userguide/pipelines-trigger-source-overrides.html#pipelines-trigger-source-overrides-console).
 
+## License
+
+[Mozilla Public License 2.0](LICENSE).
