@@ -13,7 +13,8 @@ import {
 } from '@mantine/core';
 import { IconX } from '@tabler/icons-react';
 import { Link } from 'react-router';
-import type { Event, EventDocuments, SeedBankAccession } from '#/api/graphql/types';
+import type { EventDocuments, SeedBankAccession } from '#/api/graphql/types';
+import { getIsDefined } from '#/helpers';
 import classes from './ItemList.module.css';
 
 const slideX = {
@@ -25,7 +26,7 @@ const slideX = {
 
 interface ItemListProps {
   open: boolean;
-  documents: EventDocuments;
+  documents?: EventDocuments;
   contentHeight?: number | string;
   topOffset?: number;
   leftOffset?: number;
@@ -40,7 +41,8 @@ function ItemList({
   leftOffset,
   onClose,
 }: ItemListProps) {
-  const { results, total } = documents;
+  const results = documents?.results.filter(getIsDefined);
+  const total = documents?.total;
 
   return (
     <Transition mounted={open} transition={slideX}>
@@ -83,7 +85,7 @@ function ItemList({
                     </Box>
                   ))}
                 {results &&
-                  results.map((result: Event) => {
+                  results.map((result) => {
                     const accession = result.extensions?.seedbank as SeedBankAccession;
 
                     return (

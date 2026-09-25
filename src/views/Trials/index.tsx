@@ -7,7 +7,7 @@ import queries from '#/api/queries';
 import { type Taxon } from '#/api/sources/taxon';
 // Project components / helpers
 import { Downloads, Filters } from '#/components';
-import { mapTrialTreatments, useMounted } from '#/helpers';
+import { getIsDefined, mapTrialTreatments, useMounted } from '#/helpers';
 import { formatNumber } from '#/helpers/stats';
 import TrialsTable from './components/TrialsTable';
 import downloadFields from './downloadFields';
@@ -28,7 +28,7 @@ export function Component() {
   const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon };
   const params = useParams();
   const mounted = useMounted();
-  const events = query?.results;
+  const events = query?.results.filter(getIsDefined);
 
   const predicates: Predicate[] = [
     queries.PRED_DATA_RESOURCE,
@@ -92,7 +92,7 @@ export function Component() {
         results: mapTrialTreatments(
           data.eventSearch?.documents?.results || [],
           treatmentData.eventSearch?.documents?.results || [],
-        ) as [Event],
+        ),
       });
     }
 
@@ -100,7 +100,7 @@ export function Component() {
   }, [page, pageSize, filterPredicates]);
 
   const downloadFetcher = async (data: { eventSearch: EventSearchResult }) => {
-    const eventIDs = data.eventSearch.documents?.results?.map(({ eventID }) => eventID);
+    const eventIDs = data.eventSearch.documents?.results?.map((event) => event?.eventID);
     const { data: treatmentData } = await performGQLQuery<{
       data: { eventSearch: EventSearchResult };
     }>(gqlQueries.QUERY_EVENT_TREATMENTS, {

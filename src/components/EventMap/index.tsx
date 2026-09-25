@@ -30,7 +30,7 @@ interface MapProps {
   predicate: Predicate;
   width?: string | number;
   height?: string | number;
-  initialToken?: string;
+  initialToken?: string | null;
   shadow?: string;
   radius?: string;
   transparent?: boolean;
@@ -356,7 +356,7 @@ function MapComponent({
       >
         <ItemList
           onClose={() => setSelectedPoint(null)}
-          documents={selectedEvents?.data.eventSearch.documents || {}}
+          documents={selectedEvents?.data.eventSearch.documents}
           open={Boolean(selectedPoint)}
           contentHeight={itemListHeight}
           topOffset={itemsTopOffset}

@@ -184,7 +184,12 @@ export function Component() {
           predicates={Object.values(predicates)}
           filters={filters}
           onPredicates={(data) => {
-            setPredicates(data.reduce((prev, cur) => ({ ...prev, [cur.key || '']: cur }), {}));
+            setPredicates(
+              data.reduce<{ [key: string]: Predicate }>(
+                (prev, cur) => ({ ...prev, [cur.key || '']: cur }),
+                {},
+              ),
+            );
           }}
         />
       </Grid.Col>

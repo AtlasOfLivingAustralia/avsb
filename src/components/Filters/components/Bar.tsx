@@ -9,12 +9,13 @@ import {
 } from '@mantine/core';
 import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons-react';
 import { type MouseEventHandler } from 'react';
-import { type Predicate } from '#/api/graphql/types';
+import { type Predicate, type PredicateValue } from '#/api/graphql/types';
 
 import { type Filter } from '../types';
 
 function getPredicateValue(predicate: Predicate) {
-  const { key, value, values } = predicate;
+  const { key, values } = predicate;
+  const value = predicate.value as PredicateValue | undefined;
 
   // Date handling
   if (value && key?.toLowerCase().includes('date')) {

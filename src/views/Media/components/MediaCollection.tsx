@@ -8,7 +8,7 @@ import { type MediaItem } from '#/api/graphql/types';
 // Component imports
 import MediaImage from './MediaImage';
 
-interface MediaCollectionProps extends Omit<GridProps, 'children'> {
+interface MediaCollectionProps extends Omit<GridProps, 'children' | 'onSelect'> {
   label: string;
   disclaimer?: string;
   media: MediaItem[];

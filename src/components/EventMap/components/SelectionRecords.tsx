@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 // Project components / helpers
 import { type EventDocuments, type EventSearchResult, gqlQueries, type Predicate, performGQLQuery } from '#/api';
 import { Downloads, Filters } from '#/components';
-import { useMounted } from '#/helpers';
+import { getIsDefined, useMounted } from '#/helpers';
 import { formatNumber } from '#/helpers/stats';
 // Accession components
 import AccessionTable from '#/views/Accessions/components/AccessionTable';
@@ -45,7 +45,7 @@ export function SelectionRecords({
   const [query, setQuery] = useState<EventDocuments | null>(null);
 
   const mounted = useMounted();
-  const events = query?.results;
+  const events = query?.results.filter(getIsDefined);
 
   // Construct the base predicates array
   const predicates: Predicate[] = [
@@ -94,7 +94,7 @@ export function SelectionRecords({
   }, [opened, page, pageSize, filterPredicates, mapPredicatesKey]);
 
   const downloadFetcher = (data: { eventSearch: EventSearchResult }) =>
-    data?.eventSearch?.documents?.results || [];
+    data?.eventSearch?.documents?.results.filter(getIsDefined) || [];
 
   return (
     <Modal

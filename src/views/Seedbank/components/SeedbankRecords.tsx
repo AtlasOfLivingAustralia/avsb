@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 // Project components / helpers
 import { type EventDocuments, type EventSearchResult, gqlQueries, performGQLQuery, type Predicate } from '#/api';
 import { Downloads, Filters } from '#/components';
-import { useMounted } from '#/helpers';
+import { getIsDefined, useMounted } from '#/helpers';
 import { formatNumber } from '#/helpers/stats';
 
 // Accession components
@@ -36,7 +36,7 @@ export function SeedbankRecords() {
 	const { resource } = useParams();
 
 	const mounted = useMounted();
-	const events = query?.results;
+	const events = query?.results.filter(getIsDefined);
 
 	// Construct the base predicates array
 	const predicates: Predicate[] = [
@@ -79,7 +79,7 @@ export function SeedbankRecords() {
 	}, [page, pageSize, filterPredicates]);
 
 	const downloadFetcher = (data: { eventSearch: EventSearchResult }) =>
-		data?.eventSearch?.documents?.results || [];
+		data?.eventSearch?.documents?.results.filter(getIsDefined) || [];
 
 	return (
 		<Flex direction='column' pt='md' justify='space-between'>

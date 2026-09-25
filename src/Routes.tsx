@@ -12,8 +12,8 @@ import {
 } from './api';
 
 import { mapTrialTreatments } from './helpers';
-import { conservationLists } from './helpers/stats';
 import { DashboardView, HomeView } from './views';
+import type { StatisticsLoaderData } from './views/Statistics';
 
 const routes = createBrowserRouter([
   {
@@ -49,29 +49,13 @@ const routes = createBrowserRouter([
         lazy: () => import('./views/Statistics'),
         loader: async () => {
           // Construct a query that fetches a summary all data resources
-          const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
-            gqlQueries.QUERY_EVENT_ACCESSIONS,
+          const { data } = await performGQLQuery<{ data: StatisticsLoaderData }>(
+            gqlQueries.QUERY_STATISTICS,
             {
-              predicate: {
-                type: 'and',
-                predicates: [
-                  gqlQueries.PRED_DATA_RESOURCE,
-                  {
-                    type: 'equals',
-                    key: 'eventType',
-                    value: 'Accession',
-                  },
-                  {
-                    type: 'equals',
-                    key: 'measurementOrFactTypes',
-                    value: conservationLists[0],
-                  },
-                ],
-              },
-              size: 10,
+              basePredicate: gqlQueries.PRED_DATA_RESOURCE
             },
           );
-          return data.eventSearch.documents;
+          return data;
         },
       },
       {

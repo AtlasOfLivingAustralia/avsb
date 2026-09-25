@@ -1,3 +1,4 @@
+import queries from '#/api/queries';
 import {
   Alert,
   Anchor,
@@ -31,8 +32,7 @@ import {
   IconSeeding,
   IconTestPipe,
 } from '@tabler/icons-react';
-import { Fragment } from 'react';
-import queries from '#/api/queries';
+import { Fragment, useMemo } from 'react';
 // Static image assets
 import ecologyEarth from '#/assets/ecology-earth.png';
 import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
@@ -41,47 +41,52 @@ import { Blob } from '#/components';
 import { StaticDownloads } from '#/components/Downloads/Static';
 import { Wave } from '#/components/Wave';
 // Helpers
+import type { EventSearchResult } from '#/api';
 import { scrollTo } from '#/helpers/scrollTo';
-import { formatNumber, stats } from '#/helpers/stats';
+import { formatNumber } from '#/helpers/stats';
 import { breakpoints } from '#/theme/constants';
+import { useLoaderData } from 'react-router';
 import DataExplorer from './components/DataExplorer';
 import StatCard from './components/StatCard';
+import { get } from 'lodash';
 
-const STATE_CONSERVATION = Object.entries(stats.conservation);
+export interface StatisticsLoaderData {
+  accessions: EventSearchResult;
+  trials: EventSearchResult;
+  treatments: EventSearchResult;
+  epbc: EventSearchResult;
+  nsw: EventSearchResult;
+  nt: EventSearchResult;
+  sa: EventSearchResult;
+  vic: EventSearchResult;
+  wa: EventSearchResult;
+  tas: EventSearchResult;
+  qld: EventSearchResult;
+  act: EventSearchResult;
+}
 
-const recordStats = [
-  {
-    id: 'accessions',
-    name: 'Accessions',
-    icon: IconSeeding,
-  },
-  {
-    id: 'trials',
-    name: 'Trials',
-    icon: IconTestPipe,
-  },
-  {
-    id: 'treatments',
-    name: 'Treatments',
-    icon: IconColorPicker,
-  },
-];
-
-const speciesStats = [
-  {
-    id: 'speciesWithAccession',
-    name: 'Species with an accession',
-    icon: IconPlant,
-  },
-  {
-    id: 'speciesWithTrial',
-    name: 'Species with a trial',
-    icon: IconFileFunction,
-  },
-];
+const states: { [key: string]: string } = {
+  'nsw': 'New South Wales',
+  'nt': 'Nothern Territory',
+  'sa': 'South Australia',
+  'vic': 'Victoria',
+  'wa': 'Western Australia',
+  'tas': 'Tasmania',
+  'qld': 'Queensland',
+  'act': 'Australian Capital Territory'
+};
 
 export function Component() {
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
+  const stats = useLoaderData() as StatisticsLoaderData;
+
+  const conservation = useMemo(() =>
+    Object.keys(states).map((state) => ({
+      name: states[state],
+      value: get(stats, state).cardinality?.taxa
+    })).sort(({ value: a }, { value: b }) => b - a),
+    [stats]
+  );
 
   return (
     <>
@@ -169,11 +174,15 @@ export function Component() {
                 </StaticDownloads>
               </Flex>
             </Grid.Col>
-            {recordStats.map((stat) => (
-              <Grid.Col key={stat.id} span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
-                <StatCard {...stat} />
-              </Grid.Col>
-            ))}
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+              <StatCard name="Accessions" value={formatNumber(stats.accessions.documents.total)} icon={IconSeeding} />
+            </Grid.Col>
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+              <StatCard name="Trials" value={formatNumber(stats.trials.documents.total)} icon={IconTestPipe} />
+            </Grid.Col>
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+              <StatCard name="Accessions" value={formatNumber(stats.treatments.documents.total)} icon={IconColorPicker} />
+            </Grid.Col>
             <Grid.Col span={12}>
               <Title fw={500} order={3} c='dimmed' pt='xl'>
                 Datasets & Species
@@ -181,16 +190,25 @@ export function Component() {
             </Grid.Col>
             <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
               <StatCard
-                id={queries.DATA_RESOURCES.length}
                 name='Organisations'
+                value={queries.DATA_RESOURCES.length}
                 icon={IconBuilding}
               />
             </Grid.Col>
-            {speciesStats.map((stat) => (
-              <Grid.Col key={stat.id} span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
-                <StatCard {...stat} />
-              </Grid.Col>
-            ))}
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+              <StatCard
+                name='Species with an accession'
+                value={formatNumber(stats.accessions.cardinality?.taxa)}
+                icon={IconPlant}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+              <StatCard
+                name='Species with a trial'
+                value={formatNumber(stats.trials.cardinality?.taxa)}
+                icon={IconFileFunction}
+              />
+            </Grid.Col>
           </Grid>
         </Container>
       </Box>
@@ -218,7 +236,7 @@ export function Component() {
                 the wild.
               </Text>
               <Text size='sm'>
-                The portal contains <b>{stats.epbcTotal}</b> nationally listed species listed under
+                The portal contains <b>{stats.epbc.cardinality?.taxa}</b> nationally listed species listed under
                 the EPBC act.{' '}
               </Text>
               <Anchor href='https://www.dcceew.gov.au/environment/epbc' target='_blank' size='sm'>
@@ -295,15 +313,15 @@ export function Component() {
                     <Divider />
                     <ScrollArea h={200}>
                       <Stack gap='xs' py='xs'>
-                        {STATE_CONSERVATION.sort(([_, a], [__, b]) => b - a).map(([list, count], index) => (
-                          <Fragment key={list}>
+                        {conservation.map(({ name, value }, index) => (
+                          <Fragment key={name}>
                             <Flex justify='space-between' px='sm'>
-                              <Text size='sm'>{list.split(':').map((part) => part.trim())[0]}</Text>
+                              <Text size='sm'>{name}</Text>
                               <Badge variant='light' ml='sm' miw={50}>
-                                {formatNumber(count)} species
+                                {formatNumber(value)} species
                               </Badge>
                             </Flex>
-                            {index !== STATE_CONSERVATION.length - 1 && <Divider />}
+                            {index !== conservation.length - 1 && <Divider />}
                           </Fragment>
                         ))}
                       </Stack>

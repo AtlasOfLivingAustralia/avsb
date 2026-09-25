@@ -515,6 +515,77 @@ query image($key: String, $size: Int, $from: Int, $specimenParams: JSON, $otherP
 }
 `;
 
+const QUERY_STATISTICS = `
+query DashboardQuery($basePredicate: Predicate) {
+  accessions: eventSearch(predicate: { type: and, predicates: [$basePredicate, {type: equals, key: "eventType", value: "Accession" }]}) {
+    documents {
+      total
+    }
+    cardinality {
+      taxa
+    }
+  }
+  trials: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: equals, key: "eventType", value: "Trial" }]}) {
+    documents {
+      total
+    }
+    cardinality {
+      taxa
+    }
+  }
+  treatments: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: equals, key: "eventType", value: "Treatment" }]}) {
+    documents {
+      total
+    }
+  }
+  epbc: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: in, key: "measurementOrFactTypes", values: ["EPBC Act Threatened Species"] }]}) {
+    cardinality {
+      taxa
+    }
+  }
+  nsw: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: in, key: "measurementOrFactTypes", values: ["New South Wales : Conservation Status"] }]}) {
+    cardinality {
+      taxa
+    }
+  }
+  nt: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: in, key: "measurementOrFactTypes", values: ["Northern Territory : Conservation Status"] }]}) {
+    cardinality {
+      taxa
+    }
+  }
+  sa: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: in, key: "measurementOrFactTypes", values: ["South Australia : Conservation Status"] }]}) {
+    cardinality {
+      taxa
+    }
+  }
+  vic: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: in, key: "measurementOrFactTypes", values: ["Victoria : Conservation Status"] }]}) {
+    cardinality {
+      taxa
+    }
+  }
+  wa: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: in, key: "measurementOrFactTypes", values: ["Western Australia: Conservation Status"] }]}) {
+    cardinality {
+      taxa
+    }
+  }
+  tas: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: in, key: "measurementOrFactTypes", values: ["Tasmania : Conservation Status"] }]}) {
+    cardinality {
+      taxa
+    }
+  }
+  qld: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: in, key: "measurementOrFactTypes", values: ["Queensland : Conservation Status"] }]}) {
+    cardinality {
+      taxa
+    }
+  }
+  act: eventSearch(predicate: { type: and, predicates: [$basePredicate, { type: in, key: "measurementOrFactTypes", values: ["Australian Capital Territory : Conservation Status"] }]}) {
+    cardinality {
+      taxa
+    }
+  }
+}
+`;
+
 const DOWNLOAD_EVENT_ACCESSIONS = `
 query list($predicate: Predicate){
   eventSearch(
@@ -656,6 +727,7 @@ export default {
   QUERY_SEEDBANK_SUMMARY,
   QUERY_SEEDBANK_SUMMARY_FULL,
   QUERY_SEEDBANK_SUMMARY_TEMPLATE,
+  QUERY_STATISTICS,
   PRED_DATA_RESOURCE,
   DATA_RESOURCES,
 };

@@ -15,7 +15,12 @@ import { IconArrowsMaximize, IconArrowsMinimize, IconChevronDown } from '@tabler
 import orderBy from 'lodash/orderBy';
 import { Fragment, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import type { Event, SeedBankTreatment, SeedBankTrial } from '#/api/graphql/types';
+import type {
+  Event,
+  SeedBankExtension,
+  SeedBankTreatment,
+  SeedBankTrial,
+} from '#/api/graphql/types';
 
 // Project components / helpers
 import { ThField, TrialDetails } from '#/components';
@@ -51,7 +56,7 @@ function TrialsTable({ events }: TrialsTableProps) {
         seedbank: {
           ...(event.treatments?.[0]?.extensions?.seedbank || {}),
           ...(event.extensions?.seedbank || {}),
-        },
+        } as SeedBankExtension,
       },
     }));
 

@@ -5,15 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build:production": "tsc && vite build",
-    "build:staging": "tsc && vite build --mode staging",
-    "build:testing": "tsc && vite build --mode testing",
-    "build:development": "tsc && vite build --mode development",
+    "build:production": "tsc -b && vite build",
+    "build:staging": "tsc -b && vite build --mode staging",
+    "build:testing": "tsc -b && vite build --mode testing",
+    "build:development": "tsc -b && vite build --mode development",
     "test": "vitest run --reporter=verbose",
     "test:coverage": "vitest run --coverage",
     "lint": "biome lint ./src",
     "lint:fix": "biome check --write ./src",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@mantine/carousel": "^9.4.0",
@@ -40,10 +41,14 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
+    "@graphql-codegen/cli": "^7.4.2",
+    "@graphql-codegen/typescript": "^6.1.0",
+    "@graphql-codegen/typescript-operations": "^6.1.7",
     "@rolldown/plugin-babel": "^0.2.3",
     "@types/file-saver": "^2.0.7",
     "@types/lodash": "^4.17.24",
     "@types/mapbox__mapbox-gl-draw": "^1.4.9",
+    "@types/node": "^22.20.4",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/wellknown": "^0.5.8",
