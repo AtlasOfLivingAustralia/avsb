@@ -264,8 +264,9 @@ export function Component() {
                   From{' '}
                   <Anchor
                     target='_blank'
-                    href={`${import.meta.env.VITE_ALA_COLLECTORY}/public/show/${selectedMedia?.provider
-                      }`}
+                    href={`${import.meta.env.VITE_ALA_COLLECTORY}/public/show/${
+                      selectedMedia?.provider
+                    }`}
                   >
                     {selectedMedia?.providerLiteral}
                   </Anchor>

@@ -1,4 +1,3 @@
-import { spatialAPI, type Field, type FieldObject, type Predicate } from '#/api';
 import {
   ActionIcon,
   Button,
@@ -15,6 +14,7 @@ import {
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch, IconWorldExclamation, IconX } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
+import { type Field, type FieldObject, type Predicate, spatialAPI } from '#/api';
 import FieldList from './FieldList';
 
 const slideX = {
@@ -78,11 +78,11 @@ function LayerList({
     } else {
       setSelected((objects) => [...objects, newObject]);
     }
-  }
+  };
 
   useEffect(() => {
     if (selected.length === 0) {
-      onSelect(null)
+      onSelect(null);
     } else {
       onSelect({
         type: 'or',
@@ -92,16 +92,16 @@ function LayerList({
             {
               type: 'equals',
               key: 'measurementType',
-              value: object.fieldname
+              value: object.fieldname,
             },
             {
               type: 'equals',
               key: 'measurementValue',
-              value: object.name
-            }
-          ]
-        }))
-      })
+              value: object.name,
+            },
+          ],
+        })),
+      });
     }
   }, [selected]);
 
@@ -160,12 +160,20 @@ function LayerList({
                   <ThemeIcon variant='light' mb='md' size='xl' radius='xl'>
                     <IconWorldExclamation />
                   </ThemeIcon>
-                  <Text fw='bold' size='md'>Error</Text>
-                  <Text c='dimmed' size='sm'>{error.message}</Text>
+                  <Text fw='bold' size='md'>
+                    Error
+                  </Text>
+                  <Text c='dimmed' size='sm'>
+                    {error.message}
+                  </Text>
                 </Stack>
               </Center>
             ) : (
-              <Stack h={(contentHeight || 300) - (selected.length > 0 ? 30 : 0)} gap={0} style={{ overflowY: 'auto' }}>
+              <Stack
+                h={(contentHeight || 300) - (selected.length > 0 ? 30 : 0)}
+                gap={0}
+                style={{ overflowY: 'auto' }}
+              >
                 <FieldList
                   fields={filteredFields}
                   search={debouncedSearch}

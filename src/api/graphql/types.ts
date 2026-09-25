@@ -98,7 +98,7 @@ export type {
   MediaItem,
   PredicateValue,
   SeedBankAccession,
-  SeedBankTrial,
   SeedBankTreatment,
+  SeedBankTrial,
   Variables,
 };

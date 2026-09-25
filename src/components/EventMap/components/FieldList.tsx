@@ -10,10 +10,10 @@ import {
   ThemeIcon,
   UnstyledButton,
 } from '@mantine/core';
-import type { Field, FieldObject } from '#/api';
-import classes from './ItemList.module.css';
 import { IconCheck } from '@tabler/icons-react';
 import { useMemo } from 'react';
+import type { Field, FieldObject } from '#/api';
+import classes from './ItemList.module.css';
 
 interface FieldListProps {
   fields: Field[] | null;
@@ -84,7 +84,11 @@ function FieldList({ fields, search, selected, onSelect }: FieldListProps) {
                           {object.area_km.toFixed(2)} km&sup2;
                         </Text>
                       </Stack>
-                      <ThemeIcon className={`${classes.icon}${isSelected ? ` ${classes.iconShow}` : ''}`} variant='light' size='sm'>
+                      <ThemeIcon
+                        className={`${classes.icon}${isSelected ? ` ${classes.iconShow}` : ''}`}
+                        variant='light'
+                        size='sm'
+                      >
                         <IconCheck size='1rem' />
                       </ThemeIcon>
                     </Flex>

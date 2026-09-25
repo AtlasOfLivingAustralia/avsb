@@ -1,4 +1,3 @@
-import queries from '#/api/queries';
 import {
   Alert,
   Anchor,
@@ -32,7 +31,12 @@ import {
   IconSeeding,
   IconTestPipe,
 } from '@tabler/icons-react';
+import { get } from 'lodash';
 import { Fragment, useMemo } from 'react';
+import { useLoaderData } from 'react-router';
+// Helpers
+import type { EventSearchResult } from '#/api';
+import queries from '#/api/queries';
 // Static image assets
 import ecologyEarth from '#/assets/ecology-earth.png';
 import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
@@ -40,15 +44,11 @@ import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
 import { Blob } from '#/components';
 import { StaticDownloads } from '#/components/Downloads/Static';
 import { Wave } from '#/components/Wave';
-// Helpers
-import type { EventSearchResult } from '#/api';
 import { scrollTo } from '#/helpers/scrollTo';
 import { formatNumber } from '#/helpers/stats';
 import { breakpoints } from '#/theme/constants';
-import { useLoaderData } from 'react-router';
 import DataExplorer from './components/DataExplorer';
 import StatCard from './components/StatCard';
-import { get } from 'lodash';
 
 export interface StatisticsLoaderData {
   accessions: EventSearchResult;
@@ -66,26 +66,29 @@ export interface StatisticsLoaderData {
 }
 
 const states: { [key: string]: string } = {
-  'nsw': 'New South Wales',
-  'nt': 'Nothern Territory',
-  'sa': 'South Australia',
-  'vic': 'Victoria',
-  'wa': 'Western Australia',
-  'tas': 'Tasmania',
-  'qld': 'Queensland',
-  'act': 'Australian Capital Territory'
+  nsw: 'New South Wales',
+  nt: 'Nothern Territory',
+  sa: 'South Australia',
+  vic: 'Victoria',
+  wa: 'Western Australia',
+  tas: 'Tasmania',
+  qld: 'Queensland',
+  act: 'Australian Capital Territory',
 };
 
 export function Component() {
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
   const stats = useLoaderData() as StatisticsLoaderData;
 
-  const conservation = useMemo(() =>
-    Object.keys(states).map((state) => ({
-      name: states[state],
-      value: get(stats, state).cardinality?.taxa
-    })).sort(({ value: a }, { value: b }) => b - a),
-    [stats]
+  const conservation = useMemo(
+    () =>
+      Object.keys(states)
+        .map((state) => ({
+          name: states[state],
+          value: get(stats, state).cardinality?.taxa,
+        }))
+        .sort(({ value: a }, { value: b }) => b - a),
+    [stats],
   );
 
   return (
@@ -175,13 +178,25 @@ export function Component() {
               </Flex>
             </Grid.Col>
             <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
-              <StatCard name="Accessions" value={formatNumber(stats.accessions.documents.total)} icon={IconSeeding} />
+              <StatCard
+                name='Accessions'
+                value={formatNumber(stats.accessions.documents.total)}
+                icon={IconSeeding}
+              />
             </Grid.Col>
             <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
-              <StatCard name="Trials" value={formatNumber(stats.trials.documents.total)} icon={IconTestPipe} />
+              <StatCard
+                name='Trials'
+                value={formatNumber(stats.trials.documents.total)}
+                icon={IconTestPipe}
+              />
             </Grid.Col>
             <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
-              <StatCard name="Accessions" value={formatNumber(stats.treatments.documents.total)} icon={IconColorPicker} />
+              <StatCard
+                name='Accessions'
+                value={formatNumber(stats.treatments.documents.total)}
+                icon={IconColorPicker}
+              />
             </Grid.Col>
             <Grid.Col span={12}>
               <Title fw={500} order={3} c='dimmed' pt='xl'>
@@ -236,8 +251,8 @@ export function Component() {
                 the wild.
               </Text>
               <Text size='sm'>
-                The portal contains <b>{stats.epbc.cardinality?.taxa}</b> nationally listed species listed under
-                the EPBC act.{' '}
+                The portal contains <b>{stats.epbc.cardinality?.taxa}</b> nationally listed species
+                listed under the EPBC act.{' '}
               </Text>
               <Anchor href='https://www.dcceew.gov.au/environment/epbc' target='_blank' size='sm'>
                 Read more about the EPBC Act here{' '}
@@ -299,16 +314,23 @@ export function Component() {
                   State and Territory listed species
                 </Title>
                 <Text size='sm'>
-                  The Partnership also holds collections for species listed under Australian state and territory legislation.
+                  The Partnership also holds collections for species listed under Australian state
+                  and territory legislation.
                 </Text>
                 <Text size='sm'>
-                  Species are counted as threatened if they are listed in any Australian jurisdiction regardless of where the seed was collected or which seed bank holds the collection.
+                  Species are counted as threatened if they are listed in any Australian
+                  jurisdiction regardless of where the seed was collected or which seed bank holds
+                  the collection.
                 </Text>
                 <Paper mt='lg' withBorder>
                   <Stack gap={0}>
                     <Group justify='space-between' py='xs' px='xs'>
-                      <Text c='dimmed' fw='bold' size='sm' ta='left' maw={200}>Applicable environmental legislation</Text>
-                      <Text c='dimmed' fw='bold' size='sm' ta='right' maw={200}>Species held in ASBP collections</Text>
+                      <Text c='dimmed' fw='bold' size='sm' ta='left' maw={200}>
+                        Applicable environmental legislation
+                      </Text>
+                      <Text c='dimmed' fw='bold' size='sm' ta='right' maw={200}>
+                        Species held in ASBP collections
+                      </Text>
                     </Group>
                     <Divider />
                     <ScrollArea h={200}>
@@ -355,10 +377,19 @@ export function Component() {
               Download all protected species data
             </StaticDownloads>
           </Flex>
-          <Title fw={500} c='dimmed' order={3}>Explore accessions for protected species</Title>
+          <Title fw={500} c='dimmed' order={3}>
+            Explore accessions for protected species
+          </Title>
           <Stack gap='xs' mb='md'>
-            <Text x- size='sm'>Use the table below to filter and download threatened species records from Australian Seed Bank Partnership vaults.</Text>
-            <Text size='sm'>Click the buttons to apply national (EPBC Act) or jurisdictional threatened species legislation to filter records for species listed in any Australian state, territory or nationally.</Text>
+            <Text x- size='sm'>
+              Use the table below to filter and download threatened species records from Australian
+              Seed Bank Partnership vaults.
+            </Text>
+            <Text size='sm'>
+              Click the buttons to apply national (EPBC Act) or jurisdictional threatened species
+              legislation to filter records for species listed in any Australian state, territory or
+              nationally.
+            </Text>
           </Stack>
           <DataExplorer />
         </Stack>

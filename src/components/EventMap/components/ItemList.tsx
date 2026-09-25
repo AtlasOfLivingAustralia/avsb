@@ -94,8 +94,8 @@ function ItemList({
                         to={
                           result._taxon?.taxonID
                             ? `/taxon/${encodeURIComponent(
-                              result._taxon.taxonID,
-                            )}/accessions/${result.eventID}`
+                                result._taxon.taxonID,
+                              )}/accessions/${result.eventID}`
                             : `../accessions/${result.eventID}`
                         }
                         p='xs'

@@ -62,6 +62,7 @@ export function Component() {
 
       // Extract the event IDs from all of the return trials, then retrieve their associated
       // treatment events
+      // biome-ignore lint/correctness/noUnsafeOptionalChaining: We can assume Event[]
       const eventIDs = (data.eventSearch?.documents?.results as Event[]).map(
         ({ eventID }) => eventID,
       );

@@ -1,12 +1,4 @@
-import {
-  ActionIcon,
-  Button,
-  Divider,
-  Group,
-  type GroupProps,
-  Paper,
-  Text,
-} from '@mantine/core';
+import { ActionIcon, Button, Divider, Group, type GroupProps, Paper, Text } from '@mantine/core';
 import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons-react';
 import { type MouseEventHandler } from 'react';
 import { type Predicate, type PredicateValue } from '#/api/graphql/types';

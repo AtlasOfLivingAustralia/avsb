@@ -161,6 +161,7 @@ function TrialsTable({ events }: TrialsTableProps) {
             )}
             {sortedData.map((event) => {
               const trial = event.extensions?.seedbank as SeedBankTrial;
+              // biome-ignore lint/correctness/noUnsafeOptionalChaining: We can assume SeedBankTreatment[]
               const [treatment] = event.treatments?.map(
                 (treatmentEvent) => treatmentEvent.extensions?.seedbank,
               ) as SeedBankTreatment[];

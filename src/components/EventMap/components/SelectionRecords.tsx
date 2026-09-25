@@ -14,7 +14,13 @@ import {
 import { IconMap } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 // Project components / helpers
-import { type EventDocuments, type EventSearchResult, gqlQueries, type Predicate, performGQLQuery } from '#/api';
+import {
+  type EventDocuments,
+  type EventSearchResult,
+  gqlQueries,
+  type Predicate,
+  performGQLQuery,
+} from '#/api';
 import { Downloads, Filters } from '#/components';
 import { getIsDefined, useMounted } from '#/helpers';
 import { formatNumber } from '#/helpers/stats';

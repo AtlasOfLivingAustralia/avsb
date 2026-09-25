@@ -18,7 +18,7 @@ const conservationLists = [
   'Western Australia: Conservation Status',
   'Tasmania : Conservation Status',
   'Queensland : Conservation Status',
-  'Australian Capital Territory : Conservation Status'
+  'Australian Capital Territory : Conservation Status',
 ];
 
 const formatNumber = (value?: number) =>
@@ -26,4 +26,4 @@ const formatNumber = (value?: number) =>
     ? value.toLocaleString(undefined, { minimumFractionDigits: 2 }).replace('.00', '')
     : '?';
 
-export { conservationLists, sensitiveLists, formatNumber };
+export { conservationLists, formatNumber, sensitiveLists };

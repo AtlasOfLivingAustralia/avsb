@@ -1,4 +1,13 @@
-import { Badge, Box, Grid, type GridProps, Group, Skeleton, Text, UnstyledButton } from '@mantine/core';
+import {
+  Badge,
+  Box,
+  Grid,
+  type GridProps,
+  Group,
+  Skeleton,
+  Text,
+  UnstyledButton,
+} from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons-react';
 import { Link } from 'react-router';
 import { gqlQueries, useGQLQuery } from '#/api';
@@ -93,8 +102,8 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
 const QUERY_SEEDBANK_SUMMARY_ALL = `
 query list {
   ${queries.DATA_RESOURCES.map((dataResource: string) =>
-  queries.QUERY_SEEDBANK_SUMMARY_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
-).join('')}
+    queries.QUERY_SEEDBANK_SUMMARY_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
+  ).join('')}
 }
 `;
 

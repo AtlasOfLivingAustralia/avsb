@@ -65,8 +65,8 @@ function Contact({ dataResource, ...rest }: ContactProps) {
             <Avatar size={50} radius='xl'>
               {contact?.individualName
                 ? `${contact.individualName[0].givenName?.[0].charAt(
-                  0,
-                )}${contact.individualName[0].surName?.[0].charAt(0)}`
+                    0,
+                  )}${contact.individualName[0].surName?.[0].charAt(0)}`
                 : getInitials(contact?.organizationName?.[0] || '', 3)}
             </Avatar>
           </Skeleton>

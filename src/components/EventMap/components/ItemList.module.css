@@ -19,7 +19,9 @@
 .icon {
   opacity: 0;
   transform: scale(0.8);
-  transition: opacity ease 150ms, transform ease 150ms;
+  transition:
+    opacity ease 150ms,
+    transform ease 150ms;
 }
 
 .iconShow {

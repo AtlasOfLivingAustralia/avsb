@@ -52,7 +52,7 @@ const routes = createBrowserRouter([
           const { data } = await performGQLQuery<{ data: StatisticsLoaderData }>(
             gqlQueries.QUERY_STATISTICS,
             {
-              basePredicate: gqlQueries.PRED_DATA_RESOURCE
+              basePredicate: gqlQueries.PRED_DATA_RESOURCE,
             },
           );
           return data;
@@ -191,6 +191,7 @@ const routes = createBrowserRouter([
 
               // Extract the event IDs from all of the return trials, then retrieve their associated
               // treatment events
+              // biome-ignore lint/correctness/noUnsafeOptionalChaining: We can assume Event[]
               const eventIDs = (data.eventSearch.documents?.results as Event[]).map(
                 ({ eventID }) => eventID,
               );

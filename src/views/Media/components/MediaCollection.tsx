@@ -1,4 +1,14 @@
-import { Alert, Button, Center, Divider, Grid, type GridProps, Group, Stack, Text } from '@mantine/core';
+import {
+  Alert,
+  Button,
+  Center,
+  Divider,
+  Grid,
+  type GridProps,
+  Group,
+  Stack,
+  Text,
+} from '@mantine/core';
 import { IconAlertCircle, IconAlertTriangle, IconExternalLink } from '@tabler/icons-react';
 import { useParams } from 'react-router';
 

@@ -15,7 +15,6 @@ interface ImportMetaEnv {
   readonly VITE_APP_MAINTENANCE_MODE: string;
 }
 
-// biome-ignore lint/correctness/noUnusedVariables: global interface augmentation
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }

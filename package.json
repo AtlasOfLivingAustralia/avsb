@@ -13,6 +13,8 @@
     "test:coverage": "vitest run --coverage",
     "lint": "biome lint ./src",
     "lint:fix": "biome check --write ./src",
+    "format": "biome format ./src",
+    "format:fix": "biome format --write ./src",
     "preview": "vite preview",
     "codegen": "graphql-codegen --config codegen.ts"
   },

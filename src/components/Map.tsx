@@ -42,7 +42,7 @@ function MapComponent({ width, height, center }: MapProps) {
       style: `mapbox://styles/mapbox/${colorScheme === 'dark' ? 'light' : 'dark'}-v11`,
       center,
       zoom: 6,
-      accessToken: import.meta.env.VITE_APP_MAPBOX_TOKEN
+      accessToken: import.meta.env.VITE_APP_MAPBOX_TOKEN,
     });
     new Marker().setLngLat(center).addTo(map.current);
     map.current.on('render', () => map.current?.resize());

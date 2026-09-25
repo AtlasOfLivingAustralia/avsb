@@ -354,4 +354,4 @@ const allFields = {
   ...customFields,
 };
 
-export { accessionFields, trialFields, treatmentFields, allFields };
+export { accessionFields, allFields, treatmentFields, trialFields };

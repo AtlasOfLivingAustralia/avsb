@@ -69,4 +69,4 @@ export default {
   summary,
 };
 
-export type { NumericTrait, CategoricalTrait, AusTraitsSummary, AusTraitsCount };
+export type { AusTraitsCount, AusTraitsSummary, CategoricalTrait, NumericTrait };

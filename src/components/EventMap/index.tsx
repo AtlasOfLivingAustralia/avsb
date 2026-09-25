@@ -6,11 +6,11 @@ import { IconLayersIntersect2, IconSearch, IconStack2 } from '@tabler/icons-reac
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { FullscreenControl, type LngLatLike, Map as MapboxMap, Popup } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+
+import { useComputedColorScheme } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import wellknown, { type GeoJSONPolygon } from 'wellknown';
-
-import { useComputedColorScheme } from '@mantine/core';
 
 // Project-imports
 import { type EventSearchResult, type Predicate, performGQLQuery, useGQLQuery } from '#/api';
@@ -130,7 +130,9 @@ function MapComponent({
   const handlePolygons = () => {
     const predicates = drawControl.current
       .getAll()
-      .features.filter(({ geometry }) => geometry.type === 'Polygon' || geometry.type === 'MultiPolygon')
+      .features.filter(
+        ({ geometry }) => geometry.type === 'Polygon' || geometry.type === 'MultiPolygon',
+      )
       .map((feature) => wellknown.stringify(feature.geometry as GeoJSONPolygon))
       .map((value) => ({
         type: 'within',
@@ -228,12 +230,13 @@ function MapComponent({
     const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
       queries.QUERY_EVENT_MAP,
       {
-        predicate: predicates.length > 0
-          ? {
-            type: 'and',
-            predicates: [predicate, ...predicates],
-          }
-          : predicate,
+        predicate:
+          predicates.length > 0
+            ? {
+                type: 'and',
+                predicates: [predicate, ...predicates],
+              }
+            : predicate,
       },
     );
 
@@ -272,21 +275,21 @@ function MapComponent({
             },
             ...(params.guid
               ? [
-                {
-                  type: 'equals',
-                  key: 'taxonKey',
-                  value: params.guid,
-                },
-              ]
+                  {
+                    type: 'equals',
+                    key: 'taxonKey',
+                    value: params.guid,
+                  },
+                ]
               : []),
             ...(params.resource
               ? [
-                {
-                  type: 'equals',
-                  key: 'datasetKey',
-                  value: params.resource,
-                },
-              ]
+                  {
+                    type: 'equals',
+                    key: 'datasetKey',
+                    value: params.resource,
+                  },
+                ]
               : []),
           ],
         },
@@ -315,7 +318,7 @@ function MapComponent({
       style: styleUrl,
       center: initialCenter || MAP_CENTER,
       zoom: initialZoom || 2.25,
-      accessToken: import.meta.env.VITE_APP_MAPBOX_TOKEN
+      accessToken: import.meta.env.VITE_APP_MAPBOX_TOKEN,
     });
 
     map.current.addControl(drawControl.current, 'top-right');
@@ -343,7 +346,11 @@ function MapComponent({
       <SelectionRecords
         opened={recordsOpened}
         onClose={() => setRecordsOpened(false)}
-        predicates={[predicate, RECORDS_PREDICATE, ...([drawPredicate, spatialPredicate].filter((pred) => !!pred))]}
+        predicates={[
+          predicate,
+          RECORDS_PREDICATE,
+          ...[drawPredicate, spatialPredicate].filter((pred) => !!pred),
+        ]}
       />
       <div
         style={{
@@ -410,15 +417,19 @@ function MapComponent({
             onClick={() => {
               setRecordsOpened(true);
             }}
-            aria-label={`View ${(drawPredicate || spatialPredicate) ? 'selected' : 'map'}  records`}
+            aria-label={`View ${drawPredicate || spatialPredicate ? 'selected' : 'map'}  records`}
           >
             {drawPredicate ? 'Selected' : 'Map'} records
           </Button>
           <Button
             leftSection={<IconStack2 size='1rem' />}
-            rightSection={spatialPredicate && (
-              <Pill color='blue' size='xs'>{spatialPredicate.predicates?.length}</Pill>
-            )}
+            rightSection={
+              spatialPredicate && (
+                <Pill color='blue' size='xs'>
+                  {spatialPredicate.predicates?.length}
+                </Pill>
+              )
+            }
             color='gray'
             radius='lg'
             size='xs'

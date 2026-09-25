@@ -13,11 +13,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import {
-  IconAlertTriangle,
-  IconMessageQuestion,
-  type TablerIcon,
-} from '@tabler/icons-react';
+import { IconAlertTriangle, IconMessageQuestion, type TablerIcon } from '@tabler/icons-react';
 import { type ReactNode, useState } from 'react';
 import { trialFields } from '#/helpers';
 import { breakpoints } from '#/theme';

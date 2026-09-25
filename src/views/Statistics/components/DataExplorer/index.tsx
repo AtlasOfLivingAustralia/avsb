@@ -12,7 +12,13 @@ import {
 import { useEffect, useState } from 'react';
 
 // Project components / helpers
-import { type EventDocuments, type EventSearchResult, gqlQueries, type Predicate, performGQLQuery } from '#/api';
+import {
+  type EventDocuments,
+  type EventSearchResult,
+  gqlQueries,
+  type Predicate,
+  performGQLQuery,
+} from '#/api';
 import { Downloads, Filters } from '#/components';
 import { getIsDefined } from '#/helpers';
 import { getStateInitials } from '#/helpers/getStateInitials';
@@ -24,7 +30,6 @@ import downloadFields from '#/views/Accessions/downloadFields';
 
 // Config
 import filters from './filters';
-
 
 export default function DataExplorer() {
   // State hooks
