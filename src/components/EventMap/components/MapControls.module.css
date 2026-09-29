@@ -21,7 +21,7 @@
   width: auto;
 }
 
-.map :global(.mapboxgl-ctrl-bottom) {
+.map :global(.mapboxgl-ctrl-bottom-left) {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -29,7 +29,7 @@
   bottom: var(--mantine-spacing-xl);
 }
 
-.map :global(.mapboxgl-ctrl-bottom) > :global(.mapboxgl-ctrl) {
+.map :global(.mapboxgl-ctrl-bottom-left) > :global(.mapboxgl-ctrl) {
   margin: 0;
 }
 
@@ -41,7 +41,7 @@
   order: 2;
 }
 
-.map :global(.mapboxgl-ctrl-bottom) .control button:not(:disabled):hover {
+.map :global(.mapboxgl-ctrl-bottom-left) .control button:not(:disabled):hover {
   background-color: var(--button-hover, var(--mantine-primary-color-filled-hover));
   color: var(--button-hover-color, var(--button-color));
 }

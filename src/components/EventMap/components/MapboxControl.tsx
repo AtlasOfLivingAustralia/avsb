@@ -19,7 +19,7 @@ class PortalControl implements IControl {
   }
 
   getDefaultPosition(): ControlPosition {
-    return 'bottom';
+    return 'bottom-left';
   }
 
   getContainer() {
@@ -34,7 +34,7 @@ interface MapboxControlProps {
   children: ReactNode;
 }
 
-function MapboxControl({ map, position = 'bottom', className, children }: MapboxControlProps) {
+function MapboxControl({ map, position = 'bottom-left', className, children }: MapboxControlProps) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {

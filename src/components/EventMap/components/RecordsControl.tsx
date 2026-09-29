@@ -23,7 +23,7 @@ function RecordsControl({
   onOpen,
 }: RecordsControlProps) {
   return (
-    <MapboxControl map={map} position='bottom' className={`${classes.control} ${classes.records}`}>
+    <MapboxControl map={map} position='bottom-left' className={`${classes.control} ${classes.records}`}>
       <Group gap='xs' wrap='nowrap'>
         <Paper
           style={{

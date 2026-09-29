@@ -12,7 +12,7 @@ interface LayersControlProps {
 
 function LayersControl({ map, count, onOpen }: LayersControlProps) {
   return (
-    <MapboxControl map={map} position='bottom' className={`${classes.control} ${classes.layers}`}>
+    <MapboxControl map={map} position='bottom-left' className={`${classes.control} ${classes.layers}`}>
       <Button
         leftSection={<IconStack2 size='1rem' />}
         rightSection={
