@@ -121,7 +121,9 @@ export default function LastUpdated() {
       if (isMounted) setLabel(next);
     });
 
-    getOrFetchLabel();
+    getOrFetchLabel().then((next) => {
+      if (isMounted && !next) setLabel('Unavailable');
+    });
 
     return () => {
       isMounted = false;
