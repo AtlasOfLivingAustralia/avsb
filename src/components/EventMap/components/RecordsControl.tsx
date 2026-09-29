@@ -54,9 +54,9 @@ function RecordsControl({
           radius='lg'
           size='xs'
           onClick={onOpen}
-          aria-label={`View ${filtered ? 'selected' : 'map'}  records`}
+          aria-label={`View ${filtered ? 'selected' : 'map'} records`}
         >
-          {drawn ? 'Selected' : 'Map'} records
+          {filtered ? 'Selected' : 'Map'} records
         </Button>
       </Group>
     </MapboxControl>
