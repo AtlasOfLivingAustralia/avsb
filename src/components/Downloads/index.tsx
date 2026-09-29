@@ -50,7 +50,8 @@ interface DownloadsProps extends GroupProps {
   fields: DownloadField[];
   predicates: Predicate[];
   fileName: string;
-  fetcher: (data: any) => object[] | Promise<object[]>;
+  fetcher: (data: any) => Event[] | Promise<Event[]>;
+  portalTarget?: HTMLElement | null;
 }
 
 // Helper function to convert an event object to CSV string
@@ -65,7 +66,7 @@ const eventToCSV = (event: Event, fields: DownloadField[], emofFields: string[])
     .map((value) => (value.toString().includes(',') ? `"${value}"` : value));
 
   const emofValues = emofFields.map((cur) => {
-    const mof = event.measurementOrFacts?.find(({ measurementType }) => measurementType === cur);
+    const mof = event.measurementOrFacts?.find((emof) => emof?.measurementType === cur);
 
     if (mof?.measurementValue) {
       return mof.measurementValue.toString().includes(',')
@@ -85,7 +86,7 @@ const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
   // Get all of the unique emofs
   events.forEach((event) => {
     (event.measurementOrFacts || []).forEach((emof) => {
-      emofTypes.add(emof.measurementType);
+      if (emof) emofTypes.add(emof.measurementType);
     });
   });
 
@@ -97,7 +98,15 @@ const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
   return [header, ...events.map((event) => eventToCSV(event, fields, emofFields))].join('\n');
 };
 
-function Downloads({ query, total, predicates, fields, fileName, fetcher }: DownloadsProps) {
+function Downloads({
+  query,
+  total,
+  predicates,
+  fields,
+  fileName,
+  fetcher,
+  portalTarget,
+}: DownloadsProps) {
   // Download state
   const [downloadReason, setDownloadReason] = useState<string | null>(
     localStorage.getItem('avsb-download-reason') || '',
@@ -166,6 +175,7 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
   return (
     <>
       <Modal
+        portalProps={portalTarget ? { target: portalTarget } : undefined}
         opened={opened}
         onClose={close}
         title={

@@ -1,5 +1,5 @@
 import { Carousel } from '@mantine/carousel';
-import { Box, Image, Paper, rem, Text, ThemeIcon } from '@mantine/core';
+import { Box, Image, Paper, Text, ThemeIcon } from '@mantine/core';
 import { useState } from 'react';
 
 import { type HelpTopicItem } from '..';

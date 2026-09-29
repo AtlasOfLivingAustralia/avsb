@@ -1,4 +1,13 @@
-import { Badge, Box, Grid, type GridProps, Group, Skeleton, Text, UnstyledButton } from '@mantine/core';
+import {
+  Badge,
+  Box,
+  Grid,
+  type GridProps,
+  Group,
+  Skeleton,
+  Text,
+  UnstyledButton,
+} from '@mantine/core';
 import { IconArrowUpRight } from '@tabler/icons-react';
 import { Link } from 'react-router';
 import { gqlQueries, useGQLQuery } from '#/api';

@@ -1,16 +1,14 @@
-import { Button, Checkbox, Flex, Group, Paper, Pill } from '@mantine/core';
 import Draw from '@mapbox/mapbox-gl-draw';
-import { IconLayersIntersect2, IconSearch, IconStack2 } from '@tabler/icons-react';
 
 // Mapbox
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { FullscreenControl, type LngLatLike, Map as MapboxMap, Popup } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+
+import { useComputedColorScheme } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import wellknown, { type GeoJSONPolygon } from 'wellknown';
-
-import { useComputedColorScheme } from '@mantine/core';
 
 // Project-imports
 import { type EventSearchResult, type Predicate, performGQLQuery, useGQLQuery } from '#/api';
@@ -18,6 +16,9 @@ import queries from '#/api/queries';
 import { getMapLayer, getWktFromGeohash } from '#/helpers';
 import ItemList from './components/ItemList';
 import LayerList from './components/LayerList';
+import LayersControl from './components/LayersControl';
+import classes from './components/MapControls.module.css';
+import RecordsControl from './components/RecordsControl';
 import { SelectionRecords } from './components/SelectionRecords';
 import { drawStyles } from './drawStyles';
 
@@ -30,7 +31,7 @@ interface MapProps {
   predicate: Predicate;
   width?: string | number;
   height?: string | number;
-  initialToken?: string;
+  initialToken?: string | null;
   shadow?: string;
   radius?: string;
   transparent?: boolean;
@@ -75,8 +76,12 @@ function MapComponent({
   onLoad,
 }: MapProps) {
   // Map refs
+  const frameRef = useRef<HTMLDivElement | null>(null);
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<MapboxMap | null>(null);
+  const [mapInstance, setMapInstance] = useState<MapboxMap | null>(null);
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const popup = useRef<Popup>(
     new Popup({
       closeButton: false,
@@ -130,7 +135,9 @@ function MapComponent({
   const handlePolygons = () => {
     const predicates = drawControl.current
       .getAll()
-      .features.filter(({ geometry }) => geometry.type === 'Polygon' || geometry.type === 'MultiPolygon')
+      .features.filter(
+        ({ geometry }) => geometry.type === 'Polygon' || geometry.type === 'MultiPolygon',
+      )
       .map((feature) => wellknown.stringify(feature.geometry as GeoJSONPolygon))
       .map((value) => ({
         type: 'within',
@@ -228,12 +235,13 @@ function MapComponent({
     const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
       queries.QUERY_EVENT_MAP,
       {
-        predicate: predicates.length > 0
-          ? {
-            type: 'and',
-            predicates: [predicate, ...predicates],
-          }
-          : predicate,
+        predicate:
+          predicates.length > 0
+            ? {
+                type: 'and',
+                predicates: [predicate, ...predicates],
+              }
+            : predicate,
       },
     );
 
@@ -272,21 +280,21 @@ function MapComponent({
             },
             ...(params.guid
               ? [
-                {
-                  type: 'equals',
-                  key: 'taxonKey',
-                  value: params.guid,
-                },
-              ]
+                  {
+                    type: 'equals',
+                    key: 'taxonKey',
+                    value: params.guid,
+                  },
+                ]
               : []),
             ...(params.resource
               ? [
-                {
-                  type: 'equals',
-                  key: 'datasetKey',
-                  value: params.resource,
-                },
-              ]
+                  {
+                    type: 'equals',
+                    key: 'datasetKey',
+                    value: params.resource,
+                  },
+                ]
               : []),
           ],
         },
@@ -315,11 +323,17 @@ function MapComponent({
       style: styleUrl,
       center: initialCenter || MAP_CENTER,
       zoom: initialZoom || 2.25,
-      accessToken: import.meta.env.VITE_APP_MAPBOX_TOKEN
+      accessToken: import.meta.env.VITE_APP_MAPBOX_TOKEN,
     });
 
     map.current.addControl(drawControl.current, 'top-right');
-    map.current.addControl(new FullscreenControl());
+    map.current.addControl(
+      new FullscreenControl({
+        container: frameRef.current,
+      }),
+    );
+    setPortalTarget(frameRef.current);
+    setMapInstance(map.current);
     map.current.on('draw.create', handlePolygons);
     map.current.on('draw.delete', handlePolygons);
     map.current.on('draw.update', handlePolygons);
@@ -338,108 +352,85 @@ function MapComponent({
     });
   }, []);
 
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const active =
+        document.fullscreenElement === frameRef.current ||
+        (document as Document & { webkitFullscreenElement?: Element | null })
+          .webkitFullscreenElement === frameRef.current;
+      setIsFullscreen(active);
+      map.current?.resize();
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
   return (
-    <>
+    <div
+      ref={frameRef}
+      className={classes.frame}
+      style={{
+        position: 'relative',
+        width,
+        height,
+        borderRadius: radius || 'var(--mantine-radius-lg)',
+        boxShadow: shadow || 'var(--mantine-shadow-md)',
+      }}
+    >
       <SelectionRecords
+        portalTarget={portalTarget}
         opened={recordsOpened}
         onClose={() => setRecordsOpened(false)}
-        predicates={[predicate, RECORDS_PREDICATE, ...([drawPredicate, spatialPredicate].filter((pred) => !!pred))]}
+        predicates={[
+          predicate,
+          RECORDS_PREDICATE,
+          ...[drawPredicate, spatialPredicate].filter((pred) => !!pred),
+        ]}
+      />
+      <ItemList
+        onClose={() => setSelectedPoint(null)}
+        documents={selectedEvents?.data.eventSearch.documents}
+        open={Boolean(selectedPoint)}
+        contentHeight={itemListHeight}
+        topOffset={isFullscreen ? 0 : itemsTopOffset}
+        leftOffset={isFullscreen ? 0 : itemsLeftOffset}
+      />
+      <LayerList
+        onSelect={setSpatialPredicate}
+        onClose={() => setLayersVisible(false)}
+        open={layersVisible}
+        contentHeight={layersListHeight}
+        topOffset={isFullscreen ? 0 : layersTopOffset}
+        rightOffset={isFullscreen ? 0 : layersRightOffset}
+      />
+      <RecordsControl
+        map={mapInstance}
+        drawn={Boolean(drawPredicate)}
+        filtered={Boolean(drawPredicate || spatialPredicate)}
+        inverseRef={inverseRef}
+        onInverseChange={handlePolygons}
+        onOpen={() => setRecordsOpened(true)}
+      />
+      <LayersControl
+        map={mapInstance}
+        count={spatialPredicate ? spatialPredicate.predicates?.length : undefined}
+        onOpen={() => setLayersVisible(true)}
       />
       <div
+        ref={mapContainer}
+        className={classes.map}
         style={{
-          position: 'relative',
           width,
           height,
           borderRadius: radius || 'var(--mantine-radius-lg)',
-          boxShadow: shadow || 'var(--mantine-shadow-md)',
         }}
-      >
-        <ItemList
-          onClose={() => setSelectedPoint(null)}
-          documents={selectedEvents?.data.eventSearch.documents || {}}
-          open={Boolean(selectedPoint)}
-          contentHeight={itemListHeight}
-          topOffset={itemsTopOffset}
-          leftOffset={itemsLeftOffset}
-        />
-        <LayerList
-          onSelect={setSpatialPredicate}
-          onClose={() => setLayersVisible(false)}
-          open={layersVisible}
-          contentHeight={layersListHeight}
-          topOffset={layersTopOffset}
-          rightOffset={layersRightOffset}
-        />
-        <Group
-          gap='xs'
-          pos='absolute'
-          bottom='var(--mantine-spacing-xl)'
-          left='var(--mantine-spacing-md)'
-          right='var(--mantine-spacing-md)'
-          justify='center'
-          style={{ zIndex: 10 }}
-        >
-          <Paper
-            style={{
-              transition: 'all ease 200ms',
-              width: drawPredicate ? 116 : 0,
-              overflow: 'hidden',
-              opacity: drawPredicate ? 1 : 0,
-            }}
-            px={8}
-            withBorder
-          >
-            <Flex align='center' justify='center' h={29} gap='sm'>
-              <IconLayersIntersect2 size='1rem' style={{ minWidth: '1rem', minHeight: '1rem' }} />
-              <Checkbox
-                ref={inverseRef}
-                onChange={handlePolygons}
-                label='Inverse'
-                labelPosition='left'
-                size='xs'
-                fw={600}
-                c='white'
-              />
-            </Flex>
-          </Paper>
-          <Button
-            leftSection={<IconSearch size='1rem' />}
-            color='gray'
-            radius='lg'
-            size='xs'
-            onClick={() => {
-              setRecordsOpened(true);
-            }}
-            aria-label={`View ${(drawPredicate || spatialPredicate) ? 'selected' : 'map'}  records`}
-          >
-            {drawPredicate ? 'Selected' : 'Map'} records
-          </Button>
-          <Button
-            leftSection={<IconStack2 size='1rem' />}
-            rightSection={spatialPredicate && (
-              <Pill color='blue' size='xs'>{spatialPredicate.predicates?.length}</Pill>
-            )}
-            color='gray'
-            radius='lg'
-            size='xs'
-            onClick={() => {
-              setLayersVisible(true);
-            }}
-            aria-label='View map layers'
-          >
-            Layers
-          </Button>
-        </Group>
-        <div
-          ref={mapContainer}
-          style={{
-            width,
-            height,
-            borderRadius: radius || 'var(--mantine-radius-lg)',
-          }}
-        />
-      </div>
-    </>
+      />
+    </div>
   );
 }
 

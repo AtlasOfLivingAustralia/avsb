@@ -1,0 +1,13 @@
+# Client-only fields, populated after events are fetched (see helpers/mapEventTaxon.ts &
+# helpers/mapTrialTreatments.ts). They don't exist on the server, so never request them in queries.
+
+type EventTaxon {
+  taxonID: String
+  taxonName: String
+  suppliedName: String
+}
+
+extend type Event {
+  _taxon: EventTaxon
+  treatments: [Event!]
+}

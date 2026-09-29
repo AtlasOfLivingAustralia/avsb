@@ -31,7 +31,7 @@ interface AusTraitsCount {
 
 async function summary(search: string, guid: string): Promise<AusTraitsSummary> {
   try {
-    const URL = `${import.meta.env.VITE_API_BIE}/externalSite/ausTraitsSummary?s=${search}&guid=${guid}`;
+    const URL = `${import.meta.env.VITE_API_AUSTRAITS}?s=${search}&guid=${guid}`;
     const cacheKey = buildCacheKey(URL);
 
     // Return a cached response (if we have one)
@@ -69,4 +69,4 @@ export default {
   summary,
 };
 
-export type { NumericTrait, CategoricalTrait, AusTraitsSummary, AusTraitsCount };
+export type { AusTraitsCount, AusTraitsSummary, CategoricalTrait, NumericTrait };

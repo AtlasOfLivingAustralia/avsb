@@ -97,7 +97,9 @@ function TrialSummary({ trials }: TrialSummaryProps) {
       )}
       <TrialsTable height='auto' events={query} />
     </Stack>
-  ) : <Skeleton w='100%' height={225} />;
+  ) : (
+    <Skeleton w='100%' height={225} />
+  );
 }
 
 export default TrialSummary;

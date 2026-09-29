@@ -35,6 +35,7 @@ import { Wave } from '#/components/Wave';
 import { breakpoints } from '#/theme/constants';
 import { HomeMap } from './components/HomeMap';
 import Summaries from './components/Summaries';
+import LastUpdated from '#/components/LastUpdated';
 
 function Home() {
   const navigate = useNavigate();
@@ -78,13 +79,16 @@ function Home() {
                 inherit
                 variant='gradient'
                 gradient={{ from: '#A6CE39', to: '#487759' }}
-
               >
                 Open access
               </Text>
               &nbsp;to
               <br />
-              <span style={{ fontWeight: 600 }}>Australia&apos;s conservation<br />seed banks</span>
+              <span style={{ fontWeight: 600 }}>
+                Australia&apos;s conservation
+                <br />
+                seed banks
+              </span>
             </Title>
             <Text mt='sm' c='light-dark(var(--mantine-color-gray-8),var(--mantine-color-gray-5))'>
               The Australian Virtual Seed Bank connects you with seed collection and germination
@@ -140,18 +144,17 @@ function Home() {
                 maw={mdOrLarger ? 600 : undefined}
               >
                 <Group mb='md' gap='xl'>
-                  <Paper
-                    p='sm'
-                    bg='light-dark(white, var(--mantine-color-gray-8))'
-                    shadow='lg'
-                  >
+                  <Paper p='sm' bg='light-dark(white, var(--mantine-color-gray-8))' shadow='lg'>
                     <Center>
-                      <IconSeedlingFilled
-                        style={{ fill: 'url(#home-gradient)' }}
-                      />
+                      <IconSeedlingFilled style={{ fill: 'url(#home-gradient)' }} />
                     </Center>
                   </Paper>
-                  <Title c='light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3))' order={2} fw={500} size={28}>
+                  <Title
+                    c='light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3))'
+                    order={2}
+                    fw={500}
+                    size={28}
+                  >
                     Inside the vault
                   </Title>
                 </Group>
@@ -205,18 +208,17 @@ function Home() {
             <Stack>
               <Group justify='space-between'>
                 <Group mb='md' gap='xl'>
-                  <Paper
-                    p='sm'
-                    bg='light-dark(white, var(--mantine-color-gray-8))'
-                    shadow='lg'
-                  >
+                  <Paper p='sm' bg='light-dark(white, var(--mantine-color-gray-8))' shadow='lg'>
                     <Center>
-                      <IconDatabase
-                        style={{ stroke: 'url(#home-gradient)' }}
-                      />
+                      <IconDatabase style={{ stroke: 'url(#home-gradient)' }} />
                     </Center>
                   </Paper>
-                  <Title c='light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3))' order={2} fw={500} size={28}>
+                  <Title
+                    c='light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3))'
+                    order={2}
+                    fw={500}
+                    size={28}
+                  >
                     Our Datasets
                   </Title>
                 </Group>
@@ -224,7 +226,7 @@ function Home() {
                   c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-6))'
                   size='xs'
                 >
-                  Last Updated December, 2025
+                  Last Updated <LastUpdated />
                 </Text>
               </Group>
               <Text c='light-dark(var(--mantine-color-gray-7),var(--mantine-color-gray-5))'>

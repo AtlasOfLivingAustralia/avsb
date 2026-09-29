@@ -216,11 +216,16 @@ export function Component() {
           </Grid.Col>
         </Grid>
       </Container>
-      <Wave width='100%' height={200} preserveAspectRatio='none' waveType={smOrLarger ? 'body' : 'simple'} />
+      <Wave
+        width='100%'
+        height={200}
+        preserveAspectRatio='none'
+        waveType={smOrLarger ? 'body' : 'simple'}
+      />
       <Box
         style={{
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
-          marginTop: smOrLarger ? -85 : -30
+          marginTop: smOrLarger ? -85 : -30,
         }}
       >
         <Container size='xl' py='xl'>
@@ -255,15 +260,19 @@ export function Component() {
             <Title order={3}>Explore records</Title>
             <SeedbankRecords />
           </Grid.Col>
-          <Grid.Col span={12}>
-          </Grid.Col>
+          <Grid.Col span={12}></Grid.Col>
         </Grid>
       </Container>
-      <Wave width='100%' height={150} preserveAspectRatio='none' waveType={smOrLarger ? 'body' : 'simple'} />
+      <Wave
+        width='100%'
+        height={150}
+        preserveAspectRatio='none'
+        waveType={smOrLarger ? 'body' : 'simple'}
+      />
       <Box
         style={{
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
-          marginTop: smOrLarger ? -85 : -30
+          marginTop: smOrLarger ? -85 : -30,
         }}
       >
         <Container size='xl' py='xl'>

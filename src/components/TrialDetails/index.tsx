@@ -22,11 +22,11 @@ const isValidTreatment = ({
 }: SeedBankTreatment) =>
   Boolean(
     pretreatment ||
-    mediaSubstrate ||
-    darkHours ||
-    lightHours ||
-    dayTemperatureInCelsius ||
-    nightTemperatureInCelsius,
+      mediaSubstrate ||
+      darkHours ||
+      lightHours ||
+      dayTemperatureInCelsius ||
+      nightTemperatureInCelsius,
   );
 
 function TrialDetails({ event }: TrialDetailsProps) {

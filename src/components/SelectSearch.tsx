@@ -81,10 +81,10 @@ function SelectSearch({
     ...uniqBy(dataSorted, 'value'),
     ...(search.length > 0
       ? customTypes.map((type) => ({
-        type,
-        value: `${type}:${search}`,
-        label: search,
-      }))
+          type,
+          value: `${type}:${search}`,
+          label: search,
+        }))
       : []),
   ];
 

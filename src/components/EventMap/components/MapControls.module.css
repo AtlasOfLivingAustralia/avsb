@@ -1,0 +1,47 @@
+.frame:fullscreen,
+.frame:-webkit-full-screen {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background-color: var(--mantine-color-body);
+}
+
+.frame:fullscreen .map,
+.frame:-webkit-full-screen .map {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+}
+
+.frame :global(.mantine-Modal-inner),
+.frame :global(.mantine-Drawer-inner) {
+  left: 0;
+  right: 0;
+  width: auto;
+}
+
+.map :global(.mapboxgl-ctrl-bottom-left) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  bottom: var(--mantine-spacing-xl);
+}
+
+.map :global(.mapboxgl-ctrl-bottom-left) > :global(.mapboxgl-ctrl) {
+  margin: 0;
+}
+
+.records {
+  order: 1;
+}
+
+.layers {
+  order: 2;
+}
+
+.map :global(.mapboxgl-ctrl-bottom-left) .control button:not(:disabled):hover {
+  background-color: var(--button-hover, var(--mantine-primary-color-filled-hover));
+  color: var(--button-hover-color, var(--button-color));
+}

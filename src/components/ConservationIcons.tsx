@@ -8,6 +8,7 @@ import {
 } from '@mantine/core';
 import { IconAlertTriangle } from '@tabler/icons-react';
 import type { Event, Measurement } from '#/api';
+import { getIsDefined } from '#/helpers';
 import { getConservationDetails } from './ConservationStatus';
 
 const CONSERVATION_LISTS: { [key: string]: string } = {
@@ -58,9 +59,11 @@ interface ConservationIconsProps {
 export const ConservationIcons = ({ event, style }: ConservationIconsProps) => {
   const isDark = useComputedColorScheme() === 'dark';
   const emofs =
-    event.measurementOrFacts?.filter(
-      ({ measurementType }) => measurementType && CONSERVATION_KEYS.includes(measurementType),
-    ) || [];
+    event.measurementOrFacts
+      ?.filter(getIsDefined)
+      .filter(
+        ({ measurementType }) => measurementType && CONSERVATION_KEYS.includes(measurementType),
+      ) || [];
 
   if (emofs.length < 1) return null;
 

@@ -184,7 +184,12 @@ export function Component() {
           predicates={Object.values(predicates)}
           filters={filters}
           onPredicates={(data) => {
-            setPredicates(data.reduce((prev, cur) => ({ ...prev, [cur.key || '']: cur }), {}));
+            setPredicates(
+              data.reduce<{ [key: string]: Predicate }>(
+                (prev, cur) => ({ ...prev, [cur.key || '']: cur }),
+                {},
+              ),
+            );
           }}
         />
       </Grid.Col>
@@ -259,8 +264,9 @@ export function Component() {
                   From{' '}
                   <Anchor
                     target='_blank'
-                    href={`${import.meta.env.VITE_ALA_COLLECTORY}/public/show/${selectedMedia?.provider
-                      }`}
+                    href={`${import.meta.env.VITE_ALA_COLLECTORY}/public/show/${
+                      selectedMedia?.provider
+                    }`}
                   >
                     {selectedMedia?.providerLiteral}
                   </Anchor>

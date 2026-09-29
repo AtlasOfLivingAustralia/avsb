@@ -1,4 +1,14 @@
-import { Alert, Button, Center, Divider, Grid, type GridProps, Group, Stack, Text } from '@mantine/core';
+import {
+  Alert,
+  Button,
+  Center,
+  Divider,
+  Grid,
+  type GridProps,
+  Group,
+  Stack,
+  Text,
+} from '@mantine/core';
 import { IconAlertCircle, IconAlertTriangle, IconExternalLink } from '@tabler/icons-react';
 import { useParams } from 'react-router';
 
@@ -8,7 +18,7 @@ import { type MediaItem } from '#/api/graphql/types';
 // Component imports
 import MediaImage from './MediaImage';
 
-interface MediaCollectionProps extends Omit<GridProps, 'children'> {
+interface MediaCollectionProps extends Omit<GridProps, 'children' | 'onSelect'> {
   label: string;
   disclaimer?: string;
   media: MediaItem[];

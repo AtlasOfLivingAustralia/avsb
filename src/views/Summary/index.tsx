@@ -91,10 +91,9 @@ export function Component() {
           mt='sm'
           styles={{ title: { marginBottom: 4 } }}
         >
-          Accessions of this species were collected from the locations shown above. Click a dot
-          to be shown a list of accessions at that location, then click an accession entry to
-          see full accession details. Visit the &apos;Accessions&apos; tab to see details for
-          all locations.
+          Accessions of this species were collected from the locations shown above. Click a dot to
+          be shown a list of accessions at that location, then click an accession entry to see full
+          accession details. Visit the &apos;Accessions&apos; tab to see details for all locations.
         </Alert>
       </Grid.Col>
       <Grid.Col span={{ sm: 12, md: 5, lg: 4 }}>

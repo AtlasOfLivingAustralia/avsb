@@ -1,9 +1,12 @@
-import type { Event } from '#/api/graphql/types';
+import type { Event, Maybe } from '#/api/graphql/types';
+import getIsDefined from './getIsDefined';
 
-function mapTrialTreatments(trials: Event[], treatments: Event[]): Event[] {
-  return trials.map((trial: Event) => ({
+function mapTrialTreatments(trials: Maybe<Event>[], treatments: Maybe<Event>[]): Event[] {
+  const treatmentEvents = treatments.filter(getIsDefined);
+
+  return trials.filter(getIsDefined).map((trial) => ({
     ...trial,
-    treatments: treatments.filter(({ parentEventID }) => parentEventID === trial.eventID),
+    treatments: treatmentEvents.filter(({ parentEventID }) => parentEventID === trial.eventID),
   }));
 }
 

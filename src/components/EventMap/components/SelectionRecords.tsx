@@ -14,9 +14,15 @@ import {
 import { IconMap } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 // Project components / helpers
-import { type EventDocuments, type EventSearchResult, gqlQueries, type Predicate, performGQLQuery } from '#/api';
+import {
+  type EventDocuments,
+  type EventSearchResult,
+  gqlQueries,
+  type Predicate,
+  performGQLQuery,
+} from '#/api';
 import { Downloads, Filters } from '#/components';
-import { useMounted } from '#/helpers';
+import { getIsDefined, useMounted } from '#/helpers';
 import { formatNumber } from '#/helpers/stats';
 // Accession components
 import AccessionTable from '#/views/Accessions/components/AccessionTable';
@@ -28,6 +34,7 @@ interface SelectionRecordsProps {
   predicates: Predicate[];
   opened: boolean;
   onClose: () => void;
+  portalTarget?: HTMLElement | null;
 }
 
 const HEADER_HEIGHT = 66;
@@ -37,6 +44,7 @@ export function SelectionRecords({
   opened,
   onClose,
   predicates: rawPredicates,
+  portalTarget,
 }: SelectionRecordsProps) {
   // State hooks
   const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
@@ -45,7 +53,7 @@ export function SelectionRecords({
   const [query, setQuery] = useState<EventDocuments | null>(null);
 
   const mounted = useMounted();
-  const events = query?.results;
+  const events = query?.results.filter(getIsDefined);
 
   // Construct the base predicates array
   const predicates: Predicate[] = [
@@ -94,11 +102,12 @@ export function SelectionRecords({
   }, [opened, page, pageSize, filterPredicates, mapPredicatesKey]);
 
   const downloadFetcher = (data: { eventSearch: EventSearchResult }) =>
-    data?.eventSearch?.documents?.results || [];
+    data?.eventSearch?.documents?.results.filter(getIsDefined) || [];
 
   return (
     <Modal
       size='100%'
+      withinPortal={false}
       opened={opened}
       onClose={() => {
         setTimeout(() => {
@@ -137,6 +146,7 @@ export function SelectionRecords({
                 position='right'
               >
                 <Select
+                  comboboxProps={{ withinPortal: false }}
                   value={pageSize.toString()}
                   onChange={(value) => {
                     setPage(1);
@@ -151,6 +161,7 @@ export function SelectionRecords({
                 />
               </Tooltip>
               <Filters
+                portalTarget={portalTarget}
                 predicates={filterPredicates}
                 filters={filters}
                 onPredicates={(preds) => {
@@ -167,6 +178,7 @@ export function SelectionRecords({
               </Text>
               <Divider orientation='vertical' />
               <Downloads
+                portalTarget={portalTarget}
                 query={gqlQueries.DOWNLOAD_EVENT_ACCESSIONS}
                 predicates={predicates}
                 fields={downloadFields}

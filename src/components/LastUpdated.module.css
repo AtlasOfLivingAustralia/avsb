@@ -1,0 +1,36 @@
+.letter {
+  display: inline-block;
+  animation: pulse 1.4s ease-in-out infinite;
+  animation-delay: calc(var(--index) * 0.1s);
+}
+
+.accessible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .letter {
+    animation: none;
+    opacity: 1;
+  }
+}

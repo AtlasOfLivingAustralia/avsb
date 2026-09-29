@@ -285,7 +285,7 @@ function AccessionPanel() {
             }}
           >
             <Group mt='md' pb='sm'>
-              {accessionEvent?.measurementOrFacts?.map((mof) => (
+              {accessionEvent?.measurementOrFacts?.filter(getIsDefined).map((mof) => (
                 <MeasurementCard key={mof.measurementID} measurement={mof} />
               ))}
             </Group>
