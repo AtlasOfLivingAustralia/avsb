@@ -51,6 +51,7 @@ interface DownloadsProps extends GroupProps {
   predicates: Predicate[];
   fileName: string;
   fetcher: (data: any) => Event[] | Promise<Event[]>;
+  portalTarget?: HTMLElement | null;
 }
 
 // Helper function to convert an event object to CSV string
@@ -97,7 +98,15 @@ const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
   return [header, ...events.map((event) => eventToCSV(event, fields, emofFields))].join('\n');
 };
 
-function Downloads({ query, total, predicates, fields, fileName, fetcher }: DownloadsProps) {
+function Downloads({
+  query,
+  total,
+  predicates,
+  fields,
+  fileName,
+  fetcher,
+  portalTarget,
+}: DownloadsProps) {
   // Download state
   const [downloadReason, setDownloadReason] = useState<string | null>(
     localStorage.getItem('avsb-download-reason') || '',
@@ -166,6 +175,7 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
   return (
     <>
       <Modal
+        portalProps={portalTarget ? { target: portalTarget } : undefined}
         opened={opened}
         onClose={close}
         title={

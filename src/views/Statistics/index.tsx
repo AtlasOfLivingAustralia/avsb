@@ -43,6 +43,7 @@ import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
 // Components
 import { Blob } from '#/components';
 import { StaticDownloads } from '#/components/Downloads/Static';
+import LastUpdated from '#/components/LastUpdated';
 import { Wave } from '#/components/Wave';
 import { scrollTo } from '#/helpers/scrollTo';
 import { formatNumber } from '#/helpers/stats';
@@ -101,7 +102,7 @@ export function Component() {
               The following statistics are current as at
             </Text>
             <Text ff='var(--mantine-font-family-headings)' c='dimmed' fz='h2' fw='bold'>
-              December, 2025
+              <LastUpdated />
             </Text>
             <Paper p='xs' mt='lg' radius='xl'>
               <Stack>

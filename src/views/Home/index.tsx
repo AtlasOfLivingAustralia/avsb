@@ -35,6 +35,7 @@ import { Wave } from '#/components/Wave';
 import { breakpoints } from '#/theme/constants';
 import { HomeMap } from './components/HomeMap';
 import Summaries from './components/Summaries';
+import LastUpdated from '#/components/LastUpdated';
 
 function Home() {
   const navigate = useNavigate();
@@ -225,7 +226,7 @@ function Home() {
                   c='light-dark(var(--mantine-color-dark-3), var(--mantine-color-gray-6))'
                   size='xs'
                 >
-                  Last Updated December, 2025
+                  Last Updated <LastUpdated />
                 </Text>
               </Group>
               <Text c='light-dark(var(--mantine-color-gray-7),var(--mantine-color-gray-5))'>

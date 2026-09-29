@@ -18,9 +18,8 @@ interface SDSInstance {
 }
 
 async function getInstances(guid: string, state: string) {
-  const URL = `${
-    import.meta.env.VITE_API_ALA
-  }/sensitive/api/report?taxonId=${guid}&stateProvince=${state}&country=AUS`;
+  const URL = `${import.meta.env.VITE_API_SDS
+    }/api/report?taxonId=${guid}&stateProvince=${state}&country=AUS`;
   const { sensitive, valid, report } = await (await fetch(URL)).json();
 
   return valid && sensitive ? report.taxon.instances : [];

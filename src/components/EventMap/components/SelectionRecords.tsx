@@ -34,6 +34,7 @@ interface SelectionRecordsProps {
   predicates: Predicate[];
   opened: boolean;
   onClose: () => void;
+  portalTarget?: HTMLElement | null;
 }
 
 const HEADER_HEIGHT = 66;
@@ -43,6 +44,7 @@ export function SelectionRecords({
   opened,
   onClose,
   predicates: rawPredicates,
+  portalTarget,
 }: SelectionRecordsProps) {
   // State hooks
   const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
@@ -105,6 +107,7 @@ export function SelectionRecords({
   return (
     <Modal
       size='100%'
+      withinPortal={false}
       opened={opened}
       onClose={() => {
         setTimeout(() => {
@@ -143,6 +146,7 @@ export function SelectionRecords({
                 position='right'
               >
                 <Select
+                  comboboxProps={{ withinPortal: false }}
                   value={pageSize.toString()}
                   onChange={(value) => {
                     setPage(1);
@@ -157,6 +161,7 @@ export function SelectionRecords({
                 />
               </Tooltip>
               <Filters
+                portalTarget={portalTarget}
                 predicates={filterPredicates}
                 filters={filters}
                 onPredicates={(preds) => {
@@ -173,6 +178,7 @@ export function SelectionRecords({
               </Text>
               <Divider orientation='vertical' />
               <Downloads
+                portalTarget={portalTarget}
                 query={gqlQueries.DOWNLOAD_EVENT_ACCESSIONS}
                 predicates={predicates}
                 fields={downloadFields}

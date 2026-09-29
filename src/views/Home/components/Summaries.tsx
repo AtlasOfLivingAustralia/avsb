@@ -102,8 +102,8 @@ function SummaryCard({ accessions, trials }: SummaryCardProps) {
 const QUERY_SEEDBANK_SUMMARY_ALL = `
 query list {
   ${queries.DATA_RESOURCES.map((dataResource: string) =>
-    queries.QUERY_SEEDBANK_SUMMARY_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
-  ).join('')}
+  queries.QUERY_SEEDBANK_SUMMARY_TEMPLATE.replaceAll('{{datasetKey}}', dataResource),
+).join('')}
 }
 `;
 
