@@ -68,7 +68,7 @@ export interface StatisticsLoaderData {
 
 const states: { [key: string]: string } = {
   nsw: 'New South Wales',
-  nt: 'Nothern Territory',
+  nt: 'Northern Territory',
   sa: 'South Australia',
   vic: 'Victoria',
   wa: 'Western Australia',
