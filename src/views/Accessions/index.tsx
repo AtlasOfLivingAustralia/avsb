@@ -4,22 +4,21 @@ import { Outlet, useLoaderData, useLocation, useParams, useRouteLoaderData } fro
 
 // Project components / helpers
 import {
-  EventDocuments,
-  EventSearchResult,
+  type EventDocuments,
+  type EventSearchResult,
   gqlQueries,
+  type Predicate,
   performGQLQuery,
-  Predicate,
-  Taxon,
+  type Taxon,
 } from '#/api';
 import { Downloads, Filters } from '#/components';
-import { useMounted } from '#/helpers';
-
+import { getIsDefined, useMounted } from '#/helpers';
+import { formatNumber } from '#/helpers/stats';
 // Accession components
 import AccessionTable from './components/AccessionTable';
 import downloadFields from './downloadFields';
 // Config
 import filters from './filters';
-import { formatNumber } from '#/helpers/stats';
 
 interface LocationState {
   predicates?: Predicate[];
@@ -36,7 +35,7 @@ export function Component() {
   const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon };
   const params = useParams();
   const mounted = useMounted();
-  const events = query?.results;
+  const events = query?.results.filter(getIsDefined);
 
   // Construct the base predicates array
   const predicates: Predicate[] = [
@@ -76,7 +75,7 @@ export function Component() {
   if (params.accession) return <Outlet />;
 
   const downloadFetcher = (data: { eventSearch: EventSearchResult }) =>
-    data?.eventSearch?.documents?.results || [];
+    data?.eventSearch?.documents?.results.filter(getIsDefined) || [];
 
   return (
     <>
@@ -115,8 +114,8 @@ export function Component() {
         <Group>
           <Text c='dimmed' ta='center' size='sm'>
             {(page - 1) * pageSize + 1}-
-            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {formatNumber(query.total || 0)} total
-            records
+            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of{' '}
+            {formatNumber(query.total || 0)} total records
           </Text>
           <Divider orientation='vertical' />
           <Downloads

@@ -11,13 +11,11 @@ import {
   Transition,
   UnstyledButton,
 } from '@mantine/core';
-
-import { Event, EventDocuments, SeedBankAccession } from '#/api/graphql/types';
 import { IconX } from '@tabler/icons-react';
 import { Link } from 'react-router';
-
+import type { EventDocuments, SeedBankAccession } from '#/api/graphql/types';
+import { getIsDefined } from '#/helpers';
 import classes from './ItemList.module.css';
-import { mapEventTaxon } from '#/helpers/mapEventTaxon';
 
 const slideX = {
   in: { opacity: 1, transform: 'translateX(0)' },
@@ -28,15 +26,23 @@ const slideX = {
 
 interface ItemListProps {
   open: boolean;
-  documents: EventDocuments;
+  documents?: EventDocuments;
   contentHeight?: number | string;
   topOffset?: number;
   leftOffset?: number;
   onClose?: () => void;
 }
 
-function ItemList({ open, documents, contentHeight, topOffset, leftOffset, onClose }: ItemListProps) {
-  const { results, total } = documents;
+function ItemList({
+  open,
+  documents,
+  contentHeight,
+  topOffset,
+  leftOffset,
+  onClose,
+}: ItemListProps) {
+  const results = documents?.results.filter(getIsDefined);
+  const total = documents?.total;
 
   return (
     <Transition mounted={open} transition={slideX}>
@@ -79,7 +85,7 @@ function ItemList({ open, documents, contentHeight, topOffset, leftOffset, onClo
                     </Box>
                   ))}
                 {results &&
-                  results.map((result: Event) => {
+                  results.map((result) => {
                     const accession = result.extensions?.seedbank as SeedBankAccession;
 
                     return (
@@ -88,8 +94,8 @@ function ItemList({ open, documents, contentHeight, topOffset, leftOffset, onClo
                         to={
                           result._taxon?.taxonID
                             ? `/taxon/${encodeURIComponent(
-                              result._taxon.taxonID,
-                            )}/accessions/${result.eventID}`
+                                result._taxon.taxonID,
+                              )}/accessions/${result.eventID}`
                             : `../accessions/${result.eventID}`
                         }
                         p='xs'

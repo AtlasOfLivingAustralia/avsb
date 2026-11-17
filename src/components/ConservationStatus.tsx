@@ -1,4 +1,4 @@
-import { DefaultMantineColor, Group, Text, ThemeIcon } from '@mantine/core';
+import { type DefaultMantineColor, Group, Text, ThemeIcon } from '@mantine/core';
 import {
   IconAlertCircle,
   IconAlertOctagon,
@@ -6,7 +6,7 @@ import {
   IconFlag,
   IconQuestionMark,
   IconX,
-  TablerIcon,
+  type TablerIcon,
 } from '@tabler/icons-react';
 
 export const getConservationDetails = (

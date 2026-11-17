@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: Lots of no-typing here */
 import {
   Button,
-  ButtonProps,
+  type ButtonProps,
   Checkbox,
   Group,
   Modal,
@@ -12,11 +12,10 @@ import {
   ThemeIcon,
   Tooltip,
 } from '@mantine/core';
-import { IconDownload, IconFileDownload } from '@tabler/icons-react';
-import { PropsWithChildren, useRef, useState } from 'react';
-
 // Config
 import { useDisclosure } from '@mantine/hooks';
+import { IconDownload } from '@tabler/icons-react';
+import { type PropsWithChildren, useRef, useState } from 'react';
 import { DOWNLOAD_CATEGORIES } from '.';
 
 interface DownloadsProps extends PropsWithChildren<ButtonProps> {
@@ -26,8 +25,12 @@ interface DownloadsProps extends PropsWithChildren<ButtonProps> {
 
 export function StaticDownloads({ href, download, ...rest }: DownloadsProps) {
   // Download state
-  const [downloadReason, setDownloadReason] = useState<string | null>(localStorage.getItem('avsb-download-reason') || '');
-  const [downloadOrg, setDownloadOrg] = useState<string>(localStorage.getItem('avsb-download-org') || '');
+  const [downloadReason, setDownloadReason] = useState<string | null>(
+    localStorage.getItem('avsb-download-reason') || '',
+  );
+  const [downloadOrg, setDownloadOrg] = useState<string>(
+    localStorage.getItem('avsb-download-org') || '',
+  );
   const [downloadRemember, setDownloadRemeber] = useState<boolean>(true);
   const [opened, { open, close }] = useDisclosure(false);
   const downloadRef = useRef<HTMLAnchorElement>(null);
@@ -43,7 +46,9 @@ export function StaticDownloads({ href, download, ...rest }: DownloadsProps) {
 
     // Push download reason to fathom
     if (window.fathom) {
-      window.fathom.trackEvent(`Dataset download - ${downloadReason}${downloadOrg.length > 0 ? ` - ${downloadOrg}` : ''}`)
+      window.fathom.trackEvent(
+        `Dataset download - ${downloadReason}${downloadOrg.length > 0 ? ` - ${downloadOrg}` : ''}`,
+      );
     }
 
     // Trigger the download
@@ -66,23 +71,44 @@ export function StaticDownloads({ href, download, ...rest }: DownloadsProps) {
     <>
       {/** biome-ignore lint/a11y/useAnchorContent: Hidden download link */}
       <a ref={downloadRef} style={{ display: 'none' }} href={href} download={download} />
-      <Modal opened={opened} onClose={close} title={<Group gap='sm'>
-        <ThemeIcon variant='light' size='lg' radius='lg'>
-          <IconDownload size='1rem' />
-        </ThemeIcon>
-        <Text
-          style={{
-            fontFamily: 'var(--mantine-font-family-headings)',
-            fontWeight: 'bold',
-          }}
-        >
-          {download}
-        </Text>
-      </Group>}>
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={
+          <Group gap='sm'>
+            <ThemeIcon variant='light' size='lg' radius='lg'>
+              <IconDownload size='1rem' />
+            </ThemeIcon>
+            <Text
+              style={{
+                fontFamily: 'var(--mantine-font-family-headings)',
+                fontWeight: 'bold',
+              }}
+            >
+              {download}
+            </Text>
+          </Group>
+        }
+      >
         <Stack>
-          <TextInput placeholder="Organisation name" value={downloadOrg} onChange={(ev) => setDownloadOrg(ev.currentTarget.value)} />
-          <Select value={downloadReason} onChange={setDownloadReason} placeholder="Select download reason" data={DOWNLOAD_CATEGORIES} />
-          <Checkbox checked={downloadRemember} onChange={(event) => setDownloadRemeber(event.currentTarget.checked)} c="dimmed" size="xs" label="Remember for next time" />
+          <TextInput
+            placeholder='Organisation name'
+            value={downloadOrg}
+            onChange={(ev) => setDownloadOrg(ev.currentTarget.value)}
+          />
+          <Select
+            value={downloadReason}
+            onChange={setDownloadReason}
+            placeholder='Select download reason'
+            data={DOWNLOAD_CATEGORIES}
+          />
+          <Checkbox
+            checked={downloadRemember}
+            onChange={(event) => setDownloadRemeber(event.currentTarget.checked)}
+            c='dimmed'
+            size='xs'
+            label='Remember for next time'
+          />
           <Button
             disabled={!downloadReason || downloadOrg.length < 1 || !downloadRef.current}
             onClick={downloadRecords}

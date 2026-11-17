@@ -4,7 +4,7 @@ import range from 'lodash/range';
 import { Suspense } from 'react';
 import { Await, useRouteLoaderData } from 'react-router';
 // Project components / helpers
-import { AusTraitsSummary } from '#/api';
+import { type AusTraitsSummary } from '#/api';
 
 import CategoricalTraitCard from './components/CategoricalTraitCard';
 import NumericTraitCard from './components/NumericalTraitCard';

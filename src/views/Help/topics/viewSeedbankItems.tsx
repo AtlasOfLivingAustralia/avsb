@@ -1,13 +1,12 @@
 import { Code } from '@mantine/core';
 import { IconArrowUpRight, IconClick, IconDownload, IconEye, IconMouse } from '@tabler/icons-react';
-
-import imageHome from '#/assets/help/home-min.png';
-import imageHomeDatasets from '#/assets/help/home-datasets-min.png';
 import imageHomeDatasetsHover from '#/assets/help/home-datasets-hover-min.png';
-import imageSeedbank from '#/assets/help/seedbank-min.png';
+import imageHomeDatasets from '#/assets/help/home-datasets-min.png';
+import imageHome from '#/assets/help/home-min.png';
 import imageSeedbankMapContact from '#/assets/help/seedbank-map-contact-min.png';
+import imageSeedbank from '#/assets/help/seedbank-min.png';
 
-import { HelpTopicItem } from '..';
+import { type HelpTopicItem } from '..';
 
 const items: HelpTopicItem[] = [
   {

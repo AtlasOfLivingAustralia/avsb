@@ -3,18 +3,18 @@ import {
   Avatar,
   Button,
   Card,
-  CardProps,
+  type CardProps,
   Group,
   Skeleton,
   Stack,
   Text,
 } from '@mantine/core';
 import { IconMail, IconMapPin, IconPhone } from '@tabler/icons-react';
-import { CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 import { Link, useLocation } from 'react-router';
 
 import { useGQLQuery } from '#/api';
-import { Contact as ContactType } from '#/api/graphql/types';
+import { type Contact as ContactType } from '#/api/graphql/types';
 import queries from '#/api/queries';
 import { getInitials } from '#/helpers';
 

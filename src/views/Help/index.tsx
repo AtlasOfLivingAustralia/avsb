@@ -1,5 +1,3 @@
-import { ReactNode, useState } from 'react';
-
 import {
   ActionIcon,
   Box,
@@ -12,6 +10,7 @@ import {
   Title,
   UnstyledButton,
 } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 
 import {
   IconAdjustmentsHorizontal,
@@ -24,15 +23,14 @@ import {
   IconPackage,
   IconPhoto,
   IconX,
-  TablerIcon,
+  type TablerIcon,
 } from '@tabler/icons-react';
-
+import { type ReactNode, useState } from 'react';
 import { Wave } from '#/components/Wave';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { breakpoints } from '#/theme/constants';
-
+import FAQ from './components/FAQ';
+import Topic from './components/Topic';
 import classes from './index.module.css';
-
 import {
   downloadRecordsItems,
   filterAccessionsTrialsItems,
@@ -44,9 +42,6 @@ import {
   viewTaxonSummaryItems,
   viewTaxonTrialItems,
 } from './topics';
-
-import FAQ from './components/FAQ';
-import Topic from './components/Topic';
 
 export interface HelpTopicItem {
   icon: TablerIcon;

@@ -1,5 +1,5 @@
 {
-  "name": "ALA Bedrock CloudFormation Dev",
+  "name": "Seedbank CloudFormation Dev",
   "build": {
     "dockerfile": "Dockerfile"
   },
@@ -48,6 +48,7 @@
                 "!If sequence",
                 "!ImportValue scalar",
                 "!ImportValue sequence",
+                "!ImportValue mapping",
                 "!Join sequence",
                 "!Not sequence",
                 "!Or sequence",

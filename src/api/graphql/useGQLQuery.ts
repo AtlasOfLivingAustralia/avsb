@@ -1,8 +1,8 @@
-import useMounted from '#/helpers/useMounted';
 import { useEffect, useState } from 'react';
+import useMounted from '#/helpers/useMounted';
 
 import performGQLQuery from './performGQLQuery';
-import { Variables } from './types';
+import type { Variables } from './types';
 
 interface QueryHookOptions {
   lazy?: boolean;

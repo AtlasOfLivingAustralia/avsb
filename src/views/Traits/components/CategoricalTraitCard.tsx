@@ -1,6 +1,6 @@
-import { CategoricalTrait } from '#/api';
 import { ActionIcon, Flex, Paper, Skeleton, Text, Tooltip } from '@mantine/core';
 import { IconBook } from '@tabler/icons-react';
+import { type CategoricalTrait } from '#/api';
 
 interface CategoricalTraitProps {
   trait: CategoricalTrait | null;

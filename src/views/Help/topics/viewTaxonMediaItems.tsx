@@ -3,10 +3,8 @@ import { IconClick } from '@tabler/icons-react';
 
 import imageMedia from '#/assets/help/taxon-media-min.png';
 import imageMediaSelect from '#/assets/help/taxon-media-select-min.png';
-
+import { type HelpTopicItem } from '..';
 import gotoTaxonItems from './gotoTaxonItems';
-
-import { HelpTopicItem } from '..';
 
 const items: HelpTopicItem[] = [
   ...gotoTaxonItems,
