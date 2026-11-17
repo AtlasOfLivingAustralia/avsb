@@ -1,23 +1,13 @@
-import { Predicate } from '#/api/graphql/types';
-import {
-  ActionIcon,
-  Badge,
-  Button,
-  Chip,
-  Divider,
-  Group,
-  GroupProps,
-  Paper,
-  rem,
-  Text,
-} from '@mantine/core';
+import { ActionIcon, Button, Divider, Group, type GroupProps, Paper, Text } from '@mantine/core';
 import { IconAdjustmentsHorizontal, IconX } from '@tabler/icons-react';
-import { MouseEventHandler } from 'react';
+import { type MouseEventHandler } from 'react';
+import { type Predicate, type PredicateValue } from '#/api/graphql/types';
 
-import { Filter } from '../types';
+import { type Filter } from '../types';
 
 function getPredicateValue(predicate: Predicate) {
-  const { key, value, values } = predicate;
+  const { key, values } = predicate;
+  const value = predicate.value as PredicateValue | undefined;
 
   // Date handling
   if (value && key?.toLowerCase().includes('date')) {
@@ -76,6 +66,7 @@ function FilterBar({ filters, predicates, onFiltersOpen, onRemove, ...rest }: Fi
               h={36}
               radius='xl'
               style={{ display: 'flex', alignItems: 'center' }}
+              withBorder
             >
               <ActionIcon
                 ml={4}

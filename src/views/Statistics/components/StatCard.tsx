@@ -1,27 +1,23 @@
 import { Group, Paper, Stack, Text, ThemeIcon } from '@mantine/core';
-import { TablerIcon } from '@tabler/icons-react';
-
-import { formatNumber, stats } from '#/helpers/stats';
+import { type TablerIcon } from '@tabler/icons-react';
 
 interface StatCardProps {
-  id: string;
   name: string;
+  value: string | number;
   icon: TablerIcon;
 }
 
-function StatCard({ id, name, icon: Icon }: StatCardProps) {
-  // biome-ignore lint/suspicious/noExplicitAny: Arbitrary JSON
-  const value = (stats as any)[id];
+function StatCard({ name, value, icon: Icon }: StatCardProps) {
   return (
     <Paper pt='sm' px='sm' pb='lg' withBorder radius='xl' shadow='lg'>
       <Group justify='space-between' align='flex-start'>
         <Stack gap={0}>
           <Text fz={28} fw='bold' opacity={0.8}>
-            {value
-              ? formatNumber(value)
-              : id}
+            {value}
           </Text>
-          <Text size='sm' c='dimmed'>{name}</Text>
+          <Text size='sm' c='dimmed'>
+            {name}
+          </Text>
         </Stack>
         <ThemeIcon variant='light' size='xl' radius='xl'>
           <Icon size='1rem' />

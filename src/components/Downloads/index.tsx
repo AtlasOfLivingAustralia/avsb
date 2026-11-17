@@ -1,11 +1,11 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: Lots of no-typing here */
-import { Event, EventSearchResult, Predicate } from '#/api/graphql/types';
+
 import {
   ActionIcon,
   Button,
   Checkbox,
   Group,
-  GroupProps,
+  type GroupProps,
   Modal,
   Select,
   Stack,
@@ -14,32 +14,32 @@ import {
   ThemeIcon,
   Tooltip,
 } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { IconArrowUpRight, IconDownload, IconFileDownload } from '@tabler/icons-react';
 import { saveAs } from 'file-saver';
 import get from 'lodash/get';
 import { useState } from 'react';
-
+import { Link } from 'react-router';
 // Config
 import { performGQLQuery } from '#/api';
-import { useDisclosure } from '@mantine/hooks';
+import type { Event, EventSearchResult, Predicate } from '#/api/graphql/types';
 import { MAX_DOWNLOAD_SIZE } from '#/helpers';
-import { Link } from 'react-router';
 import { formatNumber } from '#/helpers/stats';
 
 export const DOWNLOAD_CATEGORIES = [
-  "Biosecurity management/planning",
-  "Citizen science",
-  "Collection management",
-  "Conservation management/planning",
-  "Ecological research",
-  "Education",
-  "Environmental assessment",
-  "Other",
-  "Other scientific research",
-  "Restoration/remediation",
-  "Scientific research",
-  "Species modelling",
-  "Systematic research/taxonomy"
+  'Biosecurity management/planning',
+  'Citizen science',
+  'Collection management',
+  'Conservation management/planning',
+  'Ecological research',
+  'Education',
+  'Environmental assessment',
+  'Other',
+  'Other scientific research',
+  'Restoration/remediation',
+  'Scientific research',
+  'Species modelling',
+  'Systematic research/taxonomy',
 ];
 
 export type DownloadField = { label: string; key: string; formatter?: (field: any) => any };
@@ -50,7 +50,8 @@ interface DownloadsProps extends GroupProps {
   fields: DownloadField[];
   predicates: Predicate[];
   fileName: string;
-  fetcher: (data: any) => object[] | Promise<object[]>;
+  fetcher: (data: any) => Event[] | Promise<Event[]>;
+  portalTarget?: HTMLElement | null;
 }
 
 // Helper function to convert an event object to CSV string
@@ -65,39 +66,54 @@ const eventToCSV = (event: Event, fields: DownloadField[], emofFields: string[])
     .map((value) => (value.toString().includes(',') ? `"${value}"` : value));
 
   const emofValues = emofFields.map((cur) => {
-    const mof = event.measurementOrFacts?.find(({ measurementType }) => measurementType === cur);
+    const mof = event.measurementOrFacts?.find((emof) => emof?.measurementType === cur);
 
     if (mof?.measurementValue) {
-      return (mof.measurementValue.toString().includes(',') ? `"${mof.measurementValue}"` : mof.measurementValue);
+      return mof.measurementValue.toString().includes(',')
+        ? `"${mof.measurementValue}"`
+        : mof.measurementValue;
     }
 
     return '';
   }, []);
 
   return [...core, ...emofValues].join(',');
-}
+};
 
 const eventsToCSV = (events: Event[], fields: DownloadField[]) => {
   const emofTypes = new Set();
 
   // Get all of the unique emofs
   events.forEach((event) => {
-    (event.measurementOrFacts || []).forEach(emof => {
-      emofTypes.add(emof.measurementType);
-    })
+    (event.measurementOrFacts || []).forEach((emof) => {
+      if (emof) emofTypes.add(emof.measurementType);
+    });
   });
 
   const emofFields = Array.from(emofTypes).sort() as string[];
-  const header = [...fields, ...(emofFields.map((field) => ({ label: field })))]
-    .map(({ label }) => label).join(',');
+  const header = [...fields, ...emofFields.map((field) => ({ label: field }))]
+    .map(({ label }) => label)
+    .join(',');
 
   return [header, ...events.map((event) => eventToCSV(event, fields, emofFields))].join('\n');
 };
 
-function Downloads({ query, total, predicates, fields, fileName, fetcher }: DownloadsProps) {
+function Downloads({
+  query,
+  total,
+  predicates,
+  fields,
+  fileName,
+  fetcher,
+  portalTarget,
+}: DownloadsProps) {
   // Download state
-  const [downloadReason, setDownloadReason] = useState<string | null>(localStorage.getItem('avsb-download-reason') || '');
-  const [downloadOrg, setDownloadOrg] = useState<string>(localStorage.getItem('avsb-download-org') || '');
+  const [downloadReason, setDownloadReason] = useState<string | null>(
+    localStorage.getItem('avsb-download-reason') || '',
+  );
+  const [downloadOrg, setDownloadOrg] = useState<string>(
+    localStorage.getItem('avsb-download-org') || '',
+  );
   const [downloadRemember, setDownloadRemeber] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [opened, { open, close }] = useDisclosure(false);
@@ -116,7 +132,9 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
 
         // Push download reason to fathom
         if (window.fathom) {
-          window.fathom.trackEvent(`Dataset download - ${downloadReason}${downloadOrg.length > 0 ? ` - ${downloadOrg}` : ''}`)
+          window.fathom.trackEvent(
+            `Dataset download - ${downloadReason}${downloadOrg.length > 0 ? ` - ${downloadOrg}` : ''}`,
+          );
         }
 
         const { data: response } = await performGQLQuery<{
@@ -156,25 +174,47 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title={<Group gap='sm'>
-        <ThemeIcon variant='light' size='lg' radius='lg'>
-          <IconFileDownload size='1rem' />
-        </ThemeIcon>
-        <Text
-          style={{
-            fontFamily: 'var(--mantine-font-family-headings)',
-            fontWeight: 'bold',
-          }}
-        >
-          {formatNumber(total)} Record{total > 1 ? 's' : ''}
-        </Text>
-      </Group>}>
+      <Modal
+        portalProps={portalTarget ? { target: portalTarget } : undefined}
+        opened={opened}
+        onClose={close}
+        title={
+          <Group gap='sm'>
+            <ThemeIcon variant='light' size='lg' radius='lg'>
+              <IconFileDownload size='1rem' />
+            </ThemeIcon>
+            <Text
+              style={{
+                fontFamily: 'var(--mantine-font-family-headings)',
+                fontWeight: 'bold',
+              }}
+            >
+              {formatNumber(total)} Record{total > 1 ? 's' : ''}
+            </Text>
+          </Group>
+        }
+      >
         <Stack>
           {!isMaxRecords ? (
             <>
-              <TextInput placeholder="Organisation name" value={downloadOrg} onChange={(ev) => setDownloadOrg(ev.currentTarget.value)} />
-              <Select value={downloadReason} onChange={setDownloadReason} placeholder="Select download reason" data={DOWNLOAD_CATEGORIES} />
-              <Checkbox checked={downloadRemember} onChange={(event) => setDownloadRemeber(event.currentTarget.checked)} c="dimmed" size="xs" label="Remember for next time" />
+              <TextInput
+                placeholder='Organisation name'
+                value={downloadOrg}
+                onChange={(ev) => setDownloadOrg(ev.currentTarget.value)}
+              />
+              <Select
+                value={downloadReason}
+                onChange={setDownloadReason}
+                placeholder='Select download reason'
+                data={DOWNLOAD_CATEGORIES}
+              />
+              <Checkbox
+                checked={downloadRemember}
+                onChange={(event) => setDownloadRemeber(event.currentTarget.checked)}
+                c='dimmed'
+                size='xs'
+                label='Remember for next time'
+              />
               <Button
                 disabled={!downloadReason || downloadOrg.length < 1}
                 onClick={downloadRecords}
@@ -189,13 +229,15 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
           ) : (
             <>
               <Text size='sm'>
-                To download more than {formatNumber(MAX_DOWNLOAD_SIZE)} records, please download all AVSB records from the <b>Seed Bank Snapshot</b> page
+                To download more than {formatNumber(MAX_DOWNLOAD_SIZE)} records, please download all
+                AVSB records from the <b>Seed Bank Snapshot</b> page
               </Text>
               <Button
                 component={Link}
-                to="/dashboard"
+                to='/dashboard'
                 size='xs'
-                rightSection={<IconArrowUpRight size="1rem" />}>
+                rightSection={<IconArrowUpRight size='1rem' />}
+              >
                 Seed Bank Snapshot
               </Button>
             </>
@@ -209,7 +251,13 @@ function Downloads({ query, total, predicates, fields, fileName, fetcher }: Down
         label='Download Records'
         position='left'
       >
-        <ActionIcon size={36} variant='outline' color='blue' aria-label='Download records' onClick={open}>
+        <ActionIcon
+          size={36}
+          variant='outline'
+          color='blue'
+          aria-label='Download records'
+          onClick={open}
+        >
           <IconDownload size='1rem' />
         </ActionIcon>
       </Tooltip>

@@ -13,17 +13,9 @@ env:
     - APP_STACK_FILE_PFIX
     - APP_STACK_NAME
     - BUCKET_PATH
-    - CODEBUILD_BUILD_NUMBER
-    - ENVIRONMENT
-    - HOSTED_ZONE
     - MAX_AGE
     - NODE_VERSION
-    - PRODUCT_COMPONENT
-    - PRODUCT_NAME
-    - SLACK_ALERT_CHANNEL
-    - SLACK_DEPLOY_NOTIFICATION
     - SOURCE_BUCKET
-    - SUB_DOMAIN
     - WAF_STACK_FILE_PFIX
     - WAF_STACK_NAME
 
@@ -42,12 +34,12 @@ phases:
       - # we need to run a specific commit, not the latest. In this case the pipeline is set NOT to
       - # autorun on update. It will have to be manually started after the rollback pipeline
       - # has finished launching
-      - | 
+      - |
           if [[ $PIPELINE_FINGERPRINT != $CUR_PIPELINE_FINGERPRINT ]]; then
             echo existing pipeline is out of sync with current code revision, relaunching!
             cd cicd/$PRODUCT_COMPONENT/pipeline/
             ./deploy_pipeline.sh -e ${ENVIRONMENT:0:4} -b $SRC_BRANCH
-            # pipeline execution should now stop if this is a rollback, 
+            # pipeline execution should now stop if this is a rollback,
             # or restart automatically if this a normal branch deploy
             exit 1
           else
@@ -63,6 +55,11 @@ phases:
       - echo clean branch is $CLEAN_BRANCH
       - echo Environment is $ENVIRONMENT
       - cicd/gen_env_vars.py --env $ENVIRONMENT --clean-branch $CLEAN_BRANCH --conf cicd/$PRODUCT_COMPONENT/config.ini > env.txt
+      - echo EXECUTION_ID=$EXECUTION_ID >> env.txt
+      - echo AUTHOR=\"$AUTHOR\" >> env.txt
+      - echo SRC_BRANCH=$SRC_BRANCH >> env.txt
+      - echo COMMIT_ID=$COMMIT_ID >> env.txt
+      - echo REPO=$REPO >> env.txt
       - echo loading config..
       - set -a ; source env.txt ; set +a
     finally:
@@ -93,5 +90,8 @@ phases:
 artifacts:
   files:
     - cicd/$PRODUCT_COMPONENT/app/*
+    - cicd/$PRODUCT_COMPONENT/pipeline/*
+    - cicd/*
+    - env.txt
   name: BuildTemplateConfigArtifact
   discard-paths: no

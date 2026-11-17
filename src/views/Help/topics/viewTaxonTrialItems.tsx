@@ -1,13 +1,10 @@
 import { Code } from '@mantine/core';
 import { IconClick, IconEye } from '@tabler/icons-react';
-
-import imageTrials from '#/assets/help/taxon-trials-min.png';
 import imageTrialsExpanded from '#/assets/help/taxon-trials-expanded-min.png';
+import imageTrials from '#/assets/help/taxon-trials-min.png';
 import imageTrialsResults from '#/assets/help/taxon-trials-results-min.png';
-
+import { type HelpTopicItem } from '..';
 import gotoTaxonItems from './gotoTaxonItems';
-
-import { HelpTopicItem } from '..';
 
 const items: HelpTopicItem[] = [
   ...gotoTaxonItems,

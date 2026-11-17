@@ -1,44 +1,47 @@
-import { Center, Chip, Divider, Group, Pagination, Select, Stack, Text, Tooltip } from '@mantine/core';
+import {
+  Center,
+  Chip,
+  Divider,
+  Group,
+  Pagination,
+  Select,
+  Stack,
+  Text,
+  Tooltip,
+} from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { Outlet, useLoaderData, useLocation, useParams } from 'react-router';
 
 // Project components / helpers
 import {
-  EventDocuments,
-  EventSearchResult,
+  type EventDocuments,
+  type EventSearchResult,
   gqlQueries,
+  type Predicate,
   performGQLQuery,
-  Predicate,
 } from '#/api';
 import { Downloads, Filters } from '#/components';
-import { useMounted } from '#/helpers';
+import { getIsDefined } from '#/helpers';
+import { getStateInitials } from '#/helpers/getStateInitials';
+import { conservationLists, formatNumber } from '#/helpers/stats';
 
 // Accession components
 import AccessionTable from '#/views/Accessions/components/AccessionTable';
 import downloadFields from '#/views/Accessions/downloadFields';
+
 // Config
 import filters from './filters';
-import { conservationLists, formatNumber } from '#/helpers/stats';
-import { getStateInitials } from '#/helpers/getStateInitials';
-
-interface LocationState {
-  predicates?: Predicate[];
-}
 
 export default function DataExplorer() {
   // State hooks
-  const { state } = useLocation() as { state: LocationState };
-  const [filterPredicates, setFilterPredicates] = useState<Predicate[]>(state?.predicates || []);
+  const [filterPredicates, setFilterPredicates] = useState<Predicate[]>([]);
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [query, setQuery] = useState<EventDocuments>(useLoaderData() as EventDocuments);
+  const [query, setQuery] = useState<EventDocuments | null>(null);
 
   // Custom threatened filters
   const [threatenedFilters, setThreatenedFilters] = useState<string[]>([conservationLists[0]]);
 
-  const params = useParams();
-  const mounted = useMounted();
-  const events = query?.results;
+  const events = query?.results.filter(getIsDefined);
 
   // Construct the base predicates array
   const predicates: Predicate[] = [
@@ -51,7 +54,7 @@ export default function DataExplorer() {
     {
       type: 'in',
       key: 'measurementOrFactTypes',
-      values: threatenedFilters
+      values: threatenedFilters,
     },
     ...filterPredicates,
   ];
@@ -72,23 +75,25 @@ export default function DataExplorer() {
       setQuery(data.eventSearch?.documents as EventDocuments);
     }
 
-    if (mounted) runQuery();
+    runQuery();
   }, [page, pageSize, filterPredicates, threatenedFilters]);
 
-  if (params.accession) return <Outlet />;
-
   const downloadFetcher = (data: { eventSearch: EventSearchResult }) =>
-    data?.eventSearch?.documents?.results || [];
+    data?.eventSearch?.documents?.results.filter(getIsDefined) || [];
 
   const onThreatenedFilterChange = (filters: string[]) => {
     if (filters.length > 0) setThreatenedFilters(filters);
-  }
+  };
 
   return (
     <Stack>
       <Chip.Group value={threatenedFilters} onChange={onThreatenedFilterChange} multiple>
         <Group gap='xs'>
-          {conservationLists.map((list) => <Chip key={list} value={list}>{getStateInitials(list)}</Chip>)}
+          {conservationLists.map((list) => (
+            <Chip key={list} value={list}>
+              {getStateInitials(list)}
+            </Chip>
+          ))}
         </Group>
       </Chip.Group>
       <Divider variant='dashed' my='md' />
@@ -127,8 +132,8 @@ export default function DataExplorer() {
         <Group>
           <Text c='dimmed' ta='center' size='sm'>
             {(page - 1) * pageSize + 1}-
-            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {formatNumber(query.total || 0)} total
-            records
+            {Math.min((page - 1) * pageSize + pageSize, query?.total || 0)} of{' '}
+            {formatNumber(query?.total || 0)} total records
           </Text>
           <Divider orientation='vertical' />
           <Downloads
@@ -136,7 +141,7 @@ export default function DataExplorer() {
             predicates={predicates}
             fields={downloadFields}
             fetcher={downloadFetcher}
-            total={query.total as number}
+            total={query?.total as number}
             fileName='AVSB Protected Accessions'
           />
         </Group>

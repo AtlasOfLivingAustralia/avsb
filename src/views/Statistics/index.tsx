@@ -1,4 +1,3 @@
-import queries from '#/api/queries';
 import {
   Alert,
   Anchor,
@@ -32,59 +31,66 @@ import {
   IconSeeding,
   IconTestPipe,
 } from '@tabler/icons-react';
-import { Fragment } from 'react';
-
+import { get } from 'lodash';
+import { Fragment, useMemo } from 'react';
+import { useLoaderData } from 'react-router';
 // Helpers
-import { scrollTo } from '#/helpers/scrollTo';
-import { formatNumber, stats } from '#/helpers/stats';
-import { breakpoints } from '#/theme/constants';
-
+import type { EventSearchResult } from '#/api';
+import queries from '#/api/queries';
 // Static image assets
 import ecologyEarth from '#/assets/ecology-earth.png';
 import spottedPlant from '#/assets/spotted-blue-succulent-plant.png';
-
 // Components
 import { Blob } from '#/components';
-import { Wave } from '#/components/Wave';
-import StatCard from './components/StatCard';
-import DataExplorer from './components/DataExplorer';
 import { StaticDownloads } from '#/components/Downloads/Static';
+import LastUpdated from '#/components/LastUpdated';
+import { Wave } from '#/components/Wave';
+import { scrollTo } from '#/helpers/scrollTo';
+import { formatNumber } from '#/helpers/stats';
+import { breakpoints } from '#/theme/constants';
+import DataExplorer from './components/DataExplorer';
+import StatCard from './components/StatCard';
 
-const STATE_CONSERVATION = Object.entries(stats.conservation);
+export interface StatisticsLoaderData {
+  accessions: EventSearchResult;
+  trials: EventSearchResult;
+  treatments: EventSearchResult;
+  epbc: EventSearchResult;
+  nsw: EventSearchResult;
+  nt: EventSearchResult;
+  sa: EventSearchResult;
+  vic: EventSearchResult;
+  wa: EventSearchResult;
+  tas: EventSearchResult;
+  qld: EventSearchResult;
+  act: EventSearchResult;
+}
 
-const recordStats = [
-  {
-    id: 'accessions',
-    name: 'Accessions',
-    icon: IconSeeding,
-  },
-  {
-    id: 'trials',
-    name: 'Trials',
-    icon: IconTestPipe,
-  },
-  {
-    id: 'treatments',
-    name: 'Treatments',
-    icon: IconColorPicker,
-  },
-];
-
-const speciesStats = [
-  {
-    id: 'speciesWithAccession',
-    name: 'Species with an accession',
-    icon: IconPlant,
-  },
-  {
-    id: 'speciesWithTrial',
-    name: 'Species with a trial',
-    icon: IconFileFunction,
-  },
-];
+const states: { [key: string]: string } = {
+  nsw: 'New South Wales',
+  nt: 'Northern Territory',
+  sa: 'South Australia',
+  vic: 'Victoria',
+  wa: 'Western Australia',
+  tas: 'Tasmania',
+  qld: 'Queensland',
+  act: 'Australian Capital Territory',
+};
 
 export function Component() {
   const mdOrLarger = useMediaQuery(`(min-width: ${breakpoints.md})`, true);
+  const stats = useLoaderData() as StatisticsLoaderData;
+
+  const conservation = useMemo(
+    () =>
+      Object.keys(states)
+        .map((state) => ({
+          name: states[state],
+          value: get(stats, state).cardinality?.taxa,
+        }))
+        .sort(({ value: a }, { value: b }) => b - a),
+    [stats],
+  );
 
   return (
     <>
@@ -95,17 +101,40 @@ export function Component() {
             <Text size='sm' c='dimmed'>
               The following statistics are current as at
             </Text>
-            <Text ff='var(--mantine-font-family-headings)' c='dimmed' fz="h2" fw='bold'>
-              December, 2025
+            <Text ff='var(--mantine-font-family-headings)' c='dimmed' fz='h2' fw='bold'>
+              <LastUpdated />
             </Text>
             <Paper p='xs' mt='lg' radius='xl'>
               <Stack>
-                <Flex direction={mdOrLarger ? 'row' : 'column'} justify='center' gap={mdOrLarger ? 'xs' : 4}>
-                  <Button onClick={() => scrollTo('records')} variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Records</Button>
+                <Flex
+                  direction={mdOrLarger ? 'row' : 'column'}
+                  justify='center'
+                  gap={mdOrLarger ? 'xs' : 4}
+                >
+                  <Button
+                    onClick={() => scrollTo('records')}
+                    variant='subtle'
+                    leftSection={<IconArrowDown size='1rem' />}
+                  >
+                    Records
+                  </Button>
                   <Divider orientation={mdOrLarger ? 'vertical' : 'horizontal'} />
-                  <Button onClick={() => scrollTo('threatened')} variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Threatened species</Button>
+                  <Button
+                    onClick={() => scrollTo('threatened')}
+                    variant='subtle'
+                    leftSection={<IconArrowDown size='1rem' />}
+                  >
+                    Threatened species
+                  </Button>
                   <Divider orientation={mdOrLarger ? 'vertical' : 'horizontal'} />
-                  <Button onClick={() => scrollTo('explore')} component='a' variant='subtle' leftSection={<IconArrowDown size="1rem" />}>Data explorer</Button>
+                  <Button
+                    onClick={() => scrollTo('explore')}
+                    component='a'
+                    variant='subtle'
+                    leftSection={<IconArrowDown size='1rem' />}
+                  >
+                    Data explorer
+                  </Button>
                 </Flex>
               </Stack>
             </Paper>
@@ -113,7 +142,7 @@ export function Component() {
         </Center>
       </Container>
       <Wave
-        id="records"
+        id='records'
         width='100%'
         height={mdOrLarger ? 250 : 125}
         preserveAspectRatio='none'
@@ -128,14 +157,14 @@ export function Component() {
         pb='xl'
       >
         <Container size='xl' p='lg' pb='xl'>
-          <Grid gutter='lg'>
+          <Grid gap='lg'>
             <Grid.Col span={12}>
               <Flex justify='space-between' gap='sm'>
                 <Stack gap='md'>
-                  <Title fw='bold'>
-                    Portal Statistics
+                  <Title fw={600}>Portal Statistics</Title>
+                  <Title fw={500} order={3} c='dimmed'>
+                    Records
                   </Title>
-                  <Title order={3} c='dimmed'>Records</Title>
                 </Stack>
                 <StaticDownloads
                   mt={6}
@@ -149,60 +178,91 @@ export function Component() {
                 </StaticDownloads>
               </Flex>
             </Grid.Col>
-            {recordStats.map((stat) => (
-              <Grid.Col key={stat.id} span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
-                <StatCard {...stat} />
-              </Grid.Col>
-            ))}
-            <Grid.Col span={12}>
-              <Title order={3} c='dimmed' pt='xl'>Datasets & Species</Title>
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+              <StatCard
+                name='Accessions'
+                value={formatNumber(stats.accessions.documents.total)}
+                icon={IconSeeding}
+              />
             </Grid.Col>
             <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
               <StatCard
-                id={queries.DATA_RESOURCES.length}
+                name='Trials'
+                value={formatNumber(stats.trials.documents.total)}
+                icon={IconTestPipe}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+              <StatCard
+                name='Treatments'
+                value={formatNumber(stats.treatments.documents.total)}
+                icon={IconColorPicker}
+              />
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <Title fw={500} order={3} c='dimmed' pt='xl'>
+                Datasets & Species
+              </Title>
+            </Grid.Col>
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+              <StatCard
                 name='Organisations'
+                value={queries.DATA_RESOURCES.length}
                 icon={IconBuilding}
               />
             </Grid.Col>
-            {speciesStats.map((stat) => (
-              <Grid.Col key={stat.id} span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
-                <StatCard {...stat} />
-              </Grid.Col>
-            ))}
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+              <StatCard
+                name='Species with an accession'
+                value={formatNumber(stats.accessions.cardinality?.taxa)}
+                icon={IconPlant}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ xl: 4, lg: 4, md: 4, sm: 12, xs: 12 }}>
+              <StatCard
+                name='Species with a trial'
+                value={formatNumber(stats.trials.cardinality?.taxa)}
+                icon={IconFileFunction}
+              />
+            </Grid.Col>
           </Grid>
         </Container>
       </Box>
       <Wave
-        id="threatened"
+        id='threatened'
         width='100%'
         height={mdOrLarger ? 250 : 125}
         preserveAspectRatio='none'
         waveType='bodyBottom'
       />
       <Container size='xl' p='lg' mt={mdOrLarger ? -110 : -30} mb={mdOrLarger ? -25 : 0}>
-        <Group align='flex-start' justify='space-between' gap="xs">
+        <Group align='flex-start' justify='space-between' gap='xs'>
           <Stack w={mdOrLarger ? 490 : '100%'} mb='xl' gap='xl'>
             <Stack gap='md'>
-              <Title fw='bold'>
-                Threatened species in our collections
+              <Title fw={600}>Threatened species in our collections</Title>
+              <Title fw={500} c='dimmed' order={3}>
+                Nationally listed species
               </Title>
-              <Title c='dimmed' order={3}>Nationally listed species</Title>
               <Text size='sm' mt='md'>
                 The Environment Protection and Biodiversity Conservation Act (EPBC Act) is
                 Australia&apos;s national legislation for protecting threatened species and
                 ecosystems. It recognises species at risk of extinction and prioritises their
                 conservation. By storing seeds from nationally listed plants, seed banks provide an
-                insurance policy against extinction, enabling restoration and recovery efforts in the
-                wild.
+                insurance policy against extinction, enabling restoration and recovery efforts in
+                the wild.
               </Text>
-              <Text size='sm'>The portal contains{' '}
-                <b>{stats.epbcTotal}</b> nationally listed species listed under the EPBC act.{' '}
+              <Text size='sm'>
+                The portal contains <b>{stats.epbc.cardinality?.taxa}</b> nationally listed species
+                listed under the EPBC act.{' '}
               </Text>
               <Anchor href='https://www.dcceew.gov.au/environment/epbc' target='_blank' size='sm'>
                 Read more about the EPBC Act here{' '}
                 <IconExternalLink size='1rem' style={{ marginLeft: 4 }} />
               </Anchor>
-              <Alert mt='sm' icon={<IconInfoCircle />}>While collections are held for these species, they could be small and may not be representative of the entire species.</Alert>
+              <Alert mt='sm' icon={<IconInfoCircle />}>
+                While collections are held for these species, they could be small and may not be
+                representative of the entire species.
+              </Alert>
             </Stack>
           </Stack>
           {mdOrLarger && (
@@ -233,7 +293,7 @@ export function Component() {
           backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))',
         }}
       >
-        <Container size='xl' p='lg' >
+        <Container size='xl' p='lg'>
           <Group align='flex-start' justify='space-between' mt='xl' gap='xs'>
             {mdOrLarger && (
               <div style={{ width: 450, height: 450 }}>
@@ -251,31 +311,40 @@ export function Component() {
             )}
             <Stack w={mdOrLarger ? 490 : '100%'} gap='xl'>
               <Stack gap='md' ta={mdOrLarger ? 'right' : 'left'}>
-                <Title c='dimmed' order={3}>State and Territory listed species</Title>
+                <Title fw={500} c='dimmed' order={3}>
+                  State and Territory listed species
+                </Title>
                 <Text size='sm'>
-                  The Partnership also holds collections for species listed under Australian state and territory legislation.
+                  The Partnership also holds collections for species listed under Australian state
+                  and territory legislation.
                 </Text>
                 <Text size='sm'>
-                  Species are counted as threatened if they are listed in any Australian jurisdiction regardless of where the seed was collected or which seed bank holds the collection.
+                  Species are counted as threatened if they are listed in any Australian
+                  jurisdiction regardless of where the seed was collected or which seed bank holds
+                  the collection.
                 </Text>
                 <Paper mt='lg' withBorder>
                   <Stack gap={0}>
                     <Group justify='space-between' py='xs' px='xs'>
-                      <Text c='dimmed' fw='bold' size='sm' ta='left' maw={200}>Applicable environmental legislation</Text>
-                      <Text c='dimmed' fw='bold' size='sm' ta='right' maw={200}>Species held in ASBP collections</Text>
+                      <Text c='dimmed' fw='bold' size='sm' ta='left' maw={200}>
+                        Applicable environmental legislation
+                      </Text>
+                      <Text c='dimmed' fw='bold' size='sm' ta='right' maw={200}>
+                        Species held in ASBP collections
+                      </Text>
                     </Group>
                     <Divider />
                     <ScrollArea h={200}>
                       <Stack gap='xs' py='xs'>
-                        {STATE_CONSERVATION.sort(([_, a], [__, b]) => b - a).map(([list, count], index) => (
-                          <Fragment key={list}>
+                        {conservation.map(({ name, value }, index) => (
+                          <Fragment key={name}>
                             <Flex justify='space-between' px='sm'>
-                              <Text size='sm'>{list.split(':').map((part) => part.trim())[0]}</Text>
+                              <Text size='sm'>{name}</Text>
                               <Badge variant='light' ml='sm' miw={50}>
-                                {formatNumber(count)} species
+                                {formatNumber(value)} species
                               </Badge>
                             </Flex>
-                            {index !== STATE_CONSERVATION.length - 1 && <Divider />}
+                            {index !== conservation.length - 1 && <Divider />}
                           </Fragment>
                         ))}
                       </Stack>
@@ -288,7 +357,7 @@ export function Component() {
         </Container>
       </Box>
       <Wave
-        id="explore"
+        id='explore'
         width='100%'
         height={mdOrLarger ? 250 : 125}
         preserveAspectRatio='none'
@@ -297,9 +366,7 @@ export function Component() {
       <Container size='xl' p='lg' mt={mdOrLarger ? -80 : -30} mb='xl'>
         <Stack gap='md'>
           <Flex justify='space-between' gap='sm'>
-            <Title fw='bold'>
-              Data explorer
-            </Title>
+            <Title fw={600}>Data explorer</Title>
             <StaticDownloads
               mt={6}
               size='sm'
@@ -311,10 +378,19 @@ export function Component() {
               Download all protected species data
             </StaticDownloads>
           </Flex>
-          <Title c='dimmed' order={3}>Explore accessions for protected species</Title>
+          <Title fw={500} c='dimmed' order={3}>
+            Explore accessions for protected species
+          </Title>
           <Stack gap='xs' mb='md'>
-            <Text x- size='sm'>Use the table below to filter and download threatened species records from Australian Seed Bank Partnership vaults.</Text>
-            <Text size='sm'>Click the buttons to apply national (EPBC Act) or jurisdictional threatened species legislation to filter records for species listed in any Australian state, territory or nationally.</Text>
+            <Text x- size='sm'>
+              Use the table below to filter and download threatened species records from Australian
+              Seed Bank Partnership vaults.
+            </Text>
+            <Text size='sm'>
+              Click the buttons to apply national (EPBC Act) or jurisdictional threatened species
+              legislation to filter records for species listed in any Australian state, territory or
+              nationally.
+            </Text>
           </Stack>
           <DataExplorer />
         </Stack>

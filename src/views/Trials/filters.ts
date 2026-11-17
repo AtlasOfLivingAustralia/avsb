@@ -1,4 +1,4 @@
-import { ComboboxItem } from '@mantine/core';
+import { type ComboboxItem } from '@mantine/core';
 import {
   IconCalendar,
   IconCircle,
@@ -7,17 +7,15 @@ import {
   IconClock,
   IconDatabase,
   IconExclamationCircle,
-  IconHeartFilled,
   IconId,
   IconPercentage,
   IconReceiptTax,
   IconRotateClockwise2,
   IconSeeding,
 } from '@tabler/icons-react';
-
-import { Filter } from '#/components';
-import { EventSearchResult, gqlQueries, performGQLQuery } from '#/api';
-import { sensitiveLists, conservationLists } from '#/helpers/stats';
+import { type EventSearchResult, gqlQueries, performGQLQuery } from '#/api';
+import { type Filter } from '#/components';
+import { conservationLists, sensitiveLists } from '#/helpers/stats';
 
 // Define a data fetcher for the dataset select search
 const fetchItems = async (query: string): Promise<ComboboxItem[]> => {

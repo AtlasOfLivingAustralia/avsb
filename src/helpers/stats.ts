@@ -1,5 +1,3 @@
-import stats from '#/assets/stats/2026.json';
-
 const sensitiveLists = [
   'ACT Sensitive Species List',
   'South Australian Sensitive Species',
@@ -11,9 +9,21 @@ const sensitiveLists = [
   'Tasmanian Restricted Species',
 ];
 
-const conservationLists = ['EPBC Act Threatened Species', ...Object.keys(stats.conservation)];
+const conservationLists = [
+  'EPBC Act Threatened Species',
+  'New South Wales : Conservation Status',
+  'Northern Territory : Conservation Status',
+  'South Australia : Conservation Status',
+  'Victoria : Conservation Status',
+  'Western Australia: Conservation Status',
+  'Tasmania : Conservation Status',
+  'Queensland : Conservation Status',
+  'Australian Capital Territory : Conservation Status',
+];
 
-const formatNumber = (value: number) =>
-  value.toLocaleString(undefined, { minimumFractionDigits: 2 }).replace('.00', '');
+const formatNumber = (value?: number) =>
+  value !== undefined
+    ? value.toLocaleString(undefined, { minimumFractionDigits: 2 }).replace('.00', '')
+    : '?';
 
-export { formatNumber, stats, sensitiveLists, conservationLists };
+export { conservationLists, formatNumber, sensitiveLists };

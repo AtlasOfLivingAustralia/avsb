@@ -1,10 +1,10 @@
+import { createBrowserRouter, RouterProvider, redirect } from 'react-router';
 import { AccessionPanel, ErrorBoundary } from '#/components';
-import { createBrowserRouter, redirect, RouterProvider } from 'react-router';
 import {
   austraitsAPI,
   collectoryAPI,
-  Event,
-  EventSearchResult,
+  type Event,
+  type EventSearchResult,
   gqlQueries,
   performGQLQuery,
   sdsAPI,
@@ -13,7 +13,7 @@ import {
 
 import { mapTrialTreatments } from './helpers';
 import { DashboardView, HomeView } from './views';
-import { conservationLists } from './helpers/stats';
+import type { StatisticsLoaderData } from './views/Statistics';
 
 const routes = createBrowserRouter([
   {
@@ -26,6 +26,7 @@ const routes = createBrowserRouter([
         element: <HomeView />,
       },
       {
+        id: 'seedbank',
         path: 'seedbank/:resource',
         lazy: () => import('./views/Seedbank'),
         loader: async ({ params }) => {
@@ -48,29 +49,13 @@ const routes = createBrowserRouter([
         lazy: () => import('./views/Statistics'),
         loader: async () => {
           // Construct a query that fetches a summary all data resources
-          const { data } = await performGQLQuery<{ data: { eventSearch: EventSearchResult } }>(
-            gqlQueries.QUERY_EVENT_ACCESSIONS,
+          const { data } = await performGQLQuery<{ data: StatisticsLoaderData }>(
+            gqlQueries.QUERY_STATISTICS,
             {
-              predicate: {
-                type: 'and',
-                predicates: [
-                  gqlQueries.PRED_DATA_RESOURCE,
-                  {
-                    type: 'equals',
-                    key: 'eventType',
-                    value: 'Accession',
-                  },
-                  {
-                    type: 'equals',
-                    key: 'measurementOrFactTypes',
-                    value: conservationLists[0],
-                  },
-                ],
-              },
-              size: 10,
+              basePredicate: gqlQueries.PRED_DATA_RESOURCE,
             },
           );
-          return data.eventSearch.documents;
+          return data;
         },
       },
       {
@@ -206,6 +191,7 @@ const routes = createBrowserRouter([
 
               // Extract the event IDs from all of the return trials, then retrieve their associated
               // treatment events
+              // biome-ignore lint/correctness/noUnsafeOptionalChaining: We can assume Event[]
               const eventIDs = (data.eventSearch.documents?.results as Event[]).map(
                 ({ eventID }) => eventID,
               );

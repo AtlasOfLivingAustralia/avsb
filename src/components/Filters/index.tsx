@@ -1,24 +1,25 @@
-import { Predicate } from '#/api/graphql/types';
-import { Drawer, Group, GroupProps, SegmentedControl, Text, ThemeIcon } from '@mantine/core';
+import { Drawer, Group, type GroupProps, SegmentedControl, Text, ThemeIcon } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconFilter } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { type Predicate } from '#/api/graphql/types';
 
 // Project components / helpers
 import FilterBar from './components/Bar';
 import FilterPanel from './components/Panel';
 
 // Config
-import { Filter, FiltersSort } from './types';
+import type { Filter, FiltersSort } from './types';
 
 interface FiltersProps extends GroupProps {
   filters: Filter[];
   predicates: Predicate[];
   onPredicates: (predicates: Predicate[]) => void;
+  portalTarget?: HTMLElement | null;
 }
 
-function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
+function Filters({ filters, predicates, onPredicates, portalTarget, ...rest }: FiltersProps) {
   // State hooks
   const [sort, setSort] = useState<FiltersSort>('groups');
   const [resetKey, setResetKey] = useState<string>('');
@@ -47,7 +48,12 @@ function Filters({ filters, predicates, onPredicates, ...rest }: FiltersProps) {
 
   return (
     <>
-      <Drawer.Root opened={opened} onClose={close} keepMounted>
+      <Drawer.Root
+        opened={opened}
+        onClose={close}
+        keepMounted
+        portalProps={portalTarget ? { target: portalTarget } : undefined}
+      >
         <Drawer.Overlay />
         <Drawer.Content aria-label='Filters drawer'>
           <Drawer.Header>

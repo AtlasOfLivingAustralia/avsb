@@ -31,7 +31,7 @@ interface AusTraitsCount {
 
 async function summary(search: string, guid: string): Promise<AusTraitsSummary> {
   try {
-    const URL = `${import.meta.env.VITE_API_BIE}/externalSite/ausTraitsSummary?s=${search}&guid=${guid}`;
+    const URL = `${import.meta.env.VITE_API_AUSTRAITS}?s=${search}&guid=${guid}`;
     const cacheKey = buildCacheKey(URL);
 
     // Return a cached response (if we have one)
@@ -48,8 +48,9 @@ async function summary(search: string, guid: string): Promise<AusTraitsSummary> 
       !response.ok ||
       data.error ||
       (Array.isArray(data) && data[0] === 'No summary data can be found for this taxon.')
-    )
+    ) {
       return { numeric_traits: [], categorical_traits: [] };
+    }
 
     // Cache the response
     if (cacheKey && response.ok) maybeStoreResponse(cacheKey, data);
@@ -68,4 +69,4 @@ export default {
   summary,
 };
 
-export type { NumericTrait, CategoricalTrait, AusTraitsSummary, AusTraitsCount };
+export type { AusTraitsCount, AusTraitsSummary, CategoricalTrait, NumericTrait };

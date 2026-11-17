@@ -2,16 +2,16 @@ import { Center, Divider, Group, Pagination, Select, Text, Tooltip } from '@mant
 import { useEffect, useState } from 'react';
 import { useLoaderData, useLocation, useParams, useRouteLoaderData } from 'react-router';
 import { gqlQueries, performGQLQuery } from '#/api';
-import { Event, EventDocuments, EventSearchResult, Predicate } from '#/api/graphql/types';
+import type { Event, EventDocuments, EventSearchResult, Predicate } from '#/api/graphql/types';
 import queries from '#/api/queries';
-import { Taxon } from '#/api/sources/taxon';
+import { type Taxon } from '#/api/sources/taxon';
 // Project components / helpers
 import { Downloads, Filters } from '#/components';
-import { useMounted, mapTrialTreatments } from '#/helpers';
+import { getIsDefined, mapTrialTreatments, useMounted } from '#/helpers';
+import { formatNumber } from '#/helpers/stats';
 import TrialsTable from './components/TrialsTable';
 import downloadFields from './downloadFields';
 import filters from './filters';
-import { formatNumber } from '#/helpers/stats';
 
 interface LocationState {
   predicates?: Predicate[];
@@ -28,7 +28,7 @@ export function Component() {
   const { taxon } = useRouteLoaderData('taxon') as { taxon: Taxon };
   const params = useParams();
   const mounted = useMounted();
-  const events = query?.results;
+  const events = query?.results.filter(getIsDefined);
 
   const predicates: Predicate[] = [
     queries.PRED_DATA_RESOURCE,
@@ -62,6 +62,7 @@ export function Component() {
 
       // Extract the event IDs from all of the return trials, then retrieve their associated
       // treatment events
+      // biome-ignore lint/correctness/noUnsafeOptionalChaining: We can assume Event[]
       const eventIDs = (data.eventSearch?.documents?.results as Event[]).map(
         ({ eventID }) => eventID,
       );
@@ -92,7 +93,7 @@ export function Component() {
         results: mapTrialTreatments(
           data.eventSearch?.documents?.results || [],
           treatmentData.eventSearch?.documents?.results || [],
-        ) as [Event],
+        ),
       });
     }
 
@@ -100,7 +101,7 @@ export function Component() {
   }, [page, pageSize, filterPredicates]);
 
   const downloadFetcher = async (data: { eventSearch: EventSearchResult }) => {
-    const eventIDs = data.eventSearch.documents?.results?.map(({ eventID }) => eventID);
+    const eventIDs = data.eventSearch.documents?.results?.map((event) => event?.eventID);
     const { data: treatmentData } = await performGQLQuery<{
       data: { eventSearch: EventSearchResult };
     }>(gqlQueries.QUERY_EVENT_TREATMENTS, {
@@ -165,8 +166,8 @@ export function Component() {
         <Group>
           <Text c='dimmed' ta='right' size='sm'>
             {(page - 1) * pageSize + 1}-
-            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of {formatNumber(query.total || 0)} total
-            records
+            {Math.min((page - 1) * pageSize + pageSize, query.total || 0)} of{' '}
+            {formatNumber(query.total || 0)} total records
           </Text>
           <Divider orientation='vertical' />
           <Downloads

@@ -28,7 +28,7 @@ interface DataResourceSummary {
 }
 
 async function dataResource(id: string): Promise<DataResource> {
-  const URL = `${import.meta.env.VITE_API_ALA}/metadata/ws/dataResource/${id}`;
+  const URL = `${import.meta.env.VITE_ALA_COLLECTORY}/ws/dataResource/${id}`;
   const cacheKey = buildCacheKey(URL);
 
   // Return a cached response (if we have one)
@@ -37,7 +37,7 @@ async function dataResource(id: string): Promise<DataResource> {
     if (cachedResponse) return cachedResponse;
   }
 
-  const response = await fetch(`${import.meta.env.VITE_API_ALA}/metadata/ws/dataResource/${id}`);
+  const response = await fetch(URL);
   const data = await response.text();
 
   // Catch 200 responses, but no entry found
@@ -50,7 +50,7 @@ async function dataResource(id: string): Promise<DataResource> {
 }
 
 async function dataResourceList(): Promise<DataResourceSummary[]> {
-  const URL = `${import.meta.env.VITE_API_ALA}/metadata/ws/dataResource`;
+  const URL = `${import.meta.env.VITE_ALA_COLLECTORY}/ws/dataResource`;
   const cacheKey = buildCacheKey(URL);
 
   // Return a cached response (if we have one)

@@ -1,4 +1,4 @@
-import { SeedBankTrial } from '#/api/graphql/types';
+import type { SeedBankTrial } from '#/api/graphql/types';
 
 const fields: (keyof SeedBankTrial)[] = [
   'numberGerminated',

@@ -6,7 +6,6 @@
   background-color: light-dark(var(--mantine-color-blue-7), var(--mantine-color-blue-8));
   border-radius: var(--mantine-radius-xl);
   box-shadow: var(--mantine-shadow-md);
-
 }
 
 .tab {

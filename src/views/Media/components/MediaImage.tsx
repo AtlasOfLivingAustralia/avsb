@@ -1,4 +1,3 @@
-import { MediaItem } from '#/api/graphql/types';
 import {
   Box,
   Group,
@@ -11,8 +10,9 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { IconCalendar, IconCheck } from '@tabler/icons-react';
-import classes from './MediaImage.module.css';
 import { useState } from 'react';
+import { type MediaItem } from '#/api/graphql/types';
+import classes from './MediaImage.module.css';
 
 interface MediaImageProps {
   onClick?: () => void;

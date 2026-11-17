@@ -4,7 +4,7 @@ const base = createTheme({
   defaultRadius: 'lg',
   fontFamily: 'Inter, sans-serif',
   headings: {
-    fontFamily: 'Lexend Deca, sans-serif',
+    fontFamily: 'Lexend, sans-serif',
   },
   colors: {
     dark: [

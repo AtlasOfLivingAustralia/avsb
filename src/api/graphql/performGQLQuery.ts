@@ -1,13 +1,13 @@
 import { get } from 'lodash';
-import { buildCacheKey, getCachedResponse, maybeStoreResponse } from '../cache';
-import { Variables } from './types';
 import { mapEventTaxa } from '#/helpers/mapEventTaxon';
+import { buildCacheKey, getCachedResponse, maybeStoreResponse } from '../cache';
+import type { Variables } from './types';
 
-async function performGQLQuery<T = unknown>(query: string, variables?: Variables) {
+async function performGQLQuery<T = unknown>(query: string, variables?: Variables, noCache = false) {
   const cacheKey = buildCacheKey(query, variables);
 
   // Return a cached response (if we have one)
-  if (cacheKey) {
+  if (cacheKey && !noCache) {
     const cachedResponse = getCachedResponse<T>(cacheKey);
     if (cachedResponse) return cachedResponse;
   }
@@ -46,7 +46,7 @@ async function performGQLQuery<T = unknown>(query: string, variables?: Variables
     }
   }
 
-  if (cacheKey && response.ok) {
+  if (cacheKey && response.ok && !noCache) {
     maybeStoreResponse(cacheKey, data);
   }
 
